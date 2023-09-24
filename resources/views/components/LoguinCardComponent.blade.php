@@ -13,20 +13,21 @@
             </div>
         </div>
 
-        <form action="#">
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
             <div class="col-sm-12 d-flex justify-content-center flex-column p-2">
 
                 <div class="row mb-2">
                     <div class="form-group mb-2">
                         <label for="userInputId">Usuario</label>
-                        <input type="email" class="form-control" id="userInputId" aria-describedby="emailHelp" placeholder="Ingrese su usuario">
+                        <input type="text" class="form-control" id="userInputId" aria-describedby="emailHelp" placeholder="Ingrese su usuario" required autofocus>
                     </div>
                 </div>
 
                 <div class="row mb-2">
                     <div class="form-group">
                         <label for="passwordInputId">Contraseña</label>
-                        <input type="password" class="form-control" id="passwordInputId" placeholder="Ingrese su contraseña">
+                        <input type="password" class="form-control" id="passwordInputId" placeholder="Ingrese su contraseña" required>
                     </div>
                 </div>
 
@@ -35,9 +36,11 @@
                 </div>
 
                 <div class="row mt-4">
-                    <div class="col-sm-12 d-flex justify-content-end">
-                        <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">¿Olvidaste tu contraseña?</a>
-                    </div>
+                    @if (Route::has('password.request'))
+                        <div class="col-sm-12 d-flex justify-content-end">
+                            <a href="{{ route('password.request') }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    @endif
                 </div>
 
             </div>
