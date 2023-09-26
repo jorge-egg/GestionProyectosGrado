@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProgramasTable extends Migration
+class CreateProgramasSedesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateProgramasTable extends Migration
      */
     public function up()
     {
-        Schema::create('programas', function (Blueprint $table) {
+        Schema::create('programas_sedes', function (Blueprint $table) {
             $table->bigIncrements("idPrograma");
             $table->string("programa");
             $table->unsignedBigInteger("prog_facu");
             $table->unsignedBigInteger("prog_sede");
             $table->unsignedBigInteger("prog_usua");
-            $table->foreign("prog_facu")->references("idFacultad")->on("facultades");
+            $table->foreign("prog_facu")->references("idFacultad")->on("facultades_sedes");
             $table->foreign("prog_sede")->references("idSede")->on("sedes");  
-            $table->foreign("prog_usua")->references("numeroDocumento")->on("usuarios"); 
+            $table->foreign("prog_usua")->references("numeroDocumento")->on("usuarios_users"); 
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacultadesTable extends Migration
+class CreateFacultadesSedesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFacultadesTable extends Migration
      */
     public function up()
     {
-        Schema::create('facultades', function (Blueprint $table) {
+        Schema::create('facultades_sedes', function (Blueprint $table) {
             $table->bigIncrements("idFacultad");
             $table->string("ingenieria");
             $table->string("economia");

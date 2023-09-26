@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Fecha
+ * Class FechasGrupo
  * 
  * @property int $idFecha
  * @property string $fecha
@@ -18,13 +18,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Grupo $grupo
+ * @property GruposCronograma $grupos_cronograma
  *
  * @package App\Models
  */
-class Fecha extends Model
+class FechasGrupo extends Model
 {
-	protected $table = 'fechas';
+	protected $table = 'fechas_grupos';
 	protected $primaryKey = 'idFecha';
 
 	protected $casts = [
@@ -36,8 +36,8 @@ class Fecha extends Model
 		'fech_grup'
 	];
 
-	public function grupo()
+	public function grupos_cronograma()
 	{
-		return $this->belongsTo(Grupo::class, 'fech_grup');
+		return $this->belongsTo(GruposCronograma::class, 'fech_grup');
 	}
 }

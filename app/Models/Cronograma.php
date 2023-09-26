@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $idCronograma
  * @property string $fases
  * 
- * @property Collection|Grupo[] $grupos
+ * @property Collection|FasesProyecto[] $fases_proyectos
+ * @property Collection|GruposCronograma[] $grupos_cronogramas
  *
  * @package App\Models
  */
@@ -29,13 +30,13 @@ class Cronograma extends Model
 		'fases'
 	];
 
-	public function fases()
+	public function fases_proyectos()
 	{
-		return $this->hasMany(Fase::class, 'fase_cron');
+		return $this->hasMany(FasesProyecto::class, 'fase_cron');
 	}
 
-	public function grupos()
+	public function grupos_cronogramas()
 	{
-		return $this->hasMany(Grupo::class, 'grup_cron');
+		return $this->hasMany(GruposCronograma::class, 'grup_cron');
 	}
 }

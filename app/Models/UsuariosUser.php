@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Usuario
+ * Class UsuariosUser
  * 
  * @property int $numeroDocumento
  * @property string $nombre
@@ -18,20 +18,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property string $numeroCelular
  * @property int $usua_sede
+ * @property int $usua_users
  * 
  * @property Sede $sede
- * @property Collection|Programa[] $programas
+ * @property User $user
+ * @property Collection|ProgramasSede[] $programas_sedes
  *
  * @package App\Models
  */
-class Usuario extends Model
+class UsuariosUser extends Model
 {
-	protected $table = 'usuarios';
+	protected $table = 'usuarios_users';
 	protected $primaryKey = 'numeroDocumento';
 	public $timestamps = false;
 
 	protected $casts = [
-		'usua_sede' => 'int'
+		'usua_sede' => 'int',
+		'usua_users' => 'int'
 	];
 
 	protected $fillable = [
@@ -39,7 +42,8 @@ class Usuario extends Model
 		'apellido',
 		'email',
 		'numeroCelular',
-		'usua_sede'
+		'usua_sede',
+		'usua_users'
 	];
 
 	public function sede()
@@ -47,8 +51,13 @@ class Usuario extends Model
 		return $this->belongsTo(Sede::class, 'usua_sede');
 	}
 
-	public function programas()
+	public function user()
 	{
-		return $this->hasMany(Programa::class, 'prog_usua');
+		return $this->belongsTo(User::class, 'usua_users');
+	}
+
+	public function programas_sedes()
+	{
+		return $this->hasMany(ProgramasSede::class, 'prog_usua');
 	}
 }

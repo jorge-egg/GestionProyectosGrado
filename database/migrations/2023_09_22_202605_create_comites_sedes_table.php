@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComitesTable extends Migration
+class CreateComitesSedesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateComitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('comites', function (Blueprint $table) {
+        Schema::create('comites_sedes', function (Blueprint $table) {
             $table->bigIncrements("idComite");
             $table->string("nombre");
             $table->unsignedBigInteger("comi_sede");

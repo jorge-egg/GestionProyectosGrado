@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Observacione
+ * Class ObservacionesCalificacione
  * 
  * @property int $idObservacion
  * @property string $titulo
@@ -26,9 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Observacione extends Model
+class ObservacionesCalificacione extends Model
 {
-	protected $table = 'observaciones';
+	protected $table = 'observaciones_calificaciones';
 	protected $primaryKey = 'idObservacion';
 
 	protected $casts = [

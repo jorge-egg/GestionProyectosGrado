@@ -9,7 +9,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Comite
+ * Class ComitesSede
  * 
  * @property int $idComite
  * @property string $nombre
@@ -19,9 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Comite extends Model
+class ComitesSede extends Model
 {
-	protected $table = 'comites';
+	protected $table = 'comites_sedes';
 	protected $primaryKey = 'idComite';
 	public $timestamps = false;
 

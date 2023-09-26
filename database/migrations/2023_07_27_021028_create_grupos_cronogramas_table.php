@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGruposTable extends Migration
+class CreateGruposCronogramasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGruposTable extends Migration
      */
     public function up()
     {
-        Schema::create('grupos', function (Blueprint $table) {
+        Schema::create('grupos_cronogramas', function (Blueprint $table) {
             $table->bigIncrements("idGrupo");
             $table->string("numerogrupo");
             $table->string("estado");

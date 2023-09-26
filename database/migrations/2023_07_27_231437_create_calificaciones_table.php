@@ -25,10 +25,10 @@ class CreateCalificacionesTable extends Migration
             $table->unsignedBigInteger("cal_prof");
             $table->unsignedBigInteger("cal_sust");
             $table->timestamps();
-            $table->foreign("cal_pro")->references("idPropuesta")->on("propuestas");
-            $table->foreign("cal_ante")->references("idAnteproyecto")->on("anteproyectos");
-            $table->foreign("cal_prof")->references("idProyectofinal")->on("proyectosfinales");
-            $table->foreign("cal_sust")->references("idSustentacion")->on("sustentacions");
+            $table->foreign("cal_pro")->references("idPropuesta")->on("propuestas_fases");
+            $table->foreign("cal_ante")->references("idAnteproyecto")->on("anteproyectos_fases");
+            $table->foreign("cal_prof")->references("idProyectofinal")->on("proyectosfinales_fases");
+            $table->foreign("cal_sust")->references("idSustentacion")->on("sustentacions_fases");
 
         });
     }

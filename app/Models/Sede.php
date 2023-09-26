@@ -18,12 +18,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property string $telefono
  * 
- * @property Collection|Usuario[] $usuarios
- * @property Collection|Facultade[] $facultades
- * @property Collection|Programa[] $programas
- * @property Collection|Biblioteca[] $bibliotecas
- * @property Collection|ProyectoGrado[] $proyecto_grados
- * @property Collection|Comite[] $comites
+ * @property Collection|UsuariosUser[] $usuarios_users
+ * @property Collection|FacultadesSede[] $facultades_sedes
+ * @property Collection|ProgramasSede[] $programas_sedes
+ * @property Collection|BibliotecasSede[] $bibliotecas_sedes
+ * @property Collection|ProyectoGradosSede[] $proyecto_grados_sedes
+ * @property Collection|ComitesSede[] $comites_sedes
  *
  * @package App\Models
  */
@@ -40,33 +40,33 @@ class Sede extends Model
 		'telefono'
 	];
 
-	public function usuarios()
+	public function usuarios_users()
 	{
-		return $this->hasMany(Usuario::class, 'usua_sede');
+		return $this->hasMany(UsuariosUser::class, 'usua_sede');
 	}
 
-	public function facultades()
+	public function facultades_sedes()
 	{
-		return $this->hasMany(Facultade::class, 'facu_sede');
+		return $this->hasMany(FacultadesSede::class, 'facu_sede');
 	}
 
-	public function programas()
+	public function programas_sedes()
 	{
-		return $this->hasMany(Programa::class, 'prog_sede');
+		return $this->hasMany(ProgramasSede::class, 'prog_sede');
 	}
 
-	public function bibliotecas()
+	public function bibliotecas_sedes()
 	{
-		return $this->hasMany(Biblioteca::class, 'bibl_sede');
+		return $this->hasMany(BibliotecasSede::class, 'bibl_sede');
 	}
 
-	public function proyecto_grados()
+	public function proyecto_grados_sedes()
 	{
-		return $this->hasMany(ProyectoGrado::class, 'proy_sede');
+		return $this->hasMany(ProyectoGradosSede::class, 'proy_sede');
 	}
 
-	public function comites()
+	public function comites_sedes()
 	{
-		return $this->hasMany(Comite::class, 'comi_sede');
+		return $this->hasMany(ComitesSede::class, 'comi_sede');
 	}
 }

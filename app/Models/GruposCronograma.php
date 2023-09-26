@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Grupo
+ * Class GruposCronograma
  * 
  * @property int $idGrupo
  * @property string $numerogrupo
@@ -18,13 +18,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $grup_cron
  * 
  * @property Cronograma $cronograma
- * @property Collection|Fecha[] $fechas
+ * @property Collection|FechasGrupo[] $fechas_grupos
  *
  * @package App\Models
  */
-class Grupo extends Model
+class GruposCronograma extends Model
 {
-	protected $table = 'grupos';
+	protected $table = 'grupos_cronogramas';
 	protected $primaryKey = 'idGrupo';
 	public $timestamps = false;
 
@@ -43,8 +43,8 @@ class Grupo extends Model
 		return $this->belongsTo(Cronograma::class, 'grup_cron');
 	}
 
-	public function fechas()
+	public function fechas_grupos()
 	{
-		return $this->hasMany(Fecha::class, 'fech_grup');
+		return $this->hasMany(FechasGrupo::class, 'fech_grup');
 	}
 }

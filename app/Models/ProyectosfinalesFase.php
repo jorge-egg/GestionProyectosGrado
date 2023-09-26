@@ -10,19 +10,19 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Proyectosfinale
+ * Class ProyectosfinalesFase
  * 
  * @property int $idProyectofinal
  * @property int $prof_fase
  * 
- * @property Fase $fase
+ * @property FasesProyecto $fases_proyecto
  * @property Collection|Calificacione[] $calificaciones
  *
  * @package App\Models
  */
-class Proyectosfinale extends Model
+class ProyectosfinalesFase extends Model
 {
-	protected $table = 'proyectosfinales';
+	protected $table = 'proyectosfinales_fases';
 	protected $primaryKey = 'idProyectofinal';
 	public $timestamps = false;
 
@@ -34,9 +34,9 @@ class Proyectosfinale extends Model
 		'prof_fase'
 	];
 
-	public function fase()
+	public function fases_proyecto()
 	{
-		return $this->belongsTo(Fase::class, 'prof_fase');
+		return $this->belongsTo(FasesProyecto::class, 'prof_fase');
 	}
 
 	public function calificaciones()
