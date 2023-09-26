@@ -1,5 +1,5 @@
 
-<nav id="NavbarContainer" class="d-flex justify-content-between mt-2 flex-wrap p-2 col-sm-12">
+<nav id="NavbarContainer" class="d-flex justify-content-between flex-wrap p-2 col-sm-12">
 
     <section>
         <div class="skewedNavbar"></div>
@@ -13,16 +13,9 @@
 
     <ul style="font-size: 20px" class="nav-links d-flex p-2 flex-wrap justify-content-end">
         <li class="m-2">
-            <a href="#">Inicio</a>
-        </li>
-        <li class="m-2">
-            <a href="#">Nosotros</a>
-        </li>
-        <li class="m-2">
-            <a href="#">Servicios</a>
-        </li>
-        <li class="m-2">
-            <a href="#">Contacto</a>
+            <a href="#" class="font-italic" style="font-weight: bold; text-transform: uppercase;">
+                <span class="text-Title"> SEGETGRA </span>
+            </a>
         </li>
     </ul>
     <div class="burger d-none">

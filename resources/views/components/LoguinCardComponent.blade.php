@@ -1,5 +1,5 @@
 {{-- Loguin Card --}}
-<div class="container d-flex justify-content-end col-sm-12 col-md-6 mt-4">
+<div class="container d-flex justify-content-end col-sm-12 col-md-6">
     <div class="card p-2 flex-wrap card-glass">
 
         <div class="col-sm-12 p-2">
@@ -14,12 +14,13 @@
         </div>
 
         <form action="#">
+            @csrf
             <div class="col-sm-12 d-flex justify-content-center flex-column p-2">
 
                 <div class="row mb-2">
                     <div class="form-group mb-2">
                         <label for="userInputId">Usuario</label>
-                        <input type="email" class="form-control" id="userInputId" aria-describedby="emailHelp" placeholder="Ingrese su usuario">
+                        <input type="text" class="form-control" id="userInputId" aria-describedby="UsuarioHelp" placeholder="Ingrese su usuario">
                     </div>
                 </div>
 
@@ -29,6 +30,22 @@
                         <input type="password" class="form-control" id="passwordInputId" placeholder="Ingrese su contraseña">
                     </div>
                 </div>
+
+                @if ($errors->any())
+                    
+                <div class="row">
+                    <div class="col-sm-12 d-flex justify-content-center flex-column">
+                        <div class="alert alert-danger" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    {{ $error }}
+                                </li>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                
+                @endif
 
                 <div class="button-group m-2 d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-outline-dark">Ingresar</button>
