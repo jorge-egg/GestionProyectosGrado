@@ -46,6 +46,6 @@ class User extends Model
 
 	public function usuarios_users()
 	{
-		return $this->hasMany(UsuariosUser::class, 'usua_users');
+		return $this->belongsTo(UsuariosUser::class, 'usua_users');
 	}
 }

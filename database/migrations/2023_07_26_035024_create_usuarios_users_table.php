@@ -22,7 +22,7 @@ class CreateUsuariosUsersTable extends Migration
             $table->unsignedBigInteger("usua_sede");
             $table->unsignedBigInteger("usua_users");
             $table->foreign("usua_sede")->references("idSede")->on("sedes");
-            $table->foreign("usua_users")->references("idUsers")->on("users");       
+            $table->foreign("usua_users")->references("id")->on("users");       
         });
     }
 
