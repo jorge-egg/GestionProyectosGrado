@@ -26,12 +26,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Propuesta $propuesta
- * @property Anteproyecto $anteproyecto
- * @property Proyectosfinale $proyectosfinale
- * @property Sustentacion $sustentacion
- * @property Collection|Ponderado[] $ponderados
- * @property Collection|Observacione[] $observaciones
+ * @property FasePropuesta $fase_propuesta
+ * @property FaseAnteproyecto $fase_anteproyecto
+ * @property FaseProyectosfinale $fase_proyectosfinale
+ * @property FaseSustentacione $fase_sustentacione
+ * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
+ * @property Collection|ObservacionesCalificacione[] $observaciones_calificaciones
  *
  * @package App\Models
  */
@@ -59,33 +59,33 @@ class Calificacione extends Model
 		'cal_sust'
 	];
 
-	public function propuesta()
+	public function fase_propuesta()
 	{
-		return $this->belongsTo(Propuesta::class, 'cal_pro');
+		return $this->belongsTo(FasePropuesta::class, 'cal_pro');
 	}
 
-	public function anteproyecto()
+	public function fase_anteproyecto()
 	{
-		return $this->belongsTo(Anteproyecto::class, 'cal_ante');
+		return $this->belongsTo(FaseAnteproyecto::class, 'cal_ante');
 	}
 
-	public function proyectosfinale()
+	public function fase_proyectosfinale()
 	{
-		return $this->belongsTo(Proyectosfinale::class, 'cal_prof');
+		return $this->belongsTo(FaseProyectosfinale::class, 'cal_prof');
 	}
 
-	public function sustentacion()
+	public function fase_sustentacione()
 	{
-		return $this->belongsTo(Sustentacion::class, 'cal_sust');
+		return $this->belongsTo(FaseSustentacione::class, 'cal_sust');
 	}
 
-	public function ponderados()
+	public function ponderados_calificaciones()
 	{
-		return $this->hasMany(Ponderado::class, 'pond_cal');
+		return $this->hasMany(PonderadosCalificacione::class, 'pond_cal');
 	}
 
-	public function observaciones()
+	public function observaciones_calificaciones()
 	{
-		return $this->hasMany(Observacione::class, 'obse_cal');
+		return $this->hasMany(ObservacionesCalificacione::class, 'obse_cal');
 	}
 }
