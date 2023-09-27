@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseSustentacione
- * 
+ *
  * @property int $idSustentacion
  * @property int $Sust_fase
- * 
+ *
  * @property ProyectoFase $proyecto_fase
  * @property Collection|Calificacione[] $calificaciones
  *
  * @package App\Models
  */
-class FaseSustentacione extends Model
+class FaseSustentaciones extends Model
 {
 	protected $table = 'fase_sustentaciones';
 	protected $primaryKey = 'idSustentacion';
