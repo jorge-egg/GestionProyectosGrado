@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFechasGruposTable extends Migration
+class CreateCronogramaFechasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateFechasGruposTable extends Migration
             $table->string("fecha");
             $table->unsignedBigInteger("fech_grup");
             $table->timestamps();
-            $table->foreign("fech_grup")->references("idGrupo")->on("grupos_cronogramas");
+            $table->foreign("fech_grup")->references("idGrupo")->on("cronograma_grupos");
         });
     }
 

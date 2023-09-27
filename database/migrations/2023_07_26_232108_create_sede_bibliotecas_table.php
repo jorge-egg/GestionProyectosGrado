@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBibliotecasSedesTable extends Migration
+class CreateSedeBibliotecasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateBibliotecasSedesTable extends Migration
      */
     public function up()
     {
-        Schema::create('bibliotecas_sedes', function (Blueprint $table) {
+        Schema::create('sede_bibliotecas', function (Blueprint $table) {
             $table->bigIncrements("idBiblioteca");
             $table->unsignedBigInteger("bibl_sede");
-            $table->foreign("bibl_sede")->references("idSede")->on("sedes");   
-                   
+            $table->foreign("bibl_sede")->references("idSede")->on("sedes");
+
         });
     }
 

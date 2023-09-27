@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGruposCronogramasTable extends Migration
+class CreateCronogramaGruposTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateGruposCronogramasTable extends Migration
      */
     public function up()
     {
-        Schema::create('grupos_cronogramas', function (Blueprint $table) {
+        Schema::create('cronograma_grupos', function (Blueprint $table) {
             $table->bigIncrements("idGrupo");
             $table->string("numerogrupo");
             $table->string("estado");
             $table->unsignedBigInteger("grup_cron");
-            
-            $table->foreign("grup_cron")->references("idCronograma")->on("cronogramas");
+
+            $table->foreign("grup_cron")->references("idCronograma")->on("proyecto_cronogramas");
         });
     }
 

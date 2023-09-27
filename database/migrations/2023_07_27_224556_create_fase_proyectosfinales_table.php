@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProyectosfinalesFasesTable extends Migration
+class CreateFaseProyectosfinalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateProyectosfinalesFasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('proyectosfinales_fases', function (Blueprint $table) {
+        Schema::create('fase_proyectosfinales', function (Blueprint $table) {
             $table->bigIncrements("idProyectofinal");
             $table->unsignedBigInteger("prof_fase");
-            
-            $table->foreign("prof_fase")->references("idFase")->on("fases_proyectos");
+
+            $table->foreign("prof_fase")->references("idFase")->on("proyecto_fases");
         });
     }
 

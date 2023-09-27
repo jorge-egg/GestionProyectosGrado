@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCronogramasTable extends Migration
+class CreateFaseSustentacionesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCronogramasTable extends Migration
      */
     public function up()
     {
-        Schema::create('cronogramas', function (Blueprint $table) {
-            $table->bigIncrements("idCronograma");
-            $table->string("fases");
-            
+        Schema::create('fase_sustentaciones', function (Blueprint $table) {
+            $table->bigIncrements("idSustentacion");
+            $table->unsignedBigInteger("Sust_fase");
+
+            $table->foreign("Sust_fase")->references("idFase")->on("proyecto_fases");
         });
     }
 
@@ -27,6 +28,6 @@ class CreateCronogramasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cronogramas');
+        Schema::dropIfExists('sustentacions');
     }
 }
