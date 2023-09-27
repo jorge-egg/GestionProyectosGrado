@@ -10,21 +10,21 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class GruposCronograma
+ * Class CronogramaGrupo
  * 
  * @property int $idGrupo
  * @property string $numerogrupo
  * @property string $estado
  * @property int $grup_cron
  * 
- * @property Cronograma $cronograma
+ * @property ProyectoCronograma $proyecto_cronograma
  * @property Collection|FechasGrupo[] $fechas_grupos
  *
  * @package App\Models
  */
-class GruposCronograma extends Model
+class CronogramaGrupo extends Model
 {
-	protected $table = 'grupos_cronogramas';
+	protected $table = 'cronograma_grupos';
 	protected $primaryKey = 'idGrupo';
 	public $timestamps = false;
 
@@ -38,9 +38,9 @@ class GruposCronograma extends Model
 		'grup_cron'
 	];
 
-	public function cronograma()
+	public function proyecto_cronograma()
 	{
-		return $this->belongsTo(Cronograma::class, 'grup_cron');
+		return $this->belongsTo(ProyectoCronograma::class, 'grup_cron');
 	}
 
 	public function fechas_grupos()

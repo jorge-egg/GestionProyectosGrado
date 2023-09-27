@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ProyectoGradosSede
+ * Class SedeProyectosGrado
  * 
  * @property int $idProyecto
  * @property string $estado
@@ -19,14 +19,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $proy_bibl
  * 
  * @property Sede $sede
- * @property BibliotecasSede $bibliotecas_sede
- * @property Collection|FasesProyecto[] $fases_proyectos
+ * @property SedeBiblioteca $sede_biblioteca
+ * @property Collection|ProyectoFase[] $proyecto_fases
  *
  * @package App\Models
  */
-class ProyectoGradosSede extends Model
+class SedeProyectosGrado extends Model
 {
-	protected $table = 'proyecto_grados_sedes';
+	protected $table = 'sede_proyectos_grado';
 	protected $primaryKey = 'idProyecto';
 	public $timestamps = false;
 
@@ -47,13 +47,13 @@ class ProyectoGradosSede extends Model
 		return $this->belongsTo(Sede::class, 'proy_sede');
 	}
 
-	public function bibliotecas_sede()
+	public function sede_biblioteca()
 	{
-		return $this->belongsTo(BibliotecasSede::class, 'proy_bibl');
+		return $this->belongsTo(SedeBiblioteca::class, 'proy_bibl');
 	}
 
-	public function fases_proyectos()
+	public function proyecto_fases()
 	{
-		return $this->hasMany(FasesProyecto::class, 'fase_proy');
+		return $this->hasMany(ProyectoFase::class, 'fase_proy');
 	}
 }

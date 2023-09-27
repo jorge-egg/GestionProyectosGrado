@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class PropuestasFase
+ * Class FasePropuesta
  * 
  * @property int $idPropuesta
  * @property string $titulo
@@ -28,14 +28,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property FasesProyecto $fases_proyecto
+ * @property ProyectoFase $proyecto_fase
  * @property Collection|Calificacione[] $calificaciones
  *
  * @package App\Models
  */
-class PropuestasFase extends Model
+class FasePropuesta extends Model
 {
-	protected $table = 'propuestas_fases';
+	protected $table = 'fase_propuestas';
 	protected $primaryKey = 'idPropuesta';
 
 	protected $casts = [
@@ -56,9 +56,9 @@ class PropuestasFase extends Model
 		'prop_fase'
 	];
 
-	public function fases_proyecto()
+	public function proyecto_fase()
 	{
-		return $this->belongsTo(FasesProyecto::class, 'prop_fase');
+		return $this->belongsTo(ProyectoFase::class, 'prop_fase');
 	}
 
 	public function calificaciones()

@@ -19,10 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $telefono
  * 
  * @property Collection|UsuariosUser[] $usuarios_users
- * @property Collection|FacultadesSede[] $facultades_sedes
- * @property Collection|ProgramasSede[] $programas_sedes
- * @property Collection|BibliotecasSede[] $bibliotecas_sedes
- * @property Collection|ProyectoGradosSede[] $proyecto_grados_sedes
+ * @property Collection|SedesFacultade[] $sedes_facultades
+ * @property Collection|SedePrograma[] $sede_programas
+ * @property Collection|SedeBiblioteca[] $sede_bibliotecas
+ * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|ComitesSede[] $comites_sedes
  *
  * @package App\Models
@@ -45,24 +45,24 @@ class Sede extends Model
 		return $this->hasMany(UsuariosUser::class, 'usua_sede');
 	}
 
-	public function facultades_sedes()
+	public function sedes_facultades()
 	{
-		return $this->hasMany(FacultadesSede::class, 'facu_sede');
+		return $this->hasMany(SedesFacultade::class, 'facu_sede');
 	}
 
-	public function programas_sedes()
+	public function sede_programas()
 	{
-		return $this->hasMany(ProgramasSede::class, 'prog_sede');
+		return $this->hasMany(SedePrograma::class, 'prog_sede');
 	}
 
-	public function bibliotecas_sedes()
+	public function sede_bibliotecas()
 	{
-		return $this->hasMany(BibliotecasSede::class, 'bibl_sede');
+		return $this->hasMany(SedeBiblioteca::class, 'bibl_sede');
 	}
 
-	public function proyecto_grados_sedes()
+	public function sede_proyectos_grados()
 	{
-		return $this->hasMany(ProyectoGradosSede::class, 'proy_sede');
+		return $this->hasMany(SedeProyectosGrado::class, 'proy_sede');
 	}
 
 	public function comites_sedes()

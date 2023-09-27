@@ -9,7 +9,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ProgramasSede
+ * Class SedePrograma
  * 
  * @property int $idPrograma
  * @property string $programa
@@ -17,15 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $prog_sede
  * @property int $prog_usua
  * 
- * @property FacultadesSede $facultades_sede
+ * @property SedesFacultade $sedes_facultade
  * @property Sede $sede
  * @property UsuariosUser $usuarios_user
  *
  * @package App\Models
  */
-class ProgramasSede extends Model
+class SedePrograma extends Model
 {
-	protected $table = 'programas_sedes';
+	protected $table = 'sede_programas';
 	protected $primaryKey = 'idPrograma';
 	public $timestamps = false;
 
@@ -42,9 +42,9 @@ class ProgramasSede extends Model
 		'prog_usua'
 	];
 
-	public function facultades_sede()
+	public function sedes_facultade()
 	{
-		return $this->belongsTo(FacultadesSede::class, 'prog_facu');
+		return $this->belongsTo(SedesFacultade::class, 'prog_facu');
 	}
 
 	public function sede()

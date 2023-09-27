@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class FacultadesSede
+ * Class SedesFacultade
  * 
  * @property int $idFacultad
  * @property string $ingenieria
@@ -19,13 +19,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $facu_sede
  * 
  * @property Sede $sede
- * @property Collection|ProgramasSede[] $programas_sedes
+ * @property Collection|SedePrograma[] $sede_programas
  *
  * @package App\Models
  */
-class FacultadesSede extends Model
+class SedesFacultade extends Model
 {
-	protected $table = 'facultades_sedes';
+	protected $table = 'sedes_facultades';
 	protected $primaryKey = 'idFacultad';
 	public $timestamps = false;
 
@@ -45,8 +45,8 @@ class FacultadesSede extends Model
 		return $this->belongsTo(Sede::class, 'facu_sede');
 	}
 
-	public function programas_sedes()
+	public function sede_programas()
 	{
-		return $this->hasMany(ProgramasSede::class, 'prog_facu');
+		return $this->hasMany(SedePrograma::class, 'prog_facu');
 	}
 }

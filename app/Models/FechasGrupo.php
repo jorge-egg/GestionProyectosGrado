@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property GruposCronograma $grupos_cronograma
+ * @property CronogramaGrupo $cronograma_grupo
  *
  * @package App\Models
  */
@@ -36,8 +36,8 @@ class FechasGrupo extends Model
 		'fech_grup'
 	];
 
-	public function grupos_cronograma()
+	public function cronograma_grupo()
 	{
-		return $this->belongsTo(GruposCronograma::class, 'fech_grup');
+		return $this->belongsTo(CronogramaGrupo::class, 'fech_grup');
 	}
 }

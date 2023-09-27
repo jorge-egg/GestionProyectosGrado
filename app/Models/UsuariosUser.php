@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Sede $sede
  * @property User $user
- * @property Collection|ProgramasSede[] $programas_sedes
+ * @property Collection|SedePrograma[] $sede_programas
  *
  * @package App\Models
  */
@@ -56,8 +56,8 @@ class UsuariosUser extends Model
 		return $this->belongsTo(User::class, 'usua_users');
 	}
 
-	public function programas_sedes()
+	public function sede_programas()
 	{
-		return $this->hasMany(ProgramasSede::class, 'prog_usua');
+		return $this->hasMany(SedePrograma::class, 'prog_usua');
 	}
 }
