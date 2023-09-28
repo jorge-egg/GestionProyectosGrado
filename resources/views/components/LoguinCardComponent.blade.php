@@ -19,16 +19,26 @@
 
                 <div class="row mb-2">
                     <div class="form-group mb-2">
-                        <label for="userInputId">Usuario</label>
-                        <input type="text" class="form-control" id="userInputId" aria-describedby="emailHelp" placeholder="Ingrese su usuario" required autofocus>
+                        <label for="usuario">Usuario</label>
+                        <input name="usuario" type="text" class="form-control @error('usuario') is-invalid @enderror" id="usuario" aria-describedby="emailHelp" placeholder="Ingrese su usuario" required autofocus>
+                        @error('usuario')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="row mb-2">
                     <div class="form-group">
-                        <label for="passwordInputId">Contraseña</label>
-                        <input type="password" class="form-control" id="passwordInputId" placeholder="Ingrese su contraseña" required>
-                    </div>
+                        <label for="password">Contraseña</label>
+                        <input name="password" type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror</div>
                 </div>
 
                 <div class="button-group m-2 d-flex justify-content-end mt-4">
