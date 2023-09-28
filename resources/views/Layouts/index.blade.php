@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 
-    <link rel="stylesheet" href="{{ asset('css/Layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/indexCss.css') }}">
     @yield('css')
 
     @yield('importaciones_js')
@@ -22,41 +22,11 @@
 <body>
 
     <div class="container p-2">
-        
-        <section>
-            <div class="skewed"></div>
-        </section>
-
-        {{-- Navbar --}}
-        <section>
-            @component('components.NavbarComponent')
-            @endcomponent
-        </section>
-
-        <section class="d-flex justify-content-center mb-2">
-            {{-- HERO COMPONENT --}}
-            @component('components.HeroComponent')
-            @endcomponent
-
-            {{-- lOGUIN CARD COMPONENT --}}
-            @component('components.LoguinCardComponent')
-            @endcomponent
-        </section>
-
-        <section id="infoCardsContainer">
-            @component('components.infoCardsComponent')
-                
-            @endcomponent
-        </section>
-        
 
         @yield('contenido')
         
-
-
     </div>
 
     @yield('js')
 </body>
 </html>
-

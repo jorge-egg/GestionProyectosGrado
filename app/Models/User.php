@@ -9,25 +9,29 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable;
 
 /**
  * Class User
- * 
+ *
  * @property int $idUsers
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|UsuariosUser[] $usuarios_users
  *
  * @package App\Models
  */
-class User extends Model
+class User extends Model implements AuthenticatableContract
 {
+    use Authenticatable;
+
 	protected $table = 'users';
-	protected $primaryKey = 'idUsers';
+	protected $primaryKey = 'id';
 
 	protected $casts = [
 		'email_verified_at' => 'datetime'
@@ -39,6 +43,7 @@ class User extends Model
 	];
 
 	protected $fillable = [
+        'usuario',
 		'email_verified_at',
 		'password',
 		'remember_token'
