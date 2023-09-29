@@ -21,39 +21,41 @@
 </head>
 <body>
 
-    <div class="container p-2">
-        
-        <section>
-            <div class="skewed"></div>
-        </section>
-
-        {{-- Navbar --}}
-        <section>
-            @component('components.NavbarComponent')
-            @endcomponent
-        </section>
-
-        <section class="d-flex justify-content-center mb-2">
-            {{-- HERO COMPONENT --}}
-            @component('components.HeroComponent')
-            @endcomponent
-
-            {{-- lOGUIN CARD COMPONENT --}}
-            @component('components.LoguinCardComponent')
-            @endcomponent
-        </section>
-
-        <section id="infoCardsContainer">
-            @component('components.infoCardsComponent')
-                
-            @endcomponent
-        </section>
-        
-
-        @yield('contenido')
-        
-
-
+    <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <div style="overflow-x: hidden" class="container p-2">
+            
+            <section>
+                <div class="skewed"></div>
+            </section>
+    
+            {{-- Navbar --}}
+            <section>
+                @component('components.NavbarComponent')
+                @endcomponent
+            </section>
+    
+            <section class="d-flex justify-content-center">
+                {{-- HERO COMPONENT --}}
+                @component('components.HeroComponent')
+                @endcomponent
+    
+                {{-- lOGUIN CARD COMPONENT --}}
+                @component('components.LoguinCardComponent')
+                @endcomponent
+            </section>
+    
+            <section id="infoCardsContainer">
+                @component('components.infoCardsComponent')
+                    
+                @endcomponent
+            </section>
+            
+    
+            @yield('contenido')
+            
+    
+    
+        </div>
     </div>
 
     @yield('js')

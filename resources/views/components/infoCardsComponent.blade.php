@@ -1,4 +1,4 @@
-<div class="col-sm-12 col-md-6 d-flex">
+<div class="col-sm-12 col-md-6 d-flex mb-2">
 
     <div class="card p-1 card-welcome-index m-1">
         <div class="card-header">
