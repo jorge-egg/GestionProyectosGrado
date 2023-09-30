@@ -13,17 +13,15 @@
             </div>
         </div>
 
-<<<<<<< HEAD
+
         <form method="POST" action="{{ route('login') }}">
-=======
-        <form action="#">
->>>>>>> 40384e23fac4c66195367b3e19900697db6e4aa3
+
             @csrf
             <div class="col-sm-12 d-flex justify-content-center flex-column p-2">
 
                 <div class="row mb-2">
                     <div class="form-group mb-2">
-<<<<<<< HEAD
+
                         <label for="usuario">Usuario</label>
                         <input name="usuario" type="text" class="form-control @error('usuario') is-invalid @enderror" id="usuario" aria-describedby="emailHelp" placeholder="Ingrese su usuario" required autofocus>
                         @error('usuario')
@@ -31,10 +29,6 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-=======
-                        <label for="userInputId">Usuario</label>
-                        <input type="text" class="form-control" id="userInputId" aria-describedby="UsuarioHelp" placeholder="Ingrese su usuario">
->>>>>>> 40384e23fac4c66195367b3e19900697db6e4aa3
                     </div>
                 </div>
 
@@ -51,7 +45,7 @@
                 </div>
 
                 @if ($errors->any())
-                    
+
                 <div class="row">
                     <div class="col-sm-12 d-flex justify-content-center flex-column">
                         <div class="alert alert-danger" role="alert">
@@ -63,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 @endif
 
                 <div class="button-group m-2 d-flex justify-content-end mt-4">

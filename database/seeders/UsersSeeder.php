@@ -1,8 +1,9 @@
 <?php
 
 namespace Database\Seeders;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class UsersSeeder extends Seeder
     {
         DB::table('users')->insert([
             'usuario' => 'admin',
-            'password' => '123456',
+            'password' => Hash::make('123456'),
             ]);
     }
 }
