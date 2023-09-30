@@ -4,7 +4,7 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class ComitesSeeder extends Seeder
+class UsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,9 +13,9 @@ class ComitesSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('comites_sedes')->insert([
-        'nombre' => 'comite',
-        'comi_sede' => 1,
-    ]);
+        DB::table('users')->insert([
+            'usuario' => 'admin',
+            'password' => '123456',
+            ]);
     }
 }

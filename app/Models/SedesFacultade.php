@@ -34,10 +34,8 @@ class SedesFacultade extends Model
 	];
 
 	protected $fillable = [
-		'ingenieria',
-		'economia',
-		'artes',
-		'facu_sede'
+		'nombre',
+
 	];
 
 	public function sede()
