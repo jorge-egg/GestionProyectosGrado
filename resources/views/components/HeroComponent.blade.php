@@ -53,7 +53,7 @@
 
 </style>
 
-<div class="swiper mySwiper col-sm-12 col-md-6 mt-2 mb-2">
+<div class="swiper mySwiper col-sm-12 col-md-6">
     <div class="swiper-wrapper">
 
         <div class="swiper-slide">

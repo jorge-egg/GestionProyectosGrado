@@ -15,9 +15,7 @@ class CreateSedeFacultadesTable extends Migration
     {
         Schema::create('sedes_facultades', function (Blueprint $table) {
             $table->bigIncrements("idFacultad");
-            $table->string("ingenieria");
-            $table->string("economia");
-            $table->string("artes");
+            $table->string("nombre");
             $table->unsignedBigInteger("facu_sede");
             $table->foreign("facu_sede")->references("idSede")->on("sedes");
         });
