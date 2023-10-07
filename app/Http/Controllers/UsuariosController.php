@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\usuarios;
+use App\Models\UsuariosUser;
 use App\Http\Requests\StoreusuariosRequest;
 use App\Http\Requests\UpdateusuariosRequest;
 
@@ -15,7 +15,8 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = UsuariosUser::paginate(10);
+        return view('usuarios.read', compact('usuarios'));   
     }
 
     /**
@@ -25,8 +26,8 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-        //
-    }
+      //
+     }
 
     /**
      * Store a newly created resource in storage.
@@ -42,7 +43,7 @@ class UsuariosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\usuarios  $usuarios
+     * @param  \App\Models\UsuariosUser  $usuarios
      * @return \Illuminate\Http\Response
      */
     public function show(usuarios $usuarios)
@@ -53,33 +54,37 @@ class UsuariosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\usuarios  $usuarios
+     * @param  \App\Models\UsuariosUser  $usuarios
      * @return \Illuminate\Http\Response
      */
-    public function edit(usuarios $usuarios)
+    public function edit($id)
     {
-        //
+
+        $usuarios = UsuariosUser::findOrFail($id);
+        return view('usuarios.update', compact('usuarios'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateusuariosRequest  $request
-     * @param  \App\Models\usuarios  $usuarios
+     * @param  \App\Models\UsuariosUser  $usuarios
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateusuariosRequest $request, usuarios $usuarios)
+    public function update(UpdateusuariosRequest $request,$id)
     {
-        //
+        $usuarios = UsuariosUser::findOrFail($id);
+        $usuarios->update($request->all());
+        return redirect()->route('usuarios.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\usuarios  $usuarios
+     * @param  \App\Models\UsuariosUser  $usuarios
      * @return \Illuminate\Http\Response
      */
-    public function destroy(usuarios $usuarios)
+    public function destroy(UsuariosUser $usuarios)
     {
         //
     }
