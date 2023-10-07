@@ -16,7 +16,7 @@ class UsuariosController extends Controller
     public function index()
     {
         $usuarios = UsuariosUser::paginate(10);
-        return view('usuarios.read', compact('usuarios'));   
+        return view('Layouts.usuarios.read', compact('usuarios'));
     }
 
     /**
@@ -61,7 +61,7 @@ class UsuariosController extends Controller
     {
 
         $usuarios = UsuariosUser::findOrFail($id);
-        return view('usuarios.update', compact('usuarios'));
+        return view('Layouts.usuarios.update', compact('usuarios'));
     }
 
     /**
