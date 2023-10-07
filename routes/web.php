@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UsuariosController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('Layouts.permisos.permisos');
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
