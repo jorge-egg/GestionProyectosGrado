@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UsuariosUser;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreusuariosRequest;
 use App\Http\Requests\UpdateusuariosRequest;
 
@@ -59,9 +61,9 @@ class UsuariosController extends Controller
      */
     public function edit($id)
     {
-
-        $usuarios = UsuariosUser::findOrFail($id);
-        return view('Layouts.usuarios.update', compact('usuarios'));
+        $roles = Role::all();
+        $user = UsuariosUser::findOrFail($id);
+        return view('Layouts.usuarios.update', compact('user', 'roles'));
     }
 
     /**
@@ -75,6 +77,10 @@ class UsuariosController extends Controller
     {
         $usuarios = UsuariosUser::findOrFail($id);
         $usuarios->update($request->all());
+
+        $user = User::findOrFail($request->usua_users);
+        $user->roles()->sync($request->roles);
+
         return redirect()->route('usuarios.index');
     }
 

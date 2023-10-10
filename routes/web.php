@@ -20,12 +20,12 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('Layouts.permisos.permisos');
+    return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
-//usuarios 
+//usuarios
 Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
 Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
 Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');

@@ -1,0 +1,41 @@
+body{
+    background-color: #ffffff;
+}
+.card-body{
+    background-color: #EEEEEE;
+    color: black;
+    margin: 0 auto;
+    width: 100%;
+}
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+h1{
+    font-size: xx-large;
+    text-align: center;
+}
+.title{
+    size: 14px;
+    font-weight: 700;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: #333333;
+}
+.navbar{
+    position: fixed;
+    background-color: #003E65;
+    width: calc(100% - 77px);
+    max-height: 102px;
+    left: 77px;
+    top: 0;
+}
+
+.container{
+    position: relative;
+    width: calc(100%);
+    right: 0px;
+}

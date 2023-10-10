@@ -1,40 +1,93 @@
+@extends('Layouts.app')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
+@stop
 
+@section('content')
+        <div class="sidebar">
+            <div class="logo_content">
+                <div class="logo">
+                    <i class='bx bxs-universal-access'></i>
+                    <div class="logo_name">
+                        UNIVERSIDAD
+                    </div>
+                </div>
+                <i class='bx bx-menu' id="btn"></i>
+            </div>
+            <ul class="nav_list">
+                <li>
+                    <a href="{{route('usuarios.index')}}">
+                        <i class='bx bx-group'></i>
+                        <span class="links_name">Usuarios</span>
+                    </a>
+                    <span class="tooltip">Usuarios</span>
+                </li>
+                <li>
+                    <a href="">
+                        <i class='bx bxs-user-badge'></i>
+                        <span class="links_name">Facultades</span>
+                    </a>
+                    <span class="tooltip">Facultades</span>
+                </li>
+                <li>
+                    <a href="">
+                        <i class='bx bxs-institution'></i>
+                        <span class="links_name">Instituciones</span>
+                    </a>
+                    <span class="tooltip">Instituciones</span>
+                </li>
 
+                <li>
+                    <a href="">
+                        <i class='bx bx-book'></i>
+                        <span class="links_name">Programas</span>
+                    </a>
+                    <span class="tooltip">Programas</span>
+                </li>
+                <li>
+                    <a href="">
+                        <i class='bx bx-sitemap'></i>
+                        <span class="links_name">Proyecto</span>
+                    </a>
+                    <span class="tooltip">Proyecto</span>
+                </li>
 
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+            </ul>
+            <div id="div_cerrar_seccion" style="text-align: center;">
+                <a id="cerrar_seccion" href=""
+                    onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                    <img src="" alt="">
+                </a>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+                <form id="logout-form" action="" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </div>
+        <div class="contenido">
+            <nav class="navbar">
+                <div class="container">
+                    @guest
+                    @else
+                        <div class="logo_name">
+                            <img src="" alt="" width="70">
+                            <div class="title"></div>
+                        </div>
+                    @endguest
+                </div>
+            </nav>
+        @yield('dashboard_content')
+        </div>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+@stop
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+@section('script')
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    @yield('styles')
-</head>
-<body>
-    <div id="app">
-        <main class="py-4">
-            {{Auth::user()->usuario}}
-            @yield('content')
-        </main>
-    </div>
-    <script>
-        @yield('script')
-    </script>
-</body>
-
-</html>
-
+    btn.onclick = function(){
+        sidebar.classList.toggle('active');
+    }
+@stop
