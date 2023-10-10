@@ -15,7 +15,7 @@ class CreateSedesTable extends Migration
     {
         Schema::create('sedes', function (Blueprint $table) {
             $table->bigIncrements("idSede");
-            $table->string("nombreIdentificador");
+            $table->string("sede");
             $table->string("direccion",null);
             $table->string("email",null);
             $table->string("telefono",null);

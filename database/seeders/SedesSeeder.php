@@ -15,9 +15,9 @@ class SedesSeeder extends Seeder
     public function run()
     {
         DB::table('sedes')->insert([
-            'nombreIdentificador' => 'Cali',
-            'direccion' => 'Carrera 42 # 5A - 79',
-            'email' => 'www.aunarcali.edu.com',
+            'sede' => 'Cali',
+            'direccion' => 'Carrera 42 #5A - 79',
+            'email' => 'recepcion@aunar.edu.co',
             'telefono' => '(602)4021547',
             ]);
     }
