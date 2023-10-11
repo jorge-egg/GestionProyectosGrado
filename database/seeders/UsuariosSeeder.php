@@ -22,5 +22,23 @@ class UsuariosSeeder extends Seeder
             'usua_sede' => 1,
             'usua_users' => 1,
             ]);
+            DB::table('usuarios_users')->insert([
+                'nombre' => 'julio',
+                'numeroDocumento'=> '133978936',
+                'apellido' => 'Rodrigo',
+                'email' => 'julio@gmail.com',
+                'numeroCelular' => '(602)3554656',
+                'usua_sede' => 1,
+                'usua_users' => 2,
+                ]);
+                DB::table('usuarios_users')->insert([
+                    'nombre' => 'Mariana',
+                    'numeroDocumento'=> '748392749',
+                    'apellido' => 'Marulanda',
+                    'email' => 'Mariana@gmail.com',
+                    'numeroCelular' => '(602)3567389',
+                    'usua_sede' => 1,
+                    'usua_users' => 3,
+                    ]);
     }
 }
