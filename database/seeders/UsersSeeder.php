@@ -22,10 +22,10 @@ class UsersSeeder extends Seeder
             User::create([
                 'usuario' => 'julio',
                 'password' => Hash::make('123456'),
-                ])->assignRole('superadministrador');
+                ])->assignRole('administrador');
                 User::create([
                     'usuario' => 'mariana',
                     'password' => Hash::make('123456'),
-                    ])->assignRole('superadministrador');
+                    ])->assignRole('administrador');
     }
 }
