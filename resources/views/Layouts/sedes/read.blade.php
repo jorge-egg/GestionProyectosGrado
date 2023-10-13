@@ -17,7 +17,7 @@
                 <th scope="col"></th>
             </tr>
         </thead>
-        <tbody>
+        
         <tbody>
             @foreach ($sedes as $sede)
                 <tr>

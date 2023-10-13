@@ -27,9 +27,11 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //usuarios
+
 Route::get('/usuarios/index', [UsuariosController::class, 'index'])->name('usuarios.index');
 Route::post('/usuarios/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
 Route::post('/usuarios/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
+Route::post('/Usuarios/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
 
 //sedes
 Route::get('/sedes/index', [SedesController::class, 'index'])->name('sedes.index');
