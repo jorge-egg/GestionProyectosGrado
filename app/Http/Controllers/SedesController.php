@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Sede;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class SedesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('Layouts.permisos.permisos');
+        $sedes = Sede::all();
+        return view('Layouts.sedes.read', compact('sedes'));
     }
 
     /**

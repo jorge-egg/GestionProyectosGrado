@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
 
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,15 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //usuarios
-Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
-Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
-Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
-Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
+
+Route::get('/usuarios/index', [UsuariosController::class, 'index'])->name('usuarios.index');
+Route::post('/usuarios/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
+Route::post('/usuarios/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
+Route::post('/Usuarios/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
+
+//sedes
+Route::get('/sedes/index', [SedesController::class, 'index'])->name('sedes.index');
+Route::post('/sedes/edit/{id}', [SedesController::class, 'edit'])->name('sedes.edit');
+
+//facultades
+Route::post('/facultades/index', [SedesController::class, 'index'])->name('facultades.index');
