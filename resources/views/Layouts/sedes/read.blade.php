@@ -2,7 +2,7 @@
 
 @section('dashboard_content')
 
-<h1>usuarios</h1>
+<h1>Sedes</h1>
     <br>
 <table class="table">
         <thead>
@@ -26,9 +26,21 @@
                     <td>{{ $sede->email }}</td>
                     <td>{{ $sede->direccion }}</td>
                     <td>
-                        <form action="{{ route('facultades.read', $sede->idSede) }}" method="post">
+                        <form action="{{ route('facultades.index', $sede->idSede) }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-outline-success">Facultades</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-success">Programas</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-success">Comites</button>
                         </form>
                     </td>
                     <td>

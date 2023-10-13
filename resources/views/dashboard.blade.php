@@ -17,11 +17,18 @@
             </div>
             <ul class="nav_list">
                 <li>
-                    <a href="{{route('usuarios.index')}}">
+                    <a href="{{ route('usuarios.index') }}">
                         <i class='bx bx-group'></i>
                         <span class="links_name">Usuarios</span>
                     </a>
                     <span class="tooltip">Usuarios</span>
+                </li>
+                <li>
+                    <a href="{{ route('sedes.index') }}">
+                        <i class='bx bxs-institution'></i>
+                        <span class="links_name">Sedes</span>
+                    </a>
+                    <span class="tooltip">Sedes</span>
                 </li>
                 <li>
                     <a href="">
@@ -30,13 +37,7 @@
                     </a>
                     <span class="tooltip">Facultades</span>
                 </li>
-                <li>
-                    <a href="">
-                        <i class='bx bxs-institution'></i>
-                        <span class="links_name">Instituciones</span>
-                    </a>
-                    <span class="tooltip">Instituciones</span>
-                </li>
+
 
                 <li>
                     <a href="">
