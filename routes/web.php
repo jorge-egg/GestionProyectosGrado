@@ -29,3 +29,4 @@ require __DIR__.'/auth.php';
 Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
 Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
 Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
+Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
