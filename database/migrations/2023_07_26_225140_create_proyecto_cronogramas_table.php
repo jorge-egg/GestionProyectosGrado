@@ -27,6 +27,6 @@ class CreateProyectoCronogramasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cronogramas');
+        Schema::dropIfExists('proyecto_cronogramas');
     }
 }

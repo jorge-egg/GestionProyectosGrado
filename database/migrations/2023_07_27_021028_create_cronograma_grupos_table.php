@@ -17,9 +17,7 @@ class CreateCronogramaGruposTable extends Migration
             $table->bigIncrements("idGrupo");
             $table->string("numerogrupo");
             $table->string("estado");
-            $table->unsignedBigInteger("grup_cron");
-
-            $table->foreign("grup_cron")->references("idCronograma")->on("proyecto_cronogramas");
+           
         });
     }
 
@@ -30,6 +28,6 @@ class CreateCronogramaGruposTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grupos');
+        Schema::dropIfExists('cronograma_grupos');
     }
 }

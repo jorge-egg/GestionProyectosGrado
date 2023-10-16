@@ -17,7 +17,7 @@ class CreateSedeFacultadesTable extends Migration
             $table->bigIncrements("idFacultad");
             $table->string("nombre");
             $table->unsignedBigInteger("facu_sede");
-            $table->foreign("facu_sede")->references("idSede")->on("sedes");
+            $table->foreign("facu_sede")->references("idSede")->on("sedes")->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateSedeFacultadesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('facultades');
+        Schema::dropIfExists('sedes_facultades');
     }
 }

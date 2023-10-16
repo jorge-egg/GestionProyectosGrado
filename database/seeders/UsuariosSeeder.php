@@ -21,6 +21,8 @@ class UsuariosSeeder extends Seeder
             'numeroCelular' => '(602)4021547',
             'usua_sede' => 1,
             'usua_users' => 1,
+            "usua_estado"=> 1,
+
             ]);
             DB::table('usuarios_users')->insert([
                 'nombre' => 'julio',
@@ -30,6 +32,7 @@ class UsuariosSeeder extends Seeder
                 'numeroCelular' => '(602)3554656',
                 'usua_sede' => 1,
                 'usua_users' => 2,
+                "usua_estado"=> 1,
                 ]);
                 DB::table('usuarios_users')->insert([
                     'nombre' => 'Mariana',
@@ -39,6 +42,7 @@ class UsuariosSeeder extends Seeder
                     'numeroCelular' => '(602)3567389',
                     'usua_sede' => 1,
                     'usua_users' => 3,
+                    "usua_estado"=> 1,
                     ]);
     }
 }

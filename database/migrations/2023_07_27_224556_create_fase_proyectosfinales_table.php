@@ -17,7 +17,7 @@ class CreateFaseProyectosfinalesTable extends Migration
             $table->bigIncrements("idProyectofinal");
             $table->unsignedBigInteger("prof_fase");
 
-            $table->foreign("prof_fase")->references("idFase")->on("proyecto_fases");
+            $table->foreign("prof_fase")->references("idFase")->on("proyecto_fases")->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateFaseProyectosfinalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('proyectosfinales');
+        Schema::dropIfExists('fase_proyectosfinales');
     }
 }

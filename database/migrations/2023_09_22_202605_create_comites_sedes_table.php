@@ -17,7 +17,7 @@ class CreateComitesSedesTable extends Migration
             $table->bigIncrements("idComite");
             $table->string("nombre");
             $table->unsignedBigInteger("comi_sede");
-            $table->foreign("comi_sede")->references("idSede")->on("sedes");   
+            $table->foreign("comi_sede")->references("idSede")->on("sedes")->onDelete('cascade');   
         });
     }
 
@@ -28,6 +28,6 @@ class CreateComitesSedesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comites');
+        Schema::dropIfExists('comites_sedes');
     }
 }

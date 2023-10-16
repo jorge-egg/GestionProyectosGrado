@@ -17,7 +17,7 @@ class CreateFaseSustentacionesTable extends Migration
             $table->bigIncrements("idSustentacion");
             $table->unsignedBigInteger("Sust_fase");
 
-            $table->foreign("Sust_fase")->references("idFase")->on("proyecto_fases");
+            $table->foreign("Sust_fase")->references("idFase")->on("proyecto_fases")->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateFaseSustentacionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sustentacions');
+        Schema::dropIfExists('fase_sustentaciones');
     }
 }

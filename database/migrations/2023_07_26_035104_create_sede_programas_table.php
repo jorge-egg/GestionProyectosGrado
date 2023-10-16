@@ -19,9 +19,9 @@ class CreateSedeProgramasTable extends Migration
             $table->unsignedBigInteger("prog_facu");
             $table->unsignedBigInteger("prog_sede");
             $table->unsignedBigInteger("prog_usua");
-            $table->foreign("prog_facu")->references("idFacultad")->on("sedes_facultades");
-            $table->foreign("prog_sede")->references("idSede")->on("sedes");
-            $table->foreign("prog_usua")->references("numeroDocumento")->on("usuarios_users");
+            $table->foreign("prog_facu")->references("idFacultad")->on("sedes_facultades")->onDelete('cascade');
+            $table->foreign("prog_sede")->references("idSede")->on("sedes")->onDelete('cascade');
+            $table->foreign("prog_usua")->references("numeroDocumento")->on("usuarios_users")->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateSedeProgramasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('programas');
+        Schema::dropIfExists('sede_programas');
     }
 }

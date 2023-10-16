@@ -18,7 +18,7 @@ class CreateCronogramaFechasTable extends Migration
             $table->string("fecha");
             $table->unsignedBigInteger("fech_grup");
             $table->timestamps();
-            $table->foreign("fech_grup")->references("idGrupo")->on("cronograma_grupos");
+            $table->foreign("fech_grup")->references("idGrupo")->on("cronograma_grupos")->onDelete('cascade');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateCronogramaFechasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fechas');
+        Schema::dropIfExists('fechas_grupos');
     }
 }

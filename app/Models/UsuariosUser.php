@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UsuariosUser
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UsuariosUser extends Model
 {
+	use SoftDeletes;
 	protected $table = 'usuarios_users';
 	protected $primaryKey = 'numeroDocumento';
 	public $timestamps = false;
@@ -43,7 +45,8 @@ class UsuariosUser extends Model
 		'email',
 		'numeroCelular',
 		'usua_sede',
-		'usua_users'
+		'usua_users',
+		'estado'
 	];
 
 	public function sede()

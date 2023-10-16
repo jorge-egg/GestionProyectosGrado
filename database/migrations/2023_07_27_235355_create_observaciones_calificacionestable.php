@@ -22,7 +22,7 @@ class CreateObservacionesCalificacionesTable extends Migration
             $table->string("obj_especificos");  
             $table->unsignedBigInteger("obse_cal");         
             $table->timestamps();
-            $table->foreign("obse_cal")->references("idCalificacion")->on("calificaciones");
+            $table->foreign("obse_cal")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
         });
     }
 
@@ -33,6 +33,6 @@ class CreateObservacionesCalificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('observaciones');
+        Schema::dropIfExists('observaciones_calificaciones');
     }
 }

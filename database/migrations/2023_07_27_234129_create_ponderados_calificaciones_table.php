@@ -18,7 +18,7 @@ class CreatePonderadosCalificacionesTable extends Migration
             $table->string("ponderado_item");
             $table->unsignedBigInteger("pond_cal");            
             
-            $table->foreign("pond_cal")->references("idCalificacion")->on("calificaciones");
+            $table->foreign("pond_cal")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
         });
     }
 
@@ -29,6 +29,6 @@ class CreatePonderadosCalificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ponderados');
+        Schema::dropIfExists('ponderados_calificaciones');
     }
 }
