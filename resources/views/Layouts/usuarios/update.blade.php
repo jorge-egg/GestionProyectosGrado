@@ -1,6 +1,6 @@
 @extends('dashboard')
 
-@section('content')
+@section('dashboard_content')
 
 {!! Form::model($user, ['route' => ['usuarios.update', $user->numeroDocumento], 'method' => 'post']) !!}
 
