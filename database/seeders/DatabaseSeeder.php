@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsuariosSeeder::class);
         $this->call(ComitesSeeder::class);
         $this->call(FacultadesSeeder::class);
-
+        $this->call(GruposSeeder::class);
+        $this->call(CronogramasSeeder::class);
     }
 }

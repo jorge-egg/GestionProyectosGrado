@@ -21,8 +21,11 @@ class CreateUsuariosUsersTable extends Migration
             $table->string("numeroCelular");  
             $table->unsignedBigInteger("usua_sede");
             $table->unsignedBigInteger("usua_users");
-            $table->foreign("usua_sede")->references("idSede")->on("sedes");
-            $table->foreign("usua_users")->references("id")->on("users");       
+            $table->unsignedBigInteger("usua_estado");
+            $table->foreign("usua_sede")->references("idSede")->on("sedes")->onDelete('cascade');
+            $table->foreign("usua_users")->references("id")->on("users")->onDelete('cascade');  
+            $table->foreign("usua_estado")->references("id")->on("users"); 
+            $table->softDeletes();
         });
     }
 
@@ -33,6 +36,6 @@ class CreateUsuariosUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('usuarios_users');
     }
 }

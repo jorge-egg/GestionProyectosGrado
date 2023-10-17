@@ -27,7 +27,7 @@ class CreateFasePropuestasTable extends Migration
             $table->string("fecha_cierre");
             $table->unsignedBigInteger("prop_fase");
             $table->timestamps();
-            $table->foreign("prop_fase")->references("idFase")->on("proyecto_fases");
+            $table->foreign("prop_fase")->references("idFase")->on("proyecto_fases")->onDelete('cascade');
 
         });
     }
@@ -39,6 +39,6 @@ class CreateFasePropuestasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('propuestas');
+        Schema::dropIfExists('fase_propuestas');
     }
 }

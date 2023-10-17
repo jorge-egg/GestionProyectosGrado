@@ -20,8 +20,8 @@ class CreateSedeProyectosGradoTable extends Migration
             $table->unsignedBigInteger("proy_sede");
             $table->unsignedBigInteger("proy_bibl");
 
-            $table->foreign("proy_sede")->references("idSede")->on("sedes");
-            $table->foreign("proy_bibl")->references("idBiblioteca")->on("sede_bibliotecas");
+            $table->foreign("proy_sede")->references("idSede")->on("sedes")->onDelete('cascade');
+            $table->foreign("proy_bibl")->references("idBiblioteca")->on("sede_bibliotecas")->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateSedeProyectosGradoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('proyecto_grados');
+        Schema::dropIfExists('sede_proyectos_grado');
     }
 }

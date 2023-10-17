@@ -16,7 +16,7 @@ class CreateSedeBibliotecasTable extends Migration
         Schema::create('sede_bibliotecas', function (Blueprint $table) {
             $table->bigIncrements("idBiblioteca");
             $table->unsignedBigInteger("bibl_sede");
-            $table->foreign("bibl_sede")->references("idSede")->on("sedes");
+            $table->foreign("bibl_sede")->references("idSede")->on("sedes")->onDelete('cascade');
 
         });
     }
@@ -28,6 +28,6 @@ class CreateSedeBibliotecasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bibliotecas');
+        Schema::dropIfExists('sede_bibliotecas');
     }
 }

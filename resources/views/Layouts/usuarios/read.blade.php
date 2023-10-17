@@ -3,20 +3,18 @@
 @section('dashboard_content')
 
 <h1>usuarios</h1>
-<br>
-<div class='col-xl-12'>
-    <form action="{{route('usuarios.index')}}" method="get">
-        <div class='form-row'>
-            <div class='col-sm-4 my-1'>
-                <input type='text' class='form-control' name='texto' value='{{$texto}}'>
-            </div>
-            <div class='col-auto my-1'> <input type='submit' class='btn btn-outline-info' value='buscar'> </div>
-        </div>
-    </form>
+<br> 
+@if(session()->has('success'))
+<div class= 'alert alert-success'>
+{{session()->get('success')}}
 </div>
-<table class="table">
-    <thead>
-        <tr>
+@endif
+<div class='col col-md-6 text-right'>
+<a href="{{route('usuarios.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-outline-warning'>Consultar usuarios eliminados</a>
+</div>
+<table class="table table-hover" style="width:100%" id='usuario'> 
+    <thead> 
+        <tr> 
             <th scope="col">Documento</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
@@ -24,15 +22,10 @@
             <th scope="col">Telefono</th>
             <th scope="col"></th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-        @if(count($usuarios)<=0)
-            <tr>
-                <td colspan='6'>No hay resultados</td>
-            </tr>
-        @else
-
                 @foreach ($usuarios as $usuario)
                 <tr>
                     <th>{{ $usuario->numeroDocumento }}</th>
@@ -40,18 +33,19 @@
                     <td>{{ $usuario->apellido }}</td>
                     <td>{{ $usuario->email }}</td>
                     <td>{{ $usuario->numeroCelular}}</td>
-                    @foreach ($users as $user)
+                    
                         <td>
                             <form action="{{ route('usuarios.cambioEstado', $usuario->numeroDocumento) }}" method="post">
                                 @csrf
-                                @if ($user -> estado == 1)
+                                
+                                @if ($usuario -> estado == 1)
                                     <button type="submit" class="btn btn-outline-success"><i class='bx
                                     bxs-user-x'></i>Deshabilitar</button> @else <button type="submit"
                                     class="btn btn-danger"><i class='bx bxs-user-check'>habilitar</i></button>
                                 @endif
-                            </form>
+                            </form> 
                         </td>
-                    @endforeach
+                  
                     <td>
                         <form action="{{ route('usuarios.edit', $usuario->numeroDocumento) }}" method="post">
                             @csrf
@@ -59,10 +53,22 @@
                         </form>
                     </td>
                 
+                    <td>
+                       @if(request()->has('view_deleted'))
+                       <a href="{{route('usuarios.restore', $usuario->numeroDocumento)}}" class='btn btn-outline-success'>Restablecer</a>
+                       @else    
+                        <form action="{{ route('usuarios.destroy', $usuario->numeroDocumento) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                        </form>
+                        @endif
+                    </td>
                 @endforeach
-
-        @endif
     </tbody>
 </table>
-{{$usuarios->links()}}
+<script>
+    let table = new DataTable('#usuario');
+</script>
+
 @stop
+

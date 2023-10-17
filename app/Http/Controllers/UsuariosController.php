@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UsuariosUser;
 use Doctrine\DBAL\Schema\Table;
+use Illuminate\Routing\Matching\HostValidator;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreusuariosRequest;
 use App\Http\Requests\UpdateusuariosRequest;
@@ -19,16 +20,12 @@ class UsuariosController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::get('estado');
-        $texto=trim($request->get('texto'));
-        $usuarios =DB::table('usuarios_users')
-        ->select('*')
-        ->where('numeroDocumento','like','%'.$texto.'%')
-        ->orWhere('nombre','like','%'.$texto.'%')
-        ->orderBy('nombre','asc')
-        ->paginate(10);
-
-        return view('Layouts.usuarios.read', compact('usuarios','texto', 'users'));
+        $usuarios = UsuariosUser::paginate(10);
+        if($request->has('view_deleted')){
+            $usuarios=UsuariosUser::onlyTrashed()->get();
+        }
+   
+        return view('Layouts.usuarios.read', compact('usuarios'));
     }
 
     /**
@@ -100,9 +97,21 @@ class UsuariosController extends Controller
      * @param  \App\Models\UsuariosUser  $usuarios
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UsuariosUser $usuarios)
+    public function restore($id)
     {
-        //
+        UsuariosUser::withTrashed()->find($id)->restore();
+        return redirect()->route('usuarios.index')->with('success','se restablecio el registro');
+    }
+    public function forcedelete($id)
+    {
+        $usuarios=UsuariosUser::onlyTrashed()->find($id);
+        $usuarios->forcedelete();
+        return redirect()->route('usuarios.index');
+    }
+    public function destroy($id)
+    {
+    UsuariosUser::find($id)->delete();
+    return back()->with('success','se elimino el registro');
     }
     public function cambioEstado($id)
     {

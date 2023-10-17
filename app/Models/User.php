@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -27,11 +28,13 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @package App\Models
  */
+
 class User extends Model implements AuthenticatableContract
 {
     use Authenticatable;
     use HasRoles;
-
+    use SoftDeletes;
+	
 	protected $table = 'users';
 	protected $primaryKey = 'id';
 
