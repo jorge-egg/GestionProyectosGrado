@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CronogramaController;
+use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
 
@@ -39,5 +41,9 @@ Route::get('/sedes/index', [SedesController::class, 'index'])->name('sedes.index
 Route::post('/sedes/edit/{id}', [SedesController::class, 'edit'])->name('sedes.edit');
 
 //facultades
-Route::post('/facultades/index', [SedesController::class, 'index'])->name('facultades.index');
+Route::get('/facultades/index/{id}', [FacultadesController::class, 'index'])->name('facultades.index');
+Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->name('facultades.store');
+
+//cronograma
+Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 

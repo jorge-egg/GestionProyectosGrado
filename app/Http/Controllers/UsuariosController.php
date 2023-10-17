@@ -20,7 +20,6 @@ class UsuariosController extends Controller
      */
     public function index(Request $request)
     {
-       
         $usuarios = UsuariosUser::paginate(10);
         if($request->has('view_deleted')){
             $usuarios=UsuariosUser::onlyTrashed()->get();
@@ -124,7 +123,7 @@ class UsuariosController extends Controller
             $user->estado = true;
             $user->save();
         }
-        
+
         return redirect()->route('usuarios.index');
     }
 }

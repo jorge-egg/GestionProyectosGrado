@@ -52,7 +52,7 @@
                             <button type="submit" class="btn btn-outline-success">Editar</button>
                         </form>
                     </td>
-                                      
+                
                     <td>
                        @if(request()->has('view_deleted'))
                        <a href="{{route('usuarios.restore', $usuario->numeroDocumento)}}" class='btn btn-outline-success'>Restablecer</a>
@@ -71,3 +71,4 @@
 </script>
 
 @stop
+

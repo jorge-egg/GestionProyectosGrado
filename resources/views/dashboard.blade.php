@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src='//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'></script>
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
+    @yield('estilos_adicionales')
 @stop
 
 @section('content')
@@ -33,11 +34,11 @@
                     <span class="tooltip">Sedes</span>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ route('cronograma.index') }}">
                         <i class='bx bxs-user-badge'></i>
-                        <span class="links_name">Facultades</span>
+                        <span class="links_name">Cronograma</span>
                     </a>
-                    <span class="tooltip">Facultades</span>
+                    <span class="tooltip">Cronograma</span>
                 </li>
 
 
