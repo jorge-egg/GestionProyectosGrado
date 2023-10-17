@@ -1,0 +1,15 @@
+td.campo-habilitado{
+    border-radius: 15px;
+    background-color: rgb(0, 62, 101, 0.5);
+    padding: 15px;
+
+}
+td.campo-deshabilitado{
+    padding: 15px;
+    border-radius: 15px;
+    background-color: rgb(196, 10, 0, 0.5);
+
+}
+
+
+

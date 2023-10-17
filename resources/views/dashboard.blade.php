@@ -2,6 +2,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
+    @yield('estilos_adicionales')
 @stop
 
 @section('content')
@@ -17,26 +18,27 @@
             </div>
             <ul class="nav_list">
                 <li>
-                    <a href="{{route('usuarios.index')}}">
+                    <a href="{{ route('usuarios.index') }}">
                         <i class='bx bx-group'></i>
                         <span class="links_name">Usuarios</span>
                     </a>
                     <span class="tooltip">Usuarios</span>
                 </li>
                 <li>
-                    <a href="">
-                        <i class='bx bxs-user-badge'></i>
-                        <span class="links_name">Facultades</span>
+                    <a href="{{ route('sedes.index') }}">
+                        <i class='bx bxs-institution'></i>
+                        <span class="links_name">Sedes</span>
                     </a>
-                    <span class="tooltip">Facultades</span>
+                    <span class="tooltip">Sedes</span>
                 </li>
                 <li>
-                    <a href="">
-                        <i class='bx bxs-institution'></i>
-                        <span class="links_name">Instituciones</span>
+                    <a href="{{ route('cronograma.index') }}">
+                        <i class='bx bxs-user-badge'></i>
+                        <span class="links_name">Cronograma</span>
                     </a>
-                    <span class="tooltip">Instituciones</span>
+                    <span class="tooltip">Cronograma</span>
                 </li>
+
 
                 <li>
                     <a href="">

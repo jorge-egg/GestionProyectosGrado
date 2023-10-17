@@ -48,7 +48,8 @@ class User extends Model implements AuthenticatableContract
         'usuario',
 		'email_verified_at',
 		'password',
-		'remember_token'
+		'remember_token',
+		'estado'
 	];
 
 	public function usuarios_users()

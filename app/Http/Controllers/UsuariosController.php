@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UsuariosUser;
+use Doctrine\DBAL\Schema\Table;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreusuariosRequest;
 use App\Http\Requests\UpdateusuariosRequest;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 class UsuariosController extends Controller
 {
     /**
@@ -15,10 +17,18 @@ class UsuariosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = UsuariosUser::paginate(10);
-        return view('Layouts.usuarios.read', compact('usuarios'));
+        $users = User::get('estado');
+        $texto=trim($request->get('texto'));
+        $usuarios =DB::table('usuarios_users')
+        ->select('*')
+        ->where('numeroDocumento','like','%'.$texto.'%')
+        ->orWhere('nombre','like','%'.$texto.'%')
+        ->orderBy('nombre','asc')
+        ->paginate(10);
+
+        return view('Layouts.usuarios.read', compact('usuarios','texto', 'users'));
     }
 
     /**
@@ -93,5 +103,18 @@ class UsuariosController extends Controller
     public function destroy(UsuariosUser $usuarios)
     {
         //
+    }
+    public function cambioEstado($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->estado) {
+            $user->estado = false;
+            $user->save();
+        } else {
+            $user->estado = true;
+            $user->save();
+        }
+
+        return redirect()->route('usuarios.index');
     }
 }
