@@ -22,12 +22,13 @@ class UsuariosController extends Controller
         $users = User::get('estado');
         $texto=trim($request->get('texto'));
         $usuarios =DB::table('usuarios_users')
-        ->select('numeroDocumento',"nombre","apellido","email","numeroCelular","usua_sede","usua_users")
+        ->select('*')
         ->where('numeroDocumento','like','%'.$texto.'%')
         ->orWhere('nombre','like','%'.$texto.'%')
         ->orderBy('nombre','asc')
         ->paginate(10);
-        return view('Layouts.usuarios.read', compact('usuarios','texto','users'));
+
+        return view('Layouts.usuarios.read', compact('usuarios','texto', 'users'));
     }
 
     /**
@@ -113,7 +114,7 @@ class UsuariosController extends Controller
             $user->estado = true;
             $user->save();
         }
-        
+
         return redirect()->route('usuarios.index');
     }
 }

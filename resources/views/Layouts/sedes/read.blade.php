@@ -17,7 +17,7 @@
                 <th scope="col"></th>
             </tr>
         </thead>
-        
+
         <tbody>
             @foreach ($sedes as $sede)
                 <tr>
@@ -26,8 +26,9 @@
                     <td>{{ $sede->email }}</td>
                     <td>{{ $sede->direccion }}</td>
                     <td>
-                        <form action="{{ route('facultades.index', $sede->idSede) }}" method="post">
-                            @csrf
+                        <form action="{{ route('facultades.index', $sede->idSede) }}" method="get">
+
+                            <input type="hidden" class="form-control" name="idSede" value="{{$sede->idSede}}">
                             <button type="submit" class="btn btn-outline-success">Facultades</button>
                         </form>
                     </td>
@@ -43,12 +44,14 @@
                             <button type="submit" class="btn btn-outline-success">Comites</button>
                         </form>
                     </td>
+
                     <td>
                         <form action="{{ route('sedes.edit', $sede->idSede) }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-outline-success">Editar</button>
                         </form>
                     </td>
+
                 </tr>
             @endforeach
         </tbody>

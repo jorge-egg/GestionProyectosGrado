@@ -3,7 +3,7 @@
 @section('dashboard_content')
 
 <h1>usuarios</h1>
-<br> 
+<br>
 <div class='col-xl-12'>
     <form action="{{route('usuarios.index')}}" method="get">
         <div class='form-row'>
@@ -12,11 +12,11 @@
             </div>
             <div class='col-auto my-1'> <input type='submit' class='btn btn-outline-info' value='buscar'> </div>
         </div>
-    </form> 
-</div> 
-<table class="table"> 
-    <thead> 
-        <tr> 
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
             <th scope="col">Documento</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
@@ -32,8 +32,9 @@
                 <td colspan='6'>No hay resultados</td>
             </tr>
         @else
-            <tr>
+
                 @foreach ($usuarios as $usuario)
+                <tr>
                     <th>{{ $usuario->numeroDocumento }}</th>
                     <td>{{ $usuario->nombre }}</td>
                     <td>{{ $usuario->apellido }}</td>
@@ -57,8 +58,9 @@
                             <button type="submit" class="btn btn-outline-success">Editar</button>
                         </form>
                     </td>
+                
                 @endforeach
-            </tr>
+
         @endif
     </tbody>
 </table>

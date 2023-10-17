@@ -2,6 +2,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
+    @yield('estilos_adicionales')
 @stop
 
 @section('content')
@@ -31,11 +32,11 @@
                     <span class="tooltip">Sedes</span>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ route('cronograma.index') }}">
                         <i class='bx bxs-user-badge'></i>
-                        <span class="links_name">Facultades</span>
+                        <span class="links_name">Cronograma</span>
                     </a>
-                    <span class="tooltip">Facultades</span>
+                    <span class="tooltip">Cronograma</span>
                 </li>
 
 
