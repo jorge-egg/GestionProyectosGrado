@@ -17,10 +17,10 @@ class CronogramasSeeder extends Seeder
             'fecha' => '01/06/2023',
             'fech_grup'=>1,
             ]);
-            DB::table('fechas_grupos')->insert([
-                'fecha' => '01/06/2023',
-                'fech_grup'=>2,
-                ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha' => '01/06/2023',
+            'fech_grup'=>1,
+            ]);
                 DB::table('fechas_grupos')->insert([
                     'fecha' => '01/06/2023',
                     'fech_grup'=>3,
