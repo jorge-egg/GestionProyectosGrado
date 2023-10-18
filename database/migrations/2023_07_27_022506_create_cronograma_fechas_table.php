@@ -15,7 +15,8 @@ class CreateCronogramaFechasTable extends Migration
     {
         Schema::create('fechas_grupos', function (Blueprint $table) {
             $table->bigIncrements("idFecha");
-            $table->string("fecha");
+            $table->string("fecha_apertura");
+            $table->string("fecha_cierre");
             $table->unsignedBigInteger("fech_grup");
             $table->timestamps();
             $table->foreign("fech_grup")->references("idGrupo")->on("cronograma_grupos")->onDelete('cascade');

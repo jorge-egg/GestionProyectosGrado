@@ -14,20 +14,85 @@ class CronogramasSeeder extends Seeder
     public function run()
     {
         DB::table('fechas_grupos')->insert([
-            'fecha' => '01/06/2023',
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
             'fech_grup'=>1,
             ]);
         DB::table('fechas_grupos')->insert([
-            'fecha' => '01/06/2023',
+            'fecha_apertura' => '16/10/2023',
+            'fecha_cierre' => '18/10/2023',
             'fech_grup'=>1,
             ]);
-                DB::table('fechas_grupos')->insert([
-                    'fecha' => '01/06/2023',
-                    'fech_grup'=>3,
-                    ]);
-                    DB::table('fechas_grupos')->insert([
-                        'fecha' => '01/06/2023',
-                        'fech_grup'=>4,
-                        ]);
-    }
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '02/10/2023',
+            'fecha_cierre' => '06/10/2023',
+            'fech_grup'=>1,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>1,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>2,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>2,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>2,
+             ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+             'fech_grup'=>2,
+             ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>3,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>3,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>3,
+             ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>3,
+             ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>4,
+                ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>4,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>4,
+            ]);
+        DB::table('fechas_grupos')->insert([
+            'fecha_apertura' => '11/09/2023',
+            'fecha_cierre' => '15/09/2023',
+            'fech_grup'=>4,
+            ]);
+}
+
 }
