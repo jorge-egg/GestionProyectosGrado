@@ -23,8 +23,7 @@ class CreateUsuariosUsersTable extends Migration
             $table->unsignedBigInteger("usua_users");
             $table->unsignedBigInteger("usua_estado");
             $table->foreign("usua_sede")->references("idSede")->on("sedes")->onDelete('cascade');
-            $table->foreign("usua_users")->references("id")->on("users")->onDelete('cascade');  
-            $table->foreign("usua_estado")->references("id")->on("users"); 
+            $table->foreign("usua_users")->references("id")->on("users")->onDelete('cascade');   
             $table->softDeletes();
         });
     }

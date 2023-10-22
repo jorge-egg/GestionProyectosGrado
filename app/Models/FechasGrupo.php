@@ -34,6 +34,7 @@ class FechasGrupo extends Model
 	protected $fillable = [
 		'fecha',
 		'fech_grup'
+		
 	];
 
 	public function cronograma_grupo()
