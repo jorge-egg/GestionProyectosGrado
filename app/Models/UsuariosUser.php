@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $numeroCelular
  * @property int $usua_sede
  * @property int $usua_users
+ * @property int $usua_estado
+ * @property string|null $deleted_at
  * 
  * @property Sede $sede
  * @property User $user
@@ -36,7 +38,8 @@ class UsuariosUser extends Model
 
 	protected $casts = [
 		'usua_sede' => 'int',
-		'usua_users' => 'int'
+		'usua_users' => 'int',
+		'usua_estado' => 'int'
 	];
 
 	protected $fillable = [
@@ -46,7 +49,7 @@ class UsuariosUser extends Model
 		'numeroCelular',
 		'usua_sede',
 		'usua_users',
-		'estado'
+		'usua_estado'
 	];
 
 	public function sede()
@@ -56,7 +59,7 @@ class UsuariosUser extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class, 'usua_users');
+		return $this->belongsTo(User::class, 'usua_estado');
 	}
 
 	public function sede_programas()
