@@ -19,7 +19,11 @@ class CreateCronogramaFechasTable extends Migration
             $table->string("fecha_cierre");
             $table->unsignedBigInteger("fech_grup");
 
+
+
+            $table->unsignedBigInteger("fech_cron");
             $table->timestamps();
+            $table->foreign("fech_grup")->references("idCronograma")->on("proyecto_cronogramas")->onDelete('cascade');
             $table->foreign("fech_grup")->references("idGrupo")->on("cronograma_grupos")->onDelete('cascade');
             
         });

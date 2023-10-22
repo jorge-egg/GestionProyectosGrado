@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * Class FechasGrupo
  * 
  * @property int $idFecha
- * @property string $fecha
+ * @property string $fecha_apertura
+ * @property string $fecha_cierre
  * @property int $fech_grup
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -32,7 +33,8 @@ class FechasGrupo extends Model
 	];
 
 	protected $fillable = [
-		'fecha',
+		'fecha_apertura',
+		'fecha_cierre',
 		'fech_grup'
 		
 	];
