@@ -18,7 +18,6 @@ class CreateProyectoFasesTable extends Migration
             $table->string("estado");
             $table->unsignedBigInteger("fase_proy");
             $table->unsignedBigInteger("fase_cron");
-
             $table->foreign("fase_proy")->references("idProyecto")->on("sede_proyectos_grado")->onDelete('cascade');
             $table->foreign("fase_cron")->references("idCronograma")->on("proyecto_cronogramas")->onDelete('cascade');
 
