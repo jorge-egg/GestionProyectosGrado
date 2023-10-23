@@ -11,13 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SedesFacultade
- *
+ * 
  * @property int $idFacultad
- * @property string $ingenieria
- * @property string $economia
- * @property string $artes
+ * @property string $nombre
  * @property int $facu_sede
- *
+ * 
  * @property Sede $sede
  * @property Collection|SedePrograma[] $sede_programas
  *
@@ -29,9 +27,13 @@ class SedesFacultade extends Model
 	protected $primaryKey = 'idFacultad';
 	public $timestamps = false;
 
+	protected $casts = [
+		'facu_sede' => 'int'
+	];
+
 	protected $fillable = [
 		'nombre',
-        'facu_sede',
+		'facu_sede'
 	];
 
 	public function sede()
