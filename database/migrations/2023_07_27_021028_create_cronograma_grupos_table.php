@@ -17,7 +17,8 @@ class CreateCronogramaGruposTable extends Migration
             $table->bigIncrements("idGrupo");
             $table->string("numerogrupo");
             $table->string("estado");
-           
+            $table->unsignedBigInteger("cron_fech");
+            $table->foreign("cron_fech")->references("idCronograma")->on("proyecto_cronogramas")->onDelete('cascade');
         });
     }
 
