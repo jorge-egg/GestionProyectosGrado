@@ -47,6 +47,6 @@ Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->n
 
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
-Route::post('/facultades/index', [SedesController::class, 'index'])->name('facultades.index');
+Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
 
 
