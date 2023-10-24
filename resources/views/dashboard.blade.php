@@ -41,11 +41,11 @@
 
 
                 <li>
-                    <a href="">
+                    <a href="{{ route('proyecto.index') }}">
                         <i class='bx bx-book'></i>
-                        <span class="links_name">Programas</span>
+                        <span class="links_name">Proyectos</span>
                     </a>
-                    <span class="tooltip">Programas</span>
+                    <span class="tooltip">Proyectos</span>
                 </li>
                 <li>
                     <a href="">

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FechasGrupo;
-use Illuminate\Http\Request;
-use App\Models\CronogramaGrupo;
-use App\Models\Sede;
-use App\Models\SedeProyectosGrado;
+use Carbon\Carbon;
+use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Models\SedeProyectosGrado;
 
-class CronogramaController extends Controller
+class ProyectosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,24 +17,7 @@ class CronogramaController extends Controller
      */
     public function index()
     {
-        /*$userId  = auth()->id();
-        $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
-        $sede    = Sede::findOrFail($usuario->usua_sede);
-
-        $cronograma = SedeProyectosGrado::join('proyecto_fases as fase_proy', 'fase_proy.fase_proy', 'sede_proyectos_grado.idProyecto')
-        ->join('proyecto_fases', 'proyecto_fases.fase_cron', 'proyecto_cronogramas.idCronograma')
-        ->join('sedes', 'sedes.idSede', 'sede_proyectos_grado.proy_sede')->where('idSede', $sede->idSede)->get();
-        dd($cronograma);*/
-
-        //obtener el id de los ultimos 4 grupos creados
-        $ultimosId = CronogramaGrupo::latest('idGrupo')->take(4)->get('idGrupo');
-        //se obtiene la informacion de cada grupo individualmente
-        $grupo1 = FechasGrupo::all()->where('fech_grup', $ultimosId[0]->idGrupo);
-        $grupo2 = FechasGrupo::all()->where('fech_grup', $ultimosId[1]->idGrupo);
-        $grupo3 = FechasGrupo::all()->where('fech_grup', $ultimosId[2]->idGrupo);
-        $grupo4 = FechasGrupo::all()->where('fech_grup', $ultimosId[3]->idGrupo);
-
-        return view('Layouts.cronograma.read', compact('grupo1', 'grupo2', 'grupo3', 'grupo4'));
+        return view('Layouts.proyecto.index');
     }
 
     /**
@@ -46,7 +27,15 @@ class CronogramaController extends Controller
      */
     public function create()
     {
-        //
+        $usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $programa    = SedePrograma::where('prog_usua', $usuario->numeroDocumento)->get('programa');
+        $consecutivo = 1;
+        $año         = Carbon::now()->format('Y');
+        dd($año);
+        /*SedeProyectosGrado::create([
+            'estado' => 'En proceso',
+            'codigoproyecto' => $programa.$consecutivo.$año,
+        ]);*/
     }
 
     /**

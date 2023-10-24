@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
+use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
 
@@ -45,6 +46,9 @@ Route::post('/sedes/edit/{id}', [SedesController::class, 'edit'])->name('sedes.e
 Route::get('/facultades/index/{id}', [FacultadesController::class, 'index'])->name('facultades.index');
 Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->name('facultades.store');
 
+//proyectos
+Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
+Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('proyecto.create');
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
