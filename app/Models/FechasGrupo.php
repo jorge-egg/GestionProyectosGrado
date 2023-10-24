@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FechasGrupo
- * 
+ *
  * @property int $idFecha
  * @property string $fecha_apertura
  * @property string $fecha_cierre
  * @property int $fech_grup
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property CronogramaGrupo $cronograma_grupo
  *
  * @package App\Models
@@ -34,9 +34,8 @@ class FechasGrupo extends Model
 
 	protected $fillable = [
 		'fecha_apertura',
-		'fecha_cierre',
-		'fech_grup'
-		
+        'fecha_cierre',
+		'fech_grup',
 	];
 
 	public function cronograma_grupo()
