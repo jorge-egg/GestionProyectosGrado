@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sede;
 use Illuminate\Http\Request;
 
-class SedesController extends Controller
+class FasePropuestasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class SedesController extends Controller
      */
     public function index()
     {
-        $sedes = Sede::all();
-        return view('Layouts.sedes.read', compact('sedes'));
+        //
     }
 
     /**
@@ -25,7 +23,7 @@ class SedesController extends Controller
      */
     public function create()
     {
-     //
+        //
     }
 
     /**

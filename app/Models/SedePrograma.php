@@ -37,6 +37,7 @@ class SedePrograma extends Model
 
 	protected $fillable = [
 		'programa',
+		'siglas',
 		'prog_facu',
 		'prog_sede',
 		'prog_usua'

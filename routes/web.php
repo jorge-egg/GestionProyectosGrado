@@ -49,4 +49,4 @@ Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->n
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::post('/facultades/index', [SedesController::class, 'index'])->name('facultades.index');
 
-
+//propuesta 
