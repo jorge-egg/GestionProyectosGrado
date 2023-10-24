@@ -53,4 +53,4 @@ Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('p
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
 
-
+//propuesta 

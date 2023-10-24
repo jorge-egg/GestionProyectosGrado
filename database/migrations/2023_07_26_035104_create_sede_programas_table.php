@@ -16,6 +16,7 @@ class CreateSedeProgramasTable extends Migration
         Schema::create('sede_programas', function (Blueprint $table) {
             $table->bigIncrements("idPrograma");
             $table->string("programa");
+            $table->string("siglas");
             $table->unsignedBigInteger("prog_facu");
             $table->unsignedBigInteger("prog_sede");
             $table->unsignedBigInteger("prog_usua");
