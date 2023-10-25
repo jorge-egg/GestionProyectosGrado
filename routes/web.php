@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
+use App\Http\Controllers\FasePropuestasController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
@@ -54,3 +55,7 @@ Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('c
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
 
 //propuesta 
+Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
+Route::get('/propuestas/create', [FasePropuestasController::class, 'create'])->name('propuesta.create');
+Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
+Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
