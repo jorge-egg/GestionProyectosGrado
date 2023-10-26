@@ -16,7 +16,7 @@
 <a href="{{route('usuarios.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-outline-warning'>Consultar usuarios eliminados</a>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='usuario'> 
-    <thead class='bg-primary text-white'> 
+    <thead class='bg-info text-white'> 
         <tr> 
             <th scope="col">Documento</th>
             <th scope="col">Nombre</th>

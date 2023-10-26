@@ -7,32 +7,28 @@
         <p class="card-text">
         <form action="{{route('propuesta.store')}}" method='POST'>
         @csrf
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" name="titulo" required></textarea>
-                <label for="">Titulo</label>
+        <div><label for="">titulo</label>
+            <input type="text" name='Titulo' class='form-control' required>
             </div>
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" name="linea_invs" required></textarea>
-                <label for="">Linea de investigacion</label>
+            <div><label for="">Linea de investigacion</label>
+            <input type="text" name='linea_invs' class='form-control' required>
             </div>
+            <br>
             <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" name="desc_problema" required></textarea>
                 <label for="">Descripción del problema</label>
             </div>
+            <br>
             <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" name="obj_general" required></textarea>
                 <label for="">Objetivo general</label>
             </div>
+            <br>
             <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" name="obj_especificos" required></textarea>
                 <label for="">Objetivos específicos</label>
             </div>
-            <div><label for="">Fecha de subida</label>
-            <input type="date" name='frecha_subida' class='form-control' required>
-            </div>
-            <div><label for="">Fecha de actualizacion</label>
-            <input type="date" name='frecha_actu' class='form-control' required>
-            </div>
+            <br>
             <div><label for="">estado</label>
             <input type="text" name='estado' class='form-control' required>
             </div>

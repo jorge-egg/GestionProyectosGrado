@@ -19,8 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $desc_problema
  * @property string $obj_general
  * @property string $obj_especificos
- * @property string $frecha_subida
- * @property string $frecha_actu
  * @property string $estado
  * @property string $fecha_cierre
  * @property int $prop_fase
@@ -47,8 +45,6 @@ class FasePropuesta extends Model
 		'desc_problema',
 		'obj_general',
 		'obj_especificos',
-		'frecha_subida',
-		'frecha_actu',
 		'estado',
 		'fecha_cierre',
 		'prop_fase'

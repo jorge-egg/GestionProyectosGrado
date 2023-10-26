@@ -20,8 +20,6 @@ class CreateFasePropuestasTable extends Migration
             $table->text("desc_problema");
             $table->text("obj_general");
             $table->text("obj_especificos");    
-            $table->string("frecha_subida");
-            $table->string("frecha_actu");
             $table->string("estado");
             $table->string("fecha_cierre");
             $table->unsignedBigInteger("prop_fase");

@@ -17,8 +17,8 @@ class CreateConsecutvoTable extends Migration
             $table->id('IdConsecutivo');
             $table->string('consecutivo');
             $table->string('año');
-            $table->unsignedBigInteger("conc_proy");
-            $table->foreign("conc_proy")->references("idProyecto")->on("sede_proyectos_grado")->onDelete('cascade');
+            $table->unsignedBigInteger("conc_sede");
+            $table->foreign("conc_sede")->references("idSede")->on("sedes")->onDelete('cascade');
             $table->timestamps();
         });
     }
