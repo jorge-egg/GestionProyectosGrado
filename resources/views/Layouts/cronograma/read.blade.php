@@ -28,38 +28,27 @@
               </tr>
             </thead>
             <tbody class="columnas">
-              <tr class="columna">
-                <th>Grupo 1</th>
-                @foreach ($grupo1 as $fecha)
-                    <td>{{$fecha->fecha_apertura}}
-                    <br>
-                    {{$fecha->fecha_cierre}}</td>
+
+                @foreach ($array as $key => $grupos)
+                <tr class="columna">
+                    <td>{{$key}}</td>
+                    @foreach ($grupos as $grupo)
+                        <td>{{$grupo->fecha_apertura}}
+                            <br>
+                        {{$grupo->fecha_cierre}}</td>
+                        <form action="{{ route('grupo.edit')}}" method="post"><!--se coloco el inicio del from dentro de la etiqueta td para que lograra capturar el id del grupo-->
+                            @csrf
+                            <input type="hidden" name="idGrupo" value="{{ $grupo->fech_grup }}">
+                    @endforeach
+                    <td>
+                            <button class="btn btn-warning">editar</button>
+                        </form>
+                    </td>
+                </tr>
                 @endforeach
-              </tr>
-              <tr>
-                <th>Grupo 2</th>
-                @foreach ($grupo2 as $fecha)
-                    <td>{{$fecha->fecha_apertura}}
-                    <br>
-                    {{$fecha->fecha_cierre}}</td>
-                @endforeach
-              </tr>
-              <tr>
-                <th>Grupo 3</th>
-                @foreach ($grupo3 as $fecha)
-                    <td>{{$fecha->fecha_apertura}}
-                    <br>
-                    {{$fecha->fecha_cierre}}</td>
-                @endforeach
-              </tr>
-              <tr>
-                <th>Grupo 4</th>
-                @foreach ($grupo4 as $fecha)
-                    <td>{{$fecha->fecha_apertura}}
-                    <br>
-                    {{$fecha->fecha_cierre}}</td>
-                @endforeach
-              </tr>
+
+
+
             </tbody>
           </table>
     </div>

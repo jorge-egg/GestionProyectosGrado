@@ -5,7 +5,7 @@ use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
-
+use App\Models\CronogramaGrupo;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,5 +52,7 @@ Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('p
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
+Route::post('/grupos/edit', [CronogramaController::class, 'edit'])->name('grupo.edit');
 
-//propuesta 
+
+//propuesta

@@ -19,24 +19,31 @@ class CronogramaController extends Controller
      */
     public function index()
     {
-        /*$userId  = auth()->id();
+        $userId  = auth()->id();
         $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
         $sede    = Sede::findOrFail($usuario->usua_sede);
 
-        $cronograma = SedeProyectosGrado::join('proyecto_fases as fase_proy', 'fase_proy.fase_proy', 'sede_proyectos_grado.idProyecto')
-        ->join('proyecto_fases', 'proyecto_fases.fase_cron', 'proyecto_cronogramas.idCronograma')
-        ->join('sedes', 'sedes.idSede', 'sede_proyectos_grado.proy_sede')->where('idSede', $sede->idSede)->get();
-        dd($cronograma);*/
+        $grupos = Sede::join('sede_proyectos_grado as proyecto_grado', 'proyecto_grado.proy_sede', 'sedes.idSede')
+        ->join('proyecto_fases', 'proyecto_fases.fase_proy', 'proyecto_grado.idProyecto')
+        ->join('proyecto_cronogramas', 'proyecto_cronogramas.idCronograma', 'proyecto_fases.fase_cron')
+        ->join('cronograma_grupos', 'cronograma_grupos.cron_fech', 'proyecto_cronogramas.idCronograma')
+        ->where('sedes.idSede', $sede->idSede)
+        ->orderBy('cronograma_grupos.idGrupo', 'desc')
+        ->take(4)
+        ->select('cronograma_grupos.*')
+        ->get();
 
-        //obtener el id de los ultimos 4 grupos creados
-        $ultimosId = CronogramaGrupo::latest('idGrupo')->take(4)->get('idGrupo');
-        //se obtiene la informacion de cada grupo individualmente
-        $grupo1 = FechasGrupo::all()->where('fech_grup', $ultimosId[0]->idGrupo);
-        $grupo2 = FechasGrupo::all()->where('fech_grup', $ultimosId[1]->idGrupo);
-        $grupo3 = FechasGrupo::all()->where('fech_grup', $ultimosId[2]->idGrupo);
-        $grupo4 = FechasGrupo::all()->where('fech_grup', $ultimosId[3]->idGrupo);
+        $array = [];
+        foreach($grupos as $key => $value){
+            $dato = FechasGrupo::all()->where('fech_grup', $value->idGrupo);
+            $key = $key++;
+            $nombre = $key;
+            $array[$nombre] = $dato;
 
-        return view('Layouts.cronograma.read', compact('grupo1', 'grupo2', 'grupo3', 'grupo4'));
+        }
+
+
+        return view('Layouts.cronograma.read', compact('array'));
     }
 
     /**
@@ -77,9 +84,10 @@ class CronogramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        
+        return view('Layouts.cronograma.editGroup');
     }
 
     /**

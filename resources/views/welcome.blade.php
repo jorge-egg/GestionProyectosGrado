@@ -34,7 +34,7 @@
                 @endcomponent
             </section>
 
-            <section class="d-flex justify-content-center">
+            <section class="d-flex justify-content-center section-login">
                 {{-- lOGUIN CARD COMPONENT --}}
                 @component('components.LoguinCardComponent')
                 @endcomponent

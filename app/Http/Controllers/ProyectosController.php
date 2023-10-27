@@ -10,6 +10,7 @@ use App\Models\SedeProyectosGrado;
 
 class ProyectosController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -25,16 +26,25 @@ class ProyectosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
+        $consecutivo = 0;
+        $anoActual   = Carbon::now()->format('Y');
         $usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
-        $programa    = SedePrograma::where('prog_usua', $usuario->numeroDocumento)->get('programa');
-        $consecutivo = 1;
-        $año         = Carbon::now()->format('Y');
-        dd($año);
+        $programa    = SedePrograma::all()->where('prog_usua', $usuario->numeroDocumento)->first();
+        if($anoReferencia < $anoActual){
+            $anoReferencia = $anoActual;
+            $consecutivo = 0;
+        }else{
+            $consecutivo++;
+        }
+
+
+        dd($programa->siglas.$consecutivo.$anoActual);
         /*SedeProyectosGrado::create([
             'estado' => 'En proceso',
-            'codigoproyecto' => $programa.$consecutivo.$año,
+            'codigoproyecto' => $programa->siglas.$consecutivo.$año,
         ]);*/
     }
 

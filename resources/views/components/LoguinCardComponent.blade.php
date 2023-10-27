@@ -1,14 +1,11 @@
 {{-- Loguin Card --}}
-<div class="container d-flex justify-content-end col-sm-12 col-md-6">
-    <div class="card p-2 flex-wrap card-glass">
+<div class="container-login d-flex justify-content-center col-sm-12 col-md-6">
+    <div class="card flex-wrap ">
 
         <div class="col-sm-12 p-2">
             <div class="row">
                 <div class="col-sm-12 d-flex justify-content-center">
                     <h4 style="font-weight: bold">Iniciar sesión</h4>
-                </div>
-                <div class="col-sm-12 d-flex justify-content-center">
-                    <img src="{{ asset('imgs/logos/logoAunar2.png') }}" alt="Logo2" width="70" class="img-fluid">
                 </div>
             </div>
         </div>
