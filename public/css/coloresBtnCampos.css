@@ -11,5 +11,29 @@ td.campo-deshabilitado{
 
 }
 
+.date-horizontal{
+    display: flex;
+    flex-direction: row;
+}
+
+.date-padding{
+    padding: 5px;
+}
+
+.card{
+    z-index: 1;
+}
+
+.card-body{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+}
+
+section{
+    text-align: center;
+    margin: 0 auto;
+    padding: 5px;
+}
 
 

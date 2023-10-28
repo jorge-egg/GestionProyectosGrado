@@ -19,7 +19,6 @@ class CreateConsecutvoTable extends Migration
             $table->string('año');
             $table->unsignedBigInteger("conc_sede");
             $table->foreign("conc_sede")->references("idSede")->on("sedes")->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
