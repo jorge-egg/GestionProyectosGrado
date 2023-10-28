@@ -5,7 +5,7 @@
 @endsection
 @section('dashboard_content')
 
-<h1>usuarios</h1>
+<h1>propuestas</h1>
 <br> 
 @if(session()->has('success'))
 <div class= 'alert alert-success'>
@@ -16,39 +16,26 @@
 <a href="{{route('usuarios.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-outline-warning'>Consultar usuarios eliminados</a>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='usuario'> 
-    <thead class='bg-info text-white'> 
+    <thead class='bg-primary text-white'> 
         <tr> 
-            <th scope="col">Documento</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Email</th>
-            <th scope="col">Telefono</th>
-            <th scope="col"></th>
+            <th scope="col">titulo</th>
+            <th scope="col">linea_invs</th>
+            <th scope="col">desc_problema</th>
+            <th scope="col">obj_general</th>
+            <th scope="col">obj_especificos</th>
+            <th scope="col">estado</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-                @foreach ($usuarios as $usuario)
+                @foreach ($propuestas as $propuesta)
                 <tr>
-                    <th>{{ $usuario->numeroDocumento }}</th>
-                    <td>{{ $usuario->nombre }}</td>
-                    <td>{{ $usuario->apellido }}</td>
-                    <td>{{ $usuario->email }}</td>
-                    <td>{{ $usuario->numeroCelular}}</td>
-                    
-                        <td>
-                            <form action="{{ route('usuarios.cambioEstado', $usuario->numeroDocumento) }}" method="post">
-                                @csrf
-                                
-                                @if ($usuario -> estado == 1)
-                                    <button type="submit" class="btn btn-outline-success"><i class='bx
-                                    bxs-user-x'></i>Deshabilitar</button> @else <button type="submit"
-                                    class="btn btn-danger"><i class='bx bxs-user-check'>habilitar</i></button>
-                                @endif
-                            </form> 
-                        </td>
-                  
+                    <th>{{ $propuesta->titulo }}</th>
+                    <td>{{ $propuesta->linea_invs }}</td>
+                    <td>{{ $propuesta->desc_problema }}</td>
+                    <td>{{ $propuesta->obj_general }}</td>
+                    <td>{{ $propuesta->estado}}</td>
                     <td>
                         <form action="{{ route('usuarios.edit', $usuario->numeroDocumento) }}" method="post">
                             @csrf
@@ -78,4 +65,3 @@
     let table = new DataTable('#usuario');
 </script>
 @stop
-

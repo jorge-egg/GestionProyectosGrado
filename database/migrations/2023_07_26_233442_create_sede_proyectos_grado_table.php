@@ -17,6 +17,8 @@ class CreateSedeProyectosGradoTable extends Migration
             $table->bigIncrements("idProyecto");
             $table->string("estado");
             $table->string("codigoproyecto");
+            $table->string("integrante1");
+            $table->string("integrante2",null);
             $table->unsignedBigInteger("proy_sede");
             $table->unsignedBigInteger("proy_bibl");
 
