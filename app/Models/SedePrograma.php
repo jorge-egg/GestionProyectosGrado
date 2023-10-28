@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idPrograma
  * @property string $programa
+ * @property string $siglas
  * @property int $prog_facu
  * @property int $prog_sede
  * @property int $prog_usua
