@@ -18,8 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property string $telefono
  * 
- * @property Collection|UsuariosUser[] $usuarios_users
  * @property Collection|SedesFacultade[] $sedes_facultades
+ * @property Collection|UsuariosUser[] $usuarios_users
  * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
@@ -41,14 +41,14 @@ class Sede extends Model
 		'telefono'
 	];
 
-	public function usuarios_users()
-	{
-		return $this->hasMany(UsuariosUser::class, 'usua_sede');
-	}
-
 	public function sedes_facultades()
 	{
 		return $this->hasMany(SedesFacultade::class, 'facu_sede');
+	}
+
+	public function usuarios_users()
+	{
+		return $this->hasMany(UsuariosUser::class, 'usua_sede');
 	}
 
 	public function sede_programas()

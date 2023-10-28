@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Sede $sede
  * @property User $user
  * @property Collection|SedePrograma[] $sede_programas
+ * @property Collection|Integrante[] $integrantes
  *
  * @package App\Models
  */
@@ -65,5 +66,10 @@ class UsuariosUser extends Model
 	public function sede_programas()
 	{
 		return $this->hasMany(SedePrograma::class, 'prog_usua');
+	}
+
+	public function integrantes()
+	{
+		return $this->hasMany(Integrante::class, 'int_usua');
 	}
 }

@@ -14,10 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $IdConsecutivo
  * @property string $consecutivo
- * @property string $año
+ * @property Carbon $año
  * @property int $conc_sede
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
  * 
  * @property Sede $sede
  *
@@ -27,8 +25,10 @@ class Consecutvo extends Model
 {
 	protected $table = 'consecutvo';
 	protected $primaryKey = 'IdConsecutivo';
+	public $timestamps = false;
 
 	protected $casts = [
+		'año' => 'datetime',
 		'conc_sede' => 'int'
 	];
 

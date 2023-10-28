@@ -13,7 +13,6 @@
                 <th scope="col">Nombre</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
         </thead>
 
@@ -23,10 +22,20 @@
                     <td>{{ $comite->nombre }}</td>
                     <td>
                     <td>
-                        <form action="{{ route('sedes.edit', $sede->idSede) }}" method="post">
+                        <form action="{{ route('comite.edit', $comite->idComite) }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-outline-success">Editar</button>
                         </form>
+                    </td>
+                    <td>
+                       @if(request()->has('view_deleted'))
+                       <a href="{{route('comite.restore', $comite->numeroDocumento)}}" class='btn btn-outline-success'>Restablecer</a>
+                       @else    
+                        <form action="{{ route('comite.destroy', $comite->idComite) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                        </form>
+                        @endif
                     </td>
 
                 </tr>
