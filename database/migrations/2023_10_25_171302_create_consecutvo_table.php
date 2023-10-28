@@ -16,7 +16,7 @@ class CreateConsecutvoTable extends Migration
         Schema::create('consecutvo', function (Blueprint $table) {
             $table->id('IdConsecutivo');
             $table->string('consecutivo');
-            $table->string('año');
+            $table->date('año');
             $table->unsignedBigInteger("conc_sede");
             $table->foreign("conc_sede")->references("idSede")->on("sedes")->onDelete('cascade');
             $table->timestamps();
