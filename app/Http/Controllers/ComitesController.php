@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\comites;
 use App\Http\Requests\StorecomitesRequest;
 use App\Http\Requests\UpdatecomitesRequest;
+use App\Models\ComitesSede;
+use Request;
 
 class ComitesController extends Controller
 {
@@ -13,9 +15,10 @@ class ComitesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $comites = ComitesSede::all();
+        return view('Layouts.propuesta.index', compact('propuestas'));
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\FasePropuestasController;
@@ -50,6 +51,12 @@ Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->n
 //proyectos
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
 Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('proyecto.create');
+
+//comites 
+Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
+Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
+Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
+
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
