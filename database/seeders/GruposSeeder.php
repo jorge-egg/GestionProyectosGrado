@@ -16,22 +16,22 @@ class GruposSeeder extends Seeder
         DB::table('cronograma_grupos')->insert([
             'numerogrupo' => 'Grupo 1',
             'estado'=>'activo',
-            
+            'cron_fech'=>1,
             ]);
             DB::table('cronograma_grupos')->insert([
                 'numerogrupo' => 'Grupo 2',
                 'estado'=>'activo',
-                
+                'cron_fech'=>1,
                 ]);
                 DB::table('cronograma_grupos')->insert([
                     'numerogrupo' => 'Grupo 3',
                     'estado'=>'activo',
-                    
+                    'cron_fech'=>1,
                     ]);
                     DB::table('cronograma_grupos')->insert([
                         'numerogrupo' => 'Grupo 4',
                         'estado'=>'activo',
-                        
+                        'cron_fech'=>1,
                         ]);
     }
 }

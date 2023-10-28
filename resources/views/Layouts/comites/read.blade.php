@@ -10,11 +10,7 @@
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='sede'>
         <thead class='bg-primary text-white'>
             <tr>
-                <th scope="col">Sede</th>
-                <th scope="col">Telefono</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Direccion</th>
-                <th scope="col"></th>
+                <th scope="col">Nombre</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -22,32 +18,10 @@
         </thead>
 
         <tbody>
-            @foreach ($sedes as $sede)
+            @foreach ($comites as $comite)
                 <tr>
-                    <td>{{ $sede->sede }}</td>
-                    <td>{{ $sede->telefono }}</td>
-                    <td>{{ $sede->email }}</td>
-                    <td>{{ $sede->direccion }}</td>
+                    <td>{{ $comite->nombre }}</td>
                     <td>
-                        <form action="{{ route('facultades.index', $sede->idSede) }}" method="get">
-
-                            <input type="hidden" class="form-control" name="idSede" value="{{$sede->idSede}}">
-                            <button type="submit" class="btn btn-outline-info">Facultades</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-info">Programas</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-info">Comites</button>
-                        </form>
-                    </td>
-
                     <td>
                         <form action="{{ route('sedes.edit', $sede->idSede) }}" method="post">
                             @csrf

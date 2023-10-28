@@ -11,85 +11,44 @@
         <h2>Cronograma</h2>
     </div>
     <div class="contenido">
+        <form action="{{route('grupo.create')}}" method="post">
+            @csrf
+            <input type="hidden" value="">
+            <button class="btn btn-primary">Nuevo grupo</button>
+        </form>
         <table class="table">
             <thead class="encabezado">
               <tr>
                 <th scope="col"></th>
-                <th scope="col">Grupo 1</th>
-                <th scope="col">Grupo 2</th>
-                <th scope="col">Grupo 3</th>
-                <th scope="col">Grupo 4</th>
+                <th scope="col">Propuesta</th>
+                <th scope="col">Anteproyecto</th>
+                <th scope="col">Poryecto final</th>
+                <th scope="col">Sustentación</th>
+                <th></th>
               </tr>
             </thead>
             <tbody class="columnas">
-              <tr class="columna">
-                <th>Propuesta</th>
-                <td class="campo-deshabilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-                <td class="campo-deshabilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-                <td class="campo-deshabilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-                <td class="campo-habilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-              </tr>
-              <tr>
-                <th>Anteproyecto</th>
-                <td class="campo-deshabilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-                <td class="campo-deshabilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-                <td class="campo-habilitado">
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-                <td>
-                  fecha abierto: 10/23/23
-                  <br>
-                  fecha cierre: 10/23/23
-                </td>
-              </tr>
-              <tr>
-                <th>Proyecto</th>
-                <td class="campo-deshabilitado"></td>
-                <td class="campo-habilitado">
-                    fecha abierto: 10/23/23
-                    <br>
-                    fecha cierre: 10/23/23
-                  </td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Sustentacion</th>
-                <td class="campo-habilitado">
-                    fecha abierto: 10/23/23
-                    <br>
-                    fecha cierre: 10/23/23
-                  </td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
+                @foreach ($array as $key => $grupos)
+                <tr class="columna">
+                    <td>{{$key}}</td>
+                    @foreach ($grupos as $grupo)
+                        <td>{{$grupo->fecha_apertura}}
+                            <br>
+                        {{$grupo->fecha_cierre}}</td>
+                        <form action="{{ route('grupo.edit')}}" method="post"><!--se coloco el inicio del from dentro de la etiqueta td para que lograra capturar el id del grupo-->
+                            @csrf
+                            <input type="hidden" name="idGrupo" value="{{ $grupo->fech_grup }}">
+                    @endforeach
+                    <td>
+                            <button class="btn btn-warning">editar</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+
+
+
             </tbody>
           </table>
     </div>

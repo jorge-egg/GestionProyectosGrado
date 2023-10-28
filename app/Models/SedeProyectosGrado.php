@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $idProyecto
  * @property string $estado
  * @property string $codigoproyecto
+ * @property string $integrante1
+ * @property string $integrante2
  * @property int $proy_sede
  * @property int $proy_bibl
  * 
@@ -38,6 +40,8 @@ class SedeProyectosGrado extends Model
 	protected $fillable = [
 		'estado',
 		'codigoproyecto',
+		'integrante1',
+		'integrante2',
 		'proy_sede',
 		'proy_bibl'
 	];

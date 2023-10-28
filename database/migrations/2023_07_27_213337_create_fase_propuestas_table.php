@@ -15,14 +15,11 @@ class CreateFasePropuestasTable extends Migration
     {
         Schema::create('fase_propuestas', function (Blueprint $table) {
             $table->bigIncrements("idPropuesta");
-            $table->string("titulo");
-            $table->string("linea_invs");
-            $table->string("desc_problema");
-            $table->string("obj_general");
-            $table->string("obj_especificos");
-            $table->string("frecha_subida");
-            $table->string("frecha_actu");
-            $table->string("calificacion");
+            $table->text("titulo");
+            $table->text("linea_invs");
+            $table->text("desc_problema");
+            $table->text("obj_general");
+            $table->text("obj_especificos");    
             $table->string("estado");
             $table->string("fecha_cierre");
             $table->unsignedBigInteger("prop_fase");

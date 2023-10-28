@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $idGrupo
  * @property string $numerogrupo
  * @property string $estado
- * @property int $grup_cron
+ * @property int $cron_fech
  * 
  * @property ProyectoCronograma $proyecto_cronograma
  * @property Collection|FechasGrupo[] $fechas_grupos
@@ -29,18 +29,18 @@ class CronogramaGrupo extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'grup_cron' => 'int'
+		'cron_fech' => 'int'
 	];
 
 	protected $fillable = [
 		'numerogrupo',
 		'estado',
-		'grup_cron'
+		'cron_fech'
 	];
 
 	public function proyecto_cronograma()
 	{
-		return $this->belongsTo(ProyectoCronograma::class, 'grup_cron');
+		return $this->belongsTo(ProyectoCronograma::class, 'cron_fech');
 	}
 
 	public function fechas_grupos()

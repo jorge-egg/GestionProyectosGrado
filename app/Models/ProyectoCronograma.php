@@ -37,6 +37,6 @@ class ProyectoCronograma extends Model
 
 	public function cronograma_grupos()
 	{
-		return $this->hasMany(CronogramaGrupo::class, 'grup_cron');
+		return $this->hasMany(CronogramaGrupo::class, 'cron_fech');
 	}
 }

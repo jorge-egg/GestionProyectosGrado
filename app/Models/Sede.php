@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Sede
  * 
  * @property int $idSede
- * @property string $nombreIdentificador
+ * @property string $sede
  * @property string $direccion
  * @property string $email
  * @property string $telefono
@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|ComitesSede[] $comites_sedes
+ * @property Collection|Consecutvo[] $consecutvos
  *
  * @package App\Models
  */
@@ -34,7 +35,7 @@ class Sede extends Model
 	public $timestamps = false;
 
 	protected $fillable = [
-		'nombreIdentificador',
+		'sede',
 		'direccion',
 		'email',
 		'telefono'
@@ -68,5 +69,10 @@ class Sede extends Model
 	public function comites_sedes()
 	{
 		return $this->hasMany(ComitesSede::class, 'comi_sede');
+	}
+
+	public function consecutvos()
+	{
+		return $this->hasMany(Consecutvo::class, 'conc_sede');
 	}
 }

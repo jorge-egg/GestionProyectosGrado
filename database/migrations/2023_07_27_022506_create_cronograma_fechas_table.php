@@ -15,10 +15,12 @@ class CreateCronogramaFechasTable extends Migration
     {
         Schema::create('fechas_grupos', function (Blueprint $table) {
             $table->bigIncrements("idFecha");
-            $table->string("fecha");
+            $table->date("fecha_apertura");
+            $table->date("fecha_cierre");
             $table->unsignedBigInteger("fech_grup");
             $table->timestamps();
             $table->foreign("fech_grup")->references("idGrupo")->on("cronograma_grupos")->onDelete('cascade');
+            
         });
     }
 

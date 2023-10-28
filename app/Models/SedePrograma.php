@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idPrograma
  * @property string $programa
+ * @property string $siglas
  * @property int $prog_facu
  * @property int $prog_sede
  * @property int $prog_usua
@@ -37,6 +38,7 @@ class SedePrograma extends Model
 
 	protected $fillable = [
 		'programa',
+		'siglas',
 		'prog_facu',
 		'prog_sede',
 		'prog_usua'

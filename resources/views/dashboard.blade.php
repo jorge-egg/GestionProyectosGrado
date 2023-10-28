@@ -1,12 +1,10 @@
 @extends('Layouts.app')
 
 @section('styles')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <script src='//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'></script>
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
     @yield('estilos_adicionales')
 @stop
-
+@yield('css')
 @section('content')
         <div class="sidebar">
             <div class="logo_content">
@@ -43,11 +41,11 @@
 
 
                 <li>
-                    <a href="">
+                    <a href="{{ route('proyecto.index') }}">
                         <i class='bx bx-book'></i>
-                        <span class="links_name">Programas</span>
+                        <span class="links_name">Proyectos</span>
                     </a>
-                    <span class="tooltip">Programas</span>
+                    <span class="tooltip">Proyectos</span>
                 </li>
                 <li>
                     <a href="">
@@ -82,6 +80,7 @@
                     @endguest
                 </div>
             </nav>
+            @yield('js')
         @yield('dashboard_content')
         </div>
 

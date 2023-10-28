@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
+use App\Http\Controllers\FasePropuestasController;
+use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
-
+use App\Models\CronogramaGrupo;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,9 +44,30 @@ Route::get('/sedes/index', [SedesController::class, 'index'])->name('sedes.index
 Route::post('/sedes/edit/{id}', [SedesController::class, 'edit'])->name('sedes.edit');
 
 //facultades
+
 Route::get('/facultades/index/{id}', [FacultadesController::class, 'index'])->name('facultades.index');
 Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->name('facultades.store');
 
+//proyectos
+Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
+Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('proyecto.create');
+
+//comites 
+Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
+Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
+Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
+
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
+Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
+Route::post('/grupos/edit', [CronogramaController::class, 'edit'])->name('grupo.edit');
+
+
+//propuesta 
+Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
+Route::get('/propuestas/create', [FasePropuestasController::class, 'create'])->name('propuesta.create');
+Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
+Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
+
+
 

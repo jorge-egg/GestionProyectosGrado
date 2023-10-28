@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FechasGrupo;
 use Illuminate\Http\Request;
+use App\Models\CronogramaGrupo;
+use App\Models\Sede;
+use App\Models\SedeProyectosGrado;
+use App\Models\UsuariosUser;
+use Illuminate\Support\Facades\Auth;
 
 class CronogramaController extends Controller
 {
@@ -13,7 +19,31 @@ class CronogramaController extends Controller
      */
     public function index()
     {
-        return view('Layouts.cronograma.read');
+        $userId  = auth()->id();
+        $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
+        $sede    = Sede::findOrFail($usuario->usua_sede);
+
+        $grupos = Sede::join('sede_proyectos_grado as proyecto_grado', 'proyecto_grado.proy_sede', 'sedes.idSede')
+        ->join('proyecto_fases', 'proyecto_fases.fase_proy', 'proyecto_grado.idProyecto')
+        ->join('proyecto_cronogramas', 'proyecto_cronogramas.idCronograma', 'proyecto_fases.fase_cron')
+        ->join('cronograma_grupos', 'cronograma_grupos.cron_fech', 'proyecto_cronogramas.idCronograma')
+        ->where('sedes.idSede', $sede->idSede)
+        ->orderBy('cronograma_grupos.idGrupo', 'desc')
+        ->take(4)
+        ->select('cronograma_grupos.*')
+        ->get();
+
+        $array = [];
+        foreach($grupos as $key => $value){
+            $dato = FechasGrupo::all()->where('fech_grup', $value->idGrupo);
+            $key = $key++;
+            $nombre = $key;
+            $array[$nombre] = $dato;
+
+        }
+
+
+        return view('Layouts.cronograma.read', compact('array'));
     }
 
     /**
@@ -54,9 +84,10 @@ class CronogramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        
+        return view('Layouts.cronograma.editGroup');
     }
 
     /**

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sede;
+use Carbon\Carbon;
+use App\Models\SedePrograma;
+use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
+use App\Models\SedeProyectosGrado;
 
-class SedesController extends Controller
+class ProyectosController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +18,7 @@ class SedesController extends Controller
      */
     public function index()
     {
-        $sedes = Sede::all();
-        return view('Layouts.sedes.read', compact('sedes'));
+        return view('Layouts.proyecto.index');
     }
 
     /**
@@ -23,9 +26,26 @@ class SedesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
-     //
+        $consecutivo = 0;
+        $anoActual   = Carbon::now()->format('Y');
+        $usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $programa    = SedePrograma::all()->where('prog_usua', $usuario->numeroDocumento)->first();
+        if($anoReferencia < $anoActual){
+            $anoReferencia = $anoActual;
+            $consecutivo = 0;
+        }else{
+            $consecutivo++;
+        }
+
+
+        dd($programa->siglas.$consecutivo.$anoActual);
+        /*SedeProyectosGrado::create([
+            'estado' => 'En proceso',
+            'codigoproyecto' => $programa->siglas.$consecutivo.$año,
+        ]);*/
     }
 
     /**
