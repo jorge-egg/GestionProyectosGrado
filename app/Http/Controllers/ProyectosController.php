@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Sede;
+use App\Models\Consecutivo;
 use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
@@ -29,23 +31,27 @@ class ProyectosController extends Controller
 
     public function create()
     {
-        $consecutivo = 0;
-        $anoActual   = Carbon::now()->format('Y');
-        $usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
-        $programa    = SedePrograma::all()->where('prog_usua', $usuario->numeroDocumento)->first();
-        if($anoReferencia < $anoActual){
-            $anoReferencia = $anoActual;
-            $consecutivo = 0;
-        }else{
-            $consecutivo++;
+
+        $anoActual       = Carbon::now()->format('Y');
+        $usuario         = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $programa        = SedePrograma::all()->where('prog_usua', $usuario->numeroDocumento)->first();
+        $consecutivoData = Sede::join('usuarios_users as usuarios', 'usuarios.usua_sede', 'sedes.idSede')
+        ->join('consecutivo','consecutivo.conc_sede', 'sedes.idSede')
+        ->take(1)
+        ->select('consecutivo.*')
+        ->first();
+
+        $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->IdConsecutivo);
+        if($anoActual > $consecutivoData->año){
+            $tabelConsecutivo->consecutivo = 0;
+            $tabelConsecutivo->año = $anoActual;
+            $tabelConsecutivo->save();
         }
-
-
-        dd($programa->siglas.$consecutivo.$anoActual);
-        /*SedeProyectosGrado::create([
+        $consecutivo = $tabelConsecutivo->consecutivo < 9 ? '0'.$tabelConsecutivo->consecutivo : $tabelConsecutivo->consecutivo;
+        SedeProyectosGrado::create([
             'estado' => 'En proceso',
-            'codigoproyecto' => $programa->siglas.$consecutivo.$año,
-        ]);*/
+            'codigoproyecto' => $programa->siglas.$consecutivo.$anoActual,
+        ]);
     }
 
     /**

@@ -15,14 +15,11 @@ class CreateIntegrantesTable extends Migration
     {
         Schema::create('integrantes', function (Blueprint $table) {
             $table->id('idIntegrantes');
-            $table->string('integrante1');
-            $table->string('integrante2',null);
-            $table->string('integrante3',null);
-            $table->unsignedBigInteger('int_usua');
-            $table->unsignedBigInteger('int_proy');
-            $table->foreign("int_usua")->references("numeroDocumento")->on("usuarios_users")->onDelete('cascade');
-            $table->foreign('int_proy')->references('idProyecto')->on('sede_proyectos_grado')->onDelete('cascade');
-            $table->timestamps();
+            $table->unsignedBigInteger('usuario');
+            $table->unsignedBigInteger('proyecto');
+            $table->foreign("usuario")->references("numeroDocumento")->on("usuarios_users")->onDelete('cascade');
+            $table->foreign('proyecto')->references('idProyecto')->on('sede_proyectos_grado')->onDelete('cascade');
+            
         });
     }
 
