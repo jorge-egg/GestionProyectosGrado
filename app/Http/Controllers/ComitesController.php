@@ -18,7 +18,7 @@ class ComitesController extends Controller
     public function index(Request $request)
     {
         $comites = ComitesSede::all();
-        return view('Layouts.propuesta.index', compact('propuestas'));
+        return view('Layouts.comites.index', compact('comites'));
     }
 
     /**
