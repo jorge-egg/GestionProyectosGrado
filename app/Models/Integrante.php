@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Integrante
- * 
+ *
  * @property int $idIntegrantes
  * @property string $integrante1
  * @property string $integrante2
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $int_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property UsuariosUser $usuarios_user
  * @property SedeProyectosGrado $sede_proyectos_grado
  *
@@ -30,27 +30,25 @@ class Integrante extends Model
 {
 	protected $table = 'integrantes';
 	protected $primaryKey = 'idIntegrantes';
+    public $timestamps = false;
 
 	protected $casts = [
-		'int_usua' => 'int',
+		'usuario' => 'int',
 		'int_proy' => 'int'
 	];
 
 	protected $fillable = [
-		'integrante1',
-		'integrante2',
-		'integrante3',
-		'int_usua',
-		'int_proy'
+		'usuario',
+		'proyecto'
 	];
 
 	public function usuarios_user()
 	{
-		return $this->belongsTo(UsuariosUser::class, 'int_usua');
+		return $this->belongsTo(UsuariosUser::class, 'usuario');
 	}
 
 	public function sede_proyectos_grado()
 	{
-		return $this->belongsTo(SedeProyectosGrado::class, 'int_proy');
+		return $this->belongsTo(SedeProyectosGrado::class, 'proyecto');
 	}
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConsecutvoTable extends Migration
+class CreateConsecutivoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateConsecutvoTable extends Migration
      */
     public function up()
     {
-        Schema::create('consecutvo', function (Blueprint $table) {
+        Schema::create('consecutivo', function (Blueprint $table) {
             $table->id('IdConsecutivo');
-            $table->string('consecutivo');
-            $table->date('año');
+            $table->integer('consecutivo');
+            $table->string('año');
             $table->unsignedBigInteger("conc_sede");
             $table->foreign("conc_sede")->references("idSede")->on("sedes")->onDelete('cascade');
         });

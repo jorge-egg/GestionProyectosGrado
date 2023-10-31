@@ -52,8 +52,7 @@ class FacultadesController extends Controller
             'nombre' => $request->nombre,
             'facu_sede' => $idSede,
         ]);
-
-        return redirect()->route('facultades.index', [$idSede]);
+        return redirect()->back();
     }
 
     /**

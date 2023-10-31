@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SedeProyectosGrado
- * 
+ *
  * @property int $idProyecto
  * @property string $estado
  * @property string $codigoproyecto
  * @property int $proy_sede
  * @property int $proy_bibl
- * 
+ *
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
  * @property Collection|ProyectoFase[] $proyecto_fases
@@ -60,6 +60,6 @@ class SedeProyectosGrado extends Model
 
 	public function integrantes()
 	{
-		return $this->hasMany(Integrante::class, 'int_proy');
+		return $this->hasMany(Integrante::class, 'proyecto');
 	}
 }
