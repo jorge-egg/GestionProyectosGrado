@@ -17,7 +17,8 @@ class CreateComitesSedesTable extends Migration
             $table->bigIncrements("idComite");
             $table->string("nombre");
             $table->unsignedBigInteger("comi_sede");
-            $table->foreign("comi_sede")->references("idSede")->on("sedes")->onDelete('cascade');   
+            $table->foreign("comi_sede")->references("idSede")->on("sedes")->onDelete('cascade');
+            $table->softDeletes();   
         });
     }
 

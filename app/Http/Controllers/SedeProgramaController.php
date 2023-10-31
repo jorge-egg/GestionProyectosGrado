@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorecomitesRequest;
-use App\Http\Requests\UpdatecomitesRequest;
-use App\Models\ComitesSede;
+use App\Models\SedePrograma;
 use Illuminate\Http\Request;
 
-
-class ComitesController extends Controller
+class SedeProgramaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +13,12 @@ class ComitesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        
-        $comites = ComitesSede::all();
+    {   
+        $programas = SedePrograma::all();
         if($request->has('view_deleted')){
-            $comites=ComitesSede::onlyTrashed()->get();
+            $programas = SedePrograma::onlyTrashed()->get();
         }
-        return view('Layouts.comites.index', compact('comites'));
+        return view('Layouts.programas.index', compact('programas'));
     }
 
     /**
@@ -38,10 +34,10 @@ class ComitesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorecomitesRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorecomitesRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -49,10 +45,10 @@ class ComitesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\comites  $comites
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(comites $comites)
+    public function show($id)
     {
         //
     }
@@ -60,46 +56,46 @@ class ComitesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ComitesSede  $comites
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ComitesSede $comites)
+    public function edit(SedePrograma $programas)
     {
-        return view('Layouts.comites.update');
+     return view('Layouts.programas.update');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatecomitesRequest  $request
-     * @param  \App\Models\ComitesSede  $comites
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateComitesSedeRequest $request, ComitesSede $comites)
+    public function update(Request $request, $id)
     {
         //
     }
     public function restore($id)
     {
-        ComitesSede::withTrashed()->find($id)->restore();
-        return redirect()->route('comite.index')->with('success','se restablecio el registro');
+        SedePrograma::withTrashed()->find($id)->restore();
+        return redirect()->route('programa.index')->with('success','se restablecio el registro');
     }
     public function forcedelete($id)
     {
-        $usuarios=ComitesSede::onlyTrashed()->find($id);
-        $usuarios->forcedelete();
-        return redirect()->route('comite.index');
+        $programas=SedePrograma::onlyTrashed()->find($id);
+        $programas->forcedelete();
+        return redirect()->route('programa.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ComitesSede  $comites
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-    ComitesSede::find($id)->delete();
+    SedePrograma::find($id)->delete();
     return back()->with('success','se elimino el registro');
     }
 }
