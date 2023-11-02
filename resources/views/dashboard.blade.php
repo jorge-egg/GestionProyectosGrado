@@ -48,7 +48,7 @@
                     <span class="tooltip">Proyectos</span>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ route('programa.index') }}">
                         <i class='bx bx-sitemap'></i>
                         <span class="links_name">Proyecto</span>
                     </a>

@@ -5,9 +5,28 @@
 @endsection
 @section('dashboard_content')
 
-<h1>Sedes</h1>
+<h1>Comites</h1>
     <br>
-<table class="table table-hover shadow-lg mt-4" style="width:100%" id='sede'>
+    <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre de comite</label>
+            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" required>
+            @error('nombre')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-outline-success">Agregar</button>
+    </form>
+    @if(session()->has('success'))
+<div class= 'alert alert-success'>
+{{session()->get('success')}}
+</div>
+@endif
+<div class='col col-md-6 text-right'>
+<a href="{{route('comite.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-outline-warning'>Consultar comites eliminados</a>
+</div>
+<table class="table table-hover shadow-lg mt-4" style="width:100%" id='comite'>
         <thead class='bg-primary text-white'>
             <tr>
                 <th scope="col">Nombre</th>
@@ -21,7 +40,6 @@
                 <tr>
                     <td>{{ $comite->nombre }}</td>
                     <td>
-                    <td>
                         <form action="{{ route('comite.edit', $comite->idComite) }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-outline-success">Editar</button>
@@ -29,7 +47,7 @@
                     </td>
                     <td>
                        @if(request()->has('view_deleted'))
-                       <a href="{{route('comite.restore', $comite->numeroDocumento)}}" class='btn btn-outline-success'>Restablecer</a>
+                       <a href="{{route('comite.restore', $comite->idComite)}}" class='btn btn-outline-success'>Restablecer</a>
                        @else    
                         <form action="{{ route('comite.destroy', $comite->idComite) }}" method="post">
                             @csrf
@@ -48,6 +66,6 @@
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 @endsection
 <script>
-    let table = new DataTable('#sede');
+    let table = new DataTable('#comite');
 </script>
 @stop
