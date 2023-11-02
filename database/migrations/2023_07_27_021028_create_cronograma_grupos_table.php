@@ -16,8 +16,6 @@ class CreateCronogramaGruposTable extends Migration
         Schema::create('cronograma_grupos', function (Blueprint $table) {
             $table->bigIncrements("idGrupo");
             $table->string("estado");
-            $table->unsignedBigInteger("cron_fech");
-            $table->foreign("cron_fech")->references("idCronograma")->on("proyecto_cronogramas")->onDelete('cascade');
         });
     }
 
