@@ -80,8 +80,9 @@
                     @endguest
                 </div>
             </nav>
+            @yield('dashboard_content')
             @yield('js')
-        @yield('dashboard_content')
+
         </div>
 
 @stop
@@ -93,4 +94,5 @@
     btn.onclick = function(){
         sidebar.classList.toggle('active');
     }
+    @yield('js_extra')
 @stop

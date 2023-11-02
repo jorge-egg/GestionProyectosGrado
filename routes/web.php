@@ -52,7 +52,7 @@ Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->n
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
 Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('proyecto.create');
 
-//comites 
+//comites
 Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
 Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
 Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
@@ -60,10 +60,11 @@ Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.e
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
-Route::post('/grupos/edit', [CronogramaController::class, 'edit'])->name('grupo.edit');
+Route::get('/grupos/edit/{id}', [CronogramaController::class, 'edit'])->name('grupo.edit');
+Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->name('grupo.update');
 
 
-//propuesta 
+//propuesta
 Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
 Route::get('/propuestas/create', [FasePropuestasController::class, 'create'])->name('propuesta.create');
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');

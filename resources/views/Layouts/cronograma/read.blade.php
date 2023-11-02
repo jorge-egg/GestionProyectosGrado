@@ -11,9 +11,7 @@
         <h2>Cronograma</h2>
     </div>
     <div class="contenido">
-        <form action="{{route('grupo.create')}}" method="post">
-            @csrf
-            <input type="hidden" value="">
+        <form action="{{route('grupo.create')}}" method="get">
             <button class="btn btn-primary">Nuevo grupo</button>
         </form>
         <table class="table">
@@ -36,9 +34,9 @@
                         <td>{{$grupo->fecha_apertura}}
                             <br>
                         {{$grupo->fecha_cierre}}</td>
-                        <form action="{{ route('grupo.edit')}}" method="post"><!--se coloco el inicio del from dentro de la etiqueta td para que lograra capturar el id del grupo-->
-                            @csrf
-                            <input type="hidden" name="idGrupo" value="{{ $grupo->fech_grup }}">
+                        <form action="{{ route('grupo.edit', $grupo->fech_grup)}}" method="get"><!--se coloco el inicio del from dentro de la etiqueta td para que lograra capturar el id del grupo-->
+
+
                     @endforeach
                     <td>
                             <button class="btn btn-warning">editar</button>
