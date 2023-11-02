@@ -22,9 +22,9 @@ class CreateFasePropuestasTable extends Migration
             $table->text("obj_especificos");    
             $table->string("estado");
             $table->string("fecha_cierre");
-            $table->unsignedBigInteger("fech_sede");
+            $table->unsignedBigInteger("prop_proy");
             $table->timestamps();
-            $table->foreign('fech_sede')->references('idSede')->on("sedes")->onDelete('cascade');
+            $table->foreign('prop_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
 
         });
     }
