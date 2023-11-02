@@ -15,15 +15,19 @@ class GruposSeeder extends Seeder
     {
         DB::table('cronograma_grupos')->insert([
             'estado'=>'activo',
+            'grup_cron'=>1,
             ]);
             DB::table('cronograma_grupos')->insert([
                 'estado'=>'activo',
+                'grup_cron'=>1,
                 ]);
                 DB::table('cronograma_grupos')->insert([
                     'estado'=>'activo',
+                    'grup_cron'=>1,
                     ]);
                     DB::table('cronograma_grupos')->insert([
-                        'estado'=>'activo'
+                        'estado'=>'activo',
+                        'grup_cron'=>1,
                         ]);
     }
 }
