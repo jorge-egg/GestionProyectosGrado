@@ -36,13 +36,13 @@
                         </form>
                     </td>
                     <td>
-                        <form action="" method="post">
+                        <form action="{{ route('programa.index') }}" >
                             @csrf
                             <button type="submit" class="btn btn-outline-info">Programas</button>
                         </form>
                     </td>
                     <td>
-                        <form action="" method="post">
+                        <form action="{{ route('comite.index') }}">
                             @csrf
                             <button type="submit" class="btn btn-outline-info">Comites</button>
                         </form>

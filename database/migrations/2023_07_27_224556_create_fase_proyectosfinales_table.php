@@ -15,9 +15,9 @@ class CreateFaseProyectosfinalesTable extends Migration
     {
         Schema::create('fase_proyectosfinales', function (Blueprint $table) {
             $table->bigIncrements("idProyectofinal");
-            $table->unsignedBigInteger("prof_fase");
+            $table->unsignedBigInteger("fech_sede");
 
-            $table->foreign("prof_fase")->references("idFase")->on("proyecto_fases")->onDelete('cascade');
+            $table->foreign('fech_sede')->references('idSede')->on("sedes")->onDelete('cascade');
         });
     }
 

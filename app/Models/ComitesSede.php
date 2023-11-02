@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ComitesSede
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $idComite
  * @property string $nombre
  * @property int $comi_sede
+ * @property string|null $deleted_at
  * 
  * @property Sede $sede
  *
@@ -21,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ComitesSede extends Model
 {
+	use SoftDeletes;
 	protected $table = 'comites_sedes';
 	protected $primaryKey = 'idComite';
 	public $timestamps = false;
