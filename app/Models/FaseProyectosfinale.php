@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * Class FaseProyectosfinale
  * 
  * @property int $idProyectofinal
- * @property int $prof_fase
+ * @property int $pfin_proy
  * 
- * @property ProyectoFase $proyecto_fase
+ * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|Calificacione[] $calificaciones
  *
  * @package App\Models
@@ -27,16 +27,16 @@ class FaseProyectosfinale extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'prof_fase' => 'int'
+		'pfin_proy' => 'int'
 	];
 
 	protected $fillable = [
-		'prof_fase'
+		'pfin_proy'
 	];
 
-	public function proyecto_fase()
+	public function sede_proyectos_grado()
 	{
-		return $this->belongsTo(ProyectoFase::class, 'prof_fase');
+		return $this->belongsTo(SedeProyectosGrado::class, 'pfin_proy');
 	}
 
 	public function calificaciones()

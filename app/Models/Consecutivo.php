@@ -6,19 +6,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Consecutvo
- *
+ * Class Consecutivo
+ * 
  * @property int $IdConsecutivo
- * @property string $consecutivo
+ * @property int $consecutivo
  * @property string $año
  * @property int $conc_sede
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- *
+ * 
  * @property Sede $sede
  *
  * @package App\Models
@@ -27,8 +24,10 @@ class Consecutivo extends Model
 {
 	protected $table = 'consecutivo';
 	protected $primaryKey = 'IdConsecutivo';
+	public $timestamps = false;
 
 	protected $casts = [
+		'consecutivo' => 'int',
 		'conc_sede' => 'int'
 	];
 
@@ -37,8 +36,6 @@ class Consecutivo extends Model
 		'año',
 		'conc_sede'
 	];
-
-    public $timestamps = false;
 
 	public function sede()
 	{

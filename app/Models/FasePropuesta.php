@@ -21,11 +21,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $obj_especificos
  * @property string $estado
  * @property string $fecha_cierre
- * @property int $prop_fase
+ * @property int $prop_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property ProyectoFase $proyecto_fase
+ * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|Calificacione[] $calificaciones
  *
  * @package App\Models
@@ -36,7 +36,7 @@ class FasePropuesta extends Model
 	protected $primaryKey = 'idPropuesta';
 
 	protected $casts = [
-		'prop_fase' => 'int'
+		'prop_proy' => 'int'
 	];
 
 	protected $fillable = [
@@ -47,12 +47,12 @@ class FasePropuesta extends Model
 		'obj_especificos',
 		'estado',
 		'fecha_cierre',
-		'prop_fase'
+		'prop_proy'
 	];
 
-	public function proyecto_fase()
+	public function sede_proyectos_grado()
 	{
-		return $this->belongsTo(ProyectoFase::class, 'prop_fase');
+		return $this->belongsTo(SedeProyectosGrado::class, 'prop_proy');
 	}
 
 	public function calificaciones()
