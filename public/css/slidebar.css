@@ -1,11 +1,11 @@
 .contenido{
     position: relative;
-    width: calc(100% - 76px);
+    width: calc(100% - 108px);
     left: 76px;
     top: 50px;
-    height: 100%;
+    height: auto;
     padding: 30px;
-    background-image: url('public/img/fondos/5469.jpg');
+
 }
 
 .sidebar{

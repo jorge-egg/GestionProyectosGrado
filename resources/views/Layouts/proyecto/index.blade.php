@@ -1,29 +1,68 @@
 @extends('dashboard')
-@section('css')
-
-@endsection
-@section('dashboard_content')
-    <div id="cardComponent">
-        @component('components.integrantesCard')
-        @endcomponent
-    </div>
-    <button type="button" class="btn btn-outline-primary" id="botonComponente">Crear un proyecto</button>
-    <form action="{{ route('propuesta.create') }}" method="get">
-        <button type="submit" class="btn btn-outline-warning">Crear Prouesta</button>
-    </form>
+@section('estilos_adicionales')
 
 @stop
+@section('dashboard_content')
+<div class="modal fade" tabindex="-1" id="confirmacionIntegrante">
+    @component('components.Modales.confirmacionIntegrante')
+    @endcomponent
+</div>
 
-@section('js_extra')
-<script>
-    document.getElementById('botonComponente').addEventListener('click', () => {
-        var componente = document.getElementById('cardComponent');
+    <div class="modal fade" tabindex="-1" id="integrantesModal">
+        @component('components.Modales.integrantesModal')
+        @endcomponent
+    </div>
+    <div class="modal fade" tabindex="-1" id="buscarIntegranteModal">
+        @component('components.Modales.buscarIntegranteModal')
+        @endcomponent
+    </div>
+    <div>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#confirmacionIntegrante">Crear un
+            proyecto</button>
+        <form action="{{ route('propuesta.create') }}" method="get">
+            <button type="submit" class="btn btn-outline-warning">Crear Prouesta</button>
+        </form>
+    </div>
+@stop
 
-        if (componente.style.display === 'none') {
-            componente.style.display = 'block';
-        } else {
-            componente.style.display = 'none';
+@section('js')
+    <script>
+        function actModalObtNom(){ //Activa el modal para buscar un nuevo integrante
+            $('#confirmacionIntegrante').modal('hide');
+            $('#integrantesModal').modal('show');
         }
-    });
-</script>
-@endsection
+
+        function obtenerNombre() {
+
+            var nombreUsuario = document.getElementById(
+            'nombreUsuario'); //etiqueta <p></p> donde se va a mostrar el nombre del usuario buscado en el modal
+
+            var codUsuario = document.getElementById(
+            'codUsuario'); //etiqueta <p></p> donde se va a mostrar el codigo del usuario buscado en el modal
+
+            var codigoUsuario = document.getElementById('usuario').value; //obtenemos el codigo de usuario o documento de identidad
+            $.ajax({
+                url: "{{ route('buscarIntegrante') }}",
+                type: 'get',
+                data: {
+                    documento: codigoUsuario
+                },
+                dataType: 'json',
+                success: function(response) {
+                    codUsuario.value = response.codigoUsuario;
+                    nombreUsuario.innerText = response.data;
+                    if(response.data === "Usuario no encontrado"){
+                        $('#btnEnviarSolicitud').css('display', 'none');
+                    }else{
+                        $('#btnEnviarSolicitud').css('display', 'block');
+                    }
+                    $('#integrantesModal').modal('hide');
+                    $('#buscarIntegranteModal').modal('show');
+                },
+                error: function() {
+                    alert('Hubo un error obteniendo el usuario!');
+                }
+            });
+        }
+    </script>
+@stop
