@@ -11,7 +11,7 @@
             <input type="text" name='Titulo' class='form-control' required>
             </div>
             <br>
-            <button Class='btn btn-outline-info'>Agregar</button>
+            <button Class='btn btn-primary text-dark'>Agregar</button>
         </form>
         </p>
 

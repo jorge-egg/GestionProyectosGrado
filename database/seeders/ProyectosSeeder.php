@@ -17,6 +17,7 @@ class ProyectosSeeder extends Seeder
         DB::table('sede_proyectos_grado')->insert([
             'estado' => 'activo',
             'codigoproyecto' =>'27462',
+            'cantidad_integrantes'=>1,
             'proy_sede'=>1,
             'proy_bibl'=>1,
             ]);

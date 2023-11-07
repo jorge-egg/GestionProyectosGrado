@@ -15,7 +15,7 @@
                 </span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-outline-success">Agregar</button>
+        <button type="submit" class="btn btn-primary text-dark">Agregar</button>
     </form>
     <table class="table">
         <thead>

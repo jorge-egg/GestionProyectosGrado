@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property User $user
  * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|Integrante[] $integrantes
+ * @property Collection|IntegrantesComite[] $integrantes_comites
  *
  * @package App\Models
  */
@@ -71,5 +72,10 @@ class UsuariosUser extends Model
 	public function integrantes()
 	{
 		return $this->hasMany(Integrante::class, 'usuario');
+	}
+
+	public function integrantes_comites()
+	{
+		return $this->hasMany(IntegrantesComite::class, 'comite_usuario');
 	}
 }
