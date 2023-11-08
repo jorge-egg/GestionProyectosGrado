@@ -31,7 +31,7 @@
             </button>
         @endif
 
-        <form action="{{ route('propuesta.create') }}" method="get">
+        <form action="{{ route('proyecto.indextable') }}" method="get">
             <button type="submit" class="btn btn-outline-warning btnGrandeRectangular">Crear Prouesta</button>
         </form>
 

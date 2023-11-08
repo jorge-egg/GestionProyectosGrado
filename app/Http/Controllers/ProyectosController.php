@@ -23,7 +23,7 @@ class ProyectosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    
+   
     {
 
         try {
@@ -42,6 +42,10 @@ class ProyectosController extends Controller
 
 
         return view('Layouts.proyecto.index', compact('estado'));
+    }
+    public function indextable(Request $request){
+        $proyectos = SedeProyectosGrado::all();
+        return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
     /**
