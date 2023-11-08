@@ -23,6 +23,7 @@ class ProyectosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+    
     {
         try {
             //Consultar si el usuario tiene un proyecto activo para bloquear la opcion de crear otro

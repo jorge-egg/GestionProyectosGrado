@@ -16,8 +16,8 @@ class CreateFasesCronogramasTable extends Migration
         Schema::create('fases_cronogramas', function (Blueprint $table) {
             $table->id('idFase');
             $table->string('fase');
-            $table->unsignedBigInteger("fase_cron");
-            $table->foreign('fase_cron')->references('idCronograma')->on("proyecto_cronogramas")->onDelete('cascade');
+            $table->unsignedBigInteger("fase_fech");
+            $table->foreign('fase_fech')->references('idFecha')->on("fechas_grupos")->onDelete('cascade');
             $table->timestamps();
         });
     }
