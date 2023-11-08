@@ -16,7 +16,7 @@
                 </span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-outline-success">Agregar</button>
+        <button type="submit" class="btn btn-outline-success text-dark">Agregar</button>
     </form>
     @if(session()->has('success'))
 <div class= 'alert alert-success'>
@@ -42,12 +42,12 @@
                     <td>
                         <form action="{{ route('comite.edit', $comite->idComite) }}" method="post">
                             @csrf
-                            <button type="submit" class="btn btn-outline-success">Editar</button>
+                            <button type="submit" class="btn btn-primary text-dark">Editar</button>
                         </form>
                     </td>
                     <td>
                        @if(request()->has('view_deleted'))
-                       <a href="{{route('comite.restore', $comite->idComite)}}" class='btn btn-outline-success'>Restablecer</a>
+                       <a href="{{route('comite.restore', $comite->idComite)}}" class='btn btn-primary text-dark'>Restablecer</a>
                        @else    
                         <form action="{{ route('comite.destroy', $comite->idComite) }}" method="post">
                             @csrf

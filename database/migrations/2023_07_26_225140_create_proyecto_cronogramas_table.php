@@ -15,7 +15,6 @@ class CreateProyectoCronogramasTable extends Migration
     {
         Schema::create('proyecto_cronogramas', function (Blueprint $table) {
             $table->bigIncrements("idCronograma");
-            $table->string("fases");
             $table->unsignedBigInteger("cron_sede");
             $table->foreign('cron_sede')->references('idSede')->on("sedes")->onDelete('cascade');
         });

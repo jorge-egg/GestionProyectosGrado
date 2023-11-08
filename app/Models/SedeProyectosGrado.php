@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $idProyecto
  * @property string $estado
  * @property string $codigoproyecto
+ * @property int $cantidad_integrantes
  * @property int $proy_sede
  * @property int $proy_bibl
  * 
@@ -35,6 +36,7 @@ class SedeProyectosGrado extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+		'cantidad_integrantes' => 'int',
 		'proy_sede' => 'int',
 		'proy_bibl' => 'int'
 	];
@@ -42,6 +44,7 @@ class SedeProyectosGrado extends Model
 	protected $fillable = [
 		'estado',
 		'codigoproyecto',
+		'cantidad_integrantes',
 		'proy_sede',
 		'proy_bibl'
 	];

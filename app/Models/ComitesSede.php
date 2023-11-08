@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * 
  * @property Sede $sede
+ * @property Collection|IntegrantesComite[] $integrantes_comites
  *
  * @package App\Models
  */
@@ -40,5 +42,10 @@ class ComitesSede extends Model
 	public function sede()
 	{
 		return $this->belongsTo(Sede::class, 'comi_sede');
+	}
+
+	public function integrantes_comites()
+	{
+		return $this->hasMany(IntegrantesComite::class, 'inte_comi');
 	}
 }
