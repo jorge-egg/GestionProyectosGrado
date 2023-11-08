@@ -42,9 +42,9 @@ class FasePropuestasController extends Controller
     $propuestas->desc_problema = $request->post('desc_problema');
     $propuestas->obj_general = $request->post('obj_general');
     $propuestas->obj_especificos = $request->post('obj_especificos');
-    $propuestas->estado = $request->post('estado');
-    $propuestas->fecha_cierre = $request->post('fecha_cierre');
-    $propuestas->prop_fase = $request->post('prop_fase');
+    //$propuestas->estado = $request->post('estado');
+    // $propuestas->fecha_cierre = $request->post('fecha_cierre');
+    // $propuestas->prop_fase = $request->post('prop_fase');
     $propuestas->save();
     return view('Layouts.proyecto.index')->with('success','Se ha agregado con exito');
     }
