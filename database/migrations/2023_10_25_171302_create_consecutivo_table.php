@@ -16,7 +16,7 @@ class CreateConsecutivoTable extends Migration
         Schema::create('consecutivo', function (Blueprint $table) {
             $table->id('IdConsecutivo');
             $table->integer('consecutivo');
-            $table->string('año');
+            $table->string('ano');
             $table->unsignedBigInteger("conc_sede");
             $table->foreign("conc_sede")->references("idSede")->on("sedes")->onDelete('cascade');
         });
