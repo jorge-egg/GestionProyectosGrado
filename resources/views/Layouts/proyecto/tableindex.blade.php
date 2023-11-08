@@ -13,18 +13,39 @@
                 <th scope="col">codigo proyecto</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($proyectos as $proyecto)
                 <tr>
-                    <td>{{ $programa->estado }}</td>
-                    <td>{{ $programa->codigoproyecto }}</td>
+                    <td>{{ $proyecto->estado }}</td>
+                    <td>{{ $proyecto->codigoproyecto }}</td>
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class="btn btn-outline-success">ver proyecto</button>
+                            <button type="submit" class='btn btn-primary text-dark'>ver propuesta</button>
                         </form>
+                    </td>
+                    <td>
+                        <form action="#" >
+                            @csrf
+                            <button type="submit" class='btn btn-primary text-dark'>ver anteproyecto</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="#" >
+                            @csrf
+                            <button type="submit" class='btn btn-primary text-dark'>ver sustentacion</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="#" >
+                            @csrf
+                            <button type="submit" class='btn btn-primary text-dark'>ver proyecto final</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
