@@ -1,3 +1,5 @@
+@include('notify::components.notify')
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -26,6 +28,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     @yield('styles')
+    @notifyCss
 </head>
 <body>
     <div id="app">
@@ -35,7 +38,10 @@
     </div>
     <script>
         @yield('script')
+
     </script>
+
+    @notifyJs
 </body>
 
 </html>

@@ -15,7 +15,7 @@ class CronogramassSeeder extends Seeder
     public function run()
     {
         DB::table('proyecto_cronogramas')->insert([
-            'fases' => 'activo',
+            'cron_sede'=> 1,
             ]);
     }
 }

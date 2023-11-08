@@ -1,5 +1,4 @@
 @extends('Layouts.app')
-
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
     @yield('estilos_adicionales')
@@ -11,7 +10,7 @@
                 <div class="logo">
                     <i class='bx bxs-universal-access'></i>
                     <div class="logo_name">
-                        UNIVERSIDAD
+
                     </div>
                 </div>
                 <i class='bx bx-menu' id="btn"></i>
@@ -48,7 +47,7 @@
                     <span class="tooltip">Proyectos</span>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ route('programa.index') }}">
                         <i class='bx bx-sitemap'></i>
                         <span class="links_name">Proyecto</span>
                     </a>
@@ -57,13 +56,13 @@
 
             </ul>
             <div id="div_cerrar_seccion" style="text-align: center;">
-                <a id="cerrar_seccion" href=""
-                    onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                    <img src="" alt="">
+                <a id="cerrar_seccion" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                    <img src="{{asset('img/logout.png')}}" alt="">
                 </a>
 
-                <form id="logout-form" action="" method="POST" class="d-none">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
             </div>
@@ -81,7 +80,9 @@
                 </div>
             </nav>
             @yield('js')
-        @yield('dashboard_content')
+            @yield('dashboard_content')
+            
+
         </div>
 
 @stop
@@ -93,4 +94,5 @@
     btn.onclick = function(){
         sidebar.classList.toggle('active');
     }
+    @yield('js_extra')
 @stop

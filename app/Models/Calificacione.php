@@ -14,11 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Calificacione
  * 
  * @property int $idCalificacion
- * @property string $cal_investigacion
- * @property string $cal_Descproblema
- * @property string $cal_titulo
- * @property string $cal_objgeneral
- * @property string $cal_objespecificos
+ * @property float $calificacion
  * @property int $cal_pro
  * @property int $cal_ante
  * @property int $cal_prof
@@ -32,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property FaseSustentacione $fase_sustentacione
  * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
  * @property Collection|ObservacionesCalificacione[] $observaciones_calificaciones
+ * @property Collection|ItemsCalificacio[] $items_calificacios
  *
  * @package App\Models
  */
@@ -41,6 +38,7 @@ class Calificacione extends Model
 	protected $primaryKey = 'idCalificacion';
 
 	protected $casts = [
+		'calificacion' => 'float',
 		'cal_pro' => 'int',
 		'cal_ante' => 'int',
 		'cal_prof' => 'int',
@@ -48,11 +46,7 @@ class Calificacione extends Model
 	];
 
 	protected $fillable = [
-		'cal_investigacion',
-		'cal_Descproblema',
-		'cal_titulo',
-		'cal_objgeneral',
-		'cal_objespecificos',
+		'calificacion',
 		'cal_pro',
 		'cal_ante',
 		'cal_prof',
@@ -87,5 +81,10 @@ class Calificacione extends Model
 	public function observaciones_calificaciones()
 	{
 		return $this->hasMany(ObservacionesCalificacione::class, 'obse_cal');
+	}
+
+	public function items_calificacios()
+	{
+		return $this->hasMany(ItemsCalificacio::class, 'item_cali');
 	}
 }

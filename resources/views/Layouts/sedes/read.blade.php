@@ -8,7 +8,7 @@
 <h1>Sedes</h1>
     <br>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='sede'>
-        <thead class='bg-primary text-white'>
+        <thead>
             <tr>
                 <th scope="col">Sede</th>
                 <th scope="col">Telefono</th>
@@ -32,19 +32,19 @@
                         <form action="{{ route('facultades.index', $sede->idSede) }}" method="get">
 
                             <input type="hidden" class="form-control" name="idSede" value="{{$sede->idSede}}">
-                            <button type="submit" class="btn btn-outline-info">Facultades</button>
+                            <button type="submit" class="btn btn-primary text-dark">Facultades</button>
                         </form>
                     </td>
                     <td>
-                        <form action="" method="post">
+                        <form action="{{ route('programa.index') }}" >
                             @csrf
-                            <button type="submit" class="btn btn-outline-info">Programas</button>
+                            <button type="submit" class="btn btn-primary text-dark">Programas</button>
                         </form>
                     </td>
                     <td>
-                        <form action="" method="post">
+                        <form action="{{ route('comite.index') }}">
                             @csrf
-                            <button type="submit" class="btn btn-outline-info">Comites</button>
+                            <button type="submit" class="btn btn-primary text-dark">Comites</button>
                         </form>
                     </td>
 

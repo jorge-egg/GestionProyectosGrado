@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +19,18 @@ class UsersSeeder extends Seeder
         User::create([
             'usuario' => 'admin',
             'password' => Hash::make('123456'),
-            ])->assignRole('superadministrador');
-            User::create([
-                'usuario' => 'julio',
-                'password' => Hash::make('123456'),
-                ])->assignRole('administrador');
-                User::create([
-                    'usuario' => 'mariana',
-                    'password' => Hash::make('123456'),
-                    ])->assignRole('administrador');
+        ])->assignRole('superadministrador');
+        User::create([
+            'usuario' => '133978936',
+            'password' => Hash::make('123456'),
+        ])->assignRole('administrador');
+        User::create([
+            'usuario' => '748392749',
+            'password' => Hash::make('123456'),
+        ])->assignRole('administrador');
+        User::create([
+            'usuario' => '1193248110',
+            'password' => Hash::make('123456'),
+        ])->assignRole('administrador');
     }
 }

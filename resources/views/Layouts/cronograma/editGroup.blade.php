@@ -6,9 +6,10 @@
 
 @section('dashboard_content')
     <div class="card">
-        <h5 class="card-header">EDITAR CRONOGRAMA</h5>
-        <form action="#">
-        <div class="card-body">
+        <h5 class="card-header">EDITAR GRUPO</h5>
+        <form action="{{ route('grupo.update', $grupoFechas[0]->fech_grup) }}" method="POST">
+            @csrf
+            <div class="card-body">
 
                 <section>
                     <b>
@@ -18,11 +19,13 @@
 
                         <div class="date-padding">
                             <label for="">Fecha de apertura</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_apertura_1' class='form-control'
+                                value="{{ $grupoFechas[0]->fecha_apertura->toDateString() }}" required>
                         </div>
                         <div class="date-padding">
                             <label for="">Fecha de cierre</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_cierre_1' class='form-control'
+                                value="{{ $grupoFechas[0]->fecha_cierre->toDateString() }}" required>
                         </div>
 
                     </div>
@@ -36,11 +39,13 @@
 
                         <div class="date-padding">
                             <label for="">Fecha de apertura</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_apertura_2' class='form-control'
+                                value="{{ $grupoFechas[1]->fecha_apertura->toDateString() }}" required>
                         </div>
                         <div class="date-padding">
                             <label for="">Fecha de cierre</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_cierre_2' class='form-control'
+                                value="{{ $grupoFechas[1]->fecha_cierre->toDateString() }}" required>
                         </div>
 
                     </div>
@@ -53,11 +58,13 @@
 
                         <div class="date-padding">
                             <label for="">Fecha de apertura</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_apertura_3' class='form-control'
+                                value="{{ $grupoFechas[2]->fecha_apertura->toDateString() }}" required>
                         </div>
                         <div class="date-padding">
                             <label for="">Fecha de cierre</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_cierre_3' class='form-control'
+                                value="{{ $grupoFechas[2]->fecha_cierre->toDateString() }}" required>
                         </div>
 
                     </div>
@@ -70,22 +77,24 @@
 
                         <div class="date-padding">
                             <label for="">Fecha de apertura</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_apertura_4' class='form-control'
+                                value="{{ $grupoFechas[3]->fecha_apertura->toDateString() }}" required>
                         </div>
                         <div class="date-padding">
                             <label for="">Fecha de cierre</label>
-                            <input type="date" name='fecha_cierre' class='form-control' required>
+                            <input type="date" name='fecha_cierre_4' class='form-control'
+                                value="{{ $grupoFechas[3]->fecha_cierre->toDateString() }}" required>
                         </div>
 
                     </div>
                 </section>
 
                 <br>
-                <button Class='btn btn-outline-info'>editar</button>
+                <button Class='btn btn-outline-info'>Actualizar</button>
 
-            </p>
-        </div>
-    </form>
+                </p>
+            </div>
+        </form>
     </div>
 
 

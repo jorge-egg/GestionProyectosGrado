@@ -15,9 +15,10 @@ class CreateFaseAnteproyectosTable extends Migration
     {
         Schema::create('fase_anteproyectos', function (Blueprint $table) {
             $table->bigIncrements("idAnteproyecto");
-            $table->unsignedBigInteger("ante_fase");
+            $table->unsignedBigInteger("ante_proy");
 
-            $table->foreign("ante_fase")->references("idFase")->on("proyecto_fases")->onDelete('cascade');
+            $table->foreign('ante_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
+
         });
     }
 

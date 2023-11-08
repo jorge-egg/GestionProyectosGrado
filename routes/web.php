@@ -5,6 +5,7 @@ use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\FasePropuestasController;
 use App\Http\Controllers\ProyectosController;
+use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
 use App\Models\CronogramaGrupo;
@@ -50,20 +51,34 @@ Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->n
 
 //proyectos
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
-Route::get('/proyectos/create', [ProyectosController::class, 'create'])->name('proyecto.create');
+Route::get('/proyectos/indextable', [ProyectosController::class, 'indextable'])->name('proyecto.indextable');
+Route::post('/proyectos/create/{integrantes}', [ProyectosController::class, 'create'])->name('proyecto.create');
+Route::get('/usuario/consulta', [ProyectosController::class, 'buscarIntegrante'])->name('buscarIntegrante');
 
-//comites 
+//comites
 Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
 Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
 Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
+Route::post('/comites/update/{idComite}', [ComitesController::class, 'update'])->name('comite.update');
+Route::post('/comites/destroy/{idComite}', [ComitesController::class, 'destroy'])->name('comite.destroy');
+Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restore'])->name('comite.restore');
+
+//programas
+Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programa.index');
+Route::get('/programas/create', [SedeProgramaController::class, 'create'])->name('programa.create');
+Route::post('/programas/edit', [SedeProgramaController::class, 'edit'])->name('programa.edit');
+Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
+Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
+Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class, 'restore'])->name('programa.restore');
 
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
 Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
-Route::post('/grupos/edit', [CronogramaController::class, 'edit'])->name('grupo.edit');
+Route::get('/grupos/edit/{id}', [CronogramaController::class, 'edit'])->name('grupo.edit');
+Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->name('grupo.update');
 
 
-//propuesta 
+//propuesta
 Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
 Route::get('/propuestas/create', [FasePropuestasController::class, 'create'])->name('propuesta.create');
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');

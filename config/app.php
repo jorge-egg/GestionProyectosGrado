@@ -165,6 +165,10 @@ return [
         //laravel permissions
         Spatie\Permission\PermissionServiceProvider::class,
 
+
+        //laravel notifications
+        Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
+
         /*
          * Package Service Providers...
          */

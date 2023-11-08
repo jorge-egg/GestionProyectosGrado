@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\comites;
 use App\Http\Requests\StorecomitesRequest;
 use App\Http\Requests\UpdatecomitesRequest;
 use App\Models\ComitesSede;
-use Request;
+use Illuminate\Http\Request;
+
 
 class ComitesController extends Controller
 {
@@ -17,8 +17,12 @@ class ComitesController extends Controller
      */
     public function index(Request $request)
     {
+        
         $comites = ComitesSede::all();
-        return view('Layouts.propuesta.index', compact('propuestas'));
+        if($request->has('view_deleted')){
+            $comites=ComitesSede::onlyTrashed()->get();
+        }
+        return view('Layouts.comites.index', compact('comites'));
     }
 
     /**
@@ -56,34 +60,46 @@ class ComitesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\comites  $comites
+     * @param  \App\Models\ComitesSede  $comites
      * @return \Illuminate\Http\Response
      */
-    public function edit(comites $comites)
+    public function edit(ComitesSede $comites)
     {
-        //
+        return view('Layouts.comites.update');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatecomitesRequest  $request
-     * @param  \App\Models\comites  $comites
+     * @param  \App\Models\ComitesSede  $comites
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatecomitesRequest $request, comites $comites)
+    public function update(UpdateComitesSedeRequest $request, ComitesSede $comites)
     {
         //
+    }
+    public function restore($id)
+    {
+        ComitesSede::withTrashed()->find($id)->restore();
+        return redirect()->route('comite.index')->with('success','se restablecio el registro');
+    }
+    public function forcedelete($id)
+    {
+        $usuarios=ComitesSede::onlyTrashed()->find($id);
+        $usuarios->forcedelete();
+        return redirect()->route('comite.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\comites  $comites
+     * @param  \App\Models\ComitesSede  $comites
      * @return \Illuminate\Http\Response
      */
-    public function destroy(comites $comites)
+    public function destroy($id)
     {
-        //
+    ComitesSede::find($id)->delete();
+    return back()->with('success','se elimino el registro');
     }
 }

@@ -28,7 +28,7 @@
                 <textarea class="form-control" placeholder="Leave a comment here" name="obj_especificos" required></textarea>
                 <label for="">Objetivos específicos</label>
             </div>
-            <br>
+            <!-- <br>
             <div><label for="">estado</label>
             <input type="text" name='estado' class='form-control' required>
             </div>
@@ -37,9 +37,9 @@
             </div>
             <div><label for="">prop_fase</label>
             <input type="text" name='prop_fase' class='form-control' required>
-            </div>
+            </div> -->
             <br>
-            <button Class='btn btn-outline-info'>Agregar</button>
+            <button Class='btn btn-primary text-dark'>Agregar</button>
         </form>
         </p>
 

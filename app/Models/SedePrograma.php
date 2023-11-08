@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class SedePrograma
@@ -17,15 +19,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $prog_facu
  * @property int $prog_sede
  * @property int $prog_usua
+ * @property string|null $deleted_at
  * 
  * @property SedesFacultade $sedes_facultade
  * @property Sede $sede
  * @property UsuariosUser $usuarios_user
+ * @property Collection|UsuarioPrograma[] $usuario_programas
  *
  * @package App\Models
  */
 class SedePrograma extends Model
 {
+	use SoftDeletes;
 	protected $table = 'sede_programas';
 	protected $primaryKey = 'idPrograma';
 	public $timestamps = false;
@@ -57,5 +62,10 @@ class SedePrograma extends Model
 	public function usuarios_user()
 	{
 		return $this->belongsTo(UsuariosUser::class, 'prog_usua');
+	}
+
+	public function usuario_programas()
+	{
+		return $this->hasMany(UsuarioPrograma::class, 'programa');
 	}
 }

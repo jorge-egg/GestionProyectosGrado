@@ -13,16 +13,18 @@ use Illuminate\Database\Eloquent\Model;
  * Class SedeProyectosGrado
  * 
  * @property int $idProyecto
- * @property string $estado
+ * @property bool $estado
  * @property string $codigoproyecto
- * @property string $integrante1
- * @property string $integrante2
  * @property int $proy_sede
  * @property int $proy_bibl
  * 
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
- * @property Collection|ProyectoFase[] $proyecto_fases
+ * @property Collection|FasePropuesta[] $fase_propuestas
+ * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
+ * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
+ * @property Collection|FaseSustentacione[] $fase_sustentaciones
+ * @property Collection|Integrante[] $integrantes
  *
  * @package App\Models
  */
@@ -33,6 +35,7 @@ class SedeProyectosGrado extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+		'estado' => 'bool',
 		'proy_sede' => 'int',
 		'proy_bibl' => 'int'
 	];
@@ -40,8 +43,6 @@ class SedeProyectosGrado extends Model
 	protected $fillable = [
 		'estado',
 		'codigoproyecto',
-		'integrante1',
-		'integrante2',
 		'proy_sede',
 		'proy_bibl'
 	];
@@ -56,8 +57,28 @@ class SedeProyectosGrado extends Model
 		return $this->belongsTo(SedeBiblioteca::class, 'proy_bibl');
 	}
 
-	public function proyecto_fases()
+	public function fase_propuestas()
 	{
-		return $this->hasMany(ProyectoFase::class, 'fase_proy');
+		return $this->hasMany(FasePropuesta::class, 'prop_proy');
+	}
+
+	public function fase_anteproyectos()
+	{
+		return $this->hasMany(FaseAnteproyecto::class, 'ante_proy');
+	}
+
+	public function fase_proyectosfinales()
+	{
+		return $this->hasMany(FaseProyectosfinale::class, 'pfin_proy');
+	}
+
+	public function fase_sustentaciones()
+	{
+		return $this->hasMany(FaseSustentacione::class, 'sust_proy');
+	}
+
+	public function integrantes()
+	{
+		return $this->hasMany(Integrante::class, 'proyecto');
 	}
 }
