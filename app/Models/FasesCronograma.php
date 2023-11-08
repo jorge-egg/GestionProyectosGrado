@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idFase
  * @property string $fase
- * @property int $fase_cron
+ * @property int $fase_fech
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property ProyectoCronograma $proyecto_cronograma
+ * @property FechasGrupo $fechas_grupo
  *
  * @package App\Models
  */
@@ -28,16 +28,16 @@ class FasesCronograma extends Model
 	protected $primaryKey = 'idFase';
 
 	protected $casts = [
-		'fase_cron' => 'int'
+		'fase_fech' => 'int'
 	];
 
 	protected $fillable = [
 		'fase',
-		'fase_cron'
+		'fase_fech'
 	];
 
-	public function proyecto_cronograma()
+	public function fechas_grupo()
 	{
-		return $this->belongsTo(ProyectoCronograma::class, 'fase_cron');
+		return $this->belongsTo(FechasGrupo::class, 'fase_fech');
 	}
 }

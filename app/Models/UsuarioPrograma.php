@@ -10,32 +10,32 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class IntegrantesComite
+ * Class UsuarioPrograma
  * 
- * @property int $idIntegrantesComite
+ * @property int $idUsuario_programa
  * @property int $usuario
- * @property int $comite
+ * @property int $programa
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property UsuariosUser $usuarios_user
- * @property ComitesSede $comites_sede
+ * @property SedePrograma $sede_programa
  *
  * @package App\Models
  */
-class IntegrantesComite extends Model
+class UsuarioPrograma extends Model
 {
-	protected $table = 'integrantes_comites';
-	protected $primaryKey = 'idIntegrantesComite';
+	protected $table = 'usuario_programas';
+	protected $primaryKey = 'idUsuario_programa';
 
 	protected $casts = [
 		'usuario' => 'int',
-		'comite' => 'int'
+		'programa' => 'int'
 	];
 
 	protected $fillable = [
 		'usuario',
-		'comite'
+		'programa'
 	];
 
 	public function usuarios_user()
@@ -43,8 +43,8 @@ class IntegrantesComite extends Model
 		return $this->belongsTo(UsuariosUser::class, 'usuario');
 	}
 
-	public function comites_sede()
+	public function sede_programa()
 	{
-		return $this->belongsTo(ComitesSede::class, 'comite');
+		return $this->belongsTo(SedePrograma::class, 'programa');
 	}
 }

@@ -50,7 +50,7 @@
                     </td>
                     <td>
                        @if(request()->has('view_deleted'))
-                       <a href="{{route('programa.restore', $programa->idPrograma)}}" class='btn btn-outline-success'>Restablecer</a>
+                       <a href="{{route('programa.restore', $programa->idPrograma)}}" class='btn btn-primary text-dark'>Restablecer</a>
                        @else    
                         <form action="{{ route('programa.destroy', $programa->idPrograma) }}" method="post">
                             @csrf
