@@ -23,7 +23,7 @@ class ProyectosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    
+
     {
 
         try {
@@ -35,7 +35,6 @@ class ProyectosController extends Controller
                 ->select('sede_proyectos_grado.estado')
                 ->first()
                 ->estado;
-            
         } catch (Exception $e) {
             $estado = false;
         }
@@ -62,9 +61,9 @@ class ProyectosController extends Controller
             ->join('consecutivo', 'consecutivo.conc_sede', 'sedes.idSede')
             ->take(1)
             ->select('consecutivo.*')
-            ->first();
+            ->get();
 
-        $consecutivo = $this->validarConsecutivo($anoActual, $consecutivoData);
+        $consecutivo = $this->validarConsecutivo($anoActual, $consecutivoData, $idSede);
 
         SedeProyectosGrado::create([
             'estado' => true,
@@ -78,17 +77,29 @@ class ProyectosController extends Controller
         return redirect()->route('proyecto.index');
     }
 
-    public function validarConsecutivo($anoActual, $consecutivoData) //verifica y obtiene el consecutivo segun el año actual
+    public function validarConsecutivo($anoActual, $consecutivoData, $idSede) //verifica y obtiene el consecutivo segun el año actual
     {
-        $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->IdConsecutivo);
-        if ($anoActual > $consecutivoData->año) {
-            $tabelConsecutivo->consecutivo = 0;
-            $tabelConsecutivo->año = $anoActual;
-            $tabelConsecutivo->save();
+        if (count($consecutivoData) > 0) {
+            $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->IdConsecutivo);
+
+            if ($anoActual > $consecutivoData->año) {
+                $tabelConsecutivo->consecutivo = 0;
+                $tabelConsecutivo->ano = $anoActual;
+                $tabelConsecutivo->save();
+            } else {
+                $tabelConsecutivo->consecutivo++;
+                $tabelConsecutivo->save();
+            }
         } else {
-            $tabelConsecutivo->consecutivo++;
-            $tabelConsecutivo->save();
+            Consecutivo::create([
+                'consecutivo' => 0,
+                'ano' => $anoActual,
+                'conc_sede' => $idSede,
+            ]);
+            $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->IdConsecutivo);
         }
+
+
         return $tabelConsecutivo->consecutivo < 10 ? '0' . $tabelConsecutivo->consecutivo : $tabelConsecutivo->consecutivo;
     }
 
