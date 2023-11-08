@@ -10,7 +10,7 @@
                 <div class="logo">
                     <i class='bx bxs-universal-access'></i>
                     <div class="logo_name">
-                        UNIVERSIDAD
+
                     </div>
                 </div>
                 <i class='bx bx-menu' id="btn"></i>

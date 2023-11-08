@@ -15,7 +15,7 @@ class CreateSedeProyectosGradoTable extends Migration
     {
         Schema::create('sede_proyectos_grado', function (Blueprint $table) {
             $table->bigIncrements("idProyecto");
-            $table->string("estado");
+            $table->boolean("estado");
             $table->string("codigoproyecto");
             $table->unsignedBigInteger("proy_sede");
             $table->unsignedBigInteger("proy_bibl");
