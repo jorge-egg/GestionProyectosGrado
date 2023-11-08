@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GruposSeeder::class);
         $this->call(FechasSeeder::class);
         $this->call(BibliotecasSeeder::class);
-        $this->call(ProyectosSeeder::class);
-        $this->call(ProgramasSeeder::class); 
+        $this->call(ProgramasSeeder::class);
     }
 }
