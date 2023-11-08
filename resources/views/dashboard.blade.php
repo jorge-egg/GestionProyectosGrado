@@ -3,7 +3,7 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
     @yield('estilos_adicionales')
-    
+
 @stop
 
 
@@ -59,13 +59,13 @@
 
             </ul>
             <div id="div_cerrar_seccion" style="text-align: center;">
-                <a id="cerrar_seccion" href=""
-                    onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                    <img src="" alt="">
+                <a id="cerrar_seccion" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                    <img src="{{asset('img/logout.png')}}" alt="">
                 </a>
 
-                <form id="logout-form" action="" method="POST" class="d-none">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
             </div>

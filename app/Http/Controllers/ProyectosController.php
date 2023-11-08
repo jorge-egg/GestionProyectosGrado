@@ -24,6 +24,7 @@ class ProyectosController extends Controller
      */
     public function index()
     {
+
         try {
             //Consultar si el usuario tiene un proyecto activo para bloquear la opcion de crear otro
             $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first()->numeroDocumento;
@@ -33,6 +34,7 @@ class ProyectosController extends Controller
                 ->select('sede_proyectos_grado.estado')
                 ->first()
                 ->estado;
+            
         } catch (Exception $e) {
             $estado = false;
         }
