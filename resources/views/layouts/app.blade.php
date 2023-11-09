@@ -8,6 +8,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>SEGETGRA</title>
+    <link rel="shortcut icon" href="{{ asset('imgs/logos/logoAunar2.png') }}" type="image/x-icon">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
