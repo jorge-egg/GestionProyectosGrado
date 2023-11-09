@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Sede $sede
  * @property Collection|CronogramaGrupo[] $cronograma_grupos
- * @property Collection|FasesCronograma[] $fases_cronogramas
  *
  * @package App\Models
  */
@@ -43,10 +42,5 @@ class ProyectoCronograma extends Model
 	public function cronograma_grupos()
 	{
 		return $this->hasMany(CronogramaGrupo::class, 'grup_cron');
-	}
-
-	public function fases_cronogramas()
-	{
-		return $this->hasMany(FasesCronograma::class, 'fase_cron');
 	}
 }

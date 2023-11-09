@@ -27,7 +27,7 @@
 <a href="{{route('comite.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-outline-warning'>Consultar comites eliminados</a>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='comite'>
-        <thead class='bg-primary text-white'>
+        <thead>
             <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col"></th>
