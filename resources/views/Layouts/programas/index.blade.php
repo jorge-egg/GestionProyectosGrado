@@ -29,7 +29,7 @@
 <a href="{{route('comite.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-outline-warning'>Consultar comites eliminados</a>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='prog'>
-        <thead class='bg-primary text-white'>
+        <thead>
             <tr>
                 <th scope="col">Programa</th>
                 <th scope="col">Siglas</th>
@@ -50,7 +50,7 @@
                     </td>
                     <td>
                        @if(request()->has('view_deleted'))
-                       <a href="{{route('programa.restore', $programa->idPrograma)}}" class='btn btn-outline-success'>Restablecer</a>
+                       <a href="{{route('programa.restore', $programa->idPrograma)}}" class='btn btn-primary text-dark'>Restablecer</a>
                        @else    
                         <form action="{{ route('programa.destroy', $programa->idPrograma) }}" method="post">
                             @csrf

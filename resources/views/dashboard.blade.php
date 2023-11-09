@@ -1,12 +1,9 @@
 @extends('Layouts.app')
-@yield('css')
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
     @yield('estilos_adicionales')
-
 @stop
-
-
+@yield('css')
 @section('content')
         <div class="sidebar">
             <div class="logo_content">
@@ -82,8 +79,9 @@
                     @endguest
                 </div>
             </nav>
-            @yield('dashboard_content')
             @yield('js')
+            @yield('dashboard_content')
+            
 
         </div>
 

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $IdConsecutivo
  * @property int $consecutivo
- * @property string $año
+ * @property string $ano
  * @property int $conc_sede
  *
  * @property Sede $sede

@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|Integrante[] $integrantes
  * @property Collection|IntegrantesComite[] $integrantes_comites
+ * @property Collection|UsuarioPrograma[] $usuario_programas
  *
  * @package App\Models
  */
@@ -76,6 +77,11 @@ class UsuariosUser extends Model
 
 	public function integrantes_comites()
 	{
-		return $this->hasMany(IntegrantesComite::class, 'comite_usuario');
+		return $this->hasMany(IntegrantesComite::class, 'usuario');
+	}
+
+	public function usuario_programas()
+	{
+		return $this->hasMany(UsuarioPrograma::class, 'usuario');
 	}
 }

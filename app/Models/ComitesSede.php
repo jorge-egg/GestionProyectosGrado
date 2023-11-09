@@ -46,6 +46,6 @@ class ComitesSede extends Model
 
 	public function integrantes_comites()
 	{
-		return $this->hasMany(IntegrantesComite::class, 'inte_comi');
+		return $this->hasMany(IntegrantesComite::class, 'comite');
 	}
 }
