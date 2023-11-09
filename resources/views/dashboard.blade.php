@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="contenido">
-            <nav class="navbar">
+            <header>
                 <div class="container">
                     @guest
                     @else
@@ -78,10 +78,10 @@
                         </div>
                     @endguest
                 </div>
-            </nav>
+            </header>
             @yield('js')
             @yield('dashboard_content')
-            
+            @yield('js_extra')
 
         </div>
 
@@ -94,5 +94,5 @@
     btn.onclick = function(){
         sidebar.classList.toggle('active');
     }
-    @yield('js_extra')
+    
 @stop

@@ -26,13 +26,14 @@ h1{
     font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
     color: #333333;
 }
-.navbar{
+header{
     position: fixed;
     background-color: #003E65;
     width: calc(100% - 77px);
     max-height: 102px;
     left: 77px;
     top: 0;
+    z-index: 2;
 }
 
 .container{

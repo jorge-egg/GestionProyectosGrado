@@ -17,7 +17,7 @@
     background: #003E65;
     padding: 6px 14px;
     transition: all 0.5s ease;
-    z-index: 1;
+    z-index: 3;
 }
 
 .sidebar.active{

@@ -14,6 +14,7 @@ use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeBiblioteca;
 use App\Models\SedeProyectosGrado;
+use App\Models\UsuarioPrograma;
 
 class ProyectosController extends Controller
 {
@@ -42,8 +43,15 @@ class ProyectosController extends Controller
 
         return view('Layouts.proyecto.index', compact('estado'));
     }
-    public function indextable(Request $request){
-        $proyectos = SedeProyectosGrado::all();
+
+
+    //index para mostrar todos los proyectos del usuario
+    public function indextable(){
+        $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $proyectos = Integrante::join('sede_proyectos_grado', 'sede_proyectos_grado.idProyecto', 'integrantes.proyecto')
+                    ->where('usuario', $usuario->numeroDocumento)
+                    ->orderBy('idProyecto', 'asc')
+                    ->get();
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
@@ -60,7 +68,11 @@ class ProyectosController extends Controller
         $usuario         = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $idSede          = $usuario->usua_sede;
         $idBiblioteca    = SedeBiblioteca::where('bibl_sede', $idSede)->orderBy('idBiblioteca', 'desc')->first()->bibl_sede;
-        $programa        = SedePrograma::where('prog_usua', $usuario->numeroDocumento)->first();
+        $programa        = UsuarioPrograma::join('sede_programas', 'sede_programas.idPrograma', 'usuario_programas.programa')
+                            ->where('usuario', $usuario->numeroDocumento)
+                            ->select('sede_programas.siglas')
+                            ->first();
+
         $consecutivoData = Sede::join('usuarios_users as usuarios', 'usuarios.usua_sede', 'sedes.idSede')
             ->join('consecutivo', 'consecutivo.conc_sede', 'sedes.idSede')
             ->take(1)
@@ -85,7 +97,7 @@ class ProyectosController extends Controller
         if (count($consecutivoData->get()) > 0) {
             $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->first()->IdConsecutivo);
 
-            if ($anoActual > $consecutivoData->first()->año) {
+            if ($anoActual > $consecutivoData->first()->ano) {
                 $tabelConsecutivo->consecutivo = 0;
                 $tabelConsecutivo->ano = $anoActual;
                 $tabelConsecutivo->save();
