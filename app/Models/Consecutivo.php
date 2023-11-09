@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Consecutivo
- * 
+ *
  * @property int $IdConsecutivo
  * @property int $consecutivo
  * @property string $año
  * @property int $conc_sede
- * 
+ *
  * @property Sede $sede
  *
  * @package App\Models
@@ -33,7 +33,7 @@ class Consecutivo extends Model
 
 	protected $fillable = [
 		'consecutivo',
-		'año',
+		'ano',
 		'conc_sede'
 	];
 

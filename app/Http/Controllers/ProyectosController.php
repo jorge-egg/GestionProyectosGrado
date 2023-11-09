@@ -6,12 +6,13 @@ use notify;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
-use App\Models\Consecutivo;
+use App\Models\Consecutvo;
 use App\Models\Integrante;
-use App\Models\SedeBiblioteca;
+use App\Models\Consecutivo;
 use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
+use App\Models\SedeBiblioteca;
 use App\Models\SedeProyectosGrado;
 
 class ProyectosController extends Controller
@@ -59,14 +60,12 @@ class ProyectosController extends Controller
         $usuario         = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $idSede          = $usuario->usua_sede;
         $idBiblioteca    = SedeBiblioteca::where('bibl_sede', $idSede)->orderBy('idBiblioteca', 'desc')->first()->bibl_sede;
-        $programa        = SedePrograma::all()->where('prog_usua', $usuario->numeroDocumento)->first();
+        $programa        = SedePrograma::where('prog_usua', $usuario->numeroDocumento)->first();
         $consecutivoData = Sede::join('usuarios_users as usuarios', 'usuarios.usua_sede', 'sedes.idSede')
             ->join('consecutivo', 'consecutivo.conc_sede', 'sedes.idSede')
             ->take(1)
-            ->select('consecutivo.*')
-            ->get();
-
-        $consecutivo = $this->validarConsecutivo($anoActual, $consecutivoData, $idSede);
+            ->select('consecutivo.*');
+        $consecutivo = $this->validarConsecutivo($anoActual, $idSede, $consecutivoData);
 
         SedeProyectosGrado::create([
             'estado' => true,
@@ -80,12 +79,13 @@ class ProyectosController extends Controller
         return redirect()->route('proyecto.index');
     }
 
-    public function validarConsecutivo($anoActual, $consecutivoData, $idSede) //verifica y obtiene el consecutivo segun el año actual
+    public function validarConsecutivo($anoActual, $idSede, $consecutivoData) //verifica y obtiene el consecutivo segun el año actual
     {
-        if (count($consecutivoData) > 0) {
-            $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->IdConsecutivo);
 
-            if ($anoActual > $consecutivoData->año) {
+        if (count($consecutivoData->get()) > 0) {
+            $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->first()->IdConsecutivo);
+
+            if ($anoActual > $consecutivoData->first()->año) {
                 $tabelConsecutivo->consecutivo = 0;
                 $tabelConsecutivo->ano = $anoActual;
                 $tabelConsecutivo->save();
@@ -94,12 +94,13 @@ class ProyectosController extends Controller
                 $tabelConsecutivo->save();
             }
         } else {
+
             Consecutivo::create([
                 'consecutivo' => 0,
                 'ano' => $anoActual,
                 'conc_sede' => $idSede,
             ]);
-            $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->IdConsecutivo);
+            $tabelConsecutivo = Consecutivo::findOrFail($consecutivoData->first()->IdConsecutivo);
         }
 
 
