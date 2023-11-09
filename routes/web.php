@@ -80,7 +80,7 @@ Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->nam
 
 //propuesta
 Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
-Route::get('/propuestas/create', [FasePropuestasController::class, 'create'])->name('propuesta.create');
+Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
 
