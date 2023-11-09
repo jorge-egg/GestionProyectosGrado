@@ -50,7 +50,7 @@
     </div>
 @stop
 
-@section('js')
+@section('js_extra')
     <script>
         $('.campoFechas').each(function() {
             var fechaAbierto = new Date($(this).find('.fechaAbierto').text()).toLocaleDateString();

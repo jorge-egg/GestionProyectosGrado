@@ -20,10 +20,14 @@
         <tbody>
             @foreach ($proyectos as $proyecto)
                 <tr>
-                    <td>{{ $proyecto->estado }}</td>
+                    <td>@if ( $proyecto->estado )
+                        Activo
+                        @else
+                        Finalizado
+                    @endif</td>
                     <td>{{ $proyecto->codigoproyecto }}</td>
                     <td>
-                        <form action="#" >
+                        <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="post">
                             @csrf
                             <button type="submit" class='btn btn-primary text-dark'>ver propuesta</button>
                         </form>

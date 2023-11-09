@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Consecutivo
- * 
+ *
  * @property int $IdConsecutivo
  * @property int $consecutivo
  * @property string $ano
  * @property int $conc_sede
- * 
+ *
  * @property Sede $sede
  *
  * @package App\Models
