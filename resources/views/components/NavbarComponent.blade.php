@@ -6,7 +6,7 @@
     </section>
     <div id="logoTitulo">
         <div class="logo col-sm-6">
-                <img src="{{ asset('imgs/logos/logoAunar.png') }}" width="180" alt="Logo">
+                <img src="{{ asset('imgs/logos/escudo.png') }}" width="120" alt="Logo">
         </div>
         <div class="titulo col-sm-6">
             <h2>SEGETGRA</h2>

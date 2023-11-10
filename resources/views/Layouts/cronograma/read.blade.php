@@ -10,7 +10,7 @@
     </div>
     <div>
         <form action="{{ route('grupo.create') }}" method="get">
-            <button class="btn btn-primary">Nuevo grupo</button>
+            <button class="btn " style="background:#003E65; color:#fff">Nuevo grupo</button>
         </form>
         <table class="table">
             <thead class="encabezado">

@@ -90,7 +90,7 @@
                 </section>
 
                 <br>
-                <button Class='btn btn-outline-info'>Actualizar</button>
+                <button Class="btn" style="background:#003E65; color:#fff">Actualizar</button>
 
                 </p>
             </div>
