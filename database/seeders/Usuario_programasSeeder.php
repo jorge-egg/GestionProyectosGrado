@@ -24,12 +24,17 @@ class Usuario_programasSeeder extends Seeder
                 ]);
                 DB::table('usuario_programas')->insert([
                     'usuario' =>748392749,
-                    'programa'=>2,
+                    'programa'=>1,
                     ]);
+                    DB::table('usuario_programas')->insert([
+                        'usuario' =>1193248110,
+                        'programa'=>1,
+                        ]);           
                     DB::table('usuario_programas')->insert([
                         'usuario' =>1193248110,
                         'programa'=>3,
                         ]);
+
 
     }
 }

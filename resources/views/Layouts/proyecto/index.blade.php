@@ -25,14 +25,12 @@
                 proyecto
             </button>
         @else
-            <button type="submit" class="btn btn-outline-primary btnGrandeRectangular" data-bs-toggle="modal"
-            data-bs-target="#confirmacionIntegrante">Crear un
-            proyecto
-            </button>
+            <button type="submit" class="btn btn-primary  btnGrandeRectangular" data-bs-toggle="modal"
+            data-bs-target="#confirmacionIntegrante">Crear un proyecto</button>
         @endif
 
         <form action="{{ route('proyecto.indextable') }}" method="get">
-            <button type="submit" class="btn btn-outline-warning btnGrandeRectangular">Crear Prouesta</button>
+            <button type="submit" class="btn btn-primary  btnGrandeRectangular">Crear Prouesta</button>
         </form>
 
     </div>

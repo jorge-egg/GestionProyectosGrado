@@ -83,7 +83,7 @@
 
                 <br>
                 <input type="hidden" value="{{ $idCronograma }}" name="idCronograma">
-                <button Class='btn btn-outline-info'>Crear</button>
+                <button Class="btn" style="background:#003E65; color:#fff">Crear</button>
 
                 </p>
             </div>

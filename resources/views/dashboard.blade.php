@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
     @yield('estilos_adicionales')
 @stop
-@yield('css')
+
 @section('content')
         <div class="sidebar">
 
@@ -46,7 +46,7 @@
                 <a id="cerrar_seccion" href="{{ route('logout') }}"
                    onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
-                    <img src="{{asset('img/logout.png')}}" alt="">
+                    <img src="{{ asset('imgs/logos/cerrar.png') }}" alt="">
                 </a>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -64,8 +64,8 @@
                     @guest
                     @else
                         <div class="logo_name">
-                            <img src="" alt="" width="70">
-                            <div class="title"></div>
+                            <img src="{{ asset('imgs/logos/escudo.png') }}" alt="" width="70">
+                            <div class="title">SEGETGRA</div>
                         </div>
                     @endguest
                 </div>
