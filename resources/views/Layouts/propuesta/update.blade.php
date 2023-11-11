@@ -28,7 +28,7 @@
                 <label for="obj_especificos">Objetivo específicos</label>
             </div>
             <br>
-            <button Class='btn btn-primary text-dark'>Agregar</button>
+            <button Class="btn" style="background:#003E65; color:#fff">Agregar</button>
         </form>
         </p>
 

@@ -11,35 +11,40 @@
     --black-color: #000;
 }
 
-body::-webkit-scrollbar-track-piece {
+/* body::-webkit-scrollbar-track-piece {
     background-color: #fbfbfb;
-}
+} */
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
     width: 0.5em;
-}
+} */
 
-body::-webkit-scrollbar-thumb {
+/* body::-webkit-scrollbar-thumb {
     background-color: #2E3192;
     border-radius: 10px;
-}
+} */
 
-body{
+/* body{
     font-family: 'Roboto', sans-serif;
     background-color: #fbfbfb;
+} */
+
+body{
+    background: rgb(218,216,0);
+background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(240,255,162,1) 50%, rgba(0,62,101,0.96) 61%);
 }
 
-li{
+/* li{
     list-style: none;
     text-decoration: none;
-}
+} */
 
-a{
+/* a{
     text-decoration: none;
     color: #000;
-}
+} */
 
-.card-glass{
+/* .card-glass{
     background: rgba( 46, 49, 146, 0.3 );
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 11px );
@@ -48,9 +53,9 @@ a{
     color: #fbfbfb;
     min-width: 370px;
     min-height: 370px;
-}
+} */
 
-.skewed {
+/* .skewed {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -62,9 +67,9 @@ a{
     z-index: -100;
     transform: skewY(-16deg);
     transform-origin: top left;
-}
+} */
 
-.skewedNavbar{
+/* .skewedNavbar{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -76,7 +81,7 @@ a{
     z-index: -100;
     transform: skewY(20deg);
     transform-origin: top right;
-}
+} */
 
 #logoTitulo{
     position: absolute;
@@ -115,7 +120,7 @@ a{
 
 }
 
-.card-welcome-index{
+/* .card-welcome-index{
     background: rgba( 255, 234, 0, 0.65 );
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 10.5px );
@@ -125,25 +130,25 @@ a{
     max-width: 300px;
     max-height: 150px;
     font-size: 10px;
-}
+} */
 
-.card-welcome-index .card-body{
+/* .card-welcome-index .card-body{
     padding: 0.5rem;
     overflow-y: scroll;
-}
+} */
 
-.card-welcome-index .card-body::-webkit-scrollbar-track-piece {
+/* .card-welcome-index .card-body::-webkit-scrollbar-track-piece {
     background-color: #fbfbfb;
-}
+} */
 
-.card-welcome-index .card-body::-webkit-scrollbar {
+/* .card-welcome-index .card-body::-webkit-scrollbar {
     width: 0.5em;
-}
+} */
 
-.card-welcome-index .card-body::-webkit-scrollbar-thumb {
+/* .card-welcome-index .card-body::-webkit-scrollbar-thumb {
     background-color: #2E3192;
     border-radius: 10px;
-}
+} */
 
 #NavbarContainer li a {
     position: relative;
@@ -188,6 +193,7 @@ a{
   position: absolute;
   top: 50%;
   left: 50%;
+  
   transform: translate(-100%,-100%);
   background-image: linear-gradient(var(--white-color), var(--secondary-color));
   background-size: 100% 10px;
@@ -220,4 +226,5 @@ a{
         padding:20px;
         font-size: smaller;
     }
+
   }

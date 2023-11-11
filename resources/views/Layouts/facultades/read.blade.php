@@ -15,7 +15,7 @@
                 </span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-primary text-dark">Agregar</button>
+        <button type="submit" class="btn" style="background:#003E65; color:#fff">Agregar</button>
     </form>
     <table class="table">
         <thead>
@@ -38,13 +38,13 @@
                         <td>
                             <form action="" method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-outline-success">Editar</button>
+                                <button type="submit" class="btn btn-warning">Editar</button>
                             </form>
                         </td>
                         <td>
                             <form action="" method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-warning">Eliminar</button>
                             </form>
                         </td>
                     </tr>

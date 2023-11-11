@@ -1,5 +1,5 @@
 @extends('dashboard')
-@section('css')
+@section('estilos_adicionales')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel='stylesheet'>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel='stylesheet'>
 @endsection
@@ -36,19 +36,19 @@
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class='btn btn-primary text-dark'>ver anteproyecto</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff">ver anteproyecto</button>
                         </form>
                     </td>
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class='btn btn-primary text-dark'>ver sustentacion</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff">ver sustentacion</button>
                         </form>
                     </td>
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class='btn btn-primary text-dark'>ver proyecto final</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff">ver proyecto final</button>
                         </form>
                     </td>
                 </tr>
