@@ -29,6 +29,7 @@
                     <td>
                         <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="post">
                             @csrf
+                            <input type="hidden" name="idProyecto" value="{{ $proyecto->idProyecto }}">
                             <button type="submit" class='btn btn-primary text-dark'>ver propuesta</button>
                         </form>
                     </td>

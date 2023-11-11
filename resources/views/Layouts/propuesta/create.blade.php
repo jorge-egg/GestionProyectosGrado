@@ -7,28 +7,29 @@
         <p class="card-text">
         <form action="{{route('propuesta.store')}}" method='POST'>
         @csrf
+        <input type="hidden" value="{{ $idProyecto }}" name="idProyecto">
         <div><label for="">titulo</label>
-            <input type="text" name='Titulo' id="titleForPropuestaId" oninput="limitarLongitud( this.id, 18, 'contadorTitle' )" class='form-control' required>
+            <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId" oninput="limitarLongitud( this.id, 18, 'contadorTitle' )" class='form-control' required>
             <p>Longitud máxima: <span id="contadorTitle"></span></p>
             </div>
             <div><label for="">Linea de investigacion</label>
-            <input type="text" name='linea_invs' class='form-control' required>
+            <input type="text" name='linea_invs' onchange="validarCampos()" class='form-control' required>
             </div>
             <br>
             <div class="form-floating">
-                <textarea class="form-control" id="descriptionPropuestaId" oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" placeholder="Leave a comment here" name="desc_problema" required></textarea>
+                <textarea class="form-control" onchange="validarCampos()" id="descriptionPropuestaId" oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" placeholder="Leave a comment here" name="desc_problema" required></textarea>
                 <label for="">Descripción del problema</label>
                 <p>Longitud máxima: <span id="DescripcionContador"></span></p>
             </div>
             <br>
             <div class="form-floating">
-                <textarea class="form-control" id="objectiveGeneralId" placeholder="Leave a comment here" oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" name="obj_general" required></textarea>
+                <textarea class="form-control" onchange="validarCampos()" id="objectiveGeneralId" placeholder="Leave a comment here" oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" name="obj_general" required></textarea>
                 <label for="">Objetivo general</label>
                 <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
             </div>
             <br>
             <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" name="obj_especificos" required></textarea>
+                <textarea class="form-control" onchange="validarCampos()" placeholder="Leave a comment here" name="obj_especificos" required></textarea>
                 <label for="">Objetivos específicos</label>
             </div>
             <!-- <br>
@@ -42,7 +43,7 @@
             <input type="text" name='prop_fase' class='form-control' required>
             </div> -->
             <br>
-            <button Class='btn btn-primary text-dark'>Agregar</button>
+            <button id="buttonToCreatePropuesta" Class='btn btn-primary text-dark'>Agregar</button>
         </form>
         </p>
 
@@ -51,6 +52,7 @@
 
 @section('js')
 <script>
+
     const limitarLongitud = ( id, longitud, contadorId ) => {
         const input = document.getElementById( id );
         const contador = document.getElementById( contadorId );
@@ -70,7 +72,30 @@
         }
 
         contador.textContent = palabras.length;
+
+        input.addEventListener('paste', function(event) {
+            event.preventDefault(); // Evita que se pegue el texto en el input
+        });
     }
+
+    const validarCampos = () => {
+        const inputs = document.querySelectorAll('input[required], textarea[required]');
+        let camposVacios = false;
+
+        inputs.forEach(input => {
+            if (input.value.trim() === '') {
+                camposVacios = true;
+            }else{
+                camposVacios = false;
+            }
+        });
+
+        const button = document.getElementById('buttonToCreatePropuesta');
+        button.disabled = camposVacios;
+    }
+
+    window.addEventListener('load', validarCampos);
+
 </script>
 @endsection
 @stop

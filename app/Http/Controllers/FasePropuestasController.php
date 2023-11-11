@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FasePropuesta;
+use Error;
 use Illuminate\Http\Request;
 
 class FasePropuestasController extends Controller
@@ -23,9 +24,10 @@ class FasePropuestasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-    return view('Layouts.propuesta.create');
+        $idProyecto = $request->idProyecto;
+        return view('Layouts.propuesta.create', compact('idProyecto'));
     }
 
     /**
@@ -36,17 +38,31 @@ class FasePropuestasController extends Controller
      */
     public function store(Request $request)
     {
-    $propuestas = new FasePropuesta();
-    $propuestas->titulo = $request->post('titulo');
-    $propuestas->linea_invs = $request->post('linea_invs');
-    $propuestas->desc_problema = $request->post('desc_problema');
-    $propuestas->obj_general = $request->post('obj_general');
-    $propuestas->obj_especificos = $request->post('obj_especificos');
-    //$propuestas->estado = $request->post('estado');
-    // $propuestas->fecha_cierre = $request->post('fecha_cierre');
-    // $propuestas->prop_fase = $request->post('prop_fase');
-    $propuestas->save();
-    return view('Layouts.proyecto.index')->with('success','Se ha agregado con exito');
+        $propuesta = FasePropuesta::create([
+            'titulo'          => $request->titulo,
+            'linea_invs'      => $request->linea_invs,
+            'desc_problema'   => $request->desc_problema,
+            'estado'          => 'pendiente',
+            'prop_proy'       => $request->idProyecto,
+            'obj_general'     => $request->obj_general,
+            'obj_especificos' => $request->obj_especificos
+        ]);
+
+        if ( !$propuesta ) {
+            return back()->with('error', 'hubo un error al crear el registro');
+        }
+
+        // $propuestas = new FasePropuesta();
+        // $propuestas->titulo = $request->post('titulo');
+        // $propuestas->linea_invs = $request->post('linea_invs');
+        // $propuestas->desc_problema = $request->post('desc_problema');
+        // $propuestas->obj_general = $request->post('obj_general');
+        // $propuestas->obj_especificos = $request->post('obj_especificos');
+        // //$propuestas->estado = $request->post('estado');
+        // // $propuestas->fecha_cierre = $request->post('fecha_cierre');
+        // // $propuestas->prop_fase = $request->post('prop_fase');
+        // $propuestas->save();
+        return redirect()->route('proyecto.indextable')->with('success','Se ha agregado con exito');
     }
 
     /**
