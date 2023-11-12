@@ -1,4 +1,3 @@
-@include('notify::components.notify')
 
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

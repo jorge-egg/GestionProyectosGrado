@@ -88,7 +88,7 @@ background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(
     top: 0px;
     left: 0px;
     width: 100%;
-    height: auto;
+    max-height: 100px;
     background-color: rgb(255, 255, 255, 0.6);
     padding: 25px;
     display: flex;
@@ -96,12 +96,12 @@ background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(
 
 }
 
-.logo{
+.logo img{
     position: relative;
-    top: 0px;
+    bottom: calc(35%);
     left: 0px;
-    width: 20%;
-    height: auto;
+    width: auto;
+    height: 80px;
 }
 
 .titulo{
@@ -149,36 +149,10 @@ background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(
     background-color: #2E3192;
     border-radius: 10px;
 } */
-
-#NavbarContainer li a {
-    position: relative;
-    text-decoration: none;
-    font-weight: 600;
-    overflow: hidden; /* Añadimos overflow para ocultar el ::before antes de la animación */
+#NavbarContainer {
+    height: 50px;
 }
 
-#NavbarContainer li a::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0; /* Cambiamos el valor de left a 0 */
-    height: 2px;
-    width: 0;
-    background-color: var(--primary-color);
-    border-radius: 50px;
-    transition: width 0.3s ease; /* Usamos una transición en lugar de animación */
-}
-
-#NavbarContainer li a:hover::before {
-    width: 100%;
-}
-
-#infoCardsContainer .card-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
 
 #infoCardsContainer .card {
     transition: transform 0.3s; /* Agregamos una transición para la animación */
@@ -193,7 +167,7 @@ background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(
   position: absolute;
   top: 50%;
   left: 50%;
-  
+
   transform: translate(-100%,-100%);
   background-image: linear-gradient(var(--white-color), var(--secondary-color));
   background-size: 100% 10px;

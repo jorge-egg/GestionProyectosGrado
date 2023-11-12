@@ -26,8 +26,6 @@
                         <span class="links_name">Cronograma</span>
                     </a>
                 </li>
-
-
                 <li>
                     <a href="{{ route('proyecto.index') }}">
                         <i class='bx bx-book'></i>
@@ -40,7 +38,6 @@
                         <span class="links_name">Proyecto</span>
                     </a>
                 </li>
-
             </ul>
             <div id="div_cerrar_seccion" style="text-align: center;">
                 <a id="cerrar_seccion" href="{{ route('logout') }}"
@@ -48,7 +45,9 @@
                                  document.getElementById('logout-form').submit();">
                     <img src="{{ asset('imgs/logos/cerrar.png') }}" alt="">
                 </a>
-
+                <div class="name_user">
+                    <h3 style="color: #fff"></h3>
+                </div>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
@@ -58,7 +57,6 @@
             <header>
                 <div class="container">
                     <div class="logo_content">
-
                         <i class='bx bx-menu' id="btn"></i>
                     </div>
                     @guest
@@ -68,6 +66,7 @@
                             <div class="title">SEGETGRA</div>
                         </div>
                     @endguest
+
                 </div>
             </header>
             @yield('js')

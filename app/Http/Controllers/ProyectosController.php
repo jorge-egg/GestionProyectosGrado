@@ -152,9 +152,9 @@ class ProyectosController extends Controller
                 ]);
             }
 
-            notify()->success('Proyecto creado exitosamente');
+
         } catch (Exception $e) {
-            notify()->error('Error ' . $e);
+            echo "error ".$e;
         }
     }
 }
