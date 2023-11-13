@@ -43,6 +43,6 @@
         </div>
     @endforeach
 
-    {!! Form::submit('Actualizar', ['class' => 'btn btn-primary mt-2']) !!}
+    {!! Form::submit('Actualizar', ['class' => 'btn btn-primary text-dark']) !!}
 {!! Form::close() !!}
 @stop

@@ -1,5 +1,5 @@
 @extends('dashboard')
-@section('css')
+@section('estilos_adicionales')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel='stylesheet'>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel='stylesheet'>
 @endsection
@@ -32,26 +32,26 @@
                         <form action="{{ route('facultades.index', $sede->idSede) }}" method="get">
 
                             <input type="hidden" class="form-control" name="idSede" value="{{$sede->idSede}}">
-                            <button type="submit" class="btn btn-primary text-dark">Facultades</button>
+                            <button type="submit" class="btn " style="background:#003E65; color:#fff">Facultades</button>
                         </form>
                     </td>
                     <td>
                         <form action="{{ route('programa.index') }}" >
                             @csrf
-                            <button type="submit" class="btn btn-primary text-dark">Programas</button>
+                            <button type="submit" class="btn " style="background:#003E65; color:#fff">Programas</button>
                         </form>
                     </td>
                     <td>
                         <form action="{{ route('comite.index') }}">
                             @csrf
-                            <button type="submit" class="btn btn-primary text-dark">Comites</button>
+                            <button type="submit" class="btn " style="background:#003E65; color:#fff">Comites</button>
                         </form>
                     </td>
 
                     <td>
                         <form action="{{ route('sedes.edit', $sede->idSede) }}" method="post">
                             @csrf
-                            <button type="submit" class="btn btn-outline-success">Editar</button>
+                            <button type="submit" class="btn btn-warning">Editar</button>
                         </form>
                     </td>
 

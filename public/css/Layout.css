@@ -11,35 +11,40 @@
     --black-color: #000;
 }
 
-body::-webkit-scrollbar-track-piece {
+/* body::-webkit-scrollbar-track-piece {
     background-color: #fbfbfb;
-}
+} */
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
     width: 0.5em;
-}
+} */
 
-body::-webkit-scrollbar-thumb {
+/* body::-webkit-scrollbar-thumb {
     background-color: #2E3192;
     border-radius: 10px;
-}
+} */
 
-body{
+/* body{
     font-family: 'Roboto', sans-serif;
     background-color: #fbfbfb;
+} */
+
+body{
+    background: rgb(218,216,0);
+background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(240,255,162,1) 50%, rgba(0,62,101,0.96) 61%);
 }
 
-li{
+/* li{
     list-style: none;
     text-decoration: none;
-}
+} */
 
-a{
+/* a{
     text-decoration: none;
     color: #000;
-}
+} */
 
-.card-glass{
+/* .card-glass{
     background: rgba( 46, 49, 146, 0.3 );
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 11px );
@@ -48,9 +53,9 @@ a{
     color: #fbfbfb;
     min-width: 370px;
     min-height: 370px;
-}
+} */
 
-.skewed {
+/* .skewed {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -62,9 +67,9 @@ a{
     z-index: -100;
     transform: skewY(-16deg);
     transform-origin: top left;
-}
+} */
 
-.skewedNavbar{
+/* .skewedNavbar{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -76,14 +81,14 @@ a{
     z-index: -100;
     transform: skewY(20deg);
     transform-origin: top right;
-}
+} */
 
 #logoTitulo{
     position: absolute;
     top: 0px;
     left: 0px;
     width: 100%;
-    height: auto;
+    max-height: 100px;
     background-color: rgb(255, 255, 255, 0.6);
     padding: 25px;
     display: flex;
@@ -91,12 +96,12 @@ a{
 
 }
 
-.logo{
+.logo img{
     position: relative;
-    top: 0px;
+    bottom: calc(35%);
     left: 0px;
-    width: 20%;
-    height: auto;
+    width: auto;
+    height: 80px;
 }
 
 .titulo{
@@ -115,7 +120,7 @@ a{
 
 }
 
-.card-welcome-index{
+/* .card-welcome-index{
     background: rgba( 255, 234, 0, 0.65 );
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 10.5px );
@@ -125,55 +130,29 @@ a{
     max-width: 300px;
     max-height: 150px;
     font-size: 10px;
-}
+} */
 
-.card-welcome-index .card-body{
+/* .card-welcome-index .card-body{
     padding: 0.5rem;
     overflow-y: scroll;
-}
+} */
 
-.card-welcome-index .card-body::-webkit-scrollbar-track-piece {
+/* .card-welcome-index .card-body::-webkit-scrollbar-track-piece {
     background-color: #fbfbfb;
-}
+} */
 
-.card-welcome-index .card-body::-webkit-scrollbar {
+/* .card-welcome-index .card-body::-webkit-scrollbar {
     width: 0.5em;
-}
+} */
 
-.card-welcome-index .card-body::-webkit-scrollbar-thumb {
+/* .card-welcome-index .card-body::-webkit-scrollbar-thumb {
     background-color: #2E3192;
     border-radius: 10px;
+} */
+#NavbarContainer {
+    height: 50px;
 }
 
-#NavbarContainer li a {
-    position: relative;
-    text-decoration: none;
-    font-weight: 600;
-    overflow: hidden; /* Añadimos overflow para ocultar el ::before antes de la animación */
-}
-
-#NavbarContainer li a::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0; /* Cambiamos el valor de left a 0 */
-    height: 2px;
-    width: 0;
-    background-color: var(--primary-color);
-    border-radius: 50px;
-    transition: width 0.3s ease; /* Usamos una transición en lugar de animación */
-}
-
-#NavbarContainer li a:hover::before {
-    width: 100%;
-}
-
-#infoCardsContainer .card-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
 
 #infoCardsContainer .card {
     transition: transform 0.3s; /* Agregamos una transición para la animación */
@@ -188,6 +167,7 @@ a{
   position: absolute;
   top: 50%;
   left: 50%;
+
   transform: translate(-100%,-100%);
   background-image: linear-gradient(var(--white-color), var(--secondary-color));
   background-size: 100% 10px;
@@ -220,4 +200,5 @@ a{
         padding:20px;
         font-size: smaller;
     }
+
   }

@@ -48,7 +48,8 @@
             <input type="text" name='prop_fase' class='form-control' required>
             </div> -->
             <br>
-            <button id="buttonToCreatePropuesta" Class='btn btn-primary'>Enviar</button>
+            <button id="buttonToCreatePropuesta" Class="btn" style="background:#003E65; color:#fff">Agregar</button>
+
         </form>
         </p>
     </div>
