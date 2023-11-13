@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FasePropuesta;
 use Error;
+use Exception;
 use Illuminate\Http\Request;
 
 class FasePropuestasController extends Controller
@@ -15,8 +16,8 @@ class FasePropuestasController extends Controller
      */
     public function index(Request $request)
     {
-     $propuestas = FasePropuesta::all();
-     return view('Layouts.propuesta.index', compact('propuestas'));
+
+        return view('Layouts.propuesta.index', compact('propuestas'));
     }
 
     /**
@@ -27,7 +28,22 @@ class FasePropuestasController extends Controller
     public function create(Request $request)
     {
         $idProyecto = $request->idProyecto;
-        return view('Layouts.propuesta.create', compact('idProyecto'));
+        $propuestaAnterior = FasePropuesta::where('prop_proy', $idProyecto)->orderBy('idPropuesta', 'desc')->first();
+        if ($propuestaAnterior == null) {
+            $propuestaAnterior = (object) array(
+                'idPropuesta' => "",
+                'titulo' => "",
+                'linea_invs' => "",
+                'desc_problema' => "",
+                'obj_general' => "",
+                'obj_especificos' => "",
+                'estado' => "Activo"
+            );
+        }
+
+
+
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior'));
     }
 
     /**
@@ -38,19 +54,24 @@ class FasePropuestasController extends Controller
      */
     public function store(Request $request)
     {
-        $propuesta = FasePropuesta::create([
-            'titulo'          => $request->titulo,
-            'linea_invs'      => $request->linea_invs,
-            'desc_problema'   => $request->desc_problema,
-            'estado'          => 'pendiente',
-            'prop_proy'       => $request->idProyecto,
-            'obj_general'     => $request->obj_general,
-            'obj_especificos' => $request->obj_especificos
-        ]);
+        if ($this->verificarCantProp($request->idProyecto)) {
+            $propuesta = FasePropuesta::create([
+                'titulo'          => $request->titulo,
+                'linea_invs'      => $request->linea_invs,
+                'desc_problema'   => $request->desc_problema,
+                'estado'          => 'pendiente',
+                'prop_proy'       => $request->idProyecto,
+                'obj_general'     => $request->obj_general,
+                'obj_especificos' => $request->obj_especificos
+            ]);
 
-        if ( !$propuesta ) {
-            return back()->with('error', 'hubo un error al crear el registro');
+            if (!$propuesta) {
+                return redirect()->route('proyecto.indextable')->with('error', 'hubo un error al crear el registro');
+            }
+        } else {
+            return redirect()->route('proyecto.indextable')->with('error', 'ya cumplio con el maximo de intentos disponibles');
         }
+
 
         // $propuestas = new FasePropuesta();
         // $propuestas->titulo = $request->post('titulo');
@@ -62,7 +83,14 @@ class FasePropuestasController extends Controller
         // // $propuestas->fecha_cierre = $request->post('fecha_cierre');
         // // $propuestas->prop_fase = $request->post('prop_fase');
         // $propuestas->save();
-        return redirect()->route('proyecto.indextable')->with('success','Se ha agregado con exito');
+        return redirect()->route('proyecto.indextable')->with('success', 'Se ha agregado con exito');
+    }
+
+    public function verificarCantProp($idProyecto)
+    {
+        $cantidad = FasePropuesta::where('prop_proy', $idProyecto)->get()->count();
+        $validacion = $cantidad < 2 ? true : false;
+        return  $validacion;
     }
 
     /**
