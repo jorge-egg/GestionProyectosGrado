@@ -9,7 +9,7 @@ use App\Models\Sede;
 use App\Models\Consecutvo;
 use App\Models\Integrante;
 use App\Models\Consecutivo;
-use App\Models\SedePrograma;
+
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeBiblioteca;
@@ -46,12 +46,13 @@ class ProyectosController extends Controller
 
 
     //index para mostrar todos los proyectos del usuario
-    public function indextable(){
+    public function indextable()
+    {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $proyectos = Integrante::join('sede_proyectos_grado', 'sede_proyectos_grado.idProyecto', 'integrantes.proyecto')
-                    ->where('usuario', $usuario->numeroDocumento)
-                    ->orderBy('idProyecto', 'asc')
-                    ->get();
+            ->where('usuario', $usuario->numeroDocumento)
+            ->orderBy('idProyecto', 'asc')
+            ->get();
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
@@ -63,31 +64,35 @@ class ProyectosController extends Controller
 
     public function create(Request $request, $integrantes)
     {
-        $codigoUsuario = $integrantes == '2' ? $request->codUsuario : null;
-        $anoActual       = Carbon::now()->format('Y');
-        $usuario         = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
-        $idSede          = $usuario->usua_sede;
-        $idBiblioteca    = SedeBiblioteca::where('bibl_sede', $idSede)->orderBy('idBiblioteca', 'desc')->first()->bibl_sede;
-        $programa        = UsuarioPrograma::join('sede_programas', 'sede_programas.idPrograma', 'usuario_programas.programa')
-                            ->where('usuario', $usuario->numeroDocumento)
-                            ->select('sede_programas.siglas')
-                            ->first();
+        try {
+            $codigoUsuario = $integrantes == '2' ? $request->codUsuario : null;
+            $anoActual       = Carbon::now()->format('Y');
+            $usuario         = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+            $idSede          = $usuario->usua_sede;
+            $idBiblioteca    = SedeBiblioteca::where('bibl_sede', $idSede)->orderBy('idBiblioteca', 'desc')->first()->bibl_sede;
+            $programa        = UsuarioPrograma::join('sede_programas', 'sede_programas.idPrograma', 'usuario_programas.programa')
+                ->where('usuario', $usuario->numeroDocumento)
+                ->select('sede_programas.siglas')
+                ->first();
 
-        $consecutivoData = Sede::join('usuarios_users as usuarios', 'usuarios.usua_sede', 'sedes.idSede')
-            ->join('consecutivo', 'consecutivo.conc_sede', 'sedes.idSede')
-            ->take(1)
-            ->select('consecutivo.*');
-        $consecutivo = $this->validarConsecutivo($anoActual, $idSede, $consecutivoData);
+            $consecutivoData = Sede::join('usuarios_users as usuarios', 'usuarios.usua_sede', 'sedes.idSede')
+                ->join('consecutivo', 'consecutivo.conc_sede', 'sedes.idSede')
+                ->take(1)
+                ->select('consecutivo.*');
+            $consecutivo = $this->validarConsecutivo($anoActual, $idSede, $consecutivoData);
 
-        SedeProyectosGrado::create([
-            'estado' => true,
-            'codigoproyecto' => $programa->siglas . $consecutivo . $anoActual,
-            'proy_sede' => $idSede,
-            'proy_bibl' => $idBiblioteca,
-        ]);
+            SedeProyectosGrado::create([
+                'estado' => true,
+                'codigoproyecto' => $programa->siglas . $consecutivo . $anoActual,
+                'proy_sede' => $idSede,
+                'proy_bibl' => $idBiblioteca,
+            ]);
 
-        $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario);
-
+            $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario);
+            notify()->success('Proyecto creado exitosamente');
+        } catch (Exception $e) {
+            notify()->error('falla: ' . $e);
+        }
         return redirect()->route('proyecto.index');
     }
 
@@ -151,10 +156,8 @@ class ProyectosController extends Controller
                     'proyecto' => $idProyecto,
                 ]);
             }
-
-
         } catch (Exception $e) {
-            echo "error ".$e;
+            echo "error " . $e;
         }
     }
 }

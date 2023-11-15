@@ -21,7 +21,7 @@
 
         @if ($estado)
             <button type="submit" class="btn btn-outline-primary btnGrandeRectangular btn-deshabilitado" data-bs-toggle="modal"
-                data-bs-target="#confirmacionIntegrante">Crear un
+                data-bs-target="#confirmacionIntegrante" disabled>Crear un
                 proyecto
             </button>
         @else
