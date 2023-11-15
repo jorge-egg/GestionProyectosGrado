@@ -20,11 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
+ * @property Collection|Integrante[] $integrantes
  * @property Collection|FasePropuesta[] $fase_propuestas
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
  * @property Collection|FaseSustentacione[] $fase_sustentaciones
- * @property Collection|Integrante[] $integrantes
  *
  * @package App\Models
  */
@@ -57,6 +57,11 @@ class SedeProyectosGrado extends Model
 		return $this->belongsTo(SedeBiblioteca::class, 'proy_bibl');
 	}
 
+	public function integrantes()
+	{
+		return $this->hasMany(Integrante::class, 'proyecto');
+	}
+
 	public function fase_propuestas()
 	{
 		return $this->hasMany(FasePropuesta::class, 'prop_proy');
@@ -75,10 +80,5 @@ class SedeProyectosGrado extends Model
 	public function fase_sustentaciones()
 	{
 		return $this->hasMany(FaseSustentacione::class, 'sust_proy');
-	}
-
-	public function integrantes()
-	{
-		return $this->hasMany(Integrante::class, 'proyecto');
 	}
 }

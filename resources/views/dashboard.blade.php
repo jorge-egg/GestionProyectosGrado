@@ -81,8 +81,11 @@
     let btn = document.querySelector('#btn');
     let sidebar = document.querySelector('.sidebar');
 
+    let contenedor= document.querySelector('.contenido');
+
     btn.onclick = function(){
         sidebar.classList.toggle('active');
+        contenedor.classList.toggle('active');
     }
 
 @stop

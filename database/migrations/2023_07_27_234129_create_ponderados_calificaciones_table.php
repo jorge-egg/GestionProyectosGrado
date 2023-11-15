@@ -16,9 +16,6 @@ class CreatePonderadosCalificacionesTable extends Migration
         Schema::create('ponderados_calificaciones', function (Blueprint $table) {
             $table->bigIncrements("idPonderado");
             $table->string("ponderado_item");
-            $table->unsignedBigInteger("pond_cal");            
-            
-            $table->foreign("pond_cal")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
         });
     }
 

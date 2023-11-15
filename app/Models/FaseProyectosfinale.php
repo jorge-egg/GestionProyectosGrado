@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $pfin_proy
  * 
  * @property SedeProyectosGrado $sede_proyectos_grado
- * @property Collection|Calificacione[] $calificaciones
+ * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
  */
@@ -39,8 +39,8 @@ class FaseProyectosfinale extends Model
 		return $this->belongsTo(SedeProyectosGrado::class, 'pfin_proy');
 	}
 
-	public function calificaciones()
+	public function fase_cal_obs()
 	{
-		return $this->hasMany(Calificacione::class, 'cal_prof');
+		return $this->hasMany(FaseCalOb::class, 'proyecto_final');
 	}
 }

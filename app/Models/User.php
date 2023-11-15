@@ -34,7 +34,7 @@ class User extends Model implements AuthenticatableContract
     use Authenticatable;
     use HasRoles;
     use SoftDeletes;
-	
+
 	protected $table = 'users';
 	protected $primaryKey = 'id';
 

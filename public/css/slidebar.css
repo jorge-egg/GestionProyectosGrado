@@ -1,7 +1,16 @@
 .contenido{
     position: relative;
-    width: calc(100% - 108px);
-    left: 76px;
+    width: calc(100%);
+    left: 0px;
+    top: 50px;
+    height: auto;
+    padding: 30px;
+
+}
+.contenido.active{
+    position: relative;
+    width: 83%;
+    left: calc(17%);
     top: 50px;
     height: auto;
     padding: 30px;
@@ -9,11 +18,13 @@
 }
 
 .sidebar{
+    display: none;
+
     position: fixed;
     bottom: 0;
     left: -78;
     height: calc(100% - 102px);
-    width: 78px;
+    width: 10%;
     background: #003E65;
     padding: 6px 14px;
     transition: all 0.5s ease;
@@ -21,7 +32,9 @@
 }
 
 .sidebar.active{
-    width: 240px;
+    display: block;
+
+    width: 17%;
     left: 0;
 }
 
@@ -53,6 +66,10 @@
     pointer-events: none;
     overflow-clip-margin: content-box;
     overflow: clip;
+}
+.bx{
+left: 0px;
+position: relative;
 }
 
 @media screen and (max-width: 894px) {

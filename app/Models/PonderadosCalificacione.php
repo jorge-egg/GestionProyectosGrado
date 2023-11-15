@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,9 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idPonderado
  * @property string $ponderado_item
- * @property int $pond_cal
  * 
- * @property Calificacione $calificacione
+ * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
  */
@@ -25,17 +25,12 @@ class PonderadosCalificacione extends Model
 	protected $primaryKey = 'idPonderado';
 	public $timestamps = false;
 
-	protected $casts = [
-		'pond_cal' => 'int'
-	];
-
 	protected $fillable = [
-		'ponderado_item',
-		'pond_cal'
+		'ponderado_item'
 	];
 
-	public function calificacione()
+	public function fase_cal_obs()
 	{
-		return $this->belongsTo(Calificacione::class, 'pond_cal');
+		return $this->hasMany(FaseCalOb::class, 'ponderado');
 	}
 }

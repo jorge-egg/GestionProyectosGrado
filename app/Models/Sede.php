@@ -18,14 +18,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property string $telefono
  * 
- * @property Collection|SedesFacultade[] $sedes_facultades
- * @property Collection|UsuariosUser[] $usuarios_users
+ * @property Collection|Consecutivo[] $consecutivos
  * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|ComitesSede[] $comites_sedes
- * @property Collection|Consecutivo[] $consecutivos
+ * @property Collection|SedesFacultade[] $sedes_facultades
+ * @property Collection|UsuariosUser[] $usuarios_users
  *
  * @package App\Models
  */
@@ -42,14 +42,9 @@ class Sede extends Model
 		'telefono'
 	];
 
-	public function sedes_facultades()
+	public function consecutivos()
 	{
-		return $this->hasMany(SedesFacultade::class, 'facu_sede');
-	}
-
-	public function usuarios_users()
-	{
-		return $this->hasMany(UsuariosUser::class, 'usua_sede');
+		return $this->hasMany(Consecutivo::class, 'conc_sede');
 	}
 
 	public function sede_programas()
@@ -77,8 +72,13 @@ class Sede extends Model
 		return $this->hasMany(ComitesSede::class, 'comi_sede');
 	}
 
-	public function consecutivos()
+	public function sedes_facultades()
 	{
-		return $this->hasMany(Consecutivo::class, 'conc_sede');
+		return $this->hasMany(SedesFacultade::class, 'facu_sede');
+	}
+
+	public function usuarios_users()
+	{
+		return $this->hasMany(UsuariosUser::class, 'usua_sede');
 	}
 }
