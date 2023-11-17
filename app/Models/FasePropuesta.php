@@ -20,13 +20,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $obj_general
  * @property string $obj_especificos
  * @property string $estado
- * @property string $fecha_cierre
+ * @property time without time zone|null $fecha_cierre
  * @property int $prop_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property SedeProyectosGrado $sede_proyectos_grado
- * @property Collection|Calificacione[] $calificaciones
+ * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
  */
@@ -36,6 +36,7 @@ class FasePropuesta extends Model
 	protected $primaryKey = 'idPropuesta';
 
 	protected $casts = [
+		'fecha_cierre' => 'time without time zone',
 		'prop_proy' => 'int'
 	];
 
@@ -55,8 +56,8 @@ class FasePropuesta extends Model
 		return $this->belongsTo(SedeProyectosGrado::class, 'prop_proy');
 	}
 
-	public function calificaciones()
+	public function fase_cal_obs()
 	{
-		return $this->hasMany(Calificacione::class, 'cal_pro');
+		return $this->hasMany(FaseCalOb::class, 'propuesta');
 	}
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateItemsCalificacioesTable extends Migration
+class CreateItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateItemsCalificacioesTable extends Migration
      */
     public function up()
     {
-        Schema::create('items_calificacioes', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
             $table->id('idItem');
-            $table->string('items');
-            $table->unsignedBigInteger("item_cali");
-            $table->foreign("item_cali")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
-            $table->timestamps();
+            $table->string('item');
         });
     }
 
