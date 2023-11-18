@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $item
  * 
  * @property Collection|Calificacione[] $calificaciones
+ * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
  * @property Collection|ObservacionesCalificacione[] $observaciones_calificaciones
  *
  * @package App\Models
@@ -35,8 +36,13 @@ class Item extends Model
 		return $this->hasMany(Calificacione::class, 'cal_item');
 	}
 
+	public function ponderados_calificaciones()
+	{
+		return $this->hasMany(PonderadosCalificacione::class, 'item_pond');
+	}
+
 	public function observaciones_calificaciones()
 	{
-		return $this->hasMany(ObservacionesCalificacione::class, 'obs_cal');
+		return $this->hasMany(ObservacionesCalificacione::class, 'obs_item');
 	}
 }

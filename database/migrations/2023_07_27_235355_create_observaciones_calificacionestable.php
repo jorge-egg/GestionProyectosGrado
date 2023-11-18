@@ -15,13 +15,9 @@ class CreateObservacionesCalificacionesTable extends Migration
     {
         Schema::create('observaciones_calificaciones', function (Blueprint $table) {
             $table->bigIncrements("idObservacion");
-            $table->string("titulo");
-            $table->string("linea_invs");
-            $table->string("desc_problema");
-            $table->string("obj_general");
-            $table->string("obj_especificos");
-            $table->unsignedBigInteger("obs_cal");
-            $table->foreign("obs_cal")->references("idItem")->on("items")->onDelete('cascade');
+            $table->string("observacion");
+            $table->unsignedBigInteger("obs_item");
+            $table->foreign("obs_item")->references("idItem")->on("items")->onDelete('cascade');
             $table->timestamps();
 
         });

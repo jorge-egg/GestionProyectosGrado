@@ -18,14 +18,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property string $telefono
  * 
- * @property Collection|Consecutivo[] $consecutivos
- * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
+ * @property Collection|UsuariosUser[] $usuarios_users
+ * @property Collection|SedesFacultade[] $sedes_facultades
+ * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|ComitesSede[] $comites_sedes
- * @property Collection|SedesFacultade[] $sedes_facultades
- * @property Collection|UsuariosUser[] $usuarios_users
+ * @property Collection|Consecutivo[] $consecutivos
  *
  * @package App\Models
  */
@@ -42,19 +42,24 @@ class Sede extends Model
 		'telefono'
 	];
 
-	public function consecutivos()
+	public function proyecto_cronogramas()
 	{
-		return $this->hasMany(Consecutivo::class, 'conc_sede');
+		return $this->hasMany(ProyectoCronograma::class, 'cron_sede');
+	}
+
+	public function usuarios_users()
+	{
+		return $this->hasMany(UsuariosUser::class, 'usua_sede');
+	}
+
+	public function sedes_facultades()
+	{
+		return $this->hasMany(SedesFacultade::class, 'facu_sede');
 	}
 
 	public function sede_programas()
 	{
 		return $this->hasMany(SedePrograma::class, 'prog_sede');
-	}
-
-	public function proyecto_cronogramas()
-	{
-		return $this->hasMany(ProyectoCronograma::class, 'cron_sede');
 	}
 
 	public function sede_bibliotecas()
@@ -72,13 +77,8 @@ class Sede extends Model
 		return $this->hasMany(ComitesSede::class, 'comi_sede');
 	}
 
-	public function sedes_facultades()
+	public function consecutivos()
 	{
-		return $this->hasMany(SedesFacultade::class, 'facu_sede');
-	}
-
-	public function usuarios_users()
-	{
-		return $this->hasMany(UsuariosUser::class, 'usua_sede');
+		return $this->hasMany(Consecutivo::class, 'conc_sede');
 	}
 }
