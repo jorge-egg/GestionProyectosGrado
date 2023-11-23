@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
+use App\Models\ObservacionesCalificacione;
 use Illuminate\Http\Request;
 
 class ObservacionesPropuestaController extends Controller
@@ -23,7 +25,7 @@ class ObservacionesPropuestaController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -34,9 +36,30 @@ class ObservacionesPropuestaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($this->buscarIdItem('Titulo'));
+
+        ObservacionesCalificacione::create([
+            'observacion' => $request->tituloObservacion,
+            'obs_item' => $this->buscarIdItem('Titulo'),
+            //
+            'observacion' => $request->lineaObservacion,
+            'obs_item' => $this->buscarIdItem('Linea de investigación'),
+            //
+            'observacion' => $request->descProbObservacion,
+            'obs_item' => $this->buscarIdItem('Descripción del problema'),
+            //
+            'observacion' => $request->objGenObservacion,
+            'obs_item' => $this->buscarIdItem('Objetivo general'),
+            //
+            'observacion' => $request->objEspObservacion,
+            'obs_item' => $this->buscarIdItem('Objetivos especificos'),
+        ]);
     }
 
+    public function buscarIdItem($item){
+        $idTitulo = Item::where('item', $item)->first()->idItem;
+        return $idTitulo;
+    }
     /**
      * Display the specified resource.
      *

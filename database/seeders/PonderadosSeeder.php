@@ -18,19 +18,19 @@ class PonderadosSeeder extends Seeder
             'item_pond'=>1,
             ]);
             DB::table('ponderados_calificaciones')->insert([
-                'ponderado'=>1.19,
+                'ponderado'=>1.75,
                 'item_pond'=>2,
                 ]);
                 DB::table('ponderados_calificaciones')->insert([
-                    'ponderado'=>0.53,
+                    'ponderado'=>1.00,
                     'item_pond'=>3,
                     ]);
                     DB::table('ponderados_calificaciones')->insert([
-                        'ponderado'=>0.68,
+                        'ponderado'=>1.00,
                         'item_pond'=>4,
                         ]);
                         DB::table('ponderados_calificaciones')->insert([
-                            'ponderado'=>0.85,
+                            'ponderado'=>1.00,
                             'item_pond'=>5,
                             ]);
     }

@@ -4,12 +4,14 @@ use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\FasePropuestasController;
+use App\Http\Controllers\ObservacionesPropuestaController;
 use App\Http\Controllers\PonderadosController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
 use App\Models\CronogramaGrupo;
+use App\Models\ObservacionesCalificacione;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,3 +92,5 @@ Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name(
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
 
 
+//observaciones
+Route::post('/observaciones/store', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');

@@ -18,10 +18,10 @@ class itemsSeeder extends Seeder
             'item'=>'Titulo',
             ]);
             DB::table('items')->insert([
-                'item'=>'linea de investigacion',
+                'item'=>'Linea de investigación',
                 ]);
                 DB::table('items')->insert([
-                    'item'=>'descripcion del problema',
+                    'item'=>'Descripción del problema',
                     ]);
                     DB::table('items')->insert([
                         'item'=>'Objetivo general',
