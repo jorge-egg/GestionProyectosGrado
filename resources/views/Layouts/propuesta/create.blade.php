@@ -78,7 +78,7 @@
                             <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" required></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control" 
+                                <input type="text" id="calificacion" name="calificacion" class="form-control"
                                     required>
                             </div>
                         </div>
@@ -87,6 +87,7 @@
                             style="background:#003E65; color:#fff">Agregar</button>
 
             </form>
+            <button Class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
             </p>
         </div>
     </div>

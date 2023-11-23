@@ -4,6 +4,7 @@ use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\FasePropuestasController;
+use App\Http\Controllers\PonderadosController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\SedesController;
@@ -84,5 +85,8 @@ Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class,
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
 
+
+//ponderados
+Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
 
 
