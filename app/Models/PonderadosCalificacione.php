@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class PonderadosCalificacione
  * 
  * @property int $idPonderado
- * @property string $ponderado
+ * @property float $ponderado
  * @property int $item_pond
  * 
  * @property Item $item
@@ -28,6 +28,7 @@ class PonderadosCalificacione extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+		'ponderado' => 'float',
 		'item_pond' => 'int'
 	];
 
