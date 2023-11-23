@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $pfin_proy
  * 
  * @property SedeProyectosGrado $sede_proyectos_grado
- * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
@@ -38,11 +37,6 @@ class FaseProyectosfinale extends Model
 	public function sede_proyectos_grado()
 	{
 		return $this->belongsTo(SedeProyectosGrado::class, 'pfin_proy');
-	}
-
-	public function ponderados_calificaciones()
-	{
-		return $this->hasMany(PonderadosCalificacione::class, 'proyecto_final');
 	}
 
 	public function fase_cal_obs()

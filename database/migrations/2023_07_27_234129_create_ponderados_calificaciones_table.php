@@ -15,17 +15,9 @@ class CreatePonderadosCalificacionesTable extends Migration
     {
         Schema::create('ponderados_calificaciones', function (Blueprint $table) {
             $table->bigIncrements("idPonderado");
-            $table->string("ponderado");
+            $table->double("ponderado");
             $table->unsignedBigInteger("item_pond");
-            $table->unsignedBigInteger("propuesta")->nullable();
-            $table->unsignedBigInteger("anteproyecto")->nullable();
-            $table->unsignedBigInteger("proyecto_final")->nullable();
-            $table->unsignedBigInteger("sustentacion")->nullable();
             $table->foreign("item_pond")->references("idItem")->on("items")->onDelete('cascade');
-            $table->foreign("propuesta")->references("idPropuesta")->on("fase_propuestas")->onDelete('cascade');
-            $table->foreign("anteproyecto")->references("idAnteproyecto")->on("fase_anteproyectos")->onDelete('cascade');
-            $table->foreign("proyecto_final")->references("idProyectofinal")->on("fase_proyectosfinales")->onDelete('cascade');
-            $table->foreign("sustentacion")->references("idSustentacion")->on("fase_sustentaciones")->onDelete('cascade');
         });
     }
 
