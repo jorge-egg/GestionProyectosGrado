@@ -30,6 +30,7 @@
         @endif
 
         <form action="{{ route('proyecto.indextable') }}" method="get">
+
             <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
         </form>
         <form action="{{ route('ponderados.index') }}" method="get">

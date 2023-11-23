@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property SedeProyectosGrado $sede_proyectos_grado
- * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
@@ -55,11 +54,6 @@ class FasePropuesta extends Model
 	public function sede_proyectos_grado()
 	{
 		return $this->belongsTo(SedeProyectosGrado::class, 'prop_proy');
-	}
-
-	public function ponderados_calificaciones()
-	{
-		return $this->hasMany(PonderadosCalificacione::class, 'propuesta');
 	}
 
 	public function fase_cal_obs()

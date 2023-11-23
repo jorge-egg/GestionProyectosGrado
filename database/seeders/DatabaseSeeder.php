@@ -26,5 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProgramasSeeder::class);
         $this->call(Usuario_programasSeeder::class);
         $this->call(itemsSeeder::class);
+        $this->call(PonderadosSeeder::class);
+
     }
 }
