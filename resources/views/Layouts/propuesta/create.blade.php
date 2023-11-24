@@ -17,10 +17,10 @@
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
                     <div class="mb-3 campos-calificacion" style="display: none;">
                         <label for="" class="form-label">Observacion</label>
-                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" required></textarea>
+                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
                         <div>
                             <label for="">Calificación</label>
-                            <input type="text" id="calificacion" name="calificacion" class="form-control" required>
+                            <input type="text" id="calificacion" name="calificacion" class="form-control" >
                         </div>
                     </div>
                     <br>
@@ -30,10 +30,10 @@
                         value = "{{ $propuestaAnterior->linea_invs }}" required>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" required></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
                             <div>
                             <label for="">Calificación</label>
-                            <input type="text" id="calificacion" name="calificacion" class="form-control" required>
+                            <input type="text" id="calificacion" name="calificacion" class="form-control" >
                         </div>
                     </div>
                     <br>
@@ -45,10 +45,10 @@
                         <p>Longitud máxima: <span id="DescripcionContador"></span></p>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" required></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control" required>
+                                <input type="text" id="calificacion" name="calificacion" class="form-control" >
                             </div>
                         </div>
                     </div>
@@ -61,10 +61,10 @@
                         <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" required></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control" required>
+                                <input type="text" id="calificacion" name="calificacion" class="form-control" >
                             </div>
                         </div>
                     </div>
@@ -75,11 +75,10 @@
                             required>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" required></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control" 
-                                    required>
+                                <input type="text" id="calificacion" name="calificacion" class="form-control">
                             </div>
                         </div>
                         <br>
@@ -104,6 +103,22 @@
 
         camposCalificacion.forEach(campos => {
             campos.style.display = 'block';
+            // Agregar el atributo required a los campos dentro de la sección
+            campos.querySelectorAll('input, textarea').forEach(campo => {
+                campo.required = true;
+            });
+        });
+    }
+
+    const ocultarCamposCalificacion = () => {
+        const camposCalificacion = document.querySelectorAll('.campos-calificacion');
+
+        camposCalificacion.forEach(campos => {
+            campos.style.display = 'none';
+            // Quitar el atributo required de los campos dentro de la sección
+            campos.querySelectorAll('input, textarea').forEach(campo => {
+                campo.required = false;
+            });
         });
     }
 
@@ -160,10 +175,14 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const buttonCalificar = document.getElementById('calificar');
+        const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
 
         buttonCalificar.addEventListener('click', function() {
             mostrarCamposCalificacion();
         });
+
+        // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
+        ocultarCamposCalificacion();
 
         // Auto-expandir textarea
         const textareas = document.querySelectorAll('.auto-expand');
@@ -172,6 +191,15 @@
                 this.style.height = 'auto';
                 this.style.height = (this.scrollHeight) + 'px';
             });
+        });
+
+        // Validar campos al cargar la página
+        validarCampos();
+
+        // Validar campos al cambiar el contenido de los campos
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', validarCampos);
         });
     });
 </script>
