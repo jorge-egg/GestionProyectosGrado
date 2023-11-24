@@ -119,7 +119,10 @@ const mostrarCamposCalificacion = () => {
 
         // Mostrar el botón de enviar calificación
         const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
+        const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
+
         buttonEnviarCalificacion.style.display = 'inline-block';
+        buttonToCreatePropuesta.style.display = 'none';
     }
 
     const ocultarCamposCalificacion = () => {
