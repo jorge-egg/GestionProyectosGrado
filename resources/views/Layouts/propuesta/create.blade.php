@@ -8,7 +8,8 @@
                 <button id="calificar" Class='btn btn-primary'>Calificar</button>
             <form action="{{ route('propuesta.store') }}" method='POST'>
                 @csrf
-                <input type="hidden" value="{{ $idProyecto }}" name="idProyecto">
+                <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
+                <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idPropuesta'>
                 <div>
                     <label for="">Titulo</label>
                     <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId"

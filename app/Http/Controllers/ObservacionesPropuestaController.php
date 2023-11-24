@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calificacione;
+use App\Models\FaseCalOb;
 use App\Models\Item;
 use App\Models\ObservacionesCalificacione;
 use Illuminate\Http\Request;
@@ -93,6 +94,19 @@ class ObservacionesPropuestaController extends Controller
 
         ObservacionesCalificacione::insert($dataObservaciones);
         Calificacione::insert($dataCalificaciones);
+
+        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take(5)->pluck('idCalificacion');
+        $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take(5)->pluck('idObservacion');
+        $combineData = $idCalificaciones->combine($idObservaciones);
+        $combineData->each(function ($observacionId, $calificacionId) use ($request) {
+
+            FaseCalOb::create([
+                'propuesta' => $request->idPropuesta,
+                'calificacion' => $calificacionId,
+                'observacion' => $observacionId,
+            ]);
+        });
+
     }
 
     public function buscarIdItem($item){
