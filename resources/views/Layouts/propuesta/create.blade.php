@@ -17,10 +17,11 @@
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
                     <div class="mb-3 campos-calificacion" style="display: none;">
                         <label for="" class="form-label">Observacion</label>
-                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
+
+                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="tituloObservacion"></textarea>
                         <div>
                             <label for="">Calificación</label>
-                            <input type="text" id="calificacion" name="calificacion" class="form-control" >
+                            <input type="text" id="calificacion" name="tituloCalificacion" class="form-control">
                         </div>
                     </div>
                     <br>
@@ -30,10 +31,10 @@
                         value = "{{ $propuestaAnterior->linea_invs }}" required>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="lineaObservacion"></textarea>
                             <div>
                             <label for="">Calificación</label>
-                            <input type="text" id="calificacion" name="calificacion" class="form-control" >
+                            <input type="text" id="calificacion" name="lineaCalificacion" class="form-control">
                         </div>
                     </div>
                     <br>
@@ -45,10 +46,11 @@
                         <p>Longitud máxima: <span id="DescripcionContador"></span></p>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="descProbObservacion"></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control" >
+                                <input type="text" id="calificacion" name="descProbCalificacion" class="form-control">
+
                             </div>
                         </div>
                     </div>
@@ -61,10 +63,10 @@
                         <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="objGenObservacion"></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control" >
+                                <input type="text" id="calificacion" name="objGenCalificacion" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -75,17 +77,20 @@
                             required>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <div class="mb-3 campos-calificacion" style="display: none;">
                             <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="#" ></textarea>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="objEspObservacion"></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="calificacion" class="form-control">
+                                <input type="text" id="calificacion" name="objEspCalificacion" class="form-control"
+                                    >
                             </div>
                         </div>
                         <br>
                         <button id="buttonToCreatePropuesta" Class="btn"
                             style="background:#003E65; color:#fff">Agregar</button>
+                        <button formaction="{{ route('observaciones.store') }}" Class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
 
             </form>
+
             </p>
         </div>
     </div>

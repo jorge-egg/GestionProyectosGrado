@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +168,9 @@ return [
 
         //laravel notifications
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
+
+        //Laravel español
+        Laraveles\Spanish\SpanishServiceProvider::class,
 
         /*
          * Package Service Providers...

@@ -1,10 +1,10 @@
 @extends('dashboard')
 @section('estilos_adicionales')
     <link rel="stylesheet" href="{{ asset('css/coloresBtnCampos.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/proyectos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/contenedorButtons.css') }}">
 @stop
 @section('dashboard_content')
-    <div class="contenedor_buttons">
+    <div class="grid-3">
         <div class="modal fade" tabindex="-1" id="confirmacionIntegrante">
             @component('components.Modales.confirmacionIntegrante')
             @endcomponent
@@ -21,7 +21,7 @@
 
         @if ($estado)
             <button type="submit" class="btn btn-outline-primary btnGrandeRectangular btn-deshabilitado" data-bs-toggle="modal"
-                data-bs-target="#confirmacionIntegrante">Crear un
+                data-bs-target="#confirmacionIntegrante" disabled>Crear un
                 proyecto
             </button>
         @else
@@ -30,9 +30,12 @@
         @endif
 
         <form action="{{ route('proyecto.indextable') }}" method="get">
-            <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ver proyectos</button>
-        </form>
 
+            <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
+        </form>
+        <form action="{{ route('ponderados.index') }}" method="get">
+            <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ponderados</button>
+        </form>
     </div>
 @stop
 
