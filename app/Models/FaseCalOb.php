@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseCalOb
- * 
+ *
  * @property int $id
  * @property int $calificacion
  * @property int|null $propuesta
@@ -19,17 +19,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $proyecto_final
  * @property int|null $sustentacion
  * @property int $observacion
- * @property int $ponderado
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Calificacione $calificacione
  * @property FasePropuesta|null $fase_propuesta
  * @property FaseAnteproyecto|null $fase_anteproyecto
  * @property FaseProyectosfinale|null $fase_proyectosfinale
  * @property FaseSustentacione|null $fase_sustentacione
  * @property ObservacionesCalificacione $observaciones_calificacione
- * @property PonderadosCalificacione $ponderados_calificacione
  *
  * @package App\Models
  */
@@ -43,8 +41,7 @@ class FaseCalOb extends Model
 		'anteproyecto' => 'int',
 		'proyecto_final' => 'int',
 		'sustentacion' => 'int',
-		'observacion' => 'int',
-		'ponderado' => 'int'
+		'observacion' => 'int'
 	];
 
 	protected $fillable = [
@@ -53,8 +50,7 @@ class FaseCalOb extends Model
 		'anteproyecto',
 		'proyecto_final',
 		'sustentacion',
-		'observacion',
-		'ponderado'
+		'observacion'
 	];
 
 	public function calificacione()
@@ -85,10 +81,5 @@ class FaseCalOb extends Model
 	public function observaciones_calificacione()
 	{
 		return $this->belongsTo(ObservacionesCalificacione::class, 'observacion');
-	}
-
-	public function ponderados_calificacione()
-	{
-		return $this->belongsTo(PonderadosCalificacione::class, 'ponderado');
 	}
 }
