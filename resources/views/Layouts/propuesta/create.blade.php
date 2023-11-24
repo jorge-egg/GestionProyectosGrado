@@ -80,14 +80,15 @@
                             <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="objEspObservacion"></textarea>
                             <div>
                                 <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="objEspCalificacion" class="form-control"
-                                    >
+                                <input type="text" id="calificacion" name="objEspCalificacion" class="form-control">
+
                             </div>
                         </div>
                         <br>
-                        <button id="buttonToCreatePropuesta" Class="btn"
-                            style="background:#003E65; color:#fff">Agregar</button>
-                        <button formaction="{{ route('observaciones.store') }}" Class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
+                        <div class="mb-3">
+                            <button id="buttonToCreatePropuesta" class="btn" style="background:#003E65; color:#fff">Agregar</button>
+                            <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store') }}" class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
+                        </div>
 
             </form>
 
@@ -103,7 +104,8 @@
 
 @section('js')
 <script>
-    const mostrarCamposCalificacion = () => {
+
+const mostrarCamposCalificacion = () => {
         const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
         camposCalificacion.forEach(campos => {
@@ -113,6 +115,10 @@
                 campo.required = true;
             });
         });
+
+        // Mostrar el botón de enviar calificación
+        const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
+        buttonEnviarCalificacion.style.display = 'inline-block';
     }
 
     const ocultarCamposCalificacion = () => {
@@ -125,7 +131,12 @@
                 campo.required = false;
             });
         });
+
+        // Ocultar el botón de enviar calificación
+        const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
+        buttonEnviarCalificacion.style.display = 'none';
     }
+
 
     const limitarLongitud = (id, longitud, contadorId) => {
         const input = document.getElementById(id);
