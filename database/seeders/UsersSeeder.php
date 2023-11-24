@@ -32,5 +32,9 @@ class UsersSeeder extends Seeder
             'usuario' => '1193248110',
             'password' => Hash::make('123456'),
         ])->assignRole('administrador');
+        User::create([
+            'usuario' => '1007689987',
+            'password' => Hash::make('123456'),
+        ])->assignRole('administrador');
     }
 }

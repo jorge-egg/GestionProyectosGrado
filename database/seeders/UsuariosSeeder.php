@@ -55,5 +55,15 @@ class UsuariosSeeder extends Seeder
             'usua_users' => 4,
             "usua_estado" => 1,
         ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Yerson',
+            'numeroDocumento' => '1007689987',
+            'apellido' => 'Aguilar Rodriguez',
+            'email' => 'yersonaguilarr@gmail.com',
+            'numeroCelular' => '3225327309',
+            'usua_sede' => 1,
+            'usua_users' => 5,
+            "usua_estado" => 1,
+        ]);
     }
 }
