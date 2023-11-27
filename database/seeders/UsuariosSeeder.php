@@ -16,7 +16,7 @@ class UsuariosSeeder extends Seeder
     {
         DB::table('usuarios_users')->insert([
             'nombre' => 'admin',
-            'numeroDocumento' => '100972736',
+            'numeroDocumento' => '123456789',
             'apellido' => 'administrador',
             'email' => 'admin@gmail.com',
             'numeroCelular' => '(602)4021547',
