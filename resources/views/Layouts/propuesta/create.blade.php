@@ -16,27 +16,15 @@
                         oninput="limitarLongitud( this.id, 25, 'contadorTitle' )" class='form-control'
                         value = "{{ $propuestaAnterior->titulo }}" required>
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
-                    <div class="mb-3 campos-calificacion" style="display: none;">
-                        <label for="" class="form-label">Observacion</label>
-
-                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="tituloObservacion"></textarea>
-                        <div>
-                            <label for="">Calificación</label>
-                            <input type="text" id="calificacion" name="tituloCalificacion" class="form-control">
-                        </div>
-                    </div>
+                    @component('components.calificacionObser',['nameSelect' => 'tituloCalificacion', 'nameTextArea' => 'tituloObservacion'])
+                    @endcomponent
                     <br>
                 </div>
                 <div><label for="">Linea de investigacion</label>
                     <input type="text" name='linea_invs' onchange="validarCampos()" class='form-control'
                         value = "{{ $propuestaAnterior->linea_invs }}" required>
-                        <div class="mb-3 campos-calificacion" style="display: none;">
-                            <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="lineaObservacion"></textarea>
-                            <div>
-                            <label for="">Calificación</label>
-                            <input type="text" id="calificacion" name="lineaCalificacion" class="form-control">
-                        </div>
+                        @component('components.calificacionObser',['nameSelect' => 'lineaCalificacion', 'nameTextArea' => 'lineaObservacion'])
+                        @endcomponent
                     </div>
                     <br>
                     <div class="mb-3">
@@ -45,15 +33,8 @@
                             oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" placeholder="Descripción del problema"
                             name="desc_problema" required>{{ $propuestaAnterior->desc_problema }}</textarea>
                         <p>Longitud máxima: <span id="DescripcionContador"></span></p>
-                        <div class="mb-3 campos-calificacion" style="display: none;">
-                            <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="descProbObservacion"></textarea>
-                            <div>
-                                <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="descProbCalificacion" class="form-control">
-
-                            </div>
-                        </div>
+                        @component('components.calificacionObser',['nameSelect' => 'descProbCalificacion', 'nameTextArea' => 'descProbObservacion'])
+                        @endcomponent
                     </div>
                     <br>
                     <div class="mb-3">
@@ -62,55 +43,32 @@
                             oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" name="obj_general" required>{{ $propuestaAnterior->obj_general }}</textarea>
 
                         <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
-                        <div class="mb-3 campos-calificacion" style="display: none;">
-                            <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="objGenObservacion"></textarea>
-                            <div>
-                                <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="objGenCalificacion" class="form-control">
-                            </div>
-                        </div>
+                        @component('components.calificacionObser',['nameSelect' => 'objGenCalificacion', 'nameTextArea' => 'objGenObservacion'])
+                        @endcomponent
                     </div>
                     <br>
                     <div class="mb-3">
                         <label class="form-label">Objetivos específicos</label>
                         <textarea class="form-control auto-expand" onchange="validarCampos()" placeholder="Objetivos específicos" name="obj_especificos"
                             required>{{ $propuestaAnterior->obj_especificos }}</textarea>
-                        <div class="mb-3 campos-calificacion" style="display: none;">
-                            <label for="" class="form-label">Observacion</label>
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="objEspObservacion"></textarea>
-                            <div>
-                                <label for="">Calificación</label>
-                                <input type="text" id="calificacion" name="objEspCalificacion" class="form-control">
-
-                            </div>
-                        </div>
+                        @component('components.calificacionObser',['nameSelect' => 'objEspCalificacion', 'nameTextArea' => 'objEspObservacion'])
+                        @endcomponent
                         <br>
                         <div class="mb-3">
                             <button id="buttonToCreatePropuesta" class="btn" style="background:#003E65; color:#fff">Agregar</button>
                             <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store') }}" class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
                         </div>
-
             </form>
-
             </p>
         </div>
     </div>
-    <style>
-        /* Estilo para el campo de calificación */
-        #calificacion {
-            width: 50px; /* Ajusta el ancho según tus preferencias */
-        }
-    </style>
-
 @section('js')
 <script>
-
 const mostrarCamposCalificacion = () => {
         const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
         camposCalificacion.forEach(campos => {
-            campos.style.display = 'block';
+            campos.style.display = 'flex';
             // Agregar el atributo required a los campos dentro de la sección
             campos.querySelectorAll('input, textarea').forEach(campo => {
                 campo.required = true;
