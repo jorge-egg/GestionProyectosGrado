@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|ComitesSede[] $comites_sedes
  * @property Collection|SedesFacultade[] $sedes_facultades
  * @property Collection|UsuariosUser[] $usuarios_users
- * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
  * @property Collection|SedePrograma[] $sede_programas
+ * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|Consecutivo[] $consecutivos
@@ -57,14 +57,14 @@ class Sede extends Model
 		return $this->hasMany(UsuariosUser::class, 'usua_sede');
 	}
 
-	public function proyecto_cronogramas()
-	{
-		return $this->hasMany(ProyectoCronograma::class, 'cron_sede');
-	}
-
 	public function sede_programas()
 	{
 		return $this->hasMany(SedePrograma::class, 'prog_sede');
+	}
+
+	public function proyecto_cronogramas()
+	{
+		return $this->hasMany(ProyectoCronograma::class, 'cron_sede');
 	}
 
 	public function sede_bibliotecas()
