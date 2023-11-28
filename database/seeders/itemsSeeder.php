@@ -53,30 +53,5 @@ class itemsSeeder extends Seeder
         DB::table('items')->insert([
             'item' => 'Normas de presentacion en el documento y referencias bibliograficas',
         ]);
-        DB::table('items')->insert([
-            'item' => 'Titulo',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Introduccion',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Planteamiento del problema',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Justificacion',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Marco referencial',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Metodologia',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Desarrollo del proyecto',
-        ]);
-        DB::table('items')->insert([
-            'item' => 'Normas de presentacion en el documento y referencias bibliograficas',
-        ]);
-
     }
 }
