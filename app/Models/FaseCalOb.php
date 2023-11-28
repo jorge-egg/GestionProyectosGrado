@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseCalOb
- *
+ * 
  * @property int $id
  * @property int $calificacion
  * @property int|null $propuesta
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $observacion
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * 
  * @property Calificacione $calificacione
  * @property FasePropuesta|null $fase_propuesta
  * @property FaseAnteproyecto|null $fase_anteproyecto

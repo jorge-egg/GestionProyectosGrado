@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FacultadesSeeder::class);
         $this->call(CronogramassSeeder::class);
         $this->call(GruposSeeder::class);
+        $this->call(fase_cronogramaSeeder::class);
         $this->call(FechasSeeder::class);
         $this->call(BibliotecasSeeder::class);
         $this->call(ProgramasSeeder::class);

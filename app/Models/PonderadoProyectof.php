@@ -9,9 +9,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class PonderadosCalificacione
+ * Class PonderadoProyectof
  * 
- * @property int $idPonderado
+ * @property int $idPonderado_proyectof
  * @property float $ponderado
  * @property int $item_pond
  * 
@@ -19,10 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class PonderadosCalificacione extends Model
+class PonderadoProyectof extends Model
 {
-	protected $table = 'ponderados_calificaciones';
-	protected $primaryKey = 'idPonderado';
+	protected $table = 'ponderado_proyectof';
+	protected $primaryKey = 'idPonderado_proyectof';
 	public $timestamps = false;
 
 	protected $casts = [

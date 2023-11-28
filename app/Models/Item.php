@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|Calificacione[] $calificaciones
  * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
  * @property Collection|ObservacionesCalificacione[] $observaciones_calificaciones
+ * @property Collection|PonderadoAnteproyecto[] $ponderado_anteproyectos
+ * @property Collection|PonderadoProyectof[] $ponderado_proyectofs
+ * @property Collection|PonderadoSustentacion[] $ponderado_sustentacions
  *
  * @package App\Models
  */
@@ -44,5 +47,20 @@ class Item extends Model
 	public function observaciones_calificaciones()
 	{
 		return $this->hasMany(ObservacionesCalificacione::class, 'obs_item');
+	}
+
+	public function ponderado_anteproyectos()
+	{
+		return $this->hasMany(PonderadoAnteproyecto::class, 'item_pond');
+	}
+
+	public function ponderado_proyectofs()
+	{
+		return $this->hasMany(PonderadoProyectof::class, 'item_pond');
+	}
+
+	public function ponderado_sustentacions()
+	{
+		return $this->hasMany(PonderadoSustentacion::class, 'item_pond');
 	}
 }
