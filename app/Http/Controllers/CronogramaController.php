@@ -33,12 +33,13 @@ class CronogramaController extends Controller
 
         $array = [];
         foreach($grupos as $key => $value){
-            $dato = FechasGrupo::all()->where('fech_grup', $value->idGrupo);
+            $dato = FechasGrupo::where('fech_grup', $value->idGrupo)->orderBy('fech_fase', 'asc')->get();
             $key = $key++;
             $nombre = $key;
             $array[$nombre] = $dato;
 
         }
+
 
 
         return view('Layouts.cronograma.read', compact('array'));
@@ -60,7 +61,9 @@ class CronogramaController extends Controller
         ->where('sedes.idSede', $sede->idSede)
         ->orderBy('proyecto_cronogramas.idCronograma', 'desc')
         ->select('proyecto_cronogramas.idCronograma')
+
         ->first();
+        dd($idCronograma);
 
         return view('Layouts.cronograma.createGroup', compact('idCronograma'));
     }
@@ -108,7 +111,8 @@ class CronogramaController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $grupoFechas = FechasGrupo::where('fech_grup', $id)->get();
+        $grupoFechas = FechasGrupo::where('fech_grup', $id)->orderBy('fech_fase', 'asc')->get();
+
         return view('Layouts.cronograma.editGroup', compact('grupoFechas'));
     }
 
