@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class PonderadosCalificacione
- * 
+ *
  * @property int $idPonderado
  * @property float $ponderado
  * @property int $item_pond
- * 
+ *
  * @property Item $item
  *
  * @package App\Models
  */
-class PonderadosCalificacione extends Model
+class PonderadosPropuesta extends Model
 {
-	protected $table = 'ponderados_calificaciones';
+	protected $table = 'ponderados_propuesta';
 	protected $primaryKey = 'idPonderado';
 	public $timestamps = false;
 

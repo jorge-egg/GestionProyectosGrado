@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePonderadosCalificacionesTable extends Migration
+class CreatePonderadosPropuestaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePonderadosCalificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('ponderados_calificaciones', function (Blueprint $table) {
+        Schema::create('ponderados_propuesta', function (Blueprint $table) {
             $table->bigIncrements("idPonderado");
             $table->double("ponderado");
             $table->unsignedBigInteger("item_pond");

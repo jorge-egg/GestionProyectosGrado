@@ -6,6 +6,7 @@ use App\Models\Calificacione;
 use App\Models\FaseCalOb;
 use App\Models\Item;
 use App\Models\ObservacionesCalificacione;
+use App\Models\PonderadosPropuesta;
 use Illuminate\Http\Request;
 
 class ObservacionesPropuestaController extends Controller
@@ -66,29 +67,30 @@ class ObservacionesPropuestaController extends Controller
             'obs_item' => $this->buscarIdItem('Objetivos especificos'),
         ]];
 
+
         //Conjunto de calificaciones a insertar en la base de datos
         $dataCalificaciones = [[
-            'calificacion' => $request->tituloCalificacion,
+            'calificacion' => $this->calcularCalificacion('Titulo', $request->tituloCalificacion),
             'cal_item' => $this->buscarIdItem('Titulo'),
             ],
             //
             [
-            'calificacion' => $request->lineaCalificacion,
+            'calificacion' => $this->calcularCalificacion('Linea de investigación', $request->lineaCalificacion),
             'cal_item' => $this->buscarIdItem('Linea de investigación'),
             ],
             //
             [
-            'calificacion' => $request->descProbCalificacion,
+            'calificacion' => $this->calcularCalificacion('Descripción del problema', $request->descProbCalificacion),
             'cal_item' => $this->buscarIdItem('Descripción del problema'),
             ],
             //
             [
-            'calificacion' => $request->objGenCalificacion,
+            'calificacion' => $this->calcularCalificacion('Objetivo general', $request->objGenCalificacion),
             'cal_item' => $this->buscarIdItem('Objetivo general'),
             ],
             //
             [
-            'calificacion' => $request->objEspCalificacion,
+            'calificacion' => $this->calcularCalificacion('Objetivos especificos', $request->objEspCalificacion),
             'cal_item' => $this->buscarIdItem('Objetivos especificos'),
         ]];
 
@@ -109,9 +111,24 @@ class ObservacionesPropuestaController extends Controller
 
     }
 
-    public function buscarIdItem($item){
-        $idTitulo = Item::where('item', $item)->first()->idItem;
-        return $idTitulo;
+    public function buscarIdItem($item){//busca el item en la base de datos y extrae su id
+        $idItem = Item::where('item', $item)->first()->idItem;
+        return $idItem;
+    }
+
+    public function calcularCalificacion($item, $select){ //calcula la nota tipo double en base al item y a la opcion del select
+        $idItem = $this->buscarIdItem($item);
+        $ponderado = PonderadosPropuesta::where('item_pond', $idItem)->first();
+        if($select == "si")
+        {
+            return $ponderado->ponderado;
+        }else if($select == "parcial")
+        {
+            return round((($ponderado->ponderado)/2.0), 2);
+        }else if($select == "no")
+        {
+            return 0;
+        }
     }
     /**
      * Display the specified resource.

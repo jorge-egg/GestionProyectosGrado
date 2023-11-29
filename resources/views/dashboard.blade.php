@@ -42,16 +42,28 @@
             <div id="div_cerrar_seccion" style="text-align: center;">
                 <a id="cerrar_seccion" href="{{ route('logout') }}"
                    onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
+                                 document.getElementById('logout-form').submit();" style="color: #fff">
                     @php
                         $user = Auth()->id();
-                        $nombre = App\Models\UsuariosUser::where('usua_users', $user)->first()->nombre;
+                        $usuario = App\Models\UsuariosUser::where('usua_users', $user)->first();
+                        $nombre = $usuario->nombre . " " . $usuario->apellido;
                     @endphp
+                    {{$nombre}}
                     {{-- <img src="{{ asset('imgs/logos/cerrar.png') }}" alt=""> --}}
                 </a>
-                <div class="name_user">
-                    <h3 style="color: #fff"></h3>
-                </div>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dropdown link
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+
+
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
