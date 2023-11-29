@@ -43,7 +43,11 @@
                 <a id="cerrar_seccion" href="{{ route('logout') }}"
                    onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
-                    <img src="{{ asset('imgs/logos/cerrar.png') }}" alt="">
+                    @php
+                        $user = Auth()->id();
+                        $nombre = App\Models\UsuariosUser::where('usua_users', $user)->first()->nombre;
+                    @endphp
+                    {{-- <img src="{{ asset('imgs/logos/cerrar.png') }}" alt=""> --}}
                 </a>
                 <div class="name_user">
                     <h3 style="color: #fff"></h3>
@@ -88,5 +92,5 @@
         contenedor.classList.toggle('active');
     }
 
-    
+
 @stop
