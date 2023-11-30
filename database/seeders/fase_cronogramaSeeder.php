@@ -23,7 +23,7 @@ class fase_cronogramaSeeder extends Seeder
                     'fase' => 'Proyecto final',
                     ]);
                     DB::table('fases_cronogramas')->insert([
-                        'fase' => '	Sustentación',
+                        'fase' => 'Sustentacion',
                         ]);
     }
 }

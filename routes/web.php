@@ -46,6 +46,7 @@ Route::get('/UsuariosUser/restore/one/{numeroDocumento}', [UsuariosController::c
 //sedes
 Route::get('/sedes/index', [SedesController::class, 'index'])->name('sedes.index');
 Route::post('/sedes/edit/{id}', [SedesController::class, 'edit'])->name('sedes.edit');
+Route::post('/sedes/store', [SedesController::class, 'store'])->name('sedes.store');
 
 //facultades
 

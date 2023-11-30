@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Item
- * 
+ *
  * @property int $idItem
  * @property string $item
- * 
+ *
  * @property Collection|Calificacione[] $calificaciones
  * @property Collection|PonderadosCalificacione[] $ponderados_calificaciones
  * @property Collection|ObservacionesCalificacione[] $observaciones_calificaciones
@@ -39,9 +39,9 @@ class Item extends Model
 		return $this->hasMany(Calificacione::class, 'cal_item');
 	}
 
-	public function ponderados_calificaciones()
+	public function ponderados_propuesta()
 	{
-		return $this->hasMany(PonderadosCalificacione::class, 'item_pond');
+		return $this->hasMany(PonderadosPropuesta::class, 'item_pond');
 	}
 
 	public function observaciones_calificaciones()

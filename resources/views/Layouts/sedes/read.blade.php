@@ -4,10 +4,16 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel='stylesheet'>
 @endsection
 @section('dashboard_content')
-
+<br>
 <h1>Sedes</h1>
     <br>
-<table class="table table-hover shadow-lg mt-4" style="width:100%" id='sede'>
+    <button type="submit" class="btn" style="background:#003E65; color:#fff; margin-bottom:30px;" onclick="actModalCrearSede()">Crear una nueva sede</button>
+    <div class="modal" tabindex="-1" id="modalNuevaSede">
+    @component('components.Modales.createSede')
+
+    @endcomponent
+</div>
+    <table class="table table-hover shadow-lg mt-4" style="width:100%" id='table-js'>
         <thead>
             <tr>
                 <th scope="col">Sede</th>
@@ -65,6 +71,8 @@
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 @endsection
 <script>
-    let table = new DataTable('#sede');
+    function actModalCrearSede() { //Activa el modal para crear una nueva sede
+            $('#modalNuevaSede').modal('show');
+        }
 </script>
 @stop

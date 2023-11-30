@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FaseCalOb;
 use App\Models\FasePropuesta;
+use App\Models\ObservacionesCalificacione;
 use Error;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,6 +30,16 @@ class FasePropuestasController extends Controller
     public function create(Request $request)
     {
         $idProyecto = $request->idProyecto;
+        $propuestaAnterior = $this->ultimaPropuesta($idProyecto);
+        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
+
+
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior'));
+    }
+
+    //consultar si existen propuestas creadas por el usuario y tomar la ultima
+    public function ultimaPropuesta($idProyecto)
+    {
         $propuestaAnterior = FasePropuesta::where('prop_proy', $idProyecto)->orderBy('idPropuesta', 'desc')->first();
         if ($propuestaAnterior == null) {
             $propuestaAnterior = (object) array(
@@ -40,10 +52,30 @@ class FasePropuestasController extends Controller
                 'estado' => "Activo"
             );
         }
+        return $propuestaAnterior;
+    }
 
+    //consultar si existen observaciones creadas por el usuario y tomar la ultima
+    public function ultimaObservacion($idPropuesta)
+    {
+        try{
+            $observacionesAnterior = ObservacionesCalificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
+            ->where('propuesta', $idPropuesta)
+            ->get();
+        }catch(Exception $e){
+            $observacionesAnterior = (object) array(
+                'idPropuesta' => "",
+                'titulo' => "",
+                'linea_invs' => "",
+                'desc_problema' => "",
+                'obj_general' => "",
+                'obj_especificos' => "",
+                'estado' => "Activo"
+            );
+        }
 
-
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior'));
+        
+        return $observacionesAnterior;
     }
 
     /**

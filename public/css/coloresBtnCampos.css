@@ -7,7 +7,7 @@ td.campo-habilitado{
 td.campo-deshabilitado{
     padding: 15px;
     border-radius: 15px;
-    background-color: rgb(196, 10, 0, 0.5);
+    background-color: rgba(231, 76, 60, 0.8);
 
 }
 

@@ -6,7 +6,7 @@
 @section('dashboard_content')
 
 <h1>Proyectos</h1>
-<table class="table table-hover shadow-lg mt-4" style="width:100%" id='proy'>
+<table class="table table-hover shadow-lg mt-4" style="width:100%" id='table-js'>
         <thead>
             <tr>
                 <th scope="col">estado</th>
@@ -30,25 +30,25 @@
                         <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="post">
                             @csrf
                             <input type="hidden" name="idProyecto" value="{{ $proyecto->idProyecto }}">
-                            <button type="submit" class='btn btn-primary text-dark'>ver propuesta</button>
+                            <button type="submit" class='btn btn-primary text-dark'>Propuesta</button>
                         </form>
                     </td>
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class="btn" style="background:#003E65; color:#fff">ver anteproyecto</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff">Anteproyecto</button>
                         </form>
                     </td>
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class="btn" style="background:#003E65; color:#fff">ver sustentacion</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff">Proyecto final</button>
                         </form>
                     </td>
                     <td>
                         <form action="#" >
                             @csrf
-                            <button type="submit" class="btn" style="background:#003E65; color:#fff">ver proyecto final</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff">Sustentación</button>
                         </form>
                     </td>
                 </tr>

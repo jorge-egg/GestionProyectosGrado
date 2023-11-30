@@ -8,6 +8,7 @@ use App\Models\CronogramaGrupo;
 use App\Models\Sede;
 use App\Models\SedeProyectosGrado;
 use App\Models\UsuariosUser;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class CronogramaController extends Controller
@@ -26,20 +27,19 @@ class CronogramaController extends Controller
         $grupos = Sede::join('proyecto_cronogramas', 'proyecto_cronogramas.cron_sede', 'sedes.idSede')
         ->join('cronograma_grupos', 'cronograma_grupos.grup_cron', 'proyecto_cronogramas.idCronograma')
         ->where('sedes.idSede', $sede->idSede)
-        ->orderBy('cronograma_grupos.idGrupo', 'desc')
+        ->orderBy('cronograma_grupos.idGrupo', 'asc')
         ->take(4)
         ->select('cronograma_grupos.*')
         ->get();
 
         $array = [];
         foreach($grupos as $key => $value){
-            $dato = FechasGrupo::all()->where('fech_grup', $value->idGrupo);
+            $dato = FechasGrupo::where('fech_grup', $value->idGrupo)->orderBy('fech_fase', 'asc')->get();
             $key = $key++;
             $nombre = $key;
             $array[$nombre] = $dato;
 
         }
-
 
         return view('Layouts.cronograma.read', compact('array'));
     }
@@ -60,7 +60,9 @@ class CronogramaController extends Controller
         ->where('sedes.idSede', $sede->idSede)
         ->orderBy('proyecto_cronogramas.idCronograma', 'desc')
         ->select('proyecto_cronogramas.idCronograma')
+
         ->first();
+
 
         return view('Layouts.cronograma.createGroup', compact('idCronograma'));
     }
@@ -108,7 +110,9 @@ class CronogramaController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $grupoFechas = FechasGrupo::where('fech_grup', $id)->get();
+        $grupoFechas = FechasGrupo::where('fech_grup', $id)->orderBy('fech_fase', 'asc')->get();
+        //dd($grupoFechas, $id);
+
         return view('Layouts.cronograma.editGroup', compact('grupoFechas'));
     }
 
@@ -121,7 +125,9 @@ class CronogramaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $grupoFechas = FechasGrupo::where('fech_grup', $id)->get();
+
+        $grupoFechas = FechasGrupo::where('fech_grup', $id)->orderBy('fech_fase', 'asc')->get();
+        //dd($grupoFechas);
         $incremento = 1;
         foreach ($grupoFechas as $fecha) {
             $fecha_apertura = "fecha_apertura_".$incremento;
@@ -143,6 +149,6 @@ class CronogramaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 }
