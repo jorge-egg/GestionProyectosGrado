@@ -11,11 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Calificacione
- * 
+ *
  * @property int $idCalificacion
  * @property float $calificacion
  * @property int $cal_item
- * 
+ *
  * @property Item $item
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -44,6 +44,6 @@ class Calificacione extends Model
 
 	public function fase_cal_obs()
 	{
-		return $this->hasMany(FaseCalOb::class, 'calificacion');
+		return $this->hasMany(FaseCalOb::class, 'calificacion_fase');
 	}
 }
