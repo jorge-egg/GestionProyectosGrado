@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Calificacione;
 use App\Models\FaseCalOb;
+use App\Models\FasePropuesta;
 use App\Models\Item;
 use App\Models\ObservacionesCalificacione;
 use App\Models\PonderadosPropuesta;
@@ -39,6 +40,26 @@ class ObservacionesPropuestaController extends Controller
      */
     public function store(Request $request)
     {
+        ObservacionesCalificacione::insert($this->cargarObservaciones($request));
+        Calificacione::insert($this->cargarCalificaciones($request));
+
+        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take(5)->pluck('idCalificacion');
+        $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take(5)->pluck('idObservacion');
+        $combineData = $idCalificaciones->combine($idObservaciones);
+        $combineData->each(function ($observacionId, $calificacionId) use ($request) {
+
+            FaseCalOb::create([
+                'propuesta' => $request->idPropuesta,
+                'calificacion_fase' => $calificacionId,
+                'observacion_fase' => $observacionId,
+            ]);
+        });
+
+        $this->cambioEstado($request->idPropuesta);
+        return redirect()->route('proyecto.indextable');
+    }
+
+    public function cargarObservaciones($request){
         //conjunto de Observaciones a insertar en la base de datos
         $dataObservaciones = [[
             'observacion' => $request->tituloObservacion,
@@ -64,8 +85,10 @@ class ObservacionesPropuestaController extends Controller
             'observacion' => $request->objEspObservacion,
             'obs_item' => $this->buscarIdItem('Objetivos especificos'),
         ]];
+        return $dataObservaciones;
+    }
 
-
+    public function cargarCalificaciones($request){
         //Conjunto de calificaciones a insertar en la base de datos
         $dataCalificaciones = [[
             'calificacion' => $this->calcularCalificacion('Titulo', $request->tituloCalificacion),
@@ -91,22 +114,7 @@ class ObservacionesPropuestaController extends Controller
             'calificacion' => $this->calcularCalificacion('Objetivos especificos', $request->objEspCalificacion),
             'cal_item' => $this->buscarIdItem('Objetivos especificos'),
         ]];
-
-        ObservacionesCalificacione::insert($dataObservaciones);
-        Calificacione::insert($dataCalificaciones);
-
-        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take(5)->pluck('idCalificacion');
-        $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take(5)->pluck('idObservacion');
-        $combineData = $idCalificaciones->combine($idObservaciones);
-        $combineData->each(function ($observacionId, $calificacionId) use ($request) {
-
-            FaseCalOb::create([
-                'propuesta' => $request->idPropuesta,
-                'calificacion' => $calificacionId,
-                'observacion_fase' => $observacionId,
-            ]);
-        });
-        return redirect()->route('proyecto.indextable');
+        return $dataCalificaciones;
     }
 
     public function buscarIdItem($item){//busca el item en la base de datos y extrae su id
@@ -128,27 +136,30 @@ class ObservacionesPropuestaController extends Controller
             return 0;
         }
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+
+    public function cambioEstado($idPropuesta){
+        $total = 0;
+        $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+                ->where('propuesta', $idPropuesta)
+                ->get();
+        foreach ($calificacionesAnterior as $calificacion) {
+            $total+=$calificacion->calificacion;
+        }
+        if($total >= 3.5){
+            $propuesta = FasePropuesta::findOrFail($idPropuesta);
+            $propuesta -> estado = 'Aprobado';
+            $propuesta -> save();
+        }else if($total >= 3 && $total < 3.4){
+            $propuesta = FasePropuesta::findOrFail($idPropuesta);
+            $propuesta -> estado = 'Aplazado con modificaciones';
+            $propuesta -> save();
+        }else{
+            $propuesta = FasePropuesta::findOrFail($idPropuesta);
+            $propuesta -> estado = 'Rechazado';
+            $propuesta -> save();
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -157,19 +168,40 @@ class ObservacionesPropuestaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $incrementoObs = 0;
+            foreach ($this->ultimaObservacion($request->idPropuesta) as $observacion) {
+                $observacion->observacion = $this->cargarObservaciones($request)[$incrementoObs]['observacion'];
+                $observacion->save();
+                $incrementoObs++;
+            }
+            $incrementoCal = 0;
+            foreach ($this->ultimaCalificacion($request->idPropuesta) as $calificacion) {
+
+                $calificacion->calificacion = $this->cargarCalificaciones($request)[$incrementoCal]['calificacion'];
+
+                $calificacion->save();
+                $incrementoCal++;
+            }
+            $this->cambioEstado($request->idPropuesta);
+            return redirect()->route('proyecto.indextable');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function ultimaObservacion($idPropuesta)
     {
-        //
+            $observacionesAnterior = ObservacionesCalificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
+                ->where('propuesta', $idPropuesta)
+                ->orderBy('idObservacion', 'asc')
+                ->get();
+        return $observacionesAnterior;
+    }
+    public function ultimaCalificacion($idPropuesta)
+    {
+            $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+            ->where('propuesta', $idPropuesta)
+            ->orderBy('idCalificacion', 'asc')
+            ->get();
+        return $calificacionesAnterior;
     }
 }

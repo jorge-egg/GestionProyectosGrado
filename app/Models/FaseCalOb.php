@@ -36,7 +36,7 @@ class FaseCalOb extends Model
 	protected $table = 'fase_cal_obs';
 
 	protected $casts = [
-		'calificacion' => 'int',
+		'calificacion_fase' => 'int',
 		'propuesta' => 'int',
 		'anteproyecto' => 'int',
 		'proyecto_final' => 'int',
@@ -45,7 +45,7 @@ class FaseCalOb extends Model
 	];
 
 	protected $fillable = [
-		'calificacion',
+		'calificacion_fase',
 		'propuesta',
 		'anteproyecto',
 		'proyecto_final',
@@ -55,7 +55,7 @@ class FaseCalOb extends Model
 
 	public function calificacione()
 	{
-		return $this->belongsTo(Calificacione::class, 'calificacion');
+		return $this->belongsTo(Calificacione::class, 'calificacion_fase');
 	}
 
 	public function fase_propuesta()

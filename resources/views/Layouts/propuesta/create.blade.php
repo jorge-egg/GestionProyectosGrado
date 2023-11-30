@@ -1,15 +1,21 @@
 @extends('dashboard')
 @section('dashboard_content')
+    <br>
+    <form action="{{ route('propuesta.store') }}" method='POST'>
+        <div style="display: flex; flex-direction:row; justify-content: space-around">
+            <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
+            <p class="fs-5">Fecha de envio: 02/12/2023 a 09/12/2023</p>
+            <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i class="bi bi-arrow-bar-left">Propuesta anterior</i></button>
+        </div><br>
+        <div class="card">
+            <h5 class="card-title text-center">Crear propuesta</h5>
+            <div class='card-body'>
+                <p class="card-text">
+                    <button type="button" id="calificar" Class='btn btn-primary'>Calificar</button>
 
-    <div class="card">
-        <h5 class="card-title text-center">Crear propuesta</h5>
-        <div class='card-body'>
-            <p class="card-text">
-                <button id="calificar" Class='btn btn-primary'>Calificar</button>
-            <form action="{{ route('propuesta.store') }}" method='POST'>
-                @csrf
-                <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
-                <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idPropuesta'>
+                    @csrf
+                    <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
+                    <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idPropuesta'>
                 <div>
                     <label for="titleForPropuestaId">Titulo</label>
                     <div class="input-group mb-3">
@@ -17,13 +23,14 @@
                             oninput="limitarLongitud( this.id, 25, 'contadorTitle' )" class='form-control campo-deshabilitar'
                             value = "{{ $propuestaAnterior->titulo }}" required>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">--</p>
+                            <p class="fw-bold">{{ $calificacion[0] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
                     @component('components.calificacionObser', [
                         'nameSelect' => 'tituloCalificacion',
                         'nameTextArea' => 'tituloObservacion',
+                        'obsArray' => $observaciones[0],
                     ])
                     @endcomponent
                     <br>
@@ -34,12 +41,13 @@
                         <input type="text" name='linea_invs' onchange="validarCampos()" class='form-control campo-deshabilitar'
                             value = "{{ $propuestaAnterior->linea_invs }}" required>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">--</p>
+                            <p class="fw-bold">{{ $calificacion[1] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObser', [
                         'nameSelect' => 'lineaCalificacion',
                         'nameTextArea' => 'lineaObservacion',
+                        'obsArray' => $observaciones[1],
                     ])
                     @endcomponent
                 </div>
@@ -51,13 +59,14 @@
                             oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" class='form-control'
                             placeholder="Descripción del problema" required>{{ $propuestaAnterior->desc_problema }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">--</p>
+                            <p class="fw-bold">{{ $calificacion[2] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="DescripcionContador"></span></p>
                     @component('components.calificacionObser', [
                         'nameSelect' => 'descProbCalificacion',
                         'nameTextArea' => 'descProbObservacion',
+                        'obsArray' => $observaciones[2],
                     ])
                     @endcomponent
                 </div>
@@ -69,13 +78,14 @@
                             oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" class='form-control'
                             placeholder="Objetivo general" required>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">--</p>
+                            <p class="fw-bold">{{ $calificacion[3] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
                     @component('components.calificacionObser', [
                         'nameSelect' => 'objGenCalificacion',
                         'nameTextArea' => 'objGenObservacion',
+                        'obsArray' => $observaciones[3],
                     ])
                     @endcomponent
                 </div>
@@ -86,26 +96,27 @@
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()" class='form-control'
                             placeholder="Objetivos específicos" required>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">--</p>
+                            <p class="fw-bold">{{ $calificacion[4] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObser', [
                         'nameSelect' => 'objEspCalificacion',
                         'nameTextArea' => 'objEspObservacion',
+                        'obsArray' => $observaciones[4],
                     ])
                     @endcomponent
                     <br>
                     <div class="mb-3">
                         <button id="buttonToCreatePropuesta" class="btn"
                             style="background:#003E65; color:#fff">Agregar</button>
-                        <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store') }}" class="btn"
-                            style="background:#003E65; color:#fff">Enviar calificación</button>
-                    </div>
-            </form>
-            </p>
-        </div>
-    </div>
-    @section('js')
+                        <button id="buttonEnviarCalificacion"
+                            formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
+                            class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
+                    </p>
+                </div>
+            </div>
+    </form>
+@section('js')
     <script>
         const deshabilitarCampos = () => {
             const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');

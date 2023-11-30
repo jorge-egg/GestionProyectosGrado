@@ -15,13 +15,13 @@ class CreateFaseCalObsTable extends Migration
     {
         Schema::create('fase_cal_obs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("calificacion");
+            $table->unsignedBigInteger("calificacion_fase");
             $table->unsignedBigInteger("propuesta")->nullable();
             $table->unsignedBigInteger("anteproyecto")->nullable();
             $table->unsignedBigInteger("proyecto_final")->nullable();
             $table->unsignedBigInteger("sustentacion")->nullable();
             $table->unsignedBigInteger("observacion_fase");
-            $table->foreign("calificacion")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
+            $table->foreign("calificacion_fase")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
             $table->foreign("propuesta")->references("idPropuesta")->on("fase_propuestas")->onDelete('cascade');
             $table->foreign("anteproyecto")->references("idAnteproyecto")->on("fase_anteproyectos")->onDelete('cascade');
             $table->foreign("proyecto_final")->references("idProyectofinal")->on("fase_proyectosfinales")->onDelete('cascade');

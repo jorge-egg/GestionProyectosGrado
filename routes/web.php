@@ -87,7 +87,7 @@ Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->nam
 Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
-
+Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
 
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
@@ -95,3 +95,4 @@ Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('p
 
 //observaciones
 Route::post('/observaciones/store', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
+Route::post('/observaciones/update', [ObservacionesPropuestaController::class, 'update'])->name('observaciones.update');
