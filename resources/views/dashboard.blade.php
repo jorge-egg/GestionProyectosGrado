@@ -48,12 +48,12 @@
                         $usuario = App\Models\UsuariosUser::where('usua_users', $user)->first();
                         $nombre = $usuario->nombre . " " . $usuario->apellido;
                     @endphp
-                    {{$nombre}}
+
                     {{-- <img src="{{ asset('imgs/logos/cerrar.png') }}" alt=""> --}}
                 </a>
                 <div class="dropdown">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown link
+                        {{$nombre}}
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

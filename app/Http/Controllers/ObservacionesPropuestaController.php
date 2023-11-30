@@ -39,8 +39,6 @@ class ObservacionesPropuestaController extends Controller
      */
     public function store(Request $request)
     {
-
-
         //conjunto de Observaciones a insertar en la base de datos
         $dataObservaciones = [[
             'observacion' => $request->tituloObservacion,
@@ -105,10 +103,10 @@ class ObservacionesPropuestaController extends Controller
             FaseCalOb::create([
                 'propuesta' => $request->idPropuesta,
                 'calificacion' => $calificacionId,
-                'observacion' => $observacionId,
+                'observacion_fase' => $observacionId,
             ]);
         });
-
+        return redirect()->route('proyecto.indextable');
     }
 
     public function buscarIdItem($item){//busca el item en la base de datos y extrae su id
