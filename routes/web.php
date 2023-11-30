@@ -70,7 +70,7 @@ Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restor
 //programas
 Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programa.index');
 Route::get('/programas/create', [SedeProgramaController::class, 'create'])->name('programa.create');
-Route::post('/programas/edit', [SedeProgramaController::class, 'edit'])->name('programa.edit');
+Route::post('/programas/edit/{idPrograma}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
 Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
 Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
 Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class, 'restore'])->name('programa.restore');

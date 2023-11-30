@@ -13,7 +13,7 @@ class SedeProgramaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
+    {
         $programas = SedePrograma::all();
         if($request->has('view_deleted')){
             $programas = SedePrograma::onlyTrashed()->get();
@@ -59,9 +59,10 @@ class SedeProgramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(SedePrograma $programas)
+    public function edit($id)
     {
-     return view('Layouts.programas.update');
+        $programas = SedePrograma::findOrFail($id);
+        return view('programa.edit', compact('programas'));
     }
 
     /**
@@ -73,7 +74,9 @@ class SedeProgramaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $programas = SedePrograma::findOrFail($id);
+        $programas->update($request->all());
+        return redirect()->route('programa.index');
     }
     public function restore($id)
     {

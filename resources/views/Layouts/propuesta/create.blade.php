@@ -20,7 +20,7 @@
                     <label for="titleForPropuestaId">Titulo</label>
                     <div class="input-group mb-3">
                         <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId"
-                            oninput="limitarLongitud( this.id, 25, 'contadorTitle' )" class='form-control'
+                            oninput="limitarLongitud( this.id, 25, 'contadorTitle' )" class='form-control campo-deshabilitar'
                             value = "{{ $propuestaAnterior->titulo }}" required>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[0] }}</p>
@@ -38,7 +38,7 @@
                 <div>
                     <label>Linea de investigación</label>
                     <div class="input-group mb-3">
-                        <input type="text" name='linea_invs' onchange="validarCampos()" class='form-control'
+                        <input type="text" name='linea_invs' onchange="validarCampos()" class='form-control campo-deshabilitar'
                             value = "{{ $propuestaAnterior->linea_invs }}" required>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[1] }}</p>
@@ -55,7 +55,7 @@
                 <div class="mb-3">
                     <label class="form-label">Descripción del problema</label>
                     <div class="input-group mb-3">
-                        <textarea class="form-control auto-expand" name="desc_problema" onchange="validarCampos()" id="descriptionPropuestaId"
+                        <textarea class="form-control auto-expand campo-deshabilitar" name="desc_problema" onchange="validarCampos()" id="descriptionPropuestaId"
                             oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" class='form-control'
                             placeholder="Descripción del problema" required>{{ $propuestaAnterior->desc_problema }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
@@ -74,7 +74,7 @@
                 <div class="mb-3">
                     <label class="form-label">Objetivo general</label>
                     <div class="input-group mb-3">
-                        <textarea class="form-control auto-expand" name="obj_general" onchange="validarCampos()" id="objectiveGeneralId"
+                        <textarea class="form-control auto-expand campo-deshabilitar" name="obj_general" onchange="validarCampos()" id="objectiveGeneralId"
                             oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" class='form-control'
                             placeholder="Objetivo general" required>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
@@ -93,7 +93,7 @@
                 <div class="mb-3">
                     <label class="form-label">Objetivos específicos</label>
                     <div class="input-group mb-3">
-                        <textarea class="form-control auto-expand" name="obj_especificos" onchange="validarCampos()" class='form-control'
+                        <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()" class='form-control'
                             placeholder="Objetivos específicos" required>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[4] }}</p>
@@ -112,15 +112,22 @@
                         <button id="buttonEnviarCalificacion"
                             formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
                             class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
-                    </div>
-
                     </p>
                 </div>
             </div>
     </form>
 @section('js')
     <script>
+        const deshabilitarCampos = () => {
+            const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
+
+            camposDeshabilitar.forEach(campo => {
+                campo.disabled = true;
+            });
+        }
+
         const mostrarCamposCalificacion = () => {
+            deshabilitarCampos();
             const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
             camposCalificacion.forEach(campos => {
@@ -128,6 +135,7 @@
                 // Agregar el atributo required a los campos dentro de la sección
                 campos.querySelectorAll('input, textarea').forEach(campo => {
                     campo.required = true;
+                    campo.disabled = false; // Habilitar campos al mostrar
                 });
             });
 
@@ -147,6 +155,7 @@
                 // Quitar el atributo required de los campos dentro de la sección
                 campos.querySelectorAll('input, textarea').forEach(campo => {
                     campo.required = false;
+                    campo.disabled = true; // Deshabilitar campos al ocultar
                 });
             });
 
@@ -154,7 +163,6 @@
             const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
             buttonEnviarCalificacion.style.display = 'none';
         }
-
 
         const limitarLongitud = (id, longitud, contadorId) => {
             const input = document.getElementById(id);

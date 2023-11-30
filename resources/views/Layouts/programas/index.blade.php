@@ -26,7 +26,7 @@
 </div>
 @endif
 <div class='col col-md-6 text-right'>
-<a href="{{route('comite.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-warning'>Consultar programas eliminados</a>
+<a href="{{route('programa.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-warning'>Consultar programas eliminados</a>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='table-js'>
         <thead>
