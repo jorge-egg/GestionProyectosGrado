@@ -219,3 +219,16 @@ position: relative;
     width: 80%;
     margin: auto;
 }
+.name_user {
+    display: flex;
+    align-items: center;
+}
+
+.cerrar-sesion {
+    margin-left: 10px; /* Ajusta el espacio entre el nombre de usuario y el botón de cerrar sesión según sea necesario */
+}
+
+.cerrar-sesion img {
+    width: 30px; /* Ajusta el tamaño de la imagen según sea necesario */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
