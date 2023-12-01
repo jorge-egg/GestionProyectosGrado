@@ -186,6 +186,11 @@ class FasePropuestasController extends Controller
                     array_push($array, $fechaInicio, $fechaFin, $habilitado);
                     return $array;
                     break;
+                } else {
+                    $habilitado = false;
+                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
+                    return $array;
+                    
                 }
             }
         }
@@ -201,12 +206,12 @@ class FasePropuestasController extends Controller
     {
         if ($this->verificarCantProp($request->idProyecto)) {
             $propuesta = FasePropuesta::create([
-                'titulo'          => $request->titulo,
-                'linea_invs'      => $request->linea_invs,
-                'desc_problema'   => $request->desc_problema,
-                'estado'          => 'pendiente',
-                'prop_proy'       => $request->idProyecto,
-                'obj_general'     => $request->obj_general,
+                'titulo' => $request->titulo,
+                'linea_invs' => $request->linea_invs,
+                'desc_problema' => $request->desc_problema,
+                'estado' => 'pendiente',
+                'prop_proy' => $request->idProyecto,
+                'obj_general' => $request->obj_general,
                 'obj_especificos' => $request->obj_especificos
             ]);
 
@@ -223,7 +228,7 @@ class FasePropuestasController extends Controller
     {
         $cantidad = FasePropuesta::where('prop_proy', $idProyecto)->get()->count();
         $validacion = $cantidad < 2 ? true : false;
-        return  $validacion;
+        return $validacion;
     }
 
     /**

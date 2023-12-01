@@ -4,7 +4,7 @@
     @yield('estilos_adicionales')
 @stop
 
-@section('content
+@section('content')
     <div class="sidebar">
         <ul class="nav_list">
             <li>
