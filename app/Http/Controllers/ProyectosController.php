@@ -90,7 +90,8 @@ class ProyectosController extends Controller
 
             $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario);
             notify()->success('Proyecto creado exitosamente');
-        } catch (Exception $e) {
+         } catch (Exception $e) {
+            echo $e;
             notify()->error('falla: ' . $e);
         }
         return redirect()->route('proyecto.index');
