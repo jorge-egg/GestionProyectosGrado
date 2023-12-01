@@ -58,7 +58,7 @@ class FasePropuestasController extends Controller
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
-
+        $rangoFecha = $this->ultimaFecha();
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
@@ -69,7 +69,7 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion'));
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha'));
     }
 
     //consultar si existen propuestas creadas por el usuario y tomar la ultima
@@ -147,11 +147,10 @@ class FasePropuestasController extends Controller
     //consultar la ultima fecha de propuestas mas cercana a la actual
     public function ultimaFecha()
     {
-        $nextDate = 0;
         $userId = auth()->id();
         $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
         $sede = Sede::findOrFail($usuario->usua_sede);
-
+        $habilitado = false;
         $grupos = Sede::join('proyecto_cronogramas', 'proyecto_cronogramas.cron_sede', 'sedes.idSede')
             ->join('cronograma_grupos', 'cronograma_grupos.grup_cron', 'proyecto_cronogramas.idCronograma')
             ->where('sedes.idSede', $sede->idSede)
@@ -177,13 +176,14 @@ class FasePropuestasController extends Controller
                 // Verificar si la fecha actual está dentro del rango de apertura y cierre
                 if ($fechaInicio <= $currentDate && $fechaFin >= $currentDate) {
                     // La fecha actual está dentro del rango
-                    array_push($array, $fechaInicio, $fechaFin);
+                    $habilitado = true;
+                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
                     return $array;
                     break;
                 } elseif ($fechaInicio > $currentDate) {
                     // Si no estamos en el rango actual, tomar la próxima fecha de apertura
-                    $nextDate = $fechaInicio;
-                    array_push($array, $fechaInicio, $fechaFin);
+                    $habilitado = false;
+                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
                     return $array;
                     break;
                 }
