@@ -17,11 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $fecha_apertura
  * @property Carbon $fecha_cierre
  * @property int $fech_grup
+ * @property int $fech_fase
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property CronogramaGrupo $cronograma_grupo
- * @property Collection|FasesCronograma[] $fases_cronogramas
+ * @property FechasGrupo $fechas_grupo
+ * @property Collection|FechasGrupo[] $fechas_grupos
  *
  * @package App\Models
  */
@@ -33,13 +35,15 @@ class FechasGrupo extends Model
 	protected $casts = [
 		'fecha_apertura' => 'datetime',
 		'fecha_cierre' => 'datetime',
-		'fech_grup' => 'int'
+		'fech_grup' => 'int',
+		'fech_fase' => 'int'
 	];
 
 	protected $fillable = [
 		'fecha_apertura',
 		'fecha_cierre',
-		'fech_grup'
+		'fech_grup',
+		'fech_fase'
 	];
 
 	public function cronograma_grupo()
@@ -47,8 +51,13 @@ class FechasGrupo extends Model
 		return $this->belongsTo(CronogramaGrupo::class, 'fech_grup');
 	}
 
-	public function fases_cronogramas()
+	public function fechas_grupo()
 	{
-		return $this->hasMany(FasesCronograma::class, 'fase_fech');
+		return $this->belongsTo(FechasGrupo::class, 'fech_fase');
+	}
+
+	public function fechas_grupos()
+	{
+		return $this->hasMany(FechasGrupo::class, 'fech_fase');
 	}
 }

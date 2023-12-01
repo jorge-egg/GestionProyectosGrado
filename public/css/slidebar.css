@@ -1,7 +1,16 @@
 .contenido{
     position: relative;
-    width: calc(100% - 108px);
-    left: 76px;
+    width: calc(100%);
+    left: 0px;
+    top: 50px;
+    height: auto;
+    padding: 30px;
+
+}
+.contenido.active{
+    position: relative;
+    width: 83%;
+    left: calc(17%);
     top: 50px;
     height: auto;
     padding: 30px;
@@ -9,11 +18,13 @@
 }
 
 .sidebar{
+    display: none;
+
     position: fixed;
     bottom: 0;
     left: -78;
     height: calc(100% - 102px);
-    width: 78px;
+    width: 10%;
     background: #003E65;
     padding: 6px 14px;
     transition: all 0.5s ease;
@@ -21,7 +32,9 @@
 }
 
 .sidebar.active{
-    width: 240px;
+    display: block;
+
+    width: 17%;
     left: 0;
 }
 
@@ -54,6 +67,10 @@
     overflow-clip-margin: content-box;
     overflow: clip;
 }
+.bx{
+left: 0px;
+position: relative;
+}
 
 @media screen and (max-width: 894px) {
     .logo_name .title{
@@ -83,14 +100,22 @@
  #btn{
     position: absolute;
     color: #fff;
-    left: 0%;
     top: 6px;
-    font-size: 20px;
-    height: 50px;
-    width: 50px;
+    font-size: 36px;
+    height: 90px;
+    width: 90px;
     text-align: center;
-    line-height: 50px;
-    transform: translateX(-50%);
+    line-height: 90px;
+
+    /* Regla de medios para pantallas más pequeñas */
+    @media only screen and (max-width: 600px) {
+      left: 10px; /* Ajusta este valor según sea necesario */
+    }
+
+    /* Estilo adicional para pantallas más grandes */
+    @media only screen and (min-width: 601px) {
+      left: -50px; /* Ajusta este valor según sea necesario */
+    }
 }
 
 .sidebar #btn:hover{
@@ -172,12 +197,12 @@
 }
 
 #div_cerrar_seccion{
-    position:absolute;
-	width:50px;
-	height:50px;
+    position:relative;
+	width:100%;
+	height: auto;
 	bottom:25px;
-	left:50%;
-    margin-left:-25px;
+	left:0%;
+    margin-left:0px;
     border-radius: 50%;
 
 }
@@ -193,4 +218,17 @@
     display: block;
     width: 80%;
     margin: auto;
+}
+.name_user {
+    display: flex;
+    align-items: center;
+}
+
+.cerrar-sesion {
+    margin-left: 10px; /* Ajusta el espacio entre el nombre de usuario y el botón de cerrar sesión según sea necesario */
+}
+
+.cerrar-sesion img {
+    width: 30px; /* Ajusta el tamaño de la imagen según sea necesario */
+    height: auto; /* Mantiene la proporción de la imagen */
 }

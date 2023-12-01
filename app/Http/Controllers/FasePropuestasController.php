@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FasePropuesta;
 use Error;
 use Exception;
+use App\Models\Sede;
+use App\Models\FaseCalOb;
+use App\Models\FechasGrupo;
+use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
+use App\Models\Calificacione;
+use App\Models\FasePropuesta;
+use App\Models\ObservacionesCalificacione;
 
 class FasePropuestasController extends Controller
 {
@@ -28,7 +34,47 @@ class FasePropuestasController extends Controller
     public function create(Request $request)
     {
         $idProyecto = $request->idProyecto;
-        $propuestaAnterior = FasePropuesta::where('prop_proy', $idProyecto)->orderBy('idPropuesta', 'desc')->first();
+        $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
+        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
+        $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
+        $this->ultimaFecha();
+        try{
+            $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+        ->where('propuesta', $propuestaAnterior->idPropuesta)
+        ->get()->count();
+        } catch(Exception $e){
+            $totalCalificacion = 0;
+        }
+
+        $validarCalificacion = ($totalCalificacion == 0) ? true : false;
+
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion'));
+    }
+
+    public function createAnterior(Request $request)
+    {
+        $idProyecto = $request->idProyecto;
+        $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
+        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
+        $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
+
+        try{
+            $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+        ->where('propuesta', $propuestaAnterior->idPropuesta)
+        ->get()->count();
+        } catch(Exception $e){
+            $totalCalificacion = 0;
+        }
+
+        $validarCalificacion = ($totalCalificacion == 0) ? true : false;
+
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion'));
+    }
+
+    //consultar si existen propuestas creadas por el usuario y tomar la ultima
+    public function ultimaPropuesta($idProyecto, $orden)
+    {
+        $propuestaAnterior = FasePropuesta::where('prop_proy', $idProyecto)->orderBy('idPropuesta', $orden)->first();
         if ($propuestaAnterior == null) {
             $propuestaAnterior = (object) array(
                 'idPropuesta' => "",
@@ -40,10 +86,83 @@ class FasePropuestasController extends Controller
                 'estado' => "Activo"
             );
         }
+        return $propuestaAnterior;
+    }
 
+    //consultar si existen observaciones creadas por el usuario y tomar la ultima
+    public function ultimaObservacion($idPropuesta)
+    {
+        try {
+            $observacionesAnterior = ObservacionesCalificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
+                ->where('propuesta', $idPropuesta)
+                ->orderBy('idObservacion', 'asc')
+                ->get();
+            $array = [];
+            foreach ($observacionesAnterior as $observacion) {
+                $dato = $observacion->observacion;
+                array_push($array, $dato);
+            }
+            if ($observacionesAnterior->empty()) {
+                for ($i = 0; $i < 5; $i++) {
+                    array_push($array, "");
+                }
+            }
+        } catch (Exception $e) {
+            $array = [];
+            for ($i = 0; $i < 5; $i++) {
+                array_push($array, "");
+            }
+        }
+        return $array;
+    }
 
+     //consultar si existen calificaciones creadas por el usuario y tomar las d la ultima propuesta
+    public function ultimaCalificacion($idPropuesta)
+    {
+        try {
+            $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+                ->where('propuesta', $idPropuesta)
+                ->orderBy('idCalificacion', 'asc')
+                ->get();
+            $array = [];
+            foreach ($calificacionesAnterior as $calificacion) {
+                $dato = $calificacion->calificacion;
+                array_push($array, $dato);
+            }
+            if ($calificacionesAnterior->empty()) {
+                for ($i = 0; $i < 5; $i++) {
+                    array_push($array, "--");
+                }
+            }
+        } catch (Exception $e) {
+            $array = [];
+            for ($i = 0; $i < 5; $i++) {
+                array_push($array, "--");
+            }
+        }
+        return $array;
+    }
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior'));
+    //consultar la ultima fecha de propuestas mas cercana a la actual
+    public function ultimaFecha(){
+        $userId  = auth()->id();
+        $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
+        $sede    = Sede::findOrFail($usuario->usua_sede);
+
+        $grupos = Sede::join('proyecto_cronogramas', 'proyecto_cronogramas.cron_sede', 'sedes.idSede')
+        ->join('cronograma_grupos', 'cronograma_grupos.grup_cron', 'proyecto_cronogramas.idCronograma')
+        ->where('sedes.idSede', $sede->idSede)
+        ->orderBy('cronograma_grupos.idGrupo', 'asc')
+        ->take(4)
+        ->select('cronograma_grupos.*')
+        ->where('estado', 'activo')
+        ->get();
+        $array = [];
+        foreach($grupos as $grupo){
+            $dato = FechasGrupo::where('fech_grup', $grupo->idGrupo)->where('fech_fase', 1)->select('idFecha', 'fecha_apertura', 'fecha_cierre')->get();
+            array_push($array, $dato);
+
+        } //dd($array);
     }
 
     /**
@@ -71,18 +190,6 @@ class FasePropuestasController extends Controller
         } else {
             return redirect()->route('proyecto.indextable')->with('error', 'ya cumplio con el maximo de intentos disponibles');
         }
-
-
-        // $propuestas = new FasePropuesta();
-        // $propuestas->titulo = $request->post('titulo');
-        // $propuestas->linea_invs = $request->post('linea_invs');
-        // $propuestas->desc_problema = $request->post('desc_problema');
-        // $propuestas->obj_general = $request->post('obj_general');
-        // $propuestas->obj_especificos = $request->post('obj_especificos');
-        // //$propuestas->estado = $request->post('estado');
-        // // $propuestas->fecha_cierre = $request->post('fecha_cierre');
-        // // $propuestas->prop_fase = $request->post('prop_fase');
-        // $propuestas->save();
         return redirect()->route('proyecto.indextable')->with('success', 'Se ha agregado con exito');
     }
 
@@ -91,17 +198,6 @@ class FasePropuestasController extends Controller
         $cantidad = FasePropuesta::where('prop_proy', $idProyecto)->get()->count();
         $validacion = $cantidad < 2 ? true : false;
         return  $validacion;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -122,19 +218,9 @@ class FasePropuestasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

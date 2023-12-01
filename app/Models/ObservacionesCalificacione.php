@@ -7,22 +7,20 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class ObservacionesCalificacione
  * 
  * @property int $idObservacion
- * @property string $titulo
- * @property string $linea_invs
- * @property string $desc_problema
- * @property string $obj_general
- * @property string $obj_especificos
- * @property int $obse_cal
+ * @property string $observacion
+ * @property int $obs_item
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Calificacione $calificacione
+ * @property Item $item
+ * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
  */
@@ -32,20 +30,21 @@ class ObservacionesCalificacione extends Model
 	protected $primaryKey = 'idObservacion';
 
 	protected $casts = [
-		'obse_cal' => 'int'
+		'obs_item' => 'int'
 	];
 
 	protected $fillable = [
-		'titulo',
-		'linea_invs',
-		'desc_problema',
-		'obj_general',
-		'obj_especificos',
-		'obse_cal'
+		'observacion',
+		'obs_item'
 	];
 
-	public function calificacione()
+	public function item()
 	{
-		return $this->belongsTo(Calificacione::class, 'obse_cal');
+		return $this->belongsTo(Item::class, 'obs_item');
+	}
+
+	public function fase_cal_obs()
+	{
+		return $this->hasMany(FaseCalOb::class, 'observacion');
 	}
 }

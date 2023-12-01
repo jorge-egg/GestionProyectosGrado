@@ -4,11 +4,14 @@ use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\FasePropuestasController;
+use App\Http\Controllers\ObservacionesPropuestaController;
+use App\Http\Controllers\PonderadosController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\UsuariosController;
 use App\Models\CronogramaGrupo;
+use App\Models\ObservacionesCalificacione;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +46,7 @@ Route::get('/UsuariosUser/restore/one/{numeroDocumento}', [UsuariosController::c
 //sedes
 Route::get('/sedes/index', [SedesController::class, 'index'])->name('sedes.index');
 Route::post('/sedes/edit/{id}', [SedesController::class, 'edit'])->name('sedes.edit');
+Route::post('/sedes/store', [SedesController::class, 'store'])->name('sedes.store');
 
 //facultades
 
@@ -66,7 +70,7 @@ Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restor
 //programas
 Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programa.index');
 Route::get('/programas/create', [SedeProgramaController::class, 'create'])->name('programa.create');
-Route::post('/programas/edit', [SedeProgramaController::class, 'edit'])->name('programa.edit');
+Route::post('/programas/edit/{idPrograma}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
 Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
 Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
 Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class, 'restore'])->name('programa.restore');
@@ -83,6 +87,12 @@ Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->nam
 Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
+Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
+
+//ponderados
+Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
 
 
-
+//observaciones
+Route::post('/observaciones/store', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
+Route::post('/observaciones/update', [ObservacionesPropuestaController::class, 'update'])->name('observaciones.update');

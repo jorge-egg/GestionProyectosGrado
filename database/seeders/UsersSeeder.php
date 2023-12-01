@@ -17,7 +17,7 @@ class UsersSeeder extends Seeder
     public function run()
     {
         User::create([
-            'usuario' => 'admin',
+            'usuario' => '123456789',
             'password' => Hash::make('123456'),
         ])->assignRole('superadministrador');
         User::create([
@@ -30,6 +30,10 @@ class UsersSeeder extends Seeder
         ])->assignRole('administrador');
         User::create([
             'usuario' => '1193248110',
+            'password' => Hash::make('123456'),
+        ])->assignRole('administrador');
+        User::create([
+            'usuario' => '1007689987',
             'password' => Hash::make('123456'),
         ])->assignRole('administrador');
     }

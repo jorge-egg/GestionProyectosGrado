@@ -14,15 +14,12 @@ class CreateObservacionesCalificacionesTable extends Migration
     public function up()
     {
         Schema::create('observaciones_calificaciones', function (Blueprint $table) {
-            $table->bigIncrements("idObservacion"); 
-            $table->string("titulo");
-            $table->string("linea_invs");
-            $table->string("desc_problema");
-            $table->string("obj_general");
-            $table->string("obj_especificos");  
-            $table->unsignedBigInteger("obse_cal");         
+            $table->bigIncrements("idObservacion");
+            $table->string("observacion");
+            $table->unsignedBigInteger("obs_item");
+            $table->foreign("obs_item")->references("idItem")->on("items")->onDelete('cascade');
             $table->timestamps();
-            $table->foreign("obse_cal")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
+
         });
     }
 

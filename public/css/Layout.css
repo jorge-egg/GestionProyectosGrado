@@ -31,7 +31,7 @@
 
 body{
     background: rgb(218,216,0);
-background: linear-gradient(38deg, rgba(218,216,0,0.9640231092436975) 35%, rgba(240,255,162,1) 50%, rgba(0,62,101,0.96) 61%);
+background: linear-gradient(27deg, rgba(218,216,0,1) 50%, rgba(0,62,101,1) 50%);
 }
 
 /* li{
