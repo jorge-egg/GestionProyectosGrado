@@ -48,20 +48,9 @@
                         $usuario = App\Models\UsuariosUser::where('usua_users', $user)->first();
                         $nombre = $usuario->nombre . " " . $usuario->apellido;
                     @endphp
-
+                    {{$nombre}}
                     {{-- <img src="{{ asset('imgs/logos/cerrar.png') }}" alt=""> --}}
                 </a>
-                <div class="dropdown">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{$nombre}}
-                    </a>
-
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                  </div>
 
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

@@ -4,7 +4,7 @@
     <form action="{{ route('propuesta.store') }}" method='POST'>
         <div style="display: flex; flex-direction:row; justify-content: space-around">
             <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
-            <p class="fs-5">Fecha de envio: 02/12/2023 a 09/12/2023</p>
+            <p class="fs-5">Fecha de envio: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
             <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i class="bi bi-arrow-bar-left">Propuesta anterior</i></button>
         </div><br>
         <div class="card">
