@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/contenedorButtons.css') }}">
 @stop
 @section('dashboard_content')
-    <div class="grid-3">
+    <div class="grid">
         <div class="modal fade" tabindex="-1" id="confirmacionIntegrante">
             @component('components.Modales.confirmacionIntegrante')
             @endcomponent
@@ -18,24 +18,27 @@
             @component('components.Modales.buscarIntegranteModal')
             @endcomponent
         </div>
-
-        @if ($estado)
-            <button type="submit" class="btn btn-outline-primary btnGrandeRectangular btn-deshabilitado" data-bs-toggle="modal"
-                data-bs-target="#confirmacionIntegrante" disabled>Crear un
-                proyecto
-            </button>
-        @else
-            <button type="submit" class="btn btn-primary  btnGrandeRectangular" data-bs-toggle="modal"
-            data-bs-target="#confirmacionIntegrante">Crear un proyecto</button>
-        @endif
-
-        <form action="{{ route('proyecto.indextable') }}" method="get">
-
-            <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
-        </form>
-        <form action="{{ route('ponderados.index') }}" method="get">
-            <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ponderados</button>
-        </form>
+        @can('proyecto.crear')
+            @if ($estado)
+                <button type="submit" class="btn btn-outline-primary btnGrandeRectangular btn-deshabilitado"
+                    data-bs-toggle="modal" data-bs-target="#confirmacionIntegrante" disabled>Crear un
+                    proyecto
+                </button>
+            @else
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular" data-bs-toggle="modal"
+                    data-bs-target="#confirmacionIntegrante">Crear un proyecto</button>
+            @endif
+        @endcan
+        @can('proyecto.consultar')
+            <form action="{{ route('proyecto.indextable') }}" method="get">
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
+            </form>
+        @endcan
+        @can('proyecto.ponderados')
+            <form action="{{ route('ponderados.index') }}" method="get">
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ponderados</button>
+            </form>
+        @endcan
     </div>
 @stop
 

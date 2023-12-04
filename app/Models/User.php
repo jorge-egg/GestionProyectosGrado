@@ -9,8 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -29,9 +28,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @package App\Models
  */
 
-class User extends Model implements AuthenticatableContract
+class User extends Authenticatable
 {
-    use Authenticatable;
     use HasRoles;
     use SoftDeletes;
 
@@ -59,4 +57,5 @@ class User extends Model implements AuthenticatableContract
 	{
 		return $this->belongsTo(UsuariosUser::class, 'usua_users');
 	}
+
 }
