@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UsuariosUser
- * 
+ *
  * @property int $numeroDocumento
  * @property string $nombre
  * @property string $apellido
@@ -22,9 +22,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $usua_users
  * @property int $usua_estado
  * @property string|null $deleted_at
- * 
+ *
  * @property Sede $sede
  * @property User $user
+ * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|Integrante[] $integrantes
  * @property Collection|IntegrantesComite[] $integrantes_comites
  * @property Collection|UsuarioPrograma[] $usuario_programas
@@ -61,7 +62,12 @@ class UsuariosUser extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class, 'usua_estado');
+        return $this->belongsTo(User::class, 'usua_users', 'id');
+	}
+
+	public function sede_proyectos_grados()
+	{
+		return $this->hasMany(SedeProyectosGrado::class, 'proy_usua');
 	}
 
 	public function integrantes()

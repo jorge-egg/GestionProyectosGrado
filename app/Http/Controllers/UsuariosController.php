@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Sede;
 use App\Models\UsuariosUser;
 use Doctrine\DBAL\Schema\Table;
 use Illuminate\Routing\Matching\HostValidator;
@@ -19,12 +20,12 @@ class UsuariosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    { 
+    {
         $usuarios = UsuariosUser::paginate(10);
         if($request->has('view_deleted')){
             $usuarios=UsuariosUser::onlyTrashed()->get();
         }
-   
+
         return view('Layouts.usuarios.read', compact('usuarios'));
     }
 
@@ -35,7 +36,10 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-      //
+        $sedes = Sede::all();
+        $roles = Role::all();
+
+        return view('usuarios.create', compact('sedes', 'roles'));
      }
 
     /**
@@ -44,9 +48,29 @@ class UsuariosController extends Controller
      * @param  \App\Http\Requests\StoreusuariosRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreusuariosRequest $request)
+    public function store(Request $request)
     {
-        //
+
+
+        //  creación de usuario
+        $user = User::create([
+            'usuario' => $request->input('usuario'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        //  creación de UsuariosUser
+        $usuariosUser = UsuariosUser::create([
+            'nombre' => $request->input('nombre'),
+            'apellido' => $request->input('apellido'),
+            'email' => $request->input('email'),
+            'numeroCelular' => $request->input('numeroCelular'),
+            'usua_sede' => $request->input('usua_sede'),
+            'usua_users' => $user->id,
+            'usua_estado' => 1, // estado
+        ]);
+
+        // Asignación de roles al usuario
+        $user->assignRole($request->input('roles'));
     }
 
     /**

@@ -9,37 +9,33 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class User
- *
- * @property int $idUsers
+ * 
+ * @property int $id
+ * @property string $usuario
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * @property string|null $deleted_at
+ * @property int $estado
+ * 
  * @property Collection|UsuariosUser[] $usuarios_users
  *
  * @package App\Models
  */
-
-class User extends Model implements AuthenticatableContract
+class User extends Model
 {
-    use Authenticatable;
-    use HasRoles;
-    use SoftDeletes;
-
+	use SoftDeletes;
 	protected $table = 'users';
-	protected $primaryKey = 'id';
 
 	protected $casts = [
-		'email_verified_at' => 'datetime'
+		'email_verified_at' => 'datetime',
+		'estado' => 'int'
 	];
 
 	protected $hidden = [
@@ -48,7 +44,7 @@ class User extends Model implements AuthenticatableContract
 	];
 
 	protected $fillable = [
-        'usuario',
+		'usuario',
 		'email_verified_at',
 		'password',
 		'remember_token',
@@ -57,6 +53,6 @@ class User extends Model implements AuthenticatableContract
 
 	public function usuarios_users()
 	{
-		return $this->belongsTo(UsuariosUser::class, 'usua_users');
+		return $this->hasMany(UsuariosUser::class, 'usua_estado');
 	}
 }
