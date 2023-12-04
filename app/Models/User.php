@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -28,9 +29,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class User extends Model
+
+class User extends Authenticatable
 {
-	use SoftDeletes;
+    use HasRoles;
+    use SoftDeletes;
+  
 	protected $table = 'users';
 
 	protected $casts = [
@@ -55,4 +59,5 @@ class User extends Model
 	{
 		return $this->hasMany(UsuariosUser::class, 'usua_estado');
 	}
+
 }

@@ -38,7 +38,11 @@ class FasePropuestasController extends Controller
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
-        $rangoFecha = $this->ultimaFecha();
+        if ($this->ultimaFecha() == null) {
+            $rangoFecha = $array = ["--", "--", false];
+        } else {
+            $rangoFecha = $this->ultimaFecha();
+        }
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
@@ -58,7 +62,11 @@ class FasePropuestasController extends Controller
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
-        $rangoFecha = $this->ultimaFecha();
+        if ($this->ultimaFecha() == null) {
+            $rangoFecha = $array = ["--", "--", false];
+        } else {
+            $rangoFecha = $this->ultimaFecha();
+        }
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
@@ -172,7 +180,6 @@ class FasePropuestasController extends Controller
             for ($i = 0; $i < count($fechaApertura); $i++) {
                 $fechaInicio = Carbon::parse($fechaApertura[$i])->format('Y-m-d');
                 $fechaFin = Carbon::parse($fechaCierre[$i])->format('Y-m-d');
-
                 // Verificar si la fecha actual está dentro del rango de apertura y cierre
                 if ($fechaInicio <= $currentDate && $fechaFin >= $currentDate) {
                     // La fecha actual está dentro del rango
@@ -186,11 +193,6 @@ class FasePropuestasController extends Controller
                     array_push($array, $fechaInicio, $fechaFin, $habilitado);
                     return $array;
                     break;
-                } else {
-                    $habilitado = false;
-                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
-                    return $array;
-                    
                 }
             }
         }

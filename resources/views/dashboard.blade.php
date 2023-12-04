@@ -7,12 +7,14 @@
 @section('content')
     <div class="sidebar">
         <ul class="nav_list">
+            @can('usuario.leer')
             <li>
                 <a href="{{ route('usuarios.index') }}">
                     <i class='bx bx-group'></i>
                     <span class="links_name">Usuarios</span>
                 </a>
             </li>
+            @endcan
             <li>
                 <a href="{{ route('sedes.index') }}">
                     <i class='bx bxs-institution'></i>

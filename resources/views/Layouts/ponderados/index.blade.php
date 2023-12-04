@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/contenedorButtons.css') }}">
 @stop
 @section('dashboard_content')
-<div class="grid-4">
+<div class="grid">
     <form action="{{ route('proyecto.indextable') }}" method="get">
         <button type="submit" class="btn btn-primary  btnGrandeRectangular">Propuesta</button>
     </form>

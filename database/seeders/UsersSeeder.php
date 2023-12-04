@@ -27,14 +27,14 @@ class UsersSeeder extends Seeder
         User::create([
             'usuario' => '748392749',
             'password' => Hash::make('123456'),
-        ])->assignRole('administrador');
+        ])->assignRole('comite');
         User::create([
             'usuario' => '1193248110',
             'password' => Hash::make('123456'),
-        ])->assignRole('administrador');
+        ])->assignRole('docente');
         User::create([
             'usuario' => '1007689987',
             'password' => Hash::make('123456'),
-        ])->assignRole('administrador');
+        ])->assignRole('estudiante');
     }
 }
