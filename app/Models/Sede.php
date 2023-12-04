@@ -23,8 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
- * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|ComitesSede[] $comites_sedes
+ * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|Consecutivo[] $consecutivos
  *
  * @package App\Models
@@ -67,14 +67,14 @@ class Sede extends Model
 		return $this->hasMany(SedeBiblioteca::class, 'bibl_sede');
 	}
 
-	public function sede_proyectos_grados()
-	{
-		return $this->hasMany(SedeProyectosGrado::class, 'proy_sede');
-	}
-
 	public function comites_sedes()
 	{
 		return $this->hasMany(ComitesSede::class, 'comi_sede');
+	}
+
+	public function sede_proyectos_grados()
+	{
+		return $this->hasMany(SedeProyectosGrado::class, 'proy_sede');
 	}
 
 	public function consecutivos()

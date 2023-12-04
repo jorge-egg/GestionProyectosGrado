@@ -11,18 +11,20 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class User
- *
- * @property int $idUsers
+ * 
+ * @property int $id
+ * @property string $usuario
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * @property string|null $deleted_at
+ * @property int $estado
+ * 
  * @property Collection|UsuariosUser[] $usuarios_users
  *
  * @package App\Models
@@ -32,12 +34,12 @@ class User extends Authenticatable
 {
     use HasRoles;
     use SoftDeletes;
-
+  
 	protected $table = 'users';
-	protected $primaryKey = 'id';
 
 	protected $casts = [
-		'email_verified_at' => 'datetime'
+		'email_verified_at' => 'datetime',
+		'estado' => 'int'
 	];
 
 	protected $hidden = [
@@ -46,7 +48,7 @@ class User extends Authenticatable
 	];
 
 	protected $fillable = [
-        'usuario',
+		'usuario',
 		'email_verified_at',
 		'password',
 		'remember_token',
@@ -55,7 +57,7 @@ class User extends Authenticatable
 
 	public function usuarios_users()
 	{
-		return $this->belongsTo(UsuariosUser::class, 'usua_users');
+		return $this->hasMany(UsuariosUser::class, 'usua_estado');
 	}
 
 }

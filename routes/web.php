@@ -37,6 +37,8 @@ require __DIR__.'/auth.php';
 
 //usuarios
 Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
+Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create');
+Route::post('/usuarios/store', [UsuariosController::class, 'store'])->name('usuarios.store');
 Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
 Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
 Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');

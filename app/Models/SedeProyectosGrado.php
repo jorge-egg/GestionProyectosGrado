@@ -17,9 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $codigoproyecto
  * @property int $proy_sede
  * @property int $proy_bibl
+ * @property int $proy_comi
+ * @property int $proy_usua
  * 
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
+ * @property ComitesSede $comites_sede
+ * @property UsuariosUser $usuarios_user
  * @property Collection|FasePropuesta[] $fase_propuestas
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
@@ -37,14 +41,18 @@ class SedeProyectosGrado extends Model
 	protected $casts = [
 		'estado' => 'bool',
 		'proy_sede' => 'int',
-		'proy_bibl' => 'int'
+		'proy_bibl' => 'int',
+		'proy_comi' => 'int',
+		'proy_usua' => 'int'
 	];
 
 	protected $fillable = [
 		'estado',
 		'codigoproyecto',
 		'proy_sede',
-		'proy_bibl'
+		'proy_bibl',
+		'proy_comi',
+		'proy_usua'
 	];
 
 	public function sede()
@@ -55,6 +63,16 @@ class SedeProyectosGrado extends Model
 	public function sede_biblioteca()
 	{
 		return $this->belongsTo(SedeBiblioteca::class, 'proy_bibl');
+	}
+
+	public function comites_sede()
+	{
+		return $this->belongsTo(ComitesSede::class, 'proy_comi');
+	}
+
+	public function usuarios_user()
+	{
+		return $this->belongsTo(UsuariosUser::class, 'proy_usua');
 	}
 
 	public function fase_propuestas()

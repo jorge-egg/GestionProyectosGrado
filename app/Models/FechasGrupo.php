@@ -7,7 +7,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,8 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property CronogramaGrupo $cronograma_grupo
- * @property FechasGrupo $fechas_grupo
- * @property Collection|FechasGrupo[] $fechas_grupos
+ * @property FasesCronograma $fases_cronograma
  *
  * @package App\Models
  */
@@ -51,13 +49,8 @@ class FechasGrupo extends Model
 		return $this->belongsTo(CronogramaGrupo::class, 'fech_grup');
 	}
 
-	public function fechas_grupo()
+	public function fases_cronograma()
 	{
-		return $this->belongsTo(FechasGrupo::class, 'fech_fase');
-	}
-
-	public function fechas_grupos()
-	{
-		return $this->hasMany(FechasGrupo::class, 'fech_fase');
+		return $this->belongsTo(FasesCronograma::class, 'fech_fase');
 	}
 }
