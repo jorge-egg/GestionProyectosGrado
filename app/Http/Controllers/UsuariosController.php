@@ -39,7 +39,7 @@ class UsuariosController extends Controller
         $sedes = Sede::all();
         $roles = Role::all();
 
-        return view('usuarios.create', compact('sedes', 'roles'));
+        return view('Layouts.usuarios.create', compact('sedes', 'roles'));
      }
 
     /**

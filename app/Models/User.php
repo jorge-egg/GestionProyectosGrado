@@ -5,7 +5,7 @@
  */
 
 namespace App\Models;
-
+use Spatie\Permission\Traits\HasRoles;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class User
- * 
+ *
  * @property int $id
  * @property string $usuario
  * @property Carbon|null $email_verified_at
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * @property int $estado
- * 
+ *
  * @property Collection|UsuariosUser[] $usuarios_users
  *
  * @package App\Models
@@ -34,7 +34,7 @@ class User extends Authenticatable
 {
     use HasRoles;
     use SoftDeletes;
-  
+
 	protected $table = 'users';
 
 	protected $casts = [
