@@ -19,21 +19,28 @@ class ProgramasSeeder extends Seeder
             'siglas'=>'ING',
             'prog_facu'=>1,
             'prog_sede'=>1,
-            
+
             ]);
             DB::table('sede_programas')->insert([
                 'programa' => 'diseño grafico',
                 'siglas'=>'DG',
                 'prog_facu'=>1,
                 'prog_sede'=>1,
-                
+
                 ]);
                 DB::table('sede_programas')->insert([
                     'programa' => 'contaduria publica',
                     'siglas'=>'CP',
                     'prog_facu'=>1,
                     'prog_sede'=>1,
-                    
+
                     ]);
+                    DB::table('sede_programas')->insert([
+                        'programa' => 'ingeniería industrial',
+                        'siglas'=>'CP',
+                        'prog_facu'=>1,
+                        'prog_sede'=>2,
+
+                        ]);
     }
 }

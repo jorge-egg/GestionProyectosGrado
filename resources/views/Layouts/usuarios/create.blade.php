@@ -18,6 +18,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="numeroDocumento" class="form-label">Número de Documento:</label>
+            <input type="text" name="numeroDocumento" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
             <input type="email" name="email" class="form-control" required>
         </div>
@@ -29,7 +34,8 @@
 
         <div class="mb-3">
             <label for="usua_sede" class="form-label">Sede:</label>
-            <select name="usua_sede" class="form-select" required>
+            <select name="usua_sede" class="form-select" required onchange="getProgramasBySede(this.value)">
+                <option value="" selected disabled>Seleccionar Sede</option>
                 @foreach ($sedes as $sede)
                     <option value="{{ $sede->idSede }}">{{ $sede->sede }}</option>
                 @endforeach
@@ -37,25 +43,41 @@
         </div>
 
         <div class="mb-3">
-            <label for="usuario" class="form-label">Usuario:</label>
-            <input type="text" name="usuario" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="password" class="form-label">Contraseña:</label>
-            <input type="password" name="password" class="form-control" required>
+            <label for="programa" class="form-label">Programa:</label>
+            <select name="programa" class="form-select" id="programaSelect" required>
+                <!-- Las opciones se completarán dinámicamente según la sede seleccionada. -->
+            </select>
         </div>
 
         <div class="mb-3">
             <label for="roles" class="form-label">Roles:</label>
-            <select name="roles[]" class="form-select" multiple required>
-                @foreach ($roles as $role)
-                    <option value="{{ $role->name }}">{{ $role->name }}</option>
-                @endforeach
-            </select>
+            @foreach ($roles as $role)
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->name }}" id="{{ $role->name }}">
+                    <label class="form-check-label" for="{{ $role->name }}">{{ $role->name }}</label>
+                </div>
+            @endforeach
         </div>
 
-        <button type="submit" class="btn btn-primary">Crear Usuario</button>
+        <button type="submit" class="btn " style="background:#003E65; color:#fff">Crear Usuario</button>
     </form>
+    <script>
+        function getProgramasBySede(sedeId) {
+            // Hacer una solicitud AJAX para obtener los programas de la sede seleccionada
+            // y actualizar dinámicamente el contenido del select de programas
+            fetch("{{ url('get-programas-by-sede') }}/" + sedeId)
+                .then(response => response.json())
+                .then(data => {
+                    const programaSelect = document.getElementById('programaSelect');
+                    programaSelect.innerHTML = ""; // Limpiar las opciones actuales
 
+                    data.forEach(programa => {
+                        const option = document.createElement('option');
+                        option.value = programa.idPrograma;
+                        option.text = programa.programa;
+                        programaSelect.add(option);
+                    });
+                });
+        }
+    </script>
 @endsection

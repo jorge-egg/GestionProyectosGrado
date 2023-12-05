@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\UsuarioPrograma;
+use App\Models\SedePrograma;
 use App\Models\User;
 use App\Models\Sede;
 use App\Models\UsuariosUser;
@@ -40,7 +41,13 @@ class UsuariosController extends Controller
         $roles = Role::all();
 
         return view('Layouts.usuarios.create', compact('sedes', 'roles'));
-     }
+    }
+    public function getProgramasBySede($sedeId)
+{
+    $programas = SedePrograma::where('prog_sede', $sedeId)->get();
+
+    return response()->json($programas);
+}
 
     /**
      * Store a newly created resource in storage.
@@ -49,31 +56,36 @@ class UsuariosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+{
+    // Creación de User
+    $user = User::create([
+        'usuario' => $request->input('numeroDocumento'), // Utilizar el número de documento como usuario
+        'password' => bcrypt($request->input('numeroDocumento')), // Utilizar el número de documento como contraseña
+    ]);
 
+    // Validaciones y creación de UsuariosUser
+    $usuariosUser = UsuariosUser::create([
+        'numeroDocumento' => $request->input('numeroDocumento'),
+        'nombre' => $request->input('nombre'),
+        'apellido' => $request->input('apellido'),
+        'email' => $request->input('email'),
+        'numeroCelular' => $request->input('numeroCelular'),
+        'usua_sede' => $request->input('usua_sede'),
+        'usua_users' => $user->id, // Utilizar el ID del usuario recién creado
+        'usua_estado' => 1,
+    ]);
 
-        //  creación de usuario
-        $user = User::create([
-            'usuario' => $request->input('usuario'),
-            'password' => bcrypt($request->input('password')),
-        ]);
+    // Asignación de roles al usuario
+    $user->assignRole($request->input('roles'));
 
-        //  creación de UsuariosUser
-        $usuariosUser = UsuariosUser::create([
-            'nombre' => $request->input('nombre'),
-            'apellido' => $request->input('apellido'),
-            'email' => $request->input('email'),
-            'numeroCelular' => $request->input('numeroCelular'),
-            'usua_sede' => $request->input('usua_sede'),
-            'usua_users' => $user->id,
-            'usua_estado' => 1, // estado
-        ]);
+    // Creación de UsuarioPrograma
+    // $usuarioPrograma = UsuarioPrograma::create([
+    //     'usuario' => $usuariosUser->id, // Relacionar con UsuariosUser
+    //     'programa' => $request->input('programa'),
+    // ]);
 
-        // Asignación de roles al usuario
-        $user->assignRole($request->input('roles'));
-        return redirect()->route('usuarios.index');
-    }
-
+    return redirect()->route('usuarios.index');
+}
     /**
      * Display the specified resource.
      *

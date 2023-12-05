@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Role
- * 
+ *
  * @property int $id
  * @property string $name
  * @property string $guard_name
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|ModelHasRole[] $model_has_roles
  * @property Collection|Permission[] $permissions
  *
