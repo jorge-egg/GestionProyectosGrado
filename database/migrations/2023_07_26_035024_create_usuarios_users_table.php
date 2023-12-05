@@ -26,6 +26,7 @@ class CreateUsuariosUsersTable extends Migration
             $table->foreign("usua_users")->references("id")->on("users")->onDelete('cascade');
             $table->foreign("usua_estado")->references("id")->on("users");
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 

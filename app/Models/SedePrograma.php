@@ -12,14 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class SedePrograma
- * 
+ *
  * @property int $idPrograma
  * @property string $programa
  * @property string $siglas
  * @property int $prog_facu
  * @property int $prog_sede
  * @property string|null $deleted_at
- * 
+ *
  * @property SedesFacultade $sedes_facultade
  * @property Sede $sede
  * @property Collection|UsuarioPrograma[] $usuario_programas

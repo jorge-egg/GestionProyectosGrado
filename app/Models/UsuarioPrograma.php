@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class UsuarioPrograma
- * 
+ *
  * @property int $idUsuario_programa
  * @property int $usuario
  * @property int $programa
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property UsuariosUser $usuarios_user
  * @property SedePrograma $sede_programa
  *
@@ -38,10 +38,10 @@ class UsuarioPrograma extends Model
 		'programa'
 	];
 
-	public function usuarios_user()
-	{
-		return $this->belongsTo(UsuariosUser::class, 'usuario');
-	}
+    public function usuarios_user()
+    {
+        return $this->belongsTo(UsuariosUser::class, 'usuario', 'numeroDocumento');
+    }
 
 	public function sede_programa()
 	{

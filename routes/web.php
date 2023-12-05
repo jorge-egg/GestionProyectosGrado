@@ -36,6 +36,7 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //usuarios
+Route::get('get-programas-by-sede/{sedeId}', [UsuariosController::class, 'getProgramasBySede']);
 Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
 Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create');
 Route::post('/usuarios/store', [UsuariosController::class, 'store'])->name('usuarios.store');

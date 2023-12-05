@@ -20,5 +20,11 @@ class SedesSeeder extends Seeder
             'email' => 'recepcion@aunar.edu.co',
             'telefono' => '(602)4021547',
             ]);
+            DB::table('sedes')->insert([
+                'sede' => 'pasto',
+                'direccion' => 'Carrera 42 #5A - 79',
+                'email' => 'recepcion@aunar.edu.co',
+                'telefono' => '(602)4021547',
+                ]);
     }
 }
