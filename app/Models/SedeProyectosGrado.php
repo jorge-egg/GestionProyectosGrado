@@ -11,19 +11,19 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SedeProyectosGrado
- * 
+ *
  * @property int $idProyecto
  * @property bool $estado
  * @property string $codigoproyecto
  * @property int $proy_sede
  * @property int $proy_bibl
- * @property int $proy_comi
- * @property int $proy_usua
- * 
+ * @property int $comite
+ * @property int $docente
+ *
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
- * @property ComitesSede $comites_sede
- * @property UsuariosUser $usuarios_user
+ * @property ComitesSede $comite
+ * @property UsuariosUser $docente
  * @property Collection|FasePropuesta[] $fase_propuestas
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
@@ -51,8 +51,8 @@ class SedeProyectosGrado extends Model
 		'codigoproyecto',
 		'proy_sede',
 		'proy_bibl',
-		'proy_comi',
-		'proy_usua'
+		'comite',
+		'docente'
 	];
 
 	public function sede()

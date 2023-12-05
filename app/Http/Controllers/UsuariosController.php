@@ -39,7 +39,7 @@ class UsuariosController extends Controller
         $sedes = Sede::all();
         $roles = Role::all();
 
-        return view('usuarios.create', compact('sedes', 'roles'));
+        return view('Layouts.usuarios.create', compact('sedes', 'roles'));
      }
 
     /**
@@ -71,6 +71,7 @@ class UsuariosController extends Controller
 
         // Asignación de roles al usuario
         $user->assignRole($request->input('roles'));
+        return redirect()->route('usuarios.index');
     }
 
     /**
