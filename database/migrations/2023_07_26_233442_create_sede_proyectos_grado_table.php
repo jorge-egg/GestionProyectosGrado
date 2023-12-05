@@ -19,7 +19,7 @@ class CreateSedeProyectosGradoTable extends Migration
             $table->string("codigoproyecto");
             $table->unsignedBigInteger("proy_sede");
             $table->unsignedBigInteger("proy_bibl");
-            $table->unsignedBigInteger("comite");
+            $table->unsignedBigInteger("comite")->nullable();
             $table->unsignedBigInteger("docente")->nullable();
             $table->foreign("proy_sede")->references("idSede")->on("sedes")->onDelete('cascade');
             $table->foreign("proy_bibl")->references("idBiblioteca")->on("sede_bibliotecas")->onDelete('cascade');

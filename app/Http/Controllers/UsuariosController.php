@@ -71,6 +71,7 @@ class UsuariosController extends Controller
 
         // Asignación de roles al usuario
         $user->assignRole($request->input('roles'));
+        return redirect()->route('usuarios.index');
     }
 
     /**
