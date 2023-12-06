@@ -14,8 +14,12 @@ class FacultadesSeeder extends Seeder
     public function run()
     {
         DB::table('sedes_facultades')->insert([
-            'nombre' => 'Ingeniería',
+            'nombre' => 'Ciencias económicas y administrativas',
             'facu_sede'=>1,
             ]);
+            DB::table('sedes_facultades')->insert([
+                'nombre' => 'Ingeniería y artes',
+                'facu_sede'=>1,
+                ]);
     }
 }

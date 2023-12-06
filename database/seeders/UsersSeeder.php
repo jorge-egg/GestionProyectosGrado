@@ -33,7 +33,39 @@ class UsersSeeder extends Seeder
             'password' => Hash::make('123456'),
         ])->assignRole('docente');
         User::create([
+            'usuario' => '1007689981',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689982',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689983',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689984',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689985',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689986',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
             'usuario' => '1007689987',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689988',
+            'password' => Hash::make('123456'),
+        ])->assignRole('estudiante');
+        User::create([
+            'usuario' => '1007689989',
             'password' => Hash::make('123456'),
         ])->assignRole('estudiante');
     }

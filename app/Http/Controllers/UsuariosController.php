@@ -57,6 +57,7 @@ class UsuariosController extends Controller
      */
     public function store(Request $request)
 {
+
     // Creación de User
     $user = User::create([
         'usuario' => $request->input('numeroDocumento'), // Utilizar el número de documento como usuario
@@ -65,7 +66,6 @@ class UsuariosController extends Controller
 
     // Validaciones y creación de UsuariosUser
     $usuariosUser = UsuariosUser::create([
-        'numeroDocumento' => $request->input('numeroDocumento'),
         'nombre' => $request->input('nombre'),
         'apellido' => $request->input('apellido'),
         'email' => $request->input('email'),
@@ -74,28 +74,21 @@ class UsuariosController extends Controller
         'usua_users' => $user->id, // Utilizar el ID del usuario recién creado
         'usua_estado' => 1,
     ]);
+    $usuariosUser->numeroDocumento = $request->input('numeroDocumento');
+    $usuariosUser->save();
 
     // Asignación de roles al usuario
     $user->assignRole($request->input('roles'));
 
     // Creación de UsuarioPrograma
-    // $usuarioPrograma = UsuarioPrograma::create([
-    //     'usuario' => $usuariosUser->id, // Relacionar con UsuariosUser
-    //     'programa' => $request->input('programa'),
-    // ]);
+    $usuarioPrograma = UsuarioPrograma::create([
+        'usuario' => $usuariosUser->numeroDocumento, // Relacionar con UsuariosUser
+        'programa' => $request->input('programa'),
+    ]);
 
     return redirect()->route('usuarios.index');
 }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\UsuariosUser  $usuarios
-     * @return \Illuminate\Http\Response
-     */
-    public function show(usuarios $usuarios)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -17,14 +17,14 @@ class SedesSeeder extends Seeder
         DB::table('sedes')->insert([
             'sede' => 'Cali',
             'direccion' => 'Carrera 42 #5A - 79',
-            'email' => 'recepcion@aunar.edu.co',
+            'email' => 'recepcionCali@aunar.edu.co',
             'telefono' => '(602)4021547',
             ]);
             DB::table('sedes')->insert([
-                'sede' => 'pasto',
-                'direccion' => 'Carrera 42 #5A - 79',
-                'email' => 'recepcion@aunar.edu.co',
-                'telefono' => '(602)4021547',
+                'sede' => 'Pasto',
+                'direccion' => 'Carrera 15 #1G - 81',
+                'email' => 'recepcionPasto@aunar.edu.co',
+                'telefono' => '(602)4021548',
                 ]);
     }
 }
