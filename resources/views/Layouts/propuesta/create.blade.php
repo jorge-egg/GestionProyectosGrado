@@ -16,7 +16,21 @@
                     @can('propuesta.calificar')
                         <button type="button" id="calificar" class="btn"
                             style="background:#003E65; color:#fff">Calificar</button>
-                    @endcan
+                        @endcan
+                        @if ($propuestaAnterior->estado == 'Aprobado')
+                            <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente fase.</span>
+                        @elseif ($propuestaAnterior->estado == 'Aplazado con modificaciones')
+
+                            <span style="color: red;">Tiene 10 días hábiles para enviar la corrección, después de eso no tendrá
+                                más oportunidades.</span>
+                        @elseif ($propuestaAnterior->estado == 'Rechazado')
+                            <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
+                                proyecto.</span>
+                        @endif
+
+
+
+
                     @csrf
                     <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
                     <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idPropuesta'>
@@ -116,11 +130,11 @@
                                 style="background:#003E65; color:#fff">Agregar</button>
                         @endcan
 
-                        @can('propuesta.enviarCalificar')
+
                             <button id="buttonEnviarCalificacion"
                                 formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
-                                class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
-                        @endcan
+                                class="btn" style="background:#003E65; color:#fff; display:none" >Enviar calificación</button>
+
                         </p>
                     </div>
                 </div>
@@ -153,6 +167,9 @@
 
 
             }
+            buttonCalificar.addEventListener('click', function() {
+            buttonEnviarCalificacion.style.display = 'inline-block';
+            });
             //verificar fecha
 
 
