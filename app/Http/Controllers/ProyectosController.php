@@ -9,7 +9,7 @@ use App\Models\Sede;
 use App\Models\Consecutvo;
 use App\Models\Integrante;
 use App\Models\Consecutivo;
-
+use App\Models\ProyectoFase;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeBiblioteca;
@@ -53,6 +53,15 @@ class ProyectosController extends Controller
             ->where('usuario', $usuario->numeroDocumento)
             ->orderBy('idProyecto', 'asc')
             ->get();
+        return view('Layouts.proyecto.tableindex', compact('proyectos'));
+    }
+
+    //index para mostrar todos los proyectos de la sede
+    public function indextableAll()
+    {
+        $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $sedeId = Sede::where('idSede', $usuario->usua_sede)->first()->idSede;
+        $proyectos = SedeProyectosGrado::where('proy_sede', $sedeId)->get();
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 

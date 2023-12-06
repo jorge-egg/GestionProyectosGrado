@@ -34,6 +34,11 @@
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
             </form>
         @endcan
+        @can('proyecto.consultarTodo')
+            <form action="{{ route('proyecto.indextableAll') }}" method="get">
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
+            </form>
+        @endcan
         @can('proyecto.ponderados')
             <form action="{{ route('ponderados.index') }}" method="get">
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ponderados</button>
