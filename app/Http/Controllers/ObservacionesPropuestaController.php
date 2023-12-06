@@ -56,7 +56,7 @@ class ObservacionesPropuestaController extends Controller
         });
 
         $this->cambioEstado($request->idPropuesta);
-        return redirect()->route('proyecto.indextable');
+        return redirect()->route('proyecto.indextableAll');
     }
 
     public function cargarObservaciones($request){

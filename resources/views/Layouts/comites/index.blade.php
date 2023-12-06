@@ -8,7 +8,7 @@
 <h1>Comites</h1>
     <br>
     <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre de comite</label>
+            <label for="nombre" class="form-label">Nombre de comité</label>
             <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" required>
             @error('nombre')
                 <span class="invalid-feedback" role="alert">
@@ -24,7 +24,7 @@
 </div>
 @endif
 <div class='col col-md-6 text-right'>
-<a href="{{route('comite.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-warning'>Consultar comites eliminados</a>
+<a href="{{route('comite.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-warning'>Consultar comités eliminados</a>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='comite'>
         <thead>

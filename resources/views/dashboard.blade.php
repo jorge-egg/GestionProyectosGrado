@@ -1,6 +1,6 @@
 @extends('Layouts.app')
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
+    
     @yield('estilos_adicionales')
 @stop
 
@@ -42,39 +42,6 @@
         </ul>
     </div>
     <div class="contenido">
-        <header>
-            <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="logo_content">
-                    <i class='bx bx-menu' id="btn"></i>
-                </div>
-                <div class="logo_name">
-                    <img src="{{ asset('imgs/logos/escudo.png') }}" alt="" width="70">
-                    <div class="title">
-                        SEGETGRA
-                    </div>
-                </div>
-                <div class="name_user" style="color: #fff;">
-                    @auth
-                        @php
-                            $user = Auth::user();
-                            $usuario = App\Models\UsuariosUser::where('usua_users', $user->id)->first();
-                            $nombre = $usuario ? $usuario->nombre . " " . $usuario->apellido : 'Nombre no disponible';
-                        @endphp
-                        <span id="nombreUsuario">{{ $nombre }}</span>
-
-                        <a class="cerrar-sesion" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();"
-                           title="Cerrar sesión">
-                            <img src="{{ asset('imgs/logos/cerrar.png') }}" alt="">
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    @endauth
-                </div>
-            </div>
-        </header>
         @yield('js')
         @yield('dashboard_content')
         @yield('js_extra')
