@@ -6,13 +6,14 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UsuariosUser
- *
+ * 
  * @property int $numeroDocumento
  * @property string $nombre
  * @property string $apellido
@@ -22,7 +23,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $usua_users
  * @property int $usua_estado
  * @property string|null $deleted_at
- *
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
  * @property Sede $sede
  * @property User $user
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
@@ -37,7 +40,6 @@ class UsuariosUser extends Model
 	use SoftDeletes;
 	protected $table = 'usuarios_users';
 	protected $primaryKey = 'numeroDocumento';
-	public $timestamps = false;
 
 	protected $casts = [
 		'usua_sede' => 'int',
@@ -62,12 +64,12 @@ class UsuariosUser extends Model
 
 	public function user()
 	{
-        return $this->belongsTo(User::class, 'usua_users', 'id');
+		return $this->belongsTo(User::class, 'usua_estado');
 	}
 
 	public function sede_proyectos_grados()
 	{
-		return $this->hasMany(SedeProyectosGrado::class, 'proy_usua');
+		return $this->hasMany(SedeProyectosGrado::class, 'docente');
 	}
 
 	public function integrantes()

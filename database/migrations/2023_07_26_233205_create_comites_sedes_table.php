@@ -15,10 +15,9 @@ class CreateComitesSedesTable extends Migration
     {
         Schema::create('comites_sedes', function (Blueprint $table) {
             $table->bigIncrements("idComite");
-            $table->string("nombre");
-            $table->unsignedBigInteger("comi_sede");
-            $table->foreign("comi_sede")->references("idSede")->on("sedes")->onDelete('cascade');
-            $table->softDeletes();   
+            $table->unsignedBigInteger("comi_pro");
+            $table->foreign("comi_pro")->references("idPrograma")->on("sede_programas")->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

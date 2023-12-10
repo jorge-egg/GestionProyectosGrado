@@ -14,11 +14,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class ComitesSede
  * 
  * @property int $idComite
- * @property string $nombre
- * @property int $comi_sede
+ * @property int $comi_pro
  * @property string|null $deleted_at
  * 
- * @property Sede $sede
+ * @property SedePrograma $sede_programa
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
  * @property Collection|IntegrantesComite[] $integrantes_comites
  *
@@ -32,22 +31,21 @@ class ComitesSede extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'comi_sede' => 'int'
+		'comi_pro' => 'int'
 	];
 
 	protected $fillable = [
-		'nombre',
-		'comi_sede'
+		'comi_pro'
 	];
 
-	public function sede()
+	public function sede_programa()
 	{
-		return $this->belongsTo(Sede::class, 'comi_sede');
+		return $this->belongsTo(SedePrograma::class, 'comi_pro');
 	}
 
 	public function sede_proyectos_grados()
 	{
-		return $this->hasMany(SedeProyectosGrado::class, 'proy_comi');
+		return $this->hasMany(SedeProyectosGrado::class, 'comite');
 	}
 
 	public function integrantes_comites()

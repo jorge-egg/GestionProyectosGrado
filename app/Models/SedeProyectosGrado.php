@@ -11,19 +11,19 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SedeProyectosGrado
- *
+ * 
  * @property int $idProyecto
  * @property bool $estado
  * @property string $codigoproyecto
  * @property int $proy_sede
  * @property int $proy_bibl
- * @property int $comite
- * @property int $docente
- *
+ * @property int|null $comite
+ * @property int|null $docente
+ * 
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
- * @property ComitesSede $comite
- * @property UsuariosUser $docente
+ * @property ComitesSede|null $comites_sede
+ * @property UsuariosUser|null $usuarios_user
  * @property Collection|FasePropuesta[] $fase_propuestas
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
@@ -42,8 +42,8 @@ class SedeProyectosGrado extends Model
 		'estado' => 'bool',
 		'proy_sede' => 'int',
 		'proy_bibl' => 'int',
-		'proy_comi' => 'int',
-		'proy_usua' => 'int'
+		'comite' => 'int',
+		'docente' => 'int'
 	];
 
 	protected $fillable = [
@@ -67,12 +67,12 @@ class SedeProyectosGrado extends Model
 
 	public function comites_sede()
 	{
-		return $this->belongsTo(ComitesSede::class, 'proy_comi');
+		return $this->belongsTo(ComitesSede::class, 'comite');
 	}
 
 	public function usuarios_user()
 	{
-		return $this->belongsTo(UsuariosUser::class, 'proy_usua');
+		return $this->belongsTo(UsuariosUser::class, 'docente');
 	}
 
 	public function fase_propuestas()
