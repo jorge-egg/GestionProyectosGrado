@@ -34,14 +34,14 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'usuario.permiso'])->syncRoles([$superadministrador]);
 
         //propuestas
-        Permission::create(['name' => 'propuesta.calificar'])->syncRoles([$superadministrador, $administrador, $comite]);
+        Permission::create(['name' => 'propuesta.calificar'])->syncRoles([$superadministrador, $administrador, $docente, $comite]);
         Permission::create(['name' => 'propuesta.agregar'])->syncRoles([$estudiante]);
-        Permission::create(['name' => 'propuesta.enviarCalificar'])->syncRoles([$superadministrador, $administrador, $comite]);
+        Permission::create(['name' => 'propuesta.enviarCalificar'])->syncRoles([$superadministrador, $docente, $administrador, $comite]);
 
         //proyectos view
         Permission::create(['name' => 'proyecto.crear'])->syncRoles([$estudiante]);
-        Permission::create(['name' => 'proyecto.consultar'])->syncRoles([$estudiante, $docente, $comite]);
-        Permission::create(['name' => 'proyecto.consultarTodo'])->syncRoles([$superadministrador, $administrador, $bibliotecario]);
+        Permission::create(['name' => 'proyecto.consultar'])->syncRoles([$estudiante, $comite]);
+        Permission::create(['name' => 'proyecto.consultarTodo'])->syncRoles([$superadministrador, $administrador, $docente, $bibliotecario]);
         Permission::create(['name' => 'proyecto.ponderados'])->syncRoles([$superadministrador]);
     }
 }
