@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComitesSede;
 use notify;
 use Exception;
 use Carbon\Carbon;
@@ -9,10 +10,12 @@ use App\Models\Sede;
 use App\Models\Consecutvo;
 use App\Models\Integrante;
 use App\Models\Consecutivo;
+use App\Models\IntegrantesComite;
 use App\Models\ProyectoFase;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeBiblioteca;
+use App\Models\SedePrograma;
 use App\Models\SedeProyectosGrado;
 use App\Models\UsuarioPrograma;
 
@@ -26,7 +29,6 @@ class ProyectosController extends Controller
      */
     public function index()
     {
-
         try {
             //Consultar si el usuario tiene un proyecto activo para bloquear la opcion de crear otro
             $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first()->numeroDocumento;
@@ -65,6 +67,21 @@ class ProyectosController extends Controller
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
+    //index para mostrar todos los proyectos asiganados por comite
+    public function indextableComite()
+    {
+        $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $proyectos = ComitesSede::join('sede_proyectos_grado', 'sede_proyectos_grado.comite', 'comites_sedes.idComite')
+        ->join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
+        ->where('usuario', $usuario->numeroDocumento)
+        ->get();
+
+                
+
+
+        return view('Layouts.proyecto.tableindex', compact('proyectos'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -74,15 +91,18 @@ class ProyectosController extends Controller
     public function create(Request $request, $integrantes)
     {
         try {
-            $codigoUsuario = $integrantes == '2' ? $request->codUsuario : null;
+            $codigoUsuario = $integrantes == '2' ? $request->codUsuario : null; //obtiene elcodigo del segundo integrante
             $anoActual       = Carbon::now()->format('Y');
             $usuario         = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
             $idSede          = $usuario->usua_sede;
             $idBiblioteca    = SedeBiblioteca::where('bibl_sede', $idSede)->orderBy('idBiblioteca', 'desc')->first()->bibl_sede;
-            $programa        = UsuarioPrograma::join('sede_programas', 'sede_programas.idPrograma', 'usuario_programas.programa')
-                ->where('usuario', $usuario->numeroDocumento)
-                ->select('sede_programas.siglas')
+            $programa        = SedePrograma::join('usuario_programas', 'usuario_programas.programa', 'sede_programas.idPrograma')
+            ->join('comites_sedes', 'comites_sedes.comi_pro', 'sede_programas.idPrograma')
+            ->where('usuario', $usuario->numeroDocumento)
+                //->select('sede_programas.*')
                 ->first();
+
+
 
             $consecutivoData = Sede::join('usuarios_users as usuarios', 'usuarios.usua_sede', 'sedes.idSede')
                 ->join('consecutivo', 'consecutivo.conc_sede', 'sedes.idSede')
@@ -95,6 +115,7 @@ class ProyectosController extends Controller
                 'codigoproyecto' => $programa->siglas . $consecutivo . $anoActual,
                 'proy_sede' => $idSede,
                 'proy_bibl' => $idBiblioteca,
+                'comite' => $programa->comi_pro,
             ]);
 
             $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario);
