@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\ComitesSede;
 use App\Models\SedePrograma;
+use App\Models\SedesFacultade;
 use Illuminate\Http\Request;
 
 class SedeProgramaController extends Controller
@@ -14,21 +15,21 @@ class SedeProgramaController extends Controller
      */
     public function index(Request $request)
     {
-        $programas = SedePrograma::all();
-        if($request->has('view_deleted')){
-            $programas = SedePrograma::onlyTrashed()->get();
-        }
-        return view('Layouts.programas.index', compact('programas'));
-    }
+        // Obtener programas de la sede seleccionada
 
+        $idSede = $request->idSede;
+        $programas = SedePrograma::where('prog_sede', $idSede)->get();
+        $facultades = SedesFacultade::where('facu_sede', $idSede)->get();
+        return view('Layouts.programas.index', compact('programas', 'idSede','facultades'));
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+//
     }
 
     /**
@@ -37,11 +38,29 @@ class SedeProgramaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $idSede)
     {
-        //
-    }
+        $request->validate([
+            'programa' => 'required',
+            'siglas' => 'required',
+            'prog_facu' => 'required',
+        ]);
 
+        // Validar y almacenar el nuevo programa
+        $programa = SedePrograma::create([
+            'programa' => $request->programa,
+            'siglas' => $request->siglas,
+            'prog_facu' => $request->prog_facu,
+            'prog_sede' => $idSede,
+        ]);
+
+        // Crear entrada en la tabla comites_sedes
+        $comite = ComitesSede::create([
+            'comi_pro' => $programa->idPrograma,
+        ]);
+
+        return redirect()->back();
+    }
     /**
      * Display the specified resource.
      *

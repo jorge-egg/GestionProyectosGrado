@@ -32,13 +32,14 @@
                 <th scope="col">Nombre</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
 
         <tbody>
             @foreach ($comites as $comite)
                 <tr>
-                    <td>{{ $comite->nombre }}</td>
+                    <td>{{ $comite->comi_pro }}</td>
                     <td>
                         <form action="{{ route('comite.edit', $comite->idComite) }}" method="post">
                             @csrf
@@ -54,6 +55,11 @@
                             <button type="submit" class="btn btn-warning">Eliminar</button>
                         </form>
                         @endif
+                    </td>
+                    <td>
+                        <form action="{{ route('comite.integrantes.create', $comite->idComite) }}" method="get">
+                            @csrf
+                            <button type="submit" class="btn btn-warning">añadir integrante</button>
                     </td>
 
                 </tr>

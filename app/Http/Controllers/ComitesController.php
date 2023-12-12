@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\IntegrantesComite;
+use App\Models\UsuariosUser;
+use App\Models\User;
 use App\Http\Requests\StorecomitesRequest;
 use App\Http\Requests\UpdatecomitesRequest;
 use App\Models\ComitesSede;
@@ -17,13 +19,37 @@ class ComitesController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $comites = ComitesSede::all();
         if($request->has('view_deleted')){
             $comites=ComitesSede::onlyTrashed()->get();
         }
         return view('Layouts.comites.index', compact('comites'));
     }
+    public function createIntegrante()
+    {
+        $docentes = User::role('docente')->get();
+        
+        return view('Layouts.comites.create-integrante', compact('docentes'));
+    }
+
+    public function storeIntegrante(Request $request)
+{
+    $request->validate([
+        'docente' => 'required|exists:users,id',
+    ]);
+
+    $docente = User::find($request->input('docente'));
+    $docente->assignRole('comite');
+
+    IntegrantesComite::create([
+        'usuario' => $docente->numeroDocumento,
+        'comite' => idComite,
+    ]);
+
+    return redirect()->route('comite.index')->with('success', 'Integrante añadido exitosamente');
+}
+
 
     /**
      * Show the form for creating a new resource.

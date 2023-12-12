@@ -7,18 +7,45 @@
 
 <h1>Programas</h1>
     <br>
-    <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre del programa</label>
-            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="programa" name="programa" required>
-            <label for="nombre" class="form-label">Sigla del programa</label>
-            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="siglas" name="siglas" required>
-            @error('nombre')
+    <form action="{{ route('programas.store', $idSede) }}" method="post">
+        @csrf
+
+        <div class="mb-3">
+            <label for="programa" class="form-label">Nombre del programa</label>
+            <input type="text" class="form-control @error('programa') is-invalid @enderror" id="programa" name="programa" required>
+            @error('programa')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
         </div>
-        <button type="submit" class="btn" style="background:#003E65; color:#fff">Agregar</button>
+
+        <div class="mb-3">
+            <label for="siglas" class="form-label">Siglas del programa</label>
+            <input type="text" class="form-control @error('siglas') is-invalid @enderror" id="siglas" name="siglas" required>
+            @error('siglas')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="prog_facu" class="form-label">Facultad</label>
+            <select class="form-control @error('prog_facu') is-invalid @enderror" id="prog_facu" name="prog_facu" required>
+                <option value="" selected disabled>Seleccionar Facultad</option>
+                @foreach ($facultades as $facultad)
+                    <option value="{{ $facultad->idFacultad }}">{{ $facultad->nombre }}</option>
+                @endforeach
+            </select>
+            @error('prog_facu')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn" style="background:#003E65; color:#fff">Agregar Programa</button>
     </form>
 @if(session()->has('success'))
 <div class= 'alert alert-success'>
@@ -26,7 +53,9 @@
 </div>
 @endif
 <div class='col col-md-6 text-right'>
-<a href="{{route('programa.index',['view_deleted'=>'DeletedRecords'])}}"class='btn btn-warning'>Consultar programas eliminados</a>
+{{-- <form action="{{route('programas.index', ['idSede' => $idSede, 'view_deleted'=>'DeletedRecords'])}}" method="get">
+<button  class='btn btn-warning'>Consultar programas eliminados</button> --}}
+</form>
 </div>
 <table class="table table-hover shadow-lg mt-4" style="width:100%" id='table-js'>
         <thead>
