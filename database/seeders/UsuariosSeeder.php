@@ -56,13 +56,104 @@ class UsuariosSeeder extends Seeder
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
+            'nombre' => 'Alexander',
+            'numeroDocumento' => '1193248111',
+            'apellido' => 'Garzon Galeano',
+            'email' => 'alexander@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 5,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Carlos',
+            'numeroDocumento' => '1193248112',
+            'apellido' => 'Rios Peralta',
+            'email' => 'carlos@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 6,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Luis Miguel',
+            'numeroDocumento' => '1193248113',
+            'apellido' => 'Garzon Galeano',
+            'email' => 'luisMiguel@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 7,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Federico',
+            'numeroDocumento' => '1193248114',
+            'apellido' => 'Segura Durango',
+            'email' => 'federico@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 8,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Paulo',
+            'numeroDocumento' => '1193248115',
+            'apellido' => 'Cardenas Curaca',
+            'email' => 'paulo@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 9,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Andrea',
+            'numeroDocumento' => '1193248116',
+            'apellido' => 'Colosal Torres',
+            'email' => 'andrea@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 10,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Laura Cristina',
+            'numeroDocumento' => '1193248117',
+            'apellido' => 'Garzon Galeano',
+            'email' => 'laura0310@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 11,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Vanessa',
+            'numeroDocumento' => '1193248118',
+            'apellido' => 'Yepes hurtado',
+            'email' => 'vanessa@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 12,
+            "usua_estado" => 1,
+        ]);
+        DB::table('usuarios_users')->insert([
+            'nombre' => 'Cristian',
+            'numeroDocumento' => '1193248119',
+            'apellido' => 'Perez Monsalve',
+            'email' => 'cristian@gmail.com',
+            'numeroCelular' => '(602)3567389',
+            'usua_sede' => 1,
+            'usua_users' => 13,
+            "usua_estado" => 1,
+        ]);
+
+        DB::table('usuarios_users')->insert([
             'nombre' => 'Andres Valencia',
             'numeroDocumento' => '1007689981',
             'apellido' => 'Flores Martinez',
             'email' => 'andres@gmail.com',
             'numeroCelular' => '3125636928',
             'usua_sede' => 1,
-            'usua_users' => 5,
+            'usua_users' => 14,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -72,7 +163,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'cristian@gmail.com',
             'numeroCelular' => '3152365478',
             'usua_sede' => 1,
-            'usua_users' => 6,
+            'usua_users' => 15,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -82,7 +173,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'carlos@gmail.com',
             'numeroCelular' => '3582365588',
             'usua_sede' => 1,
-            'usua_users' => 7,
+            'usua_users' => 16,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -92,7 +183,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'julian@gmail.com',
             'numeroCelular' => '3225327309',
             'usua_sede' => 1,
-            'usua_users' => 8,
+            'usua_users' => 17,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -102,7 +193,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'felipe@gmail.com',
             'numeroCelular' => '3256325411',
             'usua_sede' => 1,
-            'usua_users' => 9,
+            'usua_users' => 18,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -112,7 +203,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'luis@gmail.com',
             'numeroCelular' => '3255698741',
             'usua_sede' => 1,
-            'usua_users' => 10,
+            'usua_users' => 19,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -122,7 +213,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'yersonaguilarr@gmail.com',
             'numeroCelular' => '3225327309',
             'usua_sede' => 1,
-            'usua_users' => 11,
+            'usua_users' => 20,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -132,7 +223,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'angel@gmail.com',
             'numeroCelular' => '3225327311',
             'usua_sede' => 1,
-            'usua_users' => 12,
+            'usua_users' => 21,
             "usua_estado" => 1,
         ]);
         DB::table('usuarios_users')->insert([
@@ -142,7 +233,7 @@ class UsuariosSeeder extends Seeder
             'email' => 'oscar@gmail.com',
             'numeroCelular' => '3225327333',
             'usua_sede' => 1,
-            'usua_users' => 13,
+            'usua_users' => 22,
             "usua_estado" => 1,
         ]);
     }

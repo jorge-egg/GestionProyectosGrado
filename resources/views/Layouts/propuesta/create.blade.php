@@ -39,7 +39,9 @@
                     <div class="input-group mb-3">
                         <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId"
                             oninput="limitarLongitud( this.id, 25, 'contadorTitle' )"
-                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->titulo }}" required>
+                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->titulo }}" required @can('propuesta.calificar')
+                                disabled
+                            @endcan>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[0] }}</p>
                         </span>
@@ -57,7 +59,9 @@
                     <label>Linea de investigación</label>
                     <div class="input-group mb-3">
                         <input type="text" name='linea_invs' onchange="validarCampos()"
-                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->linea_invs }}" required>
+                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->linea_invs }}" required @can('propuesta.calificar')
+                            disabled
+                        @endcan>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[1] }}</p>
                         </span>
@@ -75,7 +79,9 @@
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="desc_problema" onchange="validarCampos()"
                             id="descriptionPropuestaId" oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" class='form-control'
-                            placeholder="Descripción del problema" required>{{ $propuestaAnterior->desc_problema }}</textarea>
+                            placeholder="Descripción del problema" required @can('propuesta.calificar')
+                            disabled
+                        @endcan>{{ $propuestaAnterior->desc_problema }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[2] }}</p>
                         </span>
@@ -94,7 +100,9 @@
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_general" onchange="validarCampos()"
                             id="objectiveGeneralId" oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" class='form-control'
-                            placeholder="Objetivo general" required>{{ $propuestaAnterior->obj_general }}</textarea>
+                            placeholder="Objetivo general" required @can('propuesta.calificar')
+                            disabled
+                        @endcan>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[3] }}</p>
                         </span>
@@ -112,7 +120,9 @@
                     <label class="form-label">Objetivos específicos</label>
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()"
-                            class='form-control' placeholder="Objetivos específicos" required>{{ $propuestaAnterior->obj_especificos }}</textarea>
+                            class='form-control' placeholder="Objetivos específicos" required @can('propuesta.calificar')
+                            disabled
+                        @endcan>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[4] }}</p>
                         </span>
@@ -150,7 +160,7 @@
             const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
             var rangoFecha = "{{ $rangoFecha[2] }}";
             // Verificar el estado y deshabilitar campos y botón si es necesario
-            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado') {
+            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' || estadoPropuesta === 'pendiente') {
                 deshabilitarCamposYBoton();
             }
 
