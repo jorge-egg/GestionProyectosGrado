@@ -1,6 +1,6 @@
 @extends('Layouts.app')
 @section('styles')
-    
+
     @yield('estilos_adicionales')
 @stop
 
@@ -34,9 +34,9 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('programa.index') }}">
+                <a href="{{ route('comite.index') }}">
                     <i class='bx bx-sitemap'></i>
-                    <span class="links_name">Proyecto</span>
+                    <span class="links_name">Comites</span>
                 </a>
             </li>
         </ul>

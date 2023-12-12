@@ -65,6 +65,8 @@ Route::post('/proyectos/create/{integrantes}', [ProyectosController::class, 'cre
 Route::get('/usuario/consulta', [ProyectosController::class, 'buscarIntegrante'])->name('buscarIntegrante');
 
 //comites
+Route::get('comite/integrantes/create', [ComitesController::class, 'createIntegrante'])->name('comite.integrantes.create');
+Route::post('comite/integrantes/store', [ComitesController::class, 'storeIntegrante'])->name('comite.integrantes.store');
 Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
 Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
 Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
@@ -73,8 +75,9 @@ Route::post('/comites/destroy/{idComite}', [ComitesController::class, 'destroy']
 Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restore'])->name('comite.restore');
 
 //programas
-Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programa.index');
-Route::get('/programas/create', [SedeProgramaController::class, 'create'])->name('programa.create');
+Route::get('/programas/index/{id}', [SedeProgramaController::class, 'index'])->name('programas.index');
+Route::get('/programas/create/{id}', [SedeProgramaController::class, 'create'])->name('programas.create');
+Route::post('/programas/store/{id}', [SedeProgramaController::class, 'store'])->name('programas.store');
 Route::post('/programas/edit/{idPrograma}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
 Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
 Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');

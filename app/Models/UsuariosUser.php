@@ -5,7 +5,7 @@
  */
 
 namespace App\Models;
-
+use Spatie\Permission\Traits\HasRoles;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UsuariosUser
- * 
+ *
  * @property int $numeroDocumento
  * @property string $nombre
  * @property string $apellido
@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Sede $sede
  * @property User $user
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class UsuariosUser extends Model
 {
+    use HasRoles;
 	use SoftDeletes;
 	protected $table = 'usuarios_users';
 	protected $primaryKey = 'numeroDocumento';
