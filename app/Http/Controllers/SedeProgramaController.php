@@ -18,9 +18,10 @@ class SedeProgramaController extends Controller
         // Obtener programas de la sede seleccionada
 
         $idSede = $request->idSede;
-        $programas = SedePrograma::where('prog_sede', $idSede)->get();
-        $facultades = SedesFacultade::where('facu_sede', $idSede)->get();
-        return view('Layouts.programas.index', compact('programas', 'idSede','facultades'));
+        $programas = SedesFacultade::join('sede_programas', 'sede_programas.prog_facu', 'sedes_facultades.idFacultad')
+        ->where('facu_sede', $idSede)
+        ->get();
+        return view('Layouts.programas.index', compact('programas', 'idSede'));
     }
     /**
      * Show the form for creating a new resource.
@@ -51,7 +52,6 @@ class SedeProgramaController extends Controller
             'programa' => $request->programa,
             'siglas' => $request->siglas,
             'prog_facu' => $request->prog_facu,
-            'prog_sede' => $idSede,
         ]);
 
         // Crear entrada en la tabla comites_sedes

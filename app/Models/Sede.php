@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Sede
- * 
+ *
  * @property int $idSede
  * @property string $sede
  * @property string $direccion
  * @property string $email
  * @property string $telefono
- * 
+ *
  * @property Collection|SedesFacultade[] $sedes_facultades
  * @property Collection|UsuariosUser[] $usuarios_users
  * @property Collection|SedePrograma[] $sede_programas
@@ -49,11 +49,6 @@ class Sede extends Model
 	public function usuarios_users()
 	{
 		return $this->hasMany(UsuariosUser::class, 'usua_sede');
-	}
-
-	public function sede_programas()
-	{
-		return $this->hasMany(SedePrograma::class, 'prog_sede');
 	}
 
 	public function proyecto_cronogramas()

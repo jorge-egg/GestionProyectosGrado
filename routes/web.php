@@ -65,8 +65,8 @@ Route::post('/proyectos/create/{integrantes}', [ProyectosController::class, 'cre
 Route::get('/usuario/consulta', [ProyectosController::class, 'buscarIntegrante'])->name('buscarIntegrante');
 
 //comites
-Route::get('comite/integrantes/create', [ComitesController::class, 'createIntegrante'])->name('comite.integrantes.create');
-Route::post('comite/integrantes/store', [ComitesController::class, 'storeIntegrante'])->name('comite.integrantes.store');
+Route::get('/comite/integrantes/create/{idComite}', [ComitesController::class, 'createIntegrante'])->name('comite.integrantes.create');
+Route::post('/comite/integrantes/store', [ComitesController::class, 'storeIntegrante'])->name('comite.integrantes.store');
 Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
 Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
 Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
