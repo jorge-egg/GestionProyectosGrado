@@ -16,17 +16,17 @@
                     @can('propuesta.calificar')
                         <button type="button" id="calificar" class="btn"
                             style="background:#003E65; color:#fff">Calificar</button>
-                        @endcan
-                        @if ($propuestaAnterior->estado == 'Aprobado')
-                            <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente fase.</span>
-                        @elseif ($propuestaAnterior->estado == 'Aplazado con modificaciones')
-
-                            <span style="color: red;">Tiene 10 días hábiles para enviar la corrección, después de eso no tendrá
-                                más oportunidades.</span>
-                        @elseif ($propuestaAnterior->estado == 'Rechazado')
-                            <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
-                                proyecto.</span>
-                        @endif
+                    @endcan
+                    @if ($propuestaAnterior->estado == 'Aprobado')
+                        <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente
+                            fase.</span>
+                    @elseif ($propuestaAnterior->estado == 'Aplazado con modificaciones')
+                        <span style="color: red;">Tiene 10 días hábiles para enviar la corrección, después de eso no tendrá
+                            más oportunidades.</span>
+                    @elseif ($propuestaAnterior->estado == 'Rechazado')
+                        <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
+                            proyecto.</span>
+                    @endif
 
 
 
@@ -39,7 +39,8 @@
                     <div class="input-group mb-3">
                         <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId"
                             oninput="limitarLongitud( this.id, 25, 'contadorTitle' )"
-                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->titulo }}" required @can('propuesta.calificar')
+                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->titulo }}" required
+                            @can('propuesta.calificar')
                                 disabled
                             @endcan>
                         <span class="input-group-text" id="basic-addon2">
@@ -59,7 +60,8 @@
                     <label>Linea de investigación</label>
                     <div class="input-group mb-3">
                         <input type="text" name='linea_invs' onchange="validarCampos()"
-                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->linea_invs }}" required @can('propuesta.calificar')
+                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->linea_invs }}" required
+                            @can('propuesta.calificar')
                             disabled
                         @endcan>
                         <span class="input-group-text" id="basic-addon2">
@@ -79,7 +81,8 @@
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="desc_problema" onchange="validarCampos()"
                             id="descriptionPropuestaId" oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" class='form-control'
-                            placeholder="Descripción del problema" required @can('propuesta.calificar')
+                            placeholder="Descripción del problema" required
+                            @can('propuesta.calificar')
                             disabled
                         @endcan>{{ $propuestaAnterior->desc_problema }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
@@ -100,7 +103,8 @@
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_general" onchange="validarCampos()"
                             id="objectiveGeneralId" oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" class='form-control'
-                            placeholder="Objetivo general" required @can('propuesta.calificar')
+                            placeholder="Objetivo general" required
+                            @can('propuesta.calificar')
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
@@ -120,7 +124,8 @@
                     <label class="form-label">Objetivos específicos</label>
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()"
-                            class='form-control' placeholder="Objetivos específicos" required @can('propuesta.calificar')
+                            class='form-control' placeholder="Objetivos específicos" required
+                            @can('propuesta.calificar')
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
@@ -141,9 +146,9 @@
                         @endcan
 
 
-                            <button id="buttonEnviarCalificacion"
-                                formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
-                                class="btn" style="background:#003E65; color:#fff; display:none" >Enviar calificación</button>
+                        <button id="buttonEnviarCalificacion"
+                            formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
+                            class="btn" style="background:#003E65; color:#fff; display:none">Enviar calificación</button>
 
                         </p>
                     </div>
@@ -154,14 +159,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             const buttonCalificar = document.getElementById('calificar');
             const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
-            const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion'); // Añadido
+            const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
 
             // Obtener el estado de la propuesta
             const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
             var rangoFecha = "{{ $rangoFecha[2] }}";
+
             // Verificar el estado y deshabilitar campos y botón si es necesario
-            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' || estadoPropuesta === 'pendiente') {
+            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado') {
                 deshabilitarCamposYBoton();
+            } else if (estadoPropuesta === 'pendiente' || estadoPropuesta === 'activo') {
+                ocultarBotonCalificar();
             }
 
             buttonCalificar.addEventListener('click', function() {
@@ -174,11 +182,13 @@
                     campo.disabled = true;
                 });
                 buttonToCreatePropuesta.disabled = true;
+            }
 
-
+            function ocultarBotonCalificar() {
+                buttonCalificar.style.display = 'none';
             }
             buttonCalificar.addEventListener('click', function() {
-            buttonEnviarCalificacion.style.display = 'inline-block';
+                buttonEnviarCalificacion.style.display = 'inline-block';
             });
             //verificar fecha
 
