@@ -3,7 +3,9 @@
 
     @yield('estilos_adicionales')
 @stop
+@section('js_head')
 
+@endsection
 @section('content')
     <div class="sidebar">
         <ul class="nav_list">

@@ -17,7 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
         crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="{{ asset('css/slidebar.css') }}">
     @yield('styles')
     @notifyCss
+    @yield('js_head')
 </head>
 
 <body>

@@ -154,156 +154,98 @@
                     </div>
                 </div>
     </form>
+
 @section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const buttonCalificar = document.getElementById('calificar');
-            const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
-            const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
 
-            // Obtener el estado de la propuesta
-            const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
-            var rangoFecha = "{{ $rangoFecha[2] }}";
+<script>
 
-            // Verificar el estado y deshabilitar campos y botón si es necesario
-            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado') {
-                deshabilitarCamposYBoton();
-            } else if (estadoPropuesta === 'pendiente' || estadoPropuesta === 'activo') {
-                ocultarBotonCalificar();
+
+
+
+
+
+
+
+    const limitarLongitud = (id, longitud, contadorId) => {
+        const input = document.getElementById(id);
+        const contador = document.getElementById(contadorId);
+
+        if (input.value.length <= 0) {
+            contador.textContent = 0;
+            return;
+        }
+
+        const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
+
+        let palabras = input.value.split(' ');
+
+        if (palabras.length > maxPalabras) {
+            contador.textContent = "Limite de palabras excedido.";
+            contador.style.color = 'red';
+            palabras.pop();
+            input.value = palabras.join(' ');
+            var camposVacios = true;
+
+        } else if (palabras.length <= maxPalabras) {
+            contador.textContent = palabras.length;
+            var camposVacios = false;
+            contador.style.color = 'black';
+        }
+
+        const button = document.getElementById('buttonToCreatePropuesta');
+        button.disabled = camposVacios;
+    }
+
+    const validarCampos = () => {
+        const inputs = document.querySelectorAll('input[required], textarea[required]');
+        let camposVacios = false;
+
+        inputs.forEach(input => {
+            if (input.value.trim() === '') {
+                camposVacios = true;
+            } else {
+                camposVacios = false;
             }
+        });
 
-            buttonCalificar.addEventListener('click', function() {
-                mostrarCamposCalificacion();
-            });
+        const button = document.getElementById('buttonToCreatePropuesta');
+        button.disabled = camposVacios;
+    }
 
-            function deshabilitarCamposYBoton() {
-                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
-                camposDeshabilitar.forEach(campo => {
-                    campo.disabled = true;
-                });
-                buttonToCreatePropuesta.disabled = true;
-            }
+    window.addEventListener('load', validarCampos);
 
-            function ocultarBotonCalificar() {
-                buttonCalificar.style.display = 'none';
-            }
-            buttonCalificar.addEventListener('click', function() {
-                buttonEnviarCalificacion.style.display = 'inline-block';
-            });
-            //verificar fecha
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttonCalificar = document.getElementById('calificar');
+        const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
 
+        buttonCalificar.addEventListener('click', function() {
+            mostrarCamposCalificacion();
+        });
 
+        // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
+        ocultarCamposCalificacion();
 
-            const deshabilitarCampos = () => {
-                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
-                camposDeshabilitar.forEach(campo => {
-                    campo.disabled = true;
-                });
-            }
-
-            const mostrarCamposCalificacion = () => {
-                deshabilitarCampos();
-                const camposCalificacion = document.querySelectorAll('.campos-calificacion');
-
-                camposCalificacion.forEach(campos => {
-                    campos.style.display = 'flex';
-                    // Agregar el atributo required a los campos dentro de la sección
-                    campos.querySelectorAll('input, textarea').forEach(campo => {
-                        campo.required = true;
-                        campo.disabled = false; // Habilitar campos al mostrar
-                    });
-                });
-
-                // Mostrar el botón de enviar calificación
-                buttonEnviarCalificacion.style.display = 'inline-block';
-                buttonToCreatePropuesta.style.display = 'none';
-            }
-
-            const ocultarCamposCalificacion = () => {
-                const camposCalificacion = document.querySelectorAll('.campos-calificacion');
-
-                camposCalificacion.forEach(campos => {
-                    campos.style.display = 'none';
-                    // Quitar el atributo required de los campos dentro de la sección
-                    campos.querySelectorAll('input, textarea').forEach(campo => {
-                        campo.required = false;
-                        campo.disabled = true; // Deshabilitar campos al ocultar
-                    });
-                });
-
-                // Ocultar el botón de enviar calificación
-                buttonEnviarCalificacion.style.display = 'none';
-            }
-
-            const limitarLongitud = (id, longitud, contadorId) => {
-                const input = document.getElementById(id);
-                const contador = document.getElementById(contadorId);
-
-                if (input.value.length <= 0) {
-                    contador.textContent = 0;
-                    return;
-                }
-
-                const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
-
-                let palabras = input.value.split(' ');
-
-                if (palabras.length > maxPalabras) {
-                    contador.textContent = "Limite de palabras excedido.";
-                    contador.style.color = 'red';
-                    palabras.pop();
-                    input.value = palabras.join(' ');
-                    var camposVacios = true;
-
-                } else if (palabras.length <= maxPalabras) {
-                    contador.textContent = palabras.length;
-                    var camposVacios = false;
-                    contador.style.color = 'black';
-                }
-
-                const button = document.getElementById('buttonToCreatePropuesta');
-                button.disabled = camposVacios;
-            }
-
-            const validarCampos = () => {
-                const inputs = document.querySelectorAll('input[required], textarea[required]');
-                let camposVacios = false;
-
-                inputs.forEach(input => {
-                    if (input.value.trim() === '') {
-                        camposVacios = true;
-                    } else {
-                        camposVacios = false;
-                    }
-                });
-
-                const button = document.getElementById('buttonToCreatePropuesta');
-                button.disabled = camposVacios;
-            }
-
-            window.addEventListener('load', validarCampos);
-
-            // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
-            ocultarCamposCalificacion();
-
-            // Auto-expandir textarea
-            const textareas = document.querySelectorAll('.auto-expand');
-            textareas.forEach(textarea => {
-                textarea.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    this.style.height = (this.scrollHeight) + 'px';
-                });
-            });
-
-            // Validar campos al cargar la página
-            validarCampos();
-
-            // Validar campos al cambiar el contenido de los campos
-            const inputs = document.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('input', validarCampos);
+        // Auto-expandir textarea
+        const textareas = document.querySelectorAll('.auto-expand');
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
             });
         });
-    </script>
+
+        // Validar campos al cargar la página
+        validarCampos();
+
+        // Validar campos al cambiar el contenido de los campos
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', validarCampos);
+        });
+
+    });
+
+</script>
+
 @endsection
 @stop
