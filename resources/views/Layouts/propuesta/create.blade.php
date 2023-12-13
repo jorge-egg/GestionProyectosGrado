@@ -6,8 +6,14 @@
 
             <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
             <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
-            <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i
-                    class="bi bi-arrow-bar-left">Propuesta anterior</i></button>
+            @if ($estadoButton)
+                <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i
+                        class="bi bi-arrow-bar-left"></i>Propuesta anterior</button>
+            @elseif (!$estadoButton)
+                <button type="submit" class="btn btn-outline-dark"
+                    formaction="{{ route('propuesta.create', $idProyecto) }}">Propuesta superior<i
+                        class="bi bi-arrow-bar-left"></i></button>
+            @endif
         </div><br>
         <div class="card">
             <h5 class="card-title text-center">Crear propuesta</h5>
@@ -159,13 +165,6 @@
 
 <script>
 
-
-
-
-
-
-
-
     const limitarLongitud = (id, longitud, contadorId) => {
         const input = document.getElementById(id);
         const contador = document.getElementById(contadorId);
@@ -246,6 +245,7 @@
     });
 
 </script>
+
 
 @endsection
 @stop
