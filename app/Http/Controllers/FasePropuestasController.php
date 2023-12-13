@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Error;
 use Exception;
 use App\Models\Sede;
-use App\Models\FaseCalOb;
 use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
@@ -38,6 +36,7 @@ class FasePropuestasController extends Controller
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
+        $estadoButton = true;
         if ($this->ultimaFecha() == null) {
             $rangoFecha = $array = ["--", "--", false];
         } else {
@@ -53,7 +52,7 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha'));
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
     }
 
     public function createAnterior(Request $request)
@@ -62,6 +61,8 @@ class FasePropuestasController extends Controller
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
+
+        $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true:false;
         if ($this->ultimaFecha() == null) {
             $rangoFecha = $array = ["--", "--", false];
         } else {
@@ -77,7 +78,7 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha'));
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
     }
 
     //consultar si existen propuestas creadas por el usuario y tomar la ultima
@@ -233,26 +234,4 @@ class FasePropuestasController extends Controller
         return $validacion;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request)
-    {
-        //
-    }
 }
