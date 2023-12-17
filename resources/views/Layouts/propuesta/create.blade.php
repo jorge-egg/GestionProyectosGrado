@@ -20,8 +20,8 @@
             <div class='card-body'>
                 <p class="card-text">
                     @can('propuesta.calificar')
-                        <button type="button" id="calificar" class="btn"
-                            style="background:#003E65; color:#fff">Calificar</button>
+                        <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff"
+                            onclick="mostrarCamposCalificacion()">Calificar</button>
                     @endcan
                     @if ($propuestaAnterior->estado == 'Aprobado')
                         <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente
@@ -33,9 +33,6 @@
                         <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
                             proyecto.</span>
                     @endif
-
-
-
 
                     @csrf
                     <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
@@ -163,88 +160,155 @@
 
 @section('js')
 
-<script>
+    <script>
+        function mostrarCamposCalificacion(){
+            const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
-    const limitarLongitud = (id, longitud, contadorId) => {
-        const input = document.getElementById(id);
-        const contador = document.getElementById(contadorId);
+                camposCalificacion.forEach(campos => {
+                    campos.style.display = 'flex';
+                    // Agregar el atributo required a los campos dentro de la sección
+                    campos.querySelectorAll('input, textarea').forEach(campo => {
+                        campo.required = true;
+                        campo.disabled = false; // Habilitar campos al mostrar
+                    });
+                });
 
-        if (input.value.length <= 0) {
-            contador.textContent = 0;
-            return;
+                // Mostrar el botón de enviar calificación
+                buttonEnviarCalificacion.style.display = 'inline-block';
+                buttonToCreatePropuesta.style.display = 'none';
         }
 
-        const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
+        const limitarLongitud = (id, longitud, contadorId) => {
+            const input = document.getElementById(id);
+            const contador = document.getElementById(contadorId);
 
-        let palabras = input.value.split(' ');
-
-        if (palabras.length > maxPalabras) {
-            contador.textContent = "Limite de palabras excedido.";
-            contador.style.color = 'red';
-            palabras.pop();
-            input.value = palabras.join(' ');
-            var camposVacios = true;
-
-        } else if (palabras.length <= maxPalabras) {
-            contador.textContent = palabras.length;
-            var camposVacios = false;
-            contador.style.color = 'black';
-        }
-
-        const button = document.getElementById('buttonToCreatePropuesta');
-        button.disabled = camposVacios;
-    }
-
-    const validarCampos = () => {
-        const inputs = document.querySelectorAll('input[required], textarea[required]');
-        let camposVacios = false;
-
-        inputs.forEach(input => {
-            if (input.value.trim() === '') {
-                camposVacios = true;
-            } else {
-                camposVacios = false;
+            if (input.value.length <= 0) {
+                contador.textContent = 0;
+                return;
             }
-        });
 
-        const button = document.getElementById('buttonToCreatePropuesta');
-        button.disabled = camposVacios;
-    }
+            const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
 
-    window.addEventListener('load', validarCampos);
+            let palabras = input.value.split(' ');
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const buttonCalificar = document.getElementById('calificar');
-        const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
+            if (palabras.length > maxPalabras) {
+                contador.textContent = "Limite de palabras excedido.";
+                contador.style.color = 'red';
+                palabras.pop();
+                input.value = palabras.join(' ');
+                var camposVacios = true;
 
-        buttonCalificar.addEventListener('click', function() {
-            mostrarCamposCalificacion();
-        });
+            } else if (palabras.length <= maxPalabras) {
+                contador.textContent = palabras.length;
+                var camposVacios = false;
+                contador.style.color = 'black';
+            }
 
-        // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
-        ocultarCamposCalificacion();
+            const button = document.getElementById('buttonToCreatePropuesta');
+            button.disabled = camposVacios;
+        }
 
-        // Auto-expandir textarea
-        const textareas = document.querySelectorAll('.auto-expand');
-        textareas.forEach(textarea => {
-            textarea.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
+        const validarCampos = () => {
+            const inputs = document.querySelectorAll('input[required], textarea[required]');
+            let camposVacios = false;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    camposVacios = true;
+                } else {
+                    camposVacios = false;
+                }
             });
+
+            const button = document.getElementById('buttonToCreatePropuesta');
+            button.disabled = camposVacios;
+        }
+
+        window.addEventListener('load', validarCampos);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
+            const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
+            const buttonCalificar = document.getElementById('calificar');
+
+            // Obtener el estado de la propuesta
+            const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
+            var rangoFecha = "{{ $rangoFecha[2] }}";
+
+            // Verificar el estado y deshabilitar campos y botón si es necesario
+            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' ||
+                estadoPropuesta === 'pendiente') {
+                deshabilitarCamposYBoton();
+            } else if (estadoPropuesta === 'activo') {
+                ocultarBotonCalificar();
+            }
+
+
+            function deshabilitarCamposYBoton() {
+                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
+                camposDeshabilitar.forEach(campo => {
+                    campo.disabled = true;
+                });
+                buttonToCreatePropuesta.disabled = true;
+            }
+
+            function ocultarBotonCalificar() {
+                buttonCalificar.style.display = 'none';
+            }
+            buttonCalificar.addEventListener('click', function() {
+                buttonEnviarCalificacion.style.display = 'inline-block';
+            });
+            //verificar fecha
+
+            const deshabilitarCampos = () => {
+                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
+                camposDeshabilitar.forEach(campo => {
+                    campo.disabled = true;
+                });
+            }
+
+
+
+            const ocultarCamposCalificacion = () => {
+                const camposCalificacion = document.querySelectorAll('.campos-calificacion');
+
+                camposCalificacion.forEach(campos => {
+                    campos.style.display = 'none';
+                    // Quitar el atributo required de los campos dentro de la sección
+                    campos.querySelectorAll('input, textarea').forEach(campo => {
+                        campo.required = false;
+                        campo.disabled = true; // Deshabilitar campos al ocultar
+                    });
+                });
+
+                // Ocultar el botón de enviar calificación
+                buttonEnviarCalificacion.style.display = 'none';
+            }
+
+
+            // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
+            ocultarCamposCalificacion();
+
+            // Auto-expandir textarea
+            const textareas = document.querySelectorAll('.auto-expand');
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+            });
+
+            // Validar campos al cargar la página
+            validarCampos();
+
+            // Validar campos al cambiar el contenido de los campos
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', validarCampos);
+            });
+
         });
-
-        // Validar campos al cargar la página
-        validarCampos();
-
-        // Validar campos al cambiar el contenido de los campos
-        const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('input', validarCampos);
-        });
-
-    });
-
-</script>
+    </script>
 
 
 @endsection
