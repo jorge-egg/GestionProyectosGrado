@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class UsuarioPrograma
- *
+ * 
  * @property int $idUsuario_programa
  * @property int $usuario
  * @property int $programa
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * 
  * @property UsuariosUser $usuarios_user
  * @property SedePrograma $sede_programa
  *
@@ -35,8 +35,7 @@ class UsuarioPrograma extends Model
 
 	protected $fillable = [
 		'usuario',
-		'programa',
-        'siglas'
+		'programa'
 	];
 
 	public function usuarios_user()

@@ -3,15 +3,36 @@
     <br>
     <form action="{{ route('propuesta.store') }}" method='POST'>
         <div style="display: flex; flex-direction:row; justify-content: space-around">
+
             <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
-            <p class="fs-5">Fecha de envio: 02/12/2023 a 09/12/2023</p>
-            <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i class="bi bi-arrow-bar-left">Propuesta anterior</i></button>
+            <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
+            @if ($estadoButton)
+                <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i
+                        class="bi bi-arrow-bar-left"></i>Propuesta anterior</button>
+            @elseif (!$estadoButton)
+                <button type="submit" class="btn btn-outline-dark"
+                    formaction="{{ route('propuesta.create', $idProyecto) }}">Propuesta superior<i
+                        class="bi bi-arrow-bar-left"></i></button>
+            @endif
         </div><br>
         <div class="card">
             <h5 class="card-title text-center">Crear propuesta</h5>
             <div class='card-body'>
                 <p class="card-text">
-                    <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff">Calificar</button>
+                    @can('propuesta.calificar')
+                        <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff"
+                            onclick="mostrarCamposCalificacion()">Calificar</button>
+                    @endcan
+                    @if ($propuestaAnterior->estado == 'Aprobado')
+                        <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente
+                            fase.</span>
+                    @elseif ($propuestaAnterior->estado == 'Aplazado con modificaciones')
+                        <span style="color: red;">Tiene 10 días hábiles para enviar la corrección, después de eso no tendrá
+                            más oportunidades.</span>
+                    @elseif ($propuestaAnterior->estado == 'Rechazado')
+                        <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
+                            proyecto.</span>
+                    @endif
 
                     @csrf
                     <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
@@ -20,8 +41,11 @@
                     <label for="titleForPropuestaId">Titulo</label>
                     <div class="input-group mb-3">
                         <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId"
-                            oninput="limitarLongitud( this.id, 25, 'contadorTitle' )" class='form-control campo-deshabilitar'
-                            value = "{{ $propuestaAnterior->titulo }}" required>
+                            oninput="limitarLongitud( this.id, 25, 'contadorTitle' )"
+                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->titulo }}" required
+                            @can('propuesta.calificar')
+                                disabled
+                            @endcan>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[0] }}</p>
                         </span>
@@ -38,8 +62,11 @@
                 <div>
                     <label>Linea de investigación</label>
                     <div class="input-group mb-3">
-                        <input type="text" name='linea_invs' onchange="validarCampos()" class='form-control campo-deshabilitar'
-                            value = "{{ $propuestaAnterior->linea_invs }}" required>
+                        <input type="text" name='linea_invs' onchange="validarCampos()"
+                            class='form-control campo-deshabilitar' value = "{{ $propuestaAnterior->linea_invs }}" required
+                            @can('propuesta.calificar')
+                            disabled
+                        @endcan>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[1] }}</p>
                         </span>
@@ -55,9 +82,12 @@
                 <div class="mb-3">
                     <label class="form-label">Descripción del problema</label>
                     <div class="input-group mb-3">
-                        <textarea class="form-control auto-expand campo-deshabilitar" name="desc_problema" onchange="validarCampos()" id="descriptionPropuestaId"
-                            oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" class='form-control'
-                            placeholder="Descripción del problema" required>{{ $propuestaAnterior->desc_problema }}</textarea>
+                        <textarea class="form-control auto-expand campo-deshabilitar" name="desc_problema" onchange="validarCampos()"
+                            id="descriptionPropuestaId" oninput="limitarLongitud( this.id, 600, 'DescripcionContador' )" class='form-control'
+                            placeholder="Descripción del problema" required
+                            @can('propuesta.calificar')
+                            disabled
+                        @endcan>{{ $propuestaAnterior->desc_problema }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[2] }}</p>
                         </span>
@@ -74,9 +104,12 @@
                 <div class="mb-3">
                     <label class="form-label">Objetivo general</label>
                     <div class="input-group mb-3">
-                        <textarea class="form-control auto-expand campo-deshabilitar" name="obj_general" onchange="validarCampos()" id="objectiveGeneralId"
-                            oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" class='form-control'
-                            placeholder="Objetivo general" required>{{ $propuestaAnterior->obj_general }}</textarea>
+                        <textarea class="form-control auto-expand campo-deshabilitar" name="obj_general" onchange="validarCampos()"
+                            id="objectiveGeneralId" oninput="limitarLongitud( this.id, 25, 'ObjetivoGeneralContador' )" class='form-control'
+                            placeholder="Objetivo general" required
+                            @can('propuesta.calificar')
+                            disabled
+                        @endcan>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[3] }}</p>
                         </span>
@@ -93,8 +126,11 @@
                 <div class="mb-3">
                     <label class="form-label">Objetivos específicos</label>
                     <div class="input-group mb-3">
-                        <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()" class='form-control'
-                            placeholder="Objetivos específicos" required>{{ $propuestaAnterior->obj_especificos }}</textarea>
+                        <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()"
+                            class='form-control' placeholder="Objetivos específicos" required
+                            @can('propuesta.calificar')
+                            disabled
+                        @endcan>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[4] }}</p>
                         </span>
@@ -107,56 +143,26 @@
                     @endcomponent
                     <br>
                     <div class="mb-3">
-                        <button id="buttonToCreatePropuesta" class="btn"
-                            style="background:#003E65; color:#fff">Agregar</button>
+                        @can('propuesta.agregar')
+                            <button id="buttonToCreatePropuesta" class="btn"
+                                style="background:#003E65; color:#fff">Agregar</button>
+                        @endcan
+
+
                         <button id="buttonEnviarCalificacion"
                             formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
-                            class="btn" style="background:#003E65; color:#fff">Enviar calificación</button>
-                    </p>
+                            class="btn" style="background:#003E65; color:#fff; display:none">Enviar calificación</button>
+
+                        </p>
+                    </div>
                 </div>
-            </div>
     </form>
+
 @section('js')
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const buttonCalificar = document.getElementById('calificar');
-            const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
-            const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion'); // Añadido
-
-            // Obtener el estado de la propuesta
-            const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
-
-            // Verificar el estado y deshabilitar campos y botón si es necesario
-            if (estadoPropuesta === 'Aprobado' || estadoPropuesta === 'Rechazado') {
-                deshabilitarCamposYBoton();
-            }
-
-            buttonCalificar.addEventListener('click', function () {
-                mostrarCamposCalificacion();
-            });
-
-            function deshabilitarCamposYBoton() {
-                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
-                camposDeshabilitar.forEach(campo => {
-                    campo.disabled = true;
-                });
-                buttonToCreatePropuesta.disabled = true;
-                
-
-            }
-
-
-
-            const deshabilitarCampos = () => {
-                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
-                camposDeshabilitar.forEach(campo => {
-                    campo.disabled = true;
-                });
-            }
-
-            const mostrarCamposCalificacion = () => {
-                deshabilitarCampos();
-                const camposCalificacion = document.querySelectorAll('.campos-calificacion');
+        function mostrarCamposCalificacion(){
+            const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
                 camposCalificacion.forEach(campos => {
                     campos.style.display = 'flex';
@@ -170,7 +176,98 @@
                 // Mostrar el botón de enviar calificación
                 buttonEnviarCalificacion.style.display = 'inline-block';
                 buttonToCreatePropuesta.style.display = 'none';
+        }
+
+        const limitarLongitud = (id, longitud, contadorId) => {
+            const input = document.getElementById(id);
+            const contador = document.getElementById(contadorId);
+
+            if (input.value.length <= 0) {
+                contador.textContent = 0;
+                return;
             }
+
+            const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
+
+            let palabras = input.value.split(' ');
+
+            if (palabras.length > maxPalabras) {
+                contador.textContent = "Limite de palabras excedido.";
+                contador.style.color = 'red';
+                palabras.pop();
+                input.value = palabras.join(' ');
+                var camposVacios = true;
+
+            } else if (palabras.length <= maxPalabras) {
+                contador.textContent = palabras.length;
+                var camposVacios = false;
+                contador.style.color = 'black';
+            }
+
+            const button = document.getElementById('buttonToCreatePropuesta');
+            button.disabled = camposVacios;
+        }
+
+        const validarCampos = () => {
+            const inputs = document.querySelectorAll('input[required], textarea[required]');
+            let camposVacios = false;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    camposVacios = true;
+                } else {
+                    camposVacios = false;
+                }
+            });
+
+            const button = document.getElementById('buttonToCreatePropuesta');
+            button.disabled = camposVacios;
+        }
+
+        window.addEventListener('load', validarCampos);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttonToCreatePropuesta = document.getElementById('buttonToCreatePropuesta');
+            const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
+            const buttonCalificar = document.getElementById('calificar');
+
+            // Obtener el estado de la propuesta
+            const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
+            var rangoFecha = "{{ $rangoFecha[2] }}";
+
+            // Verificar el estado y deshabilitar campos y botón si es necesario
+            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' ||
+                estadoPropuesta === 'pendiente') {
+                deshabilitarCamposYBoton();
+            } else if (estadoPropuesta === 'activo') {
+                ocultarBotonCalificar();
+            }
+
+
+            function deshabilitarCamposYBoton() {
+                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
+                camposDeshabilitar.forEach(campo => {
+                    campo.disabled = true;
+                });
+                buttonToCreatePropuesta.disabled = true;
+            }
+
+            function ocultarBotonCalificar() {
+                buttonCalificar.style.display = 'none';
+            }
+            buttonCalificar.addEventListener('click', function() {
+                buttonEnviarCalificacion.style.display = 'inline-block';
+            });
+            //verificar fecha
+
+            const deshabilitarCampos = () => {
+                const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
+                camposDeshabilitar.forEach(campo => {
+                    campo.disabled = true;
+                });
+            }
+
+
 
             const ocultarCamposCalificacion = () => {
                 const camposCalificacion = document.querySelectorAll('.campos-calificacion');
@@ -188,53 +285,6 @@
                 buttonEnviarCalificacion.style.display = 'none';
             }
 
-            const limitarLongitud = (id, longitud, contadorId) => {
-                const input = document.getElementById(id);
-                const contador = document.getElementById(contadorId);
-
-                if (input.value.length <= 0) {
-                    contador.textContent = 0;
-                    return;
-                }
-
-                const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
-
-                let palabras = input.value.split(' ');
-
-                if (palabras.length > maxPalabras) {
-                    contador.textContent = "Limite de palabras excedido.";
-                    contador.style.color = 'red';
-                    palabras.pop();
-                    input.value = palabras.join(' ');
-                    var camposVacios = true;
-
-                } else if (palabras.length <= maxPalabras) {
-                    contador.textContent = palabras.length;
-                    var camposVacios = false;
-                    contador.style.color = 'black';
-                }
-
-                const button = document.getElementById('buttonToCreatePropuesta');
-                button.disabled = camposVacios;
-            }
-
-            const validarCampos = () => {
-                const inputs = document.querySelectorAll('input[required], textarea[required]');
-                let camposVacios = false;
-
-                inputs.forEach(input => {
-                    if (input.value.trim() === '') {
-                        camposVacios = true;
-                    } else {
-                        camposVacios = false;
-                    }
-                });
-
-                const button = document.getElementById('buttonToCreatePropuesta');
-                button.disabled = camposVacios;
-            }
-
-            window.addEventListener('load', validarCampos);
 
             // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
             ocultarCamposCalificacion();
@@ -242,7 +292,7 @@
             // Auto-expandir textarea
             const textareas = document.querySelectorAll('.auto-expand');
             textareas.forEach(textarea => {
-                textarea.addEventListener('input', function () {
+                textarea.addEventListener('input', function() {
                     this.style.height = 'auto';
                     this.style.height = (this.scrollHeight) + 'px';
                 });
@@ -256,7 +306,10 @@
             inputs.forEach(input => {
                 input.addEventListener('input', validarCampos);
             });
+
         });
     </script>
+
+
 @endsection
 @stop

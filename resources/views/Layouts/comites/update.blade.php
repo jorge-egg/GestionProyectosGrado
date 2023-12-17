@@ -1,7 +1,7 @@
 @extends('dashboard')
 @section('dashboard_content')
 <div class="card">
-    <h5 class="card-title text-center">Editar Comite</h5>
+    <h5 class="card-title text-center">Editar Comité</h5>
     <br>
     <div class='card-body'>
         <p class="card-text">

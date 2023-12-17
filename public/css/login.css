@@ -1,5 +1,7 @@
 body{
     background-color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
 .card-body{
     background-color: #EEEEEE;
@@ -34,10 +36,15 @@ header{
     left: 0;
     top: 0;
     z-index: 2;
+    margin: 0;
+    padding: 0;
 }
 
 .container{
-    position: relative;
-    width: calc(100%);
+    position: absolute;
+    width: calc(max-width);
     right: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SedesSeeder::class);
         $this->call(UsersSeeder::class);
         $this->call(UsuariosSeeder::class);
-        $this->call(ComitesSeeder::class);
         $this->call(FacultadesSeeder::class);
         $this->call(CronogramassSeeder::class);
         $this->call(GruposSeeder::class);
@@ -25,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FechasSeeder::class);
         $this->call(BibliotecasSeeder::class);
         $this->call(ProgramasSeeder::class);
+        $this->call(ComitesSeeder::class);
         $this->call(Usuario_programasSeeder::class);
         $this->call(itemsSeeder::class);
         $this->call(PonderadosSeeder::class);

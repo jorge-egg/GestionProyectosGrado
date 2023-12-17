@@ -12,6 +12,7 @@ class SedesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $sedes = Sede::all();
