@@ -1,18 +1,19 @@
 <?php
 
+use App\Models\CronogramaGrupo;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SedesController;
+use App\Models\ObservacionesCalificacione;
 use App\Http\Controllers\ComitesController;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
-use App\Http\Controllers\FasePropuestasController;
-use App\Http\Controllers\ObservacionesPropuestaController;
 use App\Http\Controllers\PonderadosController;
-use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedeProgramaController;
-use App\Http\Controllers\SedesController;
-use App\Http\Controllers\UsuariosController;
-use App\Models\CronogramaGrupo;
-use App\Models\ObservacionesCalificacione;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FasePropuestasController;
+use App\Http\Controllers\FaseAnteproyectosController;
+use App\Http\Controllers\ObservacionesPropuestaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,13 @@ Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class,
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
 Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
+
+//anteproyecto
+Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create');
+Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store'])->name('anteproyecto.store');
+Route::get('/anteproyecto/edit', [FaseAnteproyectosController::class, 'edit'])->name('anteproyecto.edit');
+Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior');
+Route::post('/anteproyecto/asignarDocente', [FaseAnteproyectosController::class, 'asignarDocente'])->name('anteproyecto.asigDocente');
 
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');

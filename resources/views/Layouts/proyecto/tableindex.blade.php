@@ -34,8 +34,9 @@
                         </form>
                     </td>
                     <td>
-                        <form action="#" >
-                            @csrf
+                        <form action="{{ route('anteproyecto.create', $proyecto->idProyecto) }}" method="get">
+                            {{-- @csrf --}}
+                            {{-- <input type="hidden" name="idProyecto" value="{{ $proyecto->idProyecto }}"> --}}
                             <button type="submit" class="btn" style="background:#003E65; color:#fff">Anteproyecto</button>
                         </form>
                     </td>
