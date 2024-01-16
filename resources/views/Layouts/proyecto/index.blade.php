@@ -31,12 +31,23 @@
         @endcan
         @can('proyecto.consultar')
             <form action="{{ route('proyecto.indextable') }}" method="get">
-                <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">
+                    <h3><b>Consultar proyectos</b></h3><br>
+                    <p><small>Consulta los proyectos que has creado.</small></p>
+                </button>
             </form>
         @endcan
         @can('proyecto.consultarTodo')
             <form action="{{ route('proyecto.indextableAll') }}" method="get">
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
+            </form>
+        @endcan
+        @can('proyecto.consultarDocente')
+            <form action="{{ route('proyecto.indextableDocente') }}" method="get">
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">
+                    <h3><b>Proyectos docente</b></h3><br>
+                    <p><small>Consulta los proyectos que se le han asignado como docente para su aprobación.</small></p>
+                </button>
             </form>
         @endcan
         @can('proyecto.consultarComite')
@@ -49,6 +60,7 @@
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ponderados</button>
             </form>
         @endcan
+
     </div>
 @stop
 

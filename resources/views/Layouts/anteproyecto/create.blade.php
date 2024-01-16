@@ -31,11 +31,14 @@
         <h5 class="card-title text-center">Docente tutor</h5>
         <div class='card-body'>
             <p class="card-text">
-                {{ $valExistDocent ? 'El docente asignado para el proyecto es: ' . $docenteAsig : 'Nota: para poder habilitar la fase del anteproyecto, debe de asignar un docente.' }}
+                {{ $valExistDocent ? 'El docente asignado para el proyecto es: ' . $docenteAsig : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un docente asignado.' }}
             </p>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
-                style="background:#003E65; color:#fff; width: 100%; display: {{ $valExistDocent ? 'none' : 'flex' }};">Seleccionar
-                docente</button>
+            @can('anteproyecto.asigDocent')
+                <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
+                    style="background:#003E65; color:#fff; width: 100%; display: {{ $valExistDocent ? 'none' : 'flex' }};">Seleccionar
+                    docente</button>
+            @endcan
+
         </div>
     </div><br>
 
@@ -43,10 +46,7 @@
         <h5 class="card-title text-center">Crear anteproyecto</h5>
         <div class='card-body'>
             <p class="card-text">
-                @can('anteproyecto.calificar')
-                    <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff"
-                        onclick="mostrarCamposCalificacion()">Calificar</button>
-                @endcan
+
                 {{-- @if ($propuestaAnterior->estado == 'Aprobado')
                         <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente
                             fase.</span>
@@ -68,88 +68,121 @@
                         {{-- <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idPropuesta'> --}}
                         <label for="formFile" class="form-label">Documento de anteproyecto</label>
 
-                        
-                        <input class="form-control input-file @error('docAnteProy') is-invalid @enderror" type="file"
-                            id="formFile" name="docAnteProy">
-                        @error('docAnteProy')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        @can('propuesta.agregar')
-                            <button type="submit" id="buttonToCreatePropuesta" class="btn"
-                                style="background:#003E65; color:#fff">Agregar</button>
-                        @endcan
+                        @if ($docExist == null)
+                            @can('anteproyecto.calificar')
+                                <p style="color: red">El documento no ha sido cargado.</p>
+                            @endcan
+                            @can('propuesta.agregar')
+                                <input class="form-control input-file @error('docAnteProy') is-invalid @enderror" type="file"
+                                    id="formFile" name="docAnteProy">
+                                @error('docAnteProy')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
+                                <button type="submit" id="buttonToCreatePropuesta" class="btn"
+                                    style="background:#003E65; color:#fff">Agregar</button>
+                            @endcan
+                        @elseif ($docExist != null)
+                            <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $docExist]) }}" target="_blank"
+                                class="btn btn-warning"><i class="bi bi-file-earmark-pdf-fill">{{ ' ' . $docExist }}</i></a>
+                            @can('anteproyecto.aprobarDocumento')
+                            <p><b>Nota: </b>Si prefieres no aprobar el documento, por favor, actualiza el estado desactivando el interruptor. De lo contrario, actívalo y envía la actualización.</p>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="switchAprobDoc">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del docente</label>
+                            </div>
+                            <button class="btn"
+                                    style="background:#003E65; color:#fff; margin-bottom: 10px" formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de aprobacion del documento</button>
+                            @endcan
 
+                            @php
+                                $aprobDocent = $anteproyecto == null ? false : $anteproyecto->aprobacionDocen;
+                            @endphp
+                            @if ($aprobDocent)
+                                <button class="btn"
+                                    style="background:#003E65; color:#fff; margin-bottom: 10px">Calificación</button>
+                            @else
+                                <p style="color: red;">No se podra calificar el anteproyecto hasta que el docente apruebe el
+                                    documento
+                                </p>
+                            @endif
+                            @can('anteproyecto.calificar')
+                                <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff"
+                                    onclick="mostrarCamposCalificacion()">Calificar</button>
+                            @endcan
+                        @endif
                     </form>
                 </div>
 
-                <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px">Callificación</button>
-                <form action="{{ route('anteproyecto.store') }}" method='POST'>
-                    @csrf
-                    <h5>Titulo</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'tituloCalificacion',
-                        'nameTextArea' => 'tituloObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Introducción</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'introCalificacion',
-                        'nameTextArea' => 'introObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Planteamiento del problema</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'planProbCalificacion',
-                        'nameTextArea' => 'planProbObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Justificación</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'justCalificacion',
-                        'nameTextArea' => 'justObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Marco referencial</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'marcRefCalificacion',
-                        'nameTextArea' => 'marcRefObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Metodologia</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'metodCalificacion',
-                        'nameTextArea' => 'metodObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Elementos de administración y control</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'admCtrCalificacion',
-                        'nameTextArea' => 'admCtrObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <h5>Normas de presentación en el documento y Referencias bibliográficas</h5>
-                    @component('components.calificacionObser', [
-                        'nameSelect' => 'normBibliCalificacion',
-                        'nameTextArea' => 'normBibliObservacion',
-                        'obsArray' => 'h', //$observaciones[0],
-                    ])
-                    @endcomponent
-                    <br>
-                    <div class="mb-3">
-                        <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store') }}" class="btn"
-                            style="background:#003E65; color:#fff; display:none">Enviar calificación</button>
+                <section style="display: none">
+                    <form action="{{ route('anteproyecto.store') }}" method='POST'>
+                        @csrf
+                        <h5>Titulo</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'tituloCalificacion',
+                            'nameTextArea' => 'tituloObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Introducción</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'introCalificacion',
+                            'nameTextArea' => 'introObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Planteamiento del problema</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'planProbCalificacion',
+                            'nameTextArea' => 'planProbObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Justificación</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'justCalificacion',
+                            'nameTextArea' => 'justObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Marco referencial</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'marcRefCalificacion',
+                            'nameTextArea' => 'marcRefObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Metodologia</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'metodCalificacion',
+                            'nameTextArea' => 'metodObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Elementos de administración y control</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'admCtrCalificacion',
+                            'nameTextArea' => 'admCtrObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <h5>Normas de presentación en el documento y Referencias bibliográficas</h5>
+                        @component('components.calificacionObser', [
+                            'nameSelect' => 'normBibliCalificacion',
+                            'nameTextArea' => 'normBibliObservacion',
+                            'obsArray' => 'h', //$observaciones[0],
+                        ])
+                        @endcomponent
+                        <br>
+                        <div class="mb-3">
+                            <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store') }}"
+                                class="btn" style="background:#003E65; color:#fff; display:none">Enviar
+                                calificación</button>
 
-                        </p>
-                    </div>
-                </form>
+                            </p>
+                        </div>
+                    </form>
+                </section>
             </div>
 
 
