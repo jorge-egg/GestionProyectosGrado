@@ -86,21 +86,26 @@
                             <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $docExist]) }}" target="_blank"
                                 class="btn btn-warning"><i class="bi bi-file-earmark-pdf-fill">{{ ' ' . $docExist }}</i></a>
                             @can('anteproyecto.aprobarDocumento')
-                            <p><b>Nota: </b>Si prefieres no aprobar el documento, por favor, actualiza el estado desactivando el interruptor. De lo contrario, actívalo y envía la actualización.</p>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="switchAprobDoc">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del docente</label>
-                            </div>
-                            <button class="btn"
-                                    style="background:#003E65; color:#fff; margin-bottom: 10px" formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de aprobacion del documento</button>
+                                <p><b>Nota: </b>Si prefieres no aprobar el documento, por favor, actualiza el estado
+                                    desactivando el interruptor. De lo contrario, actívalo y envía la actualización.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                                        name="switchAprobDoc">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del docente</label>
+                                </div>
+                                <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
+                                    formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
+                                    aprobacion del documento</button>
                             @endcan
 
                             @php
                                 $aprobDocent = $anteproyecto == null ? false : $anteproyecto->aprobacionDocen;
                             @endphp
                             @if ($aprobDocent)
-                                <button class="btn"
-                                    style="background:#003E65; color:#fff; margin-bottom: 10px">Calificación</button>
+                                @can('anteproyecto.calificar')
+                                    <button class="btn"
+                                        style="background:#003E65; color:#fff; margin-bottom: 10px">Calificación</button>
+                                @endcan
                             @else
                                 <p style="color: red;">No se podra calificar el anteproyecto hasta que el docente apruebe el
                                     documento
