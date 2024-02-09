@@ -15,7 +15,7 @@ class itemsSeeder extends Seeder
     public function run()
     {
         DB::table('items')->insert([
-            'item' => 'Titulo',
+            'item' => 'Título',
         ]);
         DB::table('items')->insert([
             'item' => 'Linea de investigación',
@@ -30,7 +30,7 @@ class itemsSeeder extends Seeder
             'item' => 'Objetivos especificos',
         ]);
         DB::table('items')->insert([
-            'item' => 'Titulo',
+            'item' => 'Elementos de administración y control',
         ]);
         DB::table('items')->insert([
             'item' => 'Introduccion',
@@ -39,19 +39,19 @@ class itemsSeeder extends Seeder
             'item' => 'Planteamiento del problema',
         ]);
         DB::table('items')->insert([
-            'item' => 'Justificacion',
+            'item' => 'Justificación',
         ]);
         DB::table('items')->insert([
             'item' => 'Marco referencial',
         ]);
         DB::table('items')->insert([
-            'item' => 'Metodologia',
+            'item' => 'Metodología',
         ]);
         DB::table('items')->insert([
             'item' => 'Desarrollo del proyecto',
         ]);
         DB::table('items')->insert([
-            'item' => 'Normas de presentacion en el documento y referencias bibliograficas',
+            'item' => 'Normas de presentación en el documento y referencias bibliográficas',
         ]);
     }
 }

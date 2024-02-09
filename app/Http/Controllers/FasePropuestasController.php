@@ -10,10 +10,12 @@ use Illuminate\Http\Request;
 use App\Models\Calificacione;
 use App\Models\FasePropuesta;
 use Illuminate\Support\Carbon;
+use App\Traits\funcionesUniversales;
 use App\Models\ObservacionesCalificacione;
 
 class FasePropuestasController extends Controller
 {
+    use funcionesUniversales;
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +36,7 @@ class FasePropuestasController extends Controller
     {
         $idProyecto = $request->idProyecto;
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
-        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
+        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = true;
         if ($this->ultimaFecha() == null) {
@@ -59,7 +61,7 @@ class FasePropuestasController extends Controller
     {
         $idProyecto = $request->idProyecto;
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
-        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
+        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
 
         $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true:false;
@@ -97,33 +99,6 @@ class FasePropuestasController extends Controller
             );
         }
         return $propuestaAnterior;
-    }
-
-    //consultar si existen observaciones creadas por el usuario y tomar la ultima
-    public function ultimaObservacion($idPropuesta)
-    {
-        try {
-            $observacionesAnterior = ObservacionesCalificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
-                ->where('propuesta', $idPropuesta)
-                ->orderBy('idObservacion', 'asc')
-                ->get();
-            $array = [];
-            foreach ($observacionesAnterior as $observacion) {
-                $dato = $observacion->observacion;
-                array_push($array, $dato);
-            }
-            if ($observacionesAnterior->empty()) {
-                for ($i = 0; $i < 5; $i++) {
-                    array_push($array, "");
-                }
-            }
-        } catch (Exception $e) {
-            $array = [];
-            for ($i = 0; $i < 5; $i++) {
-                array_push($array, "");
-            }
-        }
-        return $array;
     }
 
     //consultar si existen calificaciones creadas por el usuario y tomar las d la ultima propuesta

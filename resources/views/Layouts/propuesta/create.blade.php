@@ -36,7 +36,7 @@
 
                     @csrf
                     <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
-                    <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idPropuesta'>
+                    <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idFase'>
                 <div>
                     <label for="titleForPropuestaId">Titulo</label>
                     <div class="input-group mb-3">

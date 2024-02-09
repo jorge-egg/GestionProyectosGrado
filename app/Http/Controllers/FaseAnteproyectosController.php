@@ -8,9 +8,11 @@ use App\Models\ModelHasRole;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeProyectosGrado;
+use App\Traits\funcionesUniversales;
 
 class FaseAnteproyectosController extends Controller
 {
+    use funcionesUniversales;
     /**
      * Display a listing of the resource.
      *
@@ -31,14 +33,24 @@ class FaseAnteproyectosController extends Controller
         $this->$idProyecto     = $idProyecto;
         $docentes       = $this->docentes();
         $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyecto   = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'asc')->first();
-        $docExist       = $anteproyecto == null ? null : $anteproyecto->exists() ? $anteproyecto->documento : null;
-        //dd($anteproyecto);
+        $anteproyectoAnterior = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
+        $anteproyecto = $this->Anteproyecto($anteproyectoAnterior);
+        $docExist = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
+        $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
         $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
         $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
         $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
+        $array = array(
+            'idProyecto' => $idProyecto,
+            'observaciones' => $observaciones,
+            'docentes' => $docentes,
+            'valExistDocent' => $valExistDocent,
+            'docenteAsig' => $docenteAsig,
+            'docExist' => $docExist,
+            'anteproyecto' => $anteproyecto
+        );
 
-        return view('Layouts.anteproyecto.create', compact('idProyecto','docentes','valExistDocent', 'docenteAsig', 'docExist', 'anteproyecto'));
+        return view('Layouts.anteproyecto.create', compact('array'));
     }
 
     public function docentes()
@@ -83,6 +95,20 @@ class FaseAnteproyectosController extends Controller
         }
     }
 
+    //consultar si existen propuestas creadas por el usuario y tomar la ultima
+    public function Anteproyecto($anteproyectoAnterior)
+    {
+        if ($anteproyectoAnterior == null) {
+            $anteproyectoAnterior = (object) array(
+                'idAnteproyecto' => "",
+                'documento' => "",
+                'aprobacionDocen' => "",
+                'estado' => "Activo"
+            );
+        }
+        return $anteproyectoAnterior;
+    }
+
     public function aprobarDoc(Request $request)
     { //cambia el estado en la base de datos de la aprobacion del documento
         $idProyecto = $request->idProyecto;
@@ -109,7 +135,7 @@ class FaseAnteproyectosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'docAnteProy' => 'required|mimes:pdf|max:2048', // Solo permite archivos PDF de hasta 2MB
+            'docAnteProy' => 'required|mimes:pdf|max:3048', // Solo permite archivos PDF de hasta 2MB
         ]);
 
         $proyecto = SedeProyectosGrado::findOrFail($request->idProyecto);
