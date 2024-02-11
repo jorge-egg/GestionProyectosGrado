@@ -87,7 +87,7 @@
                             placeholder="Descripción del problema" required
                             @can('propuesta.calificar')
                             disabled
-                        @endcan>{{ $propuestaAnterior->desc_problema }}</textarea>
+                        @endcan>{{ $propuestaAnterior->desc_problema }} </textarea>
                         <span class="input-group-text" id="basic-addon2">
                             <p class="fw-bold">{{ $calificacion[2] }}</p>
                         </span>
@@ -147,11 +147,13 @@
                             <button id="buttonToCreatePropuesta" class="btn"
                                 style="background:#003E65; color:#fff">Agregar</button>
                         @endcan
-
-
+                        <div id="countdown" style="color: red;"></div>
                         <button id="buttonEnviarCalificacion"
-                            formaction="{{ $validarCalificacion ? route('observaciones.store', 'propuesta') : route('observaciones.update') }}"
-                            class="btn" style="background:#003E65; color:#fff; display:none">Enviar calificación</button>
+
+                            formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
+                            class="btn" style="background:#003E65; color:#fff; display:none">Enviar
+                            calificación</button>
+
 
                         </p>
                     </div>
@@ -159,23 +161,30 @@
     </form>
 
 @section('js')
-
+    <script src="https://raw.githubusercontent.com/VincentLoy/simplyCountdown.js/develop/dist/simplyCountdown.min.js">
+    </script>
     <script>
-        function mostrarCamposCalificacion(){
+        function mostrarCamposCalificacion() {
             const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
-                camposCalificacion.forEach(campos => {
-                    campos.style.display = 'flex';
-                    // Agregar el atributo required a los campos dentro de la sección
-                    campos.querySelectorAll('input, textarea').forEach(campo => {
-                        campo.required = true;
-                        campo.disabled = false; // Habilitar campos al mostrar
-                    });
+            camposCalificacion.forEach(campos => {
+                campos.style.display = 'flex';
+                // Agregar el atributo required a los campos dentro de la sección
+                campos.querySelectorAll('input, textarea').forEach(campo => {
+                    campo.required = true;
+                    campo.disabled = false; // Habilitar campos al mostrar
                 });
 
-                // Mostrar el botón de enviar calificación
-                buttonEnviarCalificacion.style.display = 'inline-block';
-                buttonToCreatePropuesta.style.display = 'none';
+                // Mostrar el elemento span dentro de campos-calificacion
+                const spanElement = campos.querySelector('.input-group-text');
+                if (spanElement) {
+                    spanElement.style.display = 'inline-block';
+                }
+            });
+
+            // Mostrar el botón de enviar calificación
+            buttonEnviarCalificacion.style.display = 'inline-block';
+            buttonToCreatePropuesta.style.display = 'none';
         }
 
         const limitarLongitud = (id, longitud, contadorId) => {
@@ -235,12 +244,47 @@
             const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
             var rangoFecha = "{{ $rangoFecha[2] }}";
 
+
             // Verificar el estado y deshabilitar campos y botón si es necesario
             if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' ||
                 estadoPropuesta === 'pendiente') {
                 deshabilitarCamposYBoton();
-            } else if (estadoPropuesta === 'activo') {
+            } else if (estadoPropuesta === 'Activo') {
                 ocultarBotonCalificar();
+            } else if (estadoPropuesta === 'Aplazado con modificaciones' && rangoFecha) {
+
+                // Establecer la fecha de finalización (10 días a partir de hoy)
+                const endDate = new Date();
+                //endDate.setDate(endDate.getDate() + 10);
+                endDate.setMinutes(endDate.getMinutes() + 1);
+                // Actualizar la cuenta regresiva cada segundo
+                const countdownInterval = setInterval(updateCountdown, 1000);
+
+                // Función para actualizar la cuenta regresiva
+                function updateCountdown() {
+                    const currentDate = new Date();
+                    const timeDifference = endDate - currentDate;
+
+                    // Verificar si el tiempo ha terminado
+                    if (timeDifference <= 0) {
+                        clearInterval(countdownInterval);
+                        document.getElementById('countdown').innerHTML = 'Plazo de correciones terminado';
+                        deshabilitarCamposYBoton();
+                    } else {
+                        // Calcular días, horas, minutos y segundos restantes
+                        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                        // Crear una cadena de texto con la cuenta regresiva
+                        const countdownString =
+                            `Te quedan ${days}d ${hours}h ${minutes}m ${seconds}s para corregir tu propuesta`;
+
+                        // Actualizar el contenido del elemento HTML con la cuenta regresiva
+                        document.getElementById('countdown').innerHTML = countdownString;
+                    }
+                }
             }
 
 
@@ -248,13 +292,19 @@
                 const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
                 camposDeshabilitar.forEach(campo => {
                     campo.disabled = true;
+
                 });
-                buttonToCreatePropuesta.disabled = true;
+
+                buttonToCreatePropuesta.style.display = 'none';
+
             }
 
             function ocultarBotonCalificar() {
                 buttonCalificar.style.display = 'none';
             }
+
+
+
             buttonCalificar.addEventListener('click', function() {
                 buttonEnviarCalificacion.style.display = 'inline-block';
             });
