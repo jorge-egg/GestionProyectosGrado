@@ -40,14 +40,16 @@ class FaseAnteproyectosController extends Controller
         $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
         $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
         $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
-        $array = array(
+        $rangoFecha = $this->rangoFecha('anteproyecto');
+        $array = array( //array que transportara todos los datos a la view
             'idProyecto' => $idProyecto,
             'observaciones' => $observaciones,
             'docentes' => $docentes,
             'valExistDocent' => $valExistDocent,
             'docenteAsig' => $docenteAsig,
             'docExist' => $docExist,
-            'anteproyecto' => $anteproyecto
+            'anteproyecto' => $anteproyecto,
+            'rangoFecha' => $rangoFecha,
         );
 
         return view('Layouts.anteproyecto.create', compact('array'));
@@ -147,7 +149,9 @@ class FaseAnteproyectosController extends Controller
             copy($file, $ruta);
             FaseAnteproyecto::create([
                 'documento' => $newNameFile,
+                'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
+
             ]);
         }
         return redirect()->back();

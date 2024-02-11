@@ -39,11 +39,7 @@ class FasePropuestasController extends Controller
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = true;
-        if ($this->ultimaFecha() == null) {
-            $rangoFecha = $array = ["--", "--", false];
-        } else {
-            $rangoFecha = $this->ultimaFecha();
-        }
+        $rangoFecha = $this->rangoFecha('propuesta');
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
@@ -65,11 +61,7 @@ class FasePropuestasController extends Controller
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
 
         $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true:false;
-        if ($this->ultimaFecha() == null) {
-            $rangoFecha = $array = ["--", "--", false];
-        } else {
-            $rangoFecha = $this->ultimaFecha();
-        }
+        $rangoFecha = $this->rangoFecha('propuesta');
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
@@ -128,51 +120,6 @@ class FasePropuestasController extends Controller
         return $array;
     }
 
-    //consultar la ultima fecha de propuestas mas cercana a la actual
-    public function ultimaFecha()
-    {
-        $userId = auth()->id();
-        $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
-        $sede = Sede::findOrFail($usuario->usua_sede);
-        $habilitado = false;
-        $grupos = Sede::join('proyecto_cronogramas', 'proyecto_cronogramas.cron_sede', 'sedes.idSede')
-            ->join('cronograma_grupos', 'cronograma_grupos.grup_cron', 'proyecto_cronogramas.idCronograma')
-            ->where('sedes.idSede', $sede->idSede)
-            ->orderBy('cronograma_grupos.idGrupo', 'asc')
-            ->take(4)
-            ->select('cronograma_grupos.*')
-            ->where('estado', 'activo')
-            ->get();
-
-        $array = [];
-        $currentDate = Carbon::now()->format('Y-m-d'); // Fecha actual
-
-        foreach ($grupos as $grupo) {
-            $fechasGrupo = FechasGrupo::where('fech_grup', $grupo->idGrupo)->where('fech_fase', 1)->get();
-
-            $fechaApertura = $fechasGrupo->pluck('fecha_apertura');
-            $fechaCierre = $fechasGrupo->pluck('fecha_cierre');
-
-            for ($i = 0; $i < count($fechaApertura); $i++) {
-                $fechaInicio = Carbon::parse($fechaApertura[$i])->format('Y-m-d');
-                $fechaFin = Carbon::parse($fechaCierre[$i])->format('Y-m-d');
-                // Verificar si la fecha actual está dentro del rango de apertura y cierre
-                if ($fechaInicio <= $currentDate && $fechaFin >= $currentDate) {
-                    // La fecha actual está dentro del rango
-                    $habilitado = true;
-                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
-                    return $array;
-                    break;
-                } elseif ($fechaInicio > $currentDate) {
-                    // Si no estamos en el rango actual, tomar la próxima fecha de apertura
-                    $habilitado = false;
-                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
-                    return $array;
-                    break;
-                }
-            }
-        }
-    }
 
     /**
      * Store a newly created resource in storage.

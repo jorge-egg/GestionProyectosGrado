@@ -8,8 +8,8 @@
 @section('dashboard_content')
     <br>
     <div style="display: flex; flex-direction:row; justify-content: space-around;">
-        {{-- <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p> --}}
-        {{-- <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p> --}}
+        <p class="fs-4">Estado: {{ $array['anteproyecto']->estado }}</p>
+        <p class="fs-5">Fecha de habilitación: {{ $array['rangoFecha'][0] }} a {{ $array['rangoFecha'][1] }}</p>
         {{-- @if ($estadoButton)
                 <button type="submit" class="btn btn-outline-dark" formaction="{{ route('anteproyecto.createAnterior') }}"><i
                         class="bi bi-arrow-bar-left"></i>Anteproyecto anterior</button>

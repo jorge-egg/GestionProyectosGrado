@@ -32,8 +32,10 @@ class FaseAnteproyecto extends Model
 
 	protected $fillable = [
         'documento',
+        'estado',
 		'ante_proy',
-        'aprobacionDocen'
+        'aprobacionDocen',
+        'fecha_aplazado',
 	];
 
 	public function sede_proyectos_grado()

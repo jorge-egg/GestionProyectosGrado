@@ -150,7 +150,7 @@
 
 
                         <button id="buttonEnviarCalificacion"
-                            formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
+                            formaction="{{ $validarCalificacion ? route('observaciones.store', 'propuesta') : route('observaciones.update') }}"
                             class="btn" style="background:#003E65; color:#fff; display:none">Enviar calificación</button>
 
                         </p>
