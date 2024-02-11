@@ -75,10 +75,14 @@ class ProyectosController extends Controller
         ->join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
         ->where('usuario', $usuario->numeroDocumento)
         ->get();
+        return view('Layouts.proyecto.tableindex', compact('proyectos'));
+    }
 
-                
 
-
+    public function indextableDocente() //muestra los royectos a los que el docente ue asignado
+    {
+        $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        $proyectos = SedeProyectosGrado::where('docente', $usuario->numeroDocumento)->get();
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 

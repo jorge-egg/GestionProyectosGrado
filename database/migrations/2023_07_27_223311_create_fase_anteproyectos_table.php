@@ -16,6 +16,9 @@ class CreateFaseAnteproyectosTable extends Migration
         Schema::create('fase_anteproyectos', function (Blueprint $table) {
             $table->bigIncrements("idAnteproyecto");
             $table->string("documento");
+            $table->boolean("aprobacionDocen")->nullable();
+            $table->string('estado');
+            $table->time('fecha_aplazado')->nullable();
             $table->unsignedBigInteger("ante_proy");
 
             $table->foreign('ante_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');

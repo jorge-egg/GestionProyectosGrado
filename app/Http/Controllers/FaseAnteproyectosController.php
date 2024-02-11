@@ -8,9 +8,11 @@ use App\Models\ModelHasRole;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeProyectosGrado;
+use App\Traits\funcionesUniversales;
 
 class FaseAnteproyectosController extends Controller
 {
+    use funcionesUniversales;
     /**
      * Display a listing of the resource.
      *
@@ -31,17 +33,30 @@ class FaseAnteproyectosController extends Controller
         $this->$idProyecto     = $idProyecto;
         $docentes       = $this->docentes();
         $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyecto   = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'asc')->first();
-        $docExist       = $anteproyecto->exists() ? $anteproyecto->documento : null;
-        dd($docExist);
+        $anteproyectoAnterior = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
+        $anteproyecto = $this->Anteproyecto($anteproyectoAnterior);
+        $docExist = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
+        $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
         $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
         $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
         $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
+        $rangoFecha = $this->rangoFecha('anteproyecto');
+        $array = array( //array que transportara todos los datos a la view
+            'idProyecto' => $idProyecto,
+            'observaciones' => $observaciones,
+            'docentes' => $docentes,
+            'valExistDocent' => $valExistDocent,
+            'docenteAsig' => $docenteAsig,
+            'docExist' => $docExist,
+            'anteproyecto' => $anteproyecto,
+            'rangoFecha' => $rangoFecha,
+        );
 
-        return view('Layouts.anteproyecto.create', compact('idProyecto','docentes','valExistDocent', 'docenteAsig'));
+        return view('Layouts.anteproyecto.create', compact('array'));
     }
 
-    public function docentes(){ //busca a todos los usuarios con rol de docente
+    public function docentes()
+    { //busca a todos los usuarios con rol de docente
         $array = [];
         //$usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         //$filtroRole  = ModelHasRole::join('roles', 'roles.id', 'model_has_roles.role_id')->where('name', 'docente')->get();
@@ -58,7 +73,8 @@ class FaseAnteproyectosController extends Controller
         return $array;
     }
 
-    public function asignarDocente(Request $request){//guarda un docente en la base de datos par el proyecto
+    public function asignarDocente(Request $request)
+    {//guarda un docente en la base de datos par el proyecto
         $idProyecto = $request->idProyecto;
         $numeroDocumento = $request->numeroDocumento;
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
@@ -66,6 +82,50 @@ class FaseAnteproyectosController extends Controller
         $proyecto->save();
 
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
+    }
+
+    public function verPdf($nombreArchivo)
+    { //retorna el pdf
+        $rutaArchivo = public_path('files/anteproyecto/'.$nombreArchivo);
+
+        // Verificar si el archivo existe
+        if (file_exists($rutaArchivo)) {
+            // Devolver el archivo para ser mostrado en el navegador
+            return response()->file($rutaArchivo);
+        } else {
+            abort(404, 'Archivo no encontrado');
+        }
+    }
+
+    //consultar si existen propuestas creadas por el usuario y tomar la ultima
+    public function Anteproyecto($anteproyectoAnterior)
+    {
+        if ($anteproyectoAnterior == null) {
+            $anteproyectoAnterior = (object) array(
+                'idAnteproyecto' => "",
+                'documento' => "",
+                'aprobacionDocen' => "",
+                'estado' => "Activo"
+            );
+        }
+        return $anteproyectoAnterior;
+    }
+
+    public function aprobarDoc(Request $request)
+    { //cambia el estado en la base de datos de la aprobacion del documento
+        $idProyecto = $request->idProyecto;
+        $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
+        $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
+        if($request->input('switchAprobDoc')){
+            $anteproyecto->aprobacionDocen = true;
+            $anteproyecto->save();
+        }else{
+            $anteproyecto->aprobacionDocen = false;
+            $anteproyecto->save();
+        }
+        return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
+
+
     }
 
     /**
@@ -77,33 +137,26 @@ class FaseAnteproyectosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'docAnteProy' => 'required|mimes:pdf|max:2048', // Solo permite archivos PDF de hasta 2MB
+            'docAnteProy' => 'required|mimes:pdf|max:3048', // Solo permite archivos PDF de hasta 2MB
         ]);
 
         $proyecto = SedeProyectosGrado::findOrFail($request->idProyecto);
+        $contador = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->count();
         if($request->hasFile("docAnteProy")){
             $file = $request->file("docAnteProy");
-            $newNameFile = $proyecto->codigoproyecto . "AP." . $file->guessExtension();
+            $newNameFile = $proyecto->codigoproyecto . "AP".$contador."." . $file->guessExtension();
             $ruta = public_path('files/anteproyecto/'.$newNameFile);
             copy($file, $ruta);
             FaseAnteproyecto::create([
                 'documento' => $newNameFile,
+                'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
+
             ]);
         }
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
