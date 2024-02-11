@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseAnteproyecto
- * 
+ *
  * @property int $idAnteproyecto
  * @property int $ante_proy
- * 
+ *
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -31,6 +31,7 @@ class FaseAnteproyecto extends Model
 	];
 
 	protected $fillable = [
+        'documento',
 		'ante_proy'
 	];
 

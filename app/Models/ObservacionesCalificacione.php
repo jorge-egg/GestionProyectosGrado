@@ -45,6 +45,6 @@ class ObservacionesCalificacione extends Model
 
 	public function fase_cal_obs()
 	{
-		return $this->hasMany(FaseCalOb::class, 'observacion');
+		return $this->hasMany(FaseCalOb::class, 'observacion_fase');
 	}
 }

@@ -1,18 +1,19 @@
 <?php
 
+use App\Models\CronogramaGrupo;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SedesController;
+use App\Models\ObservacionesCalificacione;
 use App\Http\Controllers\ComitesController;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\FacultadesController;
-use App\Http\Controllers\FasePropuestasController;
-use App\Http\Controllers\ObservacionesPropuestaController;
 use App\Http\Controllers\PonderadosController;
-use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\SedeProgramaController;
-use App\Http\Controllers\SedesController;
-use App\Http\Controllers\UsuariosController;
-use App\Models\CronogramaGrupo;
-use App\Models\ObservacionesCalificacione;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FasePropuestasController;
+use App\Http\Controllers\FaseAnteproyectosController;
+use App\Http\Controllers\ObservacionesPropuestaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,10 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //usuarios
+Route::get('get-programas-by-sede/{sedeId}', [UsuariosController::class, 'getProgramasBySede']);
 Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
+Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create');
+Route::post('/usuarios/store', [UsuariosController::class, 'store'])->name('usuarios.store');
 Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
 Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
 Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
@@ -56,10 +60,14 @@ Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->n
 //proyectos
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
 Route::get('/proyectos/indextable', [ProyectosController::class, 'indextable'])->name('proyecto.indextable');
+Route::get('/proyectos/indextableAll', [ProyectosController::class, 'indextableAll'])->name('proyecto.indextableAll');
+Route::get('/proyectos/indextableComite', [ProyectosController::class, 'indextableComite'])->name('proyecto.indextableComite');
 Route::post('/proyectos/create/{integrantes}', [ProyectosController::class, 'create'])->name('proyecto.create');
 Route::get('/usuario/consulta', [ProyectosController::class, 'buscarIntegrante'])->name('buscarIntegrante');
 
 //comites
+Route::get('/comite/integrantes/create/{idComite}', [ComitesController::class, 'createIntegrante'])->name('comite.integrantes.create');
+Route::post('/comite/integrantes/store', [ComitesController::class, 'storeIntegrante'])->name('comite.integrantes.store');
 Route::get('/comites/index', [ComitesController::class, 'index'])->name('comite.index');
 Route::get('/comites/create', [ComitesController::class, 'create'])->name('comite.create');
 Route::post('/comites/edit', [ComitesController::class, 'edit'])->name('comite.edit');
@@ -68,8 +76,9 @@ Route::post('/comites/destroy/{idComite}', [ComitesController::class, 'destroy']
 Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restore'])->name('comite.restore');
 
 //programas
-Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programa.index');
-Route::get('/programas/create', [SedeProgramaController::class, 'create'])->name('programa.create');
+Route::get('/programas/index/{id}', [SedeProgramaController::class, 'index'])->name('programas.index');
+Route::get('/programas/create/{id}', [SedeProgramaController::class, 'create'])->name('programas.create');
+Route::post('/programas/store/{id}', [SedeProgramaController::class, 'store'])->name('programas.store');
 Route::post('/programas/edit/{idPrograma}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
 Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
 Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
@@ -88,6 +97,13 @@ Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class,
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
 Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
+
+//anteproyecto
+Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create');
+Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store'])->name('anteproyecto.store');
+Route::get('/anteproyecto/edit', [FaseAnteproyectosController::class, 'edit'])->name('anteproyecto.edit');
+Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior');
+Route::post('/anteproyecto/asignarDocente', [FaseAnteproyectosController::class, 'asignarDocente'])->name('anteproyecto.asigDocente');
 
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');

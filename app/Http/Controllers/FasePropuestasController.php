@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Error;
 use Exception;
 use App\Models\Sede;
-use App\Models\FaseCalOb;
 use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\Calificacione;
 use App\Models\FasePropuesta;
+use Illuminate\Support\Carbon;
 use App\Models\ObservacionesCalificacione;
 
 class FasePropuestasController extends Controller
@@ -37,18 +36,23 @@ class FasePropuestasController extends Controller
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
-        $this->ultimaFecha();
-        try{
+        $estadoButton = true;
+        if ($this->ultimaFecha() == null) {
+            $rangoFecha = $array = ["--", "--", false];
+        } else {
+            $rangoFecha = $this->ultimaFecha();
+        }
+        try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
-        ->where('propuesta', $propuestaAnterior->idPropuesta)
-        ->get()->count();
-        } catch(Exception $e){
+                ->where('propuesta', $propuestaAnterior->idPropuesta)
+                ->get()->count();
+        } catch (Exception $e) {
             $totalCalificacion = 0;
         }
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion'));
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
     }
 
     public function createAnterior(Request $request)
@@ -58,17 +62,23 @@ class FasePropuestasController extends Controller
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
 
-        try{
+        $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true:false;
+        if ($this->ultimaFecha() == null) {
+            $rangoFecha = $array = ["--", "--", false];
+        } else {
+            $rangoFecha = $this->ultimaFecha();
+        }
+        try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
-        ->where('propuesta', $propuestaAnterior->idPropuesta)
-        ->get()->count();
-        } catch(Exception $e){
+                ->where('propuesta', $propuestaAnterior->idPropuesta)
+                ->get()->count();
+        } catch (Exception $e) {
             $totalCalificacion = 0;
         }
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion'));
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
     }
 
     //consultar si existen propuestas creadas por el usuario y tomar la ultima
@@ -116,7 +126,7 @@ class FasePropuestasController extends Controller
         return $array;
     }
 
-     //consultar si existen calificaciones creadas por el usuario y tomar las d la ultima propuesta
+    //consultar si existen calificaciones creadas por el usuario y tomar las d la ultima propuesta
     public function ultimaCalificacion($idPropuesta)
     {
         try {
@@ -144,25 +154,49 @@ class FasePropuestasController extends Controller
     }
 
     //consultar la ultima fecha de propuestas mas cercana a la actual
-    public function ultimaFecha(){
-        $userId  = auth()->id();
+    public function ultimaFecha()
+    {
+        $userId = auth()->id();
         $usuario = UsuariosUser::where('usua_users', $userId)->whereNull('deleted_at')->first();
-        $sede    = Sede::findOrFail($usuario->usua_sede);
-
+        $sede = Sede::findOrFail($usuario->usua_sede);
+        $habilitado = false;
         $grupos = Sede::join('proyecto_cronogramas', 'proyecto_cronogramas.cron_sede', 'sedes.idSede')
-        ->join('cronograma_grupos', 'cronograma_grupos.grup_cron', 'proyecto_cronogramas.idCronograma')
-        ->where('sedes.idSede', $sede->idSede)
-        ->orderBy('cronograma_grupos.idGrupo', 'asc')
-        ->take(4)
-        ->select('cronograma_grupos.*')
-        ->where('estado', 'activo')
-        ->get();
-        $array = [];
-        foreach($grupos as $grupo){
-            $dato = FechasGrupo::where('fech_grup', $grupo->idGrupo)->where('fech_fase', 1)->select('idFecha', 'fecha_apertura', 'fecha_cierre')->get();
-            array_push($array, $dato);
+            ->join('cronograma_grupos', 'cronograma_grupos.grup_cron', 'proyecto_cronogramas.idCronograma')
+            ->where('sedes.idSede', $sede->idSede)
+            ->orderBy('cronograma_grupos.idGrupo', 'asc')
+            ->take(4)
+            ->select('cronograma_grupos.*')
+            ->where('estado', 'activo')
+            ->get();
 
-        } //dd($array);
+        $array = [];
+        $currentDate = Carbon::now()->format('Y-m-d'); // Fecha actual
+
+        foreach ($grupos as $grupo) {
+            $fechasGrupo = FechasGrupo::where('fech_grup', $grupo->idGrupo)->where('fech_fase', 1)->get();
+
+            $fechaApertura = $fechasGrupo->pluck('fecha_apertura');
+            $fechaCierre = $fechasGrupo->pluck('fecha_cierre');
+
+            for ($i = 0; $i < count($fechaApertura); $i++) {
+                $fechaInicio = Carbon::parse($fechaApertura[$i])->format('Y-m-d');
+                $fechaFin = Carbon::parse($fechaCierre[$i])->format('Y-m-d');
+                // Verificar si la fecha actual está dentro del rango de apertura y cierre
+                if ($fechaInicio <= $currentDate && $fechaFin >= $currentDate) {
+                    // La fecha actual está dentro del rango
+                    $habilitado = true;
+                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
+                    return $array;
+                    break;
+                } elseif ($fechaInicio > $currentDate) {
+                    // Si no estamos en el rango actual, tomar la próxima fecha de apertura
+                    $habilitado = false;
+                    array_push($array, $fechaInicio, $fechaFin, $habilitado);
+                    return $array;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -175,12 +209,12 @@ class FasePropuestasController extends Controller
     {
         if ($this->verificarCantProp($request->idProyecto)) {
             $propuesta = FasePropuesta::create([
-                'titulo'          => $request->titulo,
-                'linea_invs'      => $request->linea_invs,
-                'desc_problema'   => $request->desc_problema,
-                'estado'          => 'pendiente',
-                'prop_proy'       => $request->idProyecto,
-                'obj_general'     => $request->obj_general,
+                'titulo' => $request->titulo,
+                'linea_invs' => $request->linea_invs,
+                'desc_problema' => $request->desc_problema,
+                'estado' => 'pendiente',
+                'prop_proy' => $request->idProyecto,
+                'obj_general' => $request->obj_general,
                 'obj_especificos' => $request->obj_especificos
             ]);
 
@@ -197,30 +231,7 @@ class FasePropuestasController extends Controller
     {
         $cantidad = FasePropuesta::where('prop_proy', $idProyecto)->get()->count();
         $validacion = $cantidad < 2 ? true : false;
-        return  $validacion;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request)
-    {
-        //
+        return $validacion;
     }
 
 }

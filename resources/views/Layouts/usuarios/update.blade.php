@@ -46,3 +46,4 @@
     {!! Form::submit('Actualizar', ['class' => 'btn btn-primary text-dark']) !!}
 {!! Form::close() !!}
 @stop
+
