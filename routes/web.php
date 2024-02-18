@@ -62,6 +62,7 @@ Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('pro
 Route::get('/proyectos/indextable', [ProyectosController::class, 'indextable'])->name('proyecto.indextable');
 Route::get('/proyectos/indextableAll', [ProyectosController::class, 'indextableAll'])->name('proyecto.indextableAll');
 Route::get('/proyectos/indextableComite', [ProyectosController::class, 'indextableComite'])->name('proyecto.indextableComite');
+Route::get('/proyectos/indextableDocente', [ProyectosController::class, 'indextableDocente'])->name('proyecto.indextableDocente');
 Route::post('/proyectos/create/{integrantes}', [ProyectosController::class, 'create'])->name('proyecto.create');
 Route::get('/usuario/consulta', [ProyectosController::class, 'buscarIntegrante'])->name('buscarIntegrante');
 
@@ -101,14 +102,16 @@ Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'cre
 //anteproyecto
 Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create');
 Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store'])->name('anteproyecto.store');
-Route::get('/anteproyecto/edit', [FaseAnteproyectosController::class, 'edit'])->name('anteproyecto.edit');
 Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior');
 Route::post('/anteproyecto/asignarDocente', [FaseAnteproyectosController::class, 'asignarDocente'])->name('anteproyecto.asigDocente');
+Route::get('/anteproyecto/verpdf/{nombreArchivo}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
+Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
+
 
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
 
 
 //observaciones
-Route::post('/observaciones/store', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
+Route::post('/observaciones/store/{fase}', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
 Route::post('/observaciones/update', [ObservacionesPropuestaController::class, 'update'])->name('observaciones.update');
