@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FasePropuesta
- * 
+ *
  * @property int $idPropuesta
  * @property string $titulo
  * @property string $linea_invs
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $prop_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -48,6 +48,7 @@ class FasePropuesta extends Model
 		'obj_especificos',
 		'estado',
 		'fecha_cierre',
+        'fecha_aplazado',
 		'prop_proy'
 	];
 

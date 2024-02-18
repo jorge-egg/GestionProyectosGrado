@@ -81,7 +81,7 @@ class ObservacionesPropuestaController extends Controller
         //conjunto de Observaciones a insertar en la base de datos
         $dataObservaciones = [[
             'observacion' => $request->tituloObservacion,
-            'obs_item' => $this->buscarIdItem('Titulo'),
+            'obs_item' => $this->buscarIdItem('Título'),
             ],
             //
             [
@@ -153,8 +153,8 @@ class ObservacionesPropuestaController extends Controller
     public function cargarCalificacionesPropuesta($request){
         //Conjunto de calificaciones a insertar en la base de datos
         $dataCalificaciones = [[
-            'calificacion' => $this->calcularCalificacion('Titulo', $request->tituloCalificacion, 'propuesta'),
-            'cal_item' => $this->buscarIdItem('Titulo'),
+            'calificacion' => $this->calcularCalificacion('Título', $request->tituloCalificacion, 'propuesta'),
+            'cal_item' => $this->buscarIdItem('Título'),
             ],
             //
             [
