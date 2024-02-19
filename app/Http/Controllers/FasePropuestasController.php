@@ -99,14 +99,17 @@ class FasePropuestasController extends Controller
         try {
             $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $idPropuesta)
-                ->orderBy('idCalificacion', 'asc')
+                ->orderBy('idCalificacion', 'desc')
+                ->take(5)
                 ->get();
+
             $array = [];
             foreach ($calificacionesAnterior as $calificacion) {
                 $dato = $calificacion->calificacion;
                 array_push($array, $dato);
             }
-            if ($calificacionesAnterior->empty()) {
+
+            if (empty($calificacionesAnterior)) {
                 for ($i = 0; $i < 5; $i++) {
                     array_push($array, "--");
                 }

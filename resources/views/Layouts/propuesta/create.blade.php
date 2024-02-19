@@ -1,7 +1,7 @@
 @extends('dashboard')
 @section('dashboard_content')
     <br>
-    <form action="{{ route('propuesta.store') }}" method='POST'>
+    <form action="{{ route('propuesta.store', 'propuesta') }}" method='POST'>
         <div style="display: flex; flex-direction:row; justify-content: space-around">
 
             <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
@@ -47,7 +47,7 @@
                                 disabled
                             @endcan>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[0] }}</p>
+                            <p class="fw-bold">{{ $calificacion[4] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
@@ -68,7 +68,7 @@
                             disabled
                         @endcan>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[1] }}</p>
+                            <p class="fw-bold">{{ $calificacion[3] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObser', [
@@ -111,7 +111,7 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[3] }}</p>
+                            <p class="fw-bold">{{ $calificacion[1] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
@@ -132,7 +132,7 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[4] }}</p>
+                            <p class="fw-bold">{{ $calificacion[0] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObser', [
@@ -150,7 +150,7 @@
                         <div id="countdown" style="color: red;"></div>
                         <button id="buttonEnviarCalificacion"
 
-                            formaction="{{ $validarCalificacion ? route('observaciones.store') : route('observaciones.update') }}"
+                            formaction="{{route('observaciones.store', 'propuesta')}}"
                             class="btn" style="background:#003E65; color:#fff; display:none">Enviar
                             calificación</button>
 

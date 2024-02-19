@@ -114,4 +114,4 @@ Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('p
 
 //observaciones
 Route::post('/observaciones/store/{fase}', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
-Route::post('/observaciones/update', [ObservacionesPropuestaController::class, 'update'])->name('observaciones.update');
+

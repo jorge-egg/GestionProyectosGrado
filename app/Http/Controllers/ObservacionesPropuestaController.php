@@ -45,6 +45,7 @@ class ObservacionesPropuestaController extends Controller
      */
     public function store(Request $request, $fase)
     {
+
         switch ($fase) {
             case 'propuesta':
                 ObservacionesCalificacione::insert($this->cargarObservacionesPropuesta($request));
@@ -65,9 +66,8 @@ class ObservacionesPropuestaController extends Controller
         $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take(5)->pluck('idObservacion');
         $combineData = $idCalificaciones->combine($idObservaciones);
         $combineData->each(function ($observacionId, $calificacionId) use ($request, $fase) {
-            $faseModificada = Str::singular($fase);
             FaseCalOb::create([
-                $faseModificada => $request->idFase,
+                $fase => $request->idFase,
                 'calificacion_fase' => $calificacionId,
                 'observacion_fase' => $observacionId,
             ]);
@@ -81,7 +81,7 @@ class ObservacionesPropuestaController extends Controller
         //conjunto de Observaciones a insertar en la base de datos
         $dataObservaciones = [[
             'observacion' => $request->tituloObservacion,
-            'obs_item' => $this->buscarIdItem('Titulo'),
+            'obs_item' => $this->buscarIdItem('Título'),
             ],
             //
             [
@@ -153,8 +153,8 @@ class ObservacionesPropuestaController extends Controller
     public function cargarCalificacionesPropuesta($request){
         //Conjunto de calificaciones a insertar en la base de datos
         $dataCalificaciones = [[
-            'calificacion' => $this->calcularCalificacion('Titulo', $request->tituloCalificacion, 'propuesta'),
-            'cal_item' => $this->buscarIdItem('Titulo'),
+            'calificacion' => $this->calcularCalificacion('Título', $request->tituloCalificacion, 'propuesta'),
+            'cal_item' => $this->buscarIdItem('Título'),
             ],
             //
             [
@@ -269,33 +269,6 @@ class ObservacionesPropuestaController extends Controller
         }
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request)
-    {
-        $incrementoObs = 0;
-            foreach ($this->ultimaObservacion($request->idPropuesta) as $observacion) {
-                $observacion->observacion = $this->cargarObservaciones($request)[$incrementoObs]['observacion'];
-                $observacion->save();
-                $incrementoObs++;
-            }
-            $incrementoCal = 0;
-            foreach ($this->ultimaCalificacion($request->idPropuesta) as $calificacion) {
-
-                $calificacion->calificacion = $this->cargarCalificaciones($request)[$incrementoCal]['calificacion'];
-
-                $calificacion->save();
-                $incrementoCal++;
-            }
-            $this->cambioEstado($request->idPropuesta);
-            return redirect()->route('proyecto.indextable');
-    }
 
     public function ultimaObservacion($idPropuesta)
     {

@@ -19,7 +19,7 @@ trait funcionesUniversales
                 ->where($fase, $idFase)
                 ->orderBy('idObservacion', 'asc')
                 ->get();
-
+            //dd($observacionesAnterior);
             $array = [];
             foreach ($observacionesAnterior as $observacion) {
                 $dato = $observacion->observacion;
