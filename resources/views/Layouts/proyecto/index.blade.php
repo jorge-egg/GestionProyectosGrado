@@ -16,6 +16,7 @@
         </div>
         <div class="modal fade" tabindex="-1" id="buscarIntegranteModal">
             @component('components.Modales.buscarIntegranteModal')
+
             @endcomponent
         </div>
         @can('proyecto.crear')
@@ -90,7 +91,8 @@
                 dataType: 'json',
                 success: function(response) {
                     codUsuario.value = response.codigoUsuario;
-                    nombreUsuario.innerText = response.data;
+                    nombreUsuario.textContent = response.data;
+
                     if (response.data === "Usuario no encontrado") {
                         $('#btnEnviarSolicitud').css('display', 'none');
                     } else {

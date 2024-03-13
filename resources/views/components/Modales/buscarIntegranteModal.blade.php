@@ -9,9 +9,10 @@
                 <p class="card-text">
                     El codigo del estudiante corresponde a:
                 </p>
+                <p class="card-text" id="nombreUsuario"></p>
                 <input type="hidden" id="codUsuario" name="codUsuario">
                 <br>
-                <p class="card-text" id="nombreUsuario"></p>
+
             </div>
             <div class="modal-footer">
 

@@ -1,0 +1,21 @@
+.footer-section{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.logo{
+    position: relative;
+    width: 30%;
+}
+.info-emisor{
+    position: relative;
+    width: calc(70% - 3px);
+    border-left: solid 3px #4A86E8;
+    padding: 20px;
+}
+.TrebuchetMS{
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+}
+.Arial{
+    font-family: Arial, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}
