@@ -148,10 +148,11 @@
                                 style="background:#003E65; color:#fff">Agregar</button>
                         @endcan
                         <div id="countdown" style="color: red;"></div>
-                        <button id="buttonEnviarCalificacion"
-
-                            class="btn" style="background:#003E65; color:#fff; display:none">Enviar
+                        @if ($calificacion == 0)
+                            <button id="buttonEnviarCalificacion" class="btn"
+                            style="background:#003E65; color:#fff; display:none" formaction="{{route('observaciones.store', 'propuesta')}}">Enviar
                             calificación</button>
+                        @endif
 
 
                         </p>

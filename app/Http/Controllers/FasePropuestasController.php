@@ -109,7 +109,7 @@ class FasePropuestasController extends Controller
                 array_push($array, $dato);
             }
 
-            if (empty($calificacionesAnterior)) {
+            if (count($calificacionesAnterior) == 0) {
                 for ($i = 0; $i < 5; $i++) {
                     array_push($array, "--");
                 }
