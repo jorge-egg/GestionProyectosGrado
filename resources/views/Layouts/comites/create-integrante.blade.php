@@ -32,7 +32,13 @@
                 </thead>
 
                 <tbody>
-
+                    @foreach ($integrantes as $integrante)
+                        <tr>
+                            <td>{{$integrante->usuario}}</td>
+                            <td>{{$integrante->nombre ." ". $integrante->apellido}}</td>
+                            <td><button class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i></button></td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </section>

@@ -24,9 +24,9 @@ class ComitesController extends Controller
     public function index(Request $request)
     {
         $comites = Sede::join('sedes_facultades', 'sedes_facultades.facu_sede', 'sedes.idSede')
-        ->join('sede_programas', 'sede_programas.prog_facu', 'sedes_facultades.idFacultad')
-        ->join('comites_sedes', 'comites_sedes.comi_pro', 'sede_programas.idPrograma')
-        ->get();
+            ->join('sede_programas', 'sede_programas.prog_facu', 'sedes_facultades.idFacultad')
+            ->join('comites_sedes', 'comites_sedes.comi_pro', 'sede_programas.idPrograma')
+            ->get();
         if ($request->has('view_deleted')) {
             $comites = ComitesSede::onlyTrashed()->get();
         }
@@ -34,11 +34,14 @@ class ComitesController extends Controller
     }
     public function createIntegrante($idComite)
     {
+        $integrantes = IntegrantesComite::join('usuarios_users', 'usuarios_users.numeroDocumento', 'integrantes_comites.usuario')->where('comite', $idComite)->get(); //obtiene los miembros de un comite en especifico
+
         $docentes = User::role('docente')
             ->join('usuarios_users', 'usuarios_users.usua_users', 'users.id')
             ->select(['usuarios_users.numeroDocumento', 'usuarios_users.nombre', 'usuarios_users.apellido', 'users.id'])
             ->get();
-        return view('Layouts.comites.create-integrante', compact('docentes', 'idComite'));
+
+        return view('Layouts.comites.create-integrante', compact('docentes', 'idComite', 'integrantes'));
     }
 
     public function storeIntegrante(Request $request)
@@ -55,52 +58,6 @@ class ComitesController extends Controller
         return redirect()->route('comite.index')->with('success', 'Integrante añadido exitosamente');
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorecomitesRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorecomitesRequest $request)
-    {
-        //
-    }
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ComitesSede  $comites
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ComitesSede $comites)
-    {
-        return view('Layouts.comites.update');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatecomitesRequest  $request
-     * @param  \App\Models\ComitesSede  $comites
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ComitesSede $comites)
-    {
-        //
-    }
     public function restore($id)
     {
         ComitesSede::withTrashed()->find($id)->restore();
@@ -121,7 +78,7 @@ class ComitesController extends Controller
      */
     public function destroy($id)
     {
-        ComitesSede::find($id)->delete();
-        return back()->with('success', 'se elimino el registro');
+        IntegrantesComite::where('usuario', $id)->delete();
+        return back()->with('warning', 'se elimino el registro');
     }
 }

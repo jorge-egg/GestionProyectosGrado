@@ -67,7 +67,10 @@
                         <input type="hidden" value="{{ $array['anteproyecto']->idAnteproyecto }}" name='idFase'>
                         <label for="formFile" class="form-label">Documento de anteproyecto</label>
 
-                        @if ($array['docExist'] == null)
+                        @if (!$array['rangoFecha'][2])
+                            <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
+
+                        @elseif ($array['docExist'] == null)
                             @can('anteproyecto.calificar')
                                 <p style="color: red">El documento no ha sido cargado.</p>
                             @endcan
