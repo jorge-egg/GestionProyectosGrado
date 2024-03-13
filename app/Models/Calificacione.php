@@ -6,7 +6,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,24 +13,11 @@ use Illuminate\Database\Eloquent\Model;
  * Class Calificacione
  * 
  * @property int $idCalificacion
- * @property string $cal_investigacion
- * @property string $cal_Descproblema
- * @property string $cal_titulo
- * @property string $cal_objgeneral
- * @property string $cal_objespecificos
- * @property int $cal_pro
- * @property int $cal_ante
- * @property int $cal_prof
- * @property int $cal_sust
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property float $calificacion
+ * @property int $cal_item
  * 
- * @property Propuesta $propuesta
- * @property Anteproyecto $anteproyecto
- * @property Proyectosfinale $proyectosfinale
- * @property Sustentacion $sustentacion
- * @property Collection|Ponderado[] $ponderados
- * @property Collection|Observacione[] $observaciones
+ * @property Item $item
+ * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
  */
@@ -39,53 +25,25 @@ class Calificacione extends Model
 {
 	protected $table = 'calificaciones';
 	protected $primaryKey = 'idCalificacion';
+	public $timestamps = false;
 
 	protected $casts = [
-		'cal_pro' => 'int',
-		'cal_ante' => 'int',
-		'cal_prof' => 'int',
-		'cal_sust' => 'int'
+		'calificacion' => 'float',
+		'cal_item' => 'int'
 	];
 
 	protected $fillable = [
-		'cal_investigacion',
-		'cal_Descproblema',
-		'cal_titulo',
-		'cal_objgeneral',
-		'cal_objespecificos',
-		'cal_pro',
-		'cal_ante',
-		'cal_prof',
-		'cal_sust'
+		'calificacion',
+		'cal_item'
 	];
 
-	public function propuesta()
+	public function item()
 	{
-		return $this->belongsTo(Propuesta::class, 'cal_pro');
+		return $this->belongsTo(Item::class, 'cal_item');
 	}
 
-	public function anteproyecto()
+	public function fase_cal_obs()
 	{
-		return $this->belongsTo(Anteproyecto::class, 'cal_ante');
-	}
-
-	public function proyectosfinale()
-	{
-		return $this->belongsTo(Proyectosfinale::class, 'cal_prof');
-	}
-
-	public function sustentacion()
-	{
-		return $this->belongsTo(Sustentacion::class, 'cal_sust');
-	}
-
-	public function ponderados()
-	{
-		return $this->hasMany(Ponderado::class, 'pond_cal');
-	}
-
-	public function observaciones()
-	{
-		return $this->hasMany(Observacione::class, 'obse_cal');
+		return $this->hasMany(FaseCalOb::class, 'calificacion_fase');
 	}
 }

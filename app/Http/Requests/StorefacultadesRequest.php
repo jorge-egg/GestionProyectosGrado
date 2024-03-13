@@ -13,7 +13,7 @@ class StorefacultadesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

@@ -11,19 +11,20 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Sede
- * 
+ *
  * @property int $idSede
- * @property string $nombreIdentificador
+ * @property string $sede
  * @property string $direccion
  * @property string $email
  * @property string $telefono
- * 
- * @property Collection|Usuario[] $usuarios
- * @property Collection|Facultade[] $facultades
- * @property Collection|Programa[] $programas
- * @property Collection|Biblioteca[] $bibliotecas
- * @property Collection|ProyectoGrado[] $proyecto_grados
- * @property Collection|Comite[] $comites
+ *
+ * @property Collection|SedesFacultade[] $sedes_facultades
+ * @property Collection|UsuariosUser[] $usuarios_users
+ * @property Collection|SedePrograma[] $sede_programas
+ * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
+ * @property Collection|SedeBiblioteca[] $sede_bibliotecas
+ * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados
+ * @property Collection|Consecutivo[] $consecutivos
  *
  * @package App\Models
  */
@@ -34,39 +35,39 @@ class Sede extends Model
 	public $timestamps = false;
 
 	protected $fillable = [
-		'nombreIdentificador',
+		'sede',
 		'direccion',
 		'email',
 		'telefono'
 	];
 
-	public function usuarios()
+	public function sedes_facultades()
 	{
-		return $this->hasMany(Usuario::class, 'usua_sede');
+		return $this->hasMany(SedesFacultade::class, 'facu_sede');
 	}
 
-	public function facultades()
+	public function usuarios_users()
 	{
-		return $this->hasMany(Facultade::class, 'facu_sede');
+		return $this->hasMany(UsuariosUser::class, 'usua_sede');
 	}
 
-	public function programas()
+	public function proyecto_cronogramas()
 	{
-		return $this->hasMany(Programa::class, 'prog_sede');
+		return $this->hasMany(ProyectoCronograma::class, 'cron_sede');
 	}
 
-	public function bibliotecas()
+	public function sede_bibliotecas()
 	{
-		return $this->hasMany(Biblioteca::class, 'bibl_sede');
+		return $this->hasMany(SedeBiblioteca::class, 'bibl_sede');
 	}
 
-	public function proyecto_grados()
+	public function sede_proyectos_grados()
 	{
-		return $this->hasMany(ProyectoGrado::class, 'proy_sede');
+		return $this->hasMany(SedeProyectosGrado::class, 'proy_sede');
 	}
 
-	public function comites()
+	public function consecutivos()
 	{
-		return $this->hasMany(Comite::class, 'comi_sede');
+		return $this->hasMany(Consecutivo::class, 'conc_sede');
 	}
 }

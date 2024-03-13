@@ -1,0 +1,11 @@
+.grid {
+    position: absolute;
+    height: 500px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    justify-items: center;
+    align-items: center;
+}
+
+

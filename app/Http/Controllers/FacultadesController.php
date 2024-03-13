@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\facultades;
+use App\Models\SedesFacultade;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StorefacultadesRequest;
-use App\Http\Requests\UpdatefacultadesRequest;
+use Illuminate\Http\Request;
+
 
 class FacultadesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $id = $request->idSede;
+        $facultades = SedesFacultade::where('facu_sede', $id)->get();
+        return view('Layouts.facultades.read',compact('facultades', 'id'));
     }
 
     /**
@@ -34,9 +40,19 @@ class FacultadesController extends Controller
      * @param  \App\Http\Requests\StorefacultadesRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorefacultadesRequest $request)
+    public function store(StorefacultadesRequest $request, $id)
     {
-        //
+
+        $request->validate([
+            'nombre' => 'required|min:5',
+        ]);
+
+        $idSede = $id;
+        SedesFacultade::create([
+            'nombre' => $request->nombre,
+            'facu_sede' => $idSede,
+        ]);
+        return redirect()->back();
     }
 
     /**
