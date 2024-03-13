@@ -120,5 +120,3 @@ Route::post('/observaciones/update', [ObservacionesPropuestaController::class, '
 //mail routes
 route::get('/aceptarInvitacion/{usuario}/{proyecto}', [ProyectosController::class, 'segundoIntegrante'])->name('segundoIntegrante');
 
-
-
