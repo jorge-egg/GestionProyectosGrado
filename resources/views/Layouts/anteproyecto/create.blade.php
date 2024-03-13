@@ -6,6 +6,8 @@
 @endsection
 
 @section('dashboard_content')
+    {{$valRolComite = false}}
+    {{$valCalif = false}}
     <br>
     <div style="display: flex; flex-direction:row; justify-content: space-around;">
         <p class="fs-4">Estado: {{ $array['anteproyecto']->estado }}</p>
@@ -38,6 +40,7 @@
                 <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
                     style="background:#003E65; color:#fff; width: 100%; display: {{ $array['valExistDocent'] ? 'none' : 'flex' }};">Seleccionar
                     docente</button>
+                    <p style="display: none">{{$valRolComite = true}}</p>
             @endcan
 
         </div>
@@ -73,6 +76,7 @@
                         @elseif ($array['docExist'] == null)
                             @can('anteproyecto.calificar')
                                 <p style="color: red">El documento no ha sido cargado.</p>
+                                {{$valRolComite = true}}
                             @endcan
                             @can('propuesta.agregar')
                                 <input class="form-control input-file @error('docAnteProy') is-invalid @enderror" type="file"
@@ -89,6 +93,8 @@
                                 target="_blank" class="btn btn-warning"><i
                                     class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist'] }}</i></a>
                             @can('anteproyecto.aprobarDocumento')
+                                <p style="display: none">{{$valCalif = true}}</p>
+                                @if ($array['valDocAsig'])
                                 <p><b>Nota: </b>Si prefieres no aprobar el documento, por favor, actualiza el estado
                                     desactivando el interruptor. De lo contrario, actívalo y envía la actualización.</p>
                                 <div class="form-check form-switch">
@@ -99,12 +105,15 @@
                                 <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
                                     formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
                                     aprobacion del documento</button>
+                                @endif
                             @endcan
 
                             @php
                                 $aprobDocent = $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
+
                             @endphp
-                            @if ($aprobDocent)
+
+                            @if ($aprobDocent == '2')
                                 <section id="cont-calf">
                                     <form action="{{ route('anteproyecto.store') }}" method='POST'>
                                         @csrf
@@ -113,6 +122,8 @@
                                             'nameSelect' => 'tituloCalificacion',
                                             'nameTextArea' => 'tituloObservacion',
                                             'obsArray' => $array['observaciones'][0],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => $valCalif ? 'flex' : 'none',
                                         ])
                                         @endcomponent
                                         <h5>Introducción</h5>
@@ -120,6 +131,8 @@
                                             'nameSelect' => 'introCalificacion',
                                             'nameTextArea' => 'introObservacion',
                                             'obsArray' => $array['observaciones'][1],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <h5>Planteamiento del problema</h5>
@@ -127,6 +140,8 @@
                                             'nameSelect' => 'planProbCalificacion',
                                             'nameTextArea' => 'planProbObservacion',
                                             'obsArray' => $array['observaciones'][2],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <h5>Justificación</h5>
@@ -134,6 +149,8 @@
                                             'nameSelect' => 'justCalificacion',
                                             'nameTextArea' => 'justObservacion',
                                             'obsArray' => $array['observaciones'][3],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <h5>Marco referencial</h5>
@@ -141,6 +158,8 @@
                                             'nameSelect' => 'marcRefCalificacion',
                                             'nameTextArea' => 'marcRefObservacion',
                                             'obsArray' => $array['observaciones'][4],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <h5>Metodologia</h5>
@@ -148,6 +167,8 @@
                                             'nameSelect' => 'metodCalificacion',
                                             'nameTextArea' => 'metodObservacion',
                                             'obsArray' => $array['observaciones'][5],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <h5>Elementos de administración y control</h5>
@@ -155,6 +176,8 @@
                                             'nameSelect' => 'admCtrCalificacion',
                                             'nameTextArea' => 'admCtrObservacion',
                                             'obsArray' => $array['observaciones'][6],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <h5>Normas de presentación en el documento y Referencias bibliográficas</h5>
@@ -162,6 +185,8 @@
                                             'nameSelect' => 'normBibliCalificacion',
                                             'nameTextArea' => 'normBibliObservacion',
                                             'obsArray' => $array['observaciones'][7],
+                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                            'styleDisplayGeneral' => 'flex'
                                         ])
                                         @endcomponent
                                         <br>
@@ -176,8 +201,8 @@
                                     </form>
                                 </section>
                             @else
-                                <p style="color: red;">No se podra calificar el anteproyecto hasta que el docente apruebe el
-                                    documento
+                                <p style="color: red;">{{$array['anteproyecto']->aprobacionDocen == '1'? 'El Docente no aprobo el documento' : ($array['anteproyecto']->aprobacionDocen == '-1' ? 'No se podra calificar el anteproyecto hasta que el docente apruebe el
+                                    documento' : '')}}
                                 </p>
                             @endif
 
