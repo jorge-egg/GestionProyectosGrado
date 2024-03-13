@@ -51,7 +51,7 @@
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
-                    @component('components.calificacionObser', [
+                    @component('components.calificacionObserPro', [
                         'nameSelect' => 'tituloCalificacion',
                         'nameTextArea' => 'tituloObservacion',
                         'obsArray' => $observaciones[0],
@@ -71,7 +71,7 @@
                             <p class="fw-bold">{{ $calificacion[3] }}</p>
                         </span>
                     </div>
-                    @component('components.calificacionObser', [
+                    @component('components.calificacionObserPro', [
                         'nameSelect' => 'lineaCalificacion',
                         'nameTextArea' => 'lineaObservacion',
                         'obsArray' => $observaciones[1],
@@ -93,7 +93,7 @@
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="DescripcionContador"></span></p>
-                    @component('components.calificacionObser', [
+                    @component('components.calificacionObserPro', [
                         'nameSelect' => 'descProbCalificacion',
                         'nameTextArea' => 'descProbObservacion',
                         'obsArray' => $observaciones[2],
@@ -115,7 +115,7 @@
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
-                    @component('components.calificacionObser', [
+                    @component('components.calificacionObserPro', [
                         'nameSelect' => 'objGenCalificacion',
                         'nameTextArea' => 'objGenObservacion',
                         'obsArray' => $observaciones[3],
@@ -135,7 +135,7 @@
                             <p class="fw-bold">{{ $calificacion[0] }}</p>
                         </span>
                     </div>
-                    @component('components.calificacionObser', [
+                    @component('components.calificacionObserPro', [
                         'nameSelect' => 'objEspCalificacion',
                         'nameTextArea' => 'objEspObservacion',
                         'obsArray' => $observaciones[4],
