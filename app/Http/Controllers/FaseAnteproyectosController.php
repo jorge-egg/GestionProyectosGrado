@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FaseAnteproyecto;
 use App\Models\User;
 use App\Models\ModelHasRole;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
+use App\Models\FaseAnteproyecto;
 use App\Models\SedeProyectosGrado;
 use App\Traits\funcionesUniversales;
+use Illuminate\Support\Facades\Auth;
 
 class FaseAnteproyectosController extends Controller
 {
@@ -41,6 +42,8 @@ class FaseAnteproyectosController extends Controller
         $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
         $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
         $rangoFecha = $this->rangoFecha('anteproyecto');
+        $valDocAsig = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
+
         $array = array( //array que transportara todos los datos a la view
             'idProyecto' => $idProyecto,
             'observaciones' => $observaciones,
@@ -50,6 +53,7 @@ class FaseAnteproyectosController extends Controller
             'docExist' => $docExist,
             'anteproyecto' => $anteproyecto,
             'rangoFecha' => $rangoFecha,
+            'valDocAsig' => $valDocAsig,
         );
 
         return view('Layouts.anteproyecto.create', compact('array'));
@@ -117,10 +121,10 @@ class FaseAnteproyectosController extends Controller
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
         if($request->input('switchAprobDoc')){
-            $anteproyecto->aprobacionDocen = true;
+            $anteproyecto->aprobacionDocen = '2'; //estado de aprobado
             $anteproyecto->save();
         }else{
-            $anteproyecto->aprobacionDocen = false;
+            $anteproyecto->aprobacionDocen = '1'; //estado de No aprobado
             $anteproyecto->save();
         }
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
@@ -149,6 +153,7 @@ class FaseAnteproyectosController extends Controller
             copy($file, $ruta);
             FaseAnteproyecto::create([
                 'documento' => $newNameFile,
+                'aprobacionDocen' => '-1', //Sin valor definido
                 'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
 

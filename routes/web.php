@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CronogramaGrupo;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedesController;
 use App\Models\ObservacionesCalificacione;
@@ -114,4 +115,8 @@ Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('p
 
 //observaciones
 Route::post('/observaciones/store/{fase}', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
+Route::post('/observaciones/update', [ObservacionesPropuestaController::class, 'update'])->name('observaciones.update');
+
+//mail routes
+route::get('/aceptarInvitacion/{usuario}/{proyecto}', [ProyectosController::class, 'segundoIntegrante'])->name('segundoIntegrante');
 

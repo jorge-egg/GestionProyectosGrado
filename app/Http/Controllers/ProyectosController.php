@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComitesSede;
 use notify;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
 use App\Models\Consecutvo;
 use App\Models\Integrante;
+use App\Models\ComitesSede;
 use App\Models\Consecutivo;
-use App\Models\IntegrantesComite;
 use App\Models\ProyectoFase;
+use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeBiblioteca;
-use App\Models\SedePrograma;
-use App\Models\SedeProyectosGrado;
 use App\Models\UsuarioPrograma;
+use App\Models\IntegrantesComite;
+use App\Mail\invitacionIntegrante;
+use App\Models\SedeProyectosGrado;
+use Illuminate\Support\Facades\Mail;
 
 class ProyectosController extends Controller
 {
@@ -163,10 +165,12 @@ class ProyectosController extends Controller
     public function buscarIntegrante(Request $request) //busca el integrante y devuelve el nombre a un modal
     {
         $codigoUsuario = $request->get('documento');
+
         try {
             $usuarioConsultado = UsuariosUser::where('numeroDocumento', $codigoUsuario)->first();
             $data = $usuarioConsultado->nombre . " " . $usuarioConsultado->apellido;
             $response = ['data' => $data, 'codigoUsuario' => $codigoUsuario];
+            
             return response()->json($response);
         } catch (Exception $e) {
             $data = "Usuario no encontrado";
@@ -186,13 +190,22 @@ class ProyectosController extends Controller
             ]);
 
             if ($integrantes == '2') {
-                Integrante::create([
-                    'usuario'  => $codigoUsuario,
-                    'proyecto' => $idProyecto,
-                ]);
+                $nombreUsuario = $usuario->nombre . ' ' . $usuario->apellido;
+                Mail::to($usuario->email)
+                ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto));
             }
         } catch (Exception $e) {
             echo "error " . $e;
         }
+    }
+
+    public function segundoIntegrante($usuario, $proyecto){
+        $codigoUsuario = $usuario;
+        $idProyecto = $proyecto;
+        Integrante::create([
+            'usuario'  => $codigoUsuario,
+            'proyecto' => $idProyecto,
+        ]);
+        return redirect()->route('proyecto.index');
     }
 }
