@@ -45,9 +45,10 @@ class ObservacionesPropuestaController extends Controller
      */
     public function store(Request $request, $fase)
     {
-
+        
         switch ($fase) {
             case 'propuesta':
+
                 ObservacionesCalificacione::insert($this->cargarObservacionesPropuesta($request));
                 Calificacione::insert($this->cargarCalificacionesPropuesta($request));
                 break;

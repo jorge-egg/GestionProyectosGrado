@@ -24,6 +24,7 @@ class RoleSeeder extends Seeder
         $bibliotecario = Role::create(['name' => 'bibliotecario']);
 
 
+
         //usuarios
         Permission::create(['name' => 'usuario.crear'])->syncRoles([$superadministrador, $administrador]);
         Permission::create(['name' => 'usuario.editar'])->syncRoles([$superadministrador]);
@@ -33,16 +34,22 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'usuario.rol'])->syncRoles([$superadministrador, $administrador]);
         Permission::create(['name' => 'usuario.permiso'])->syncRoles([$superadministrador]);
 
+
+
         //propuestas
         Permission::create(['name' => 'propuesta.calificar'])->syncRoles([$superadministrador, $administrador, $comite]);
         Permission::create(['name' => 'propuesta.agregar'])->syncRoles([$estudiante]);
         Permission::create(['name' => 'propuesta.enviarCalificar'])->syncRoles([$superadministrador, $docente, $administrador, $comite]);
+
+
 
         //anteproyecto
         Permission::create(['name' => 'anteproyecto.calificar'])->syncRoles([$superadministrador, $administrador, $comite]);
         Permission::create(['name' => 'anteproyecto.subirDocumento'])->syncRoles([$estudiante]);
         Permission::create(['name' => 'anteproyecto.aprobarDocumento'])->syncRoles([$superadministrador, $docente, $administrador]);
         Permission::create(['name' => 'anteproyecto.asigDocent'])->syncRoles([$superadministrador, $administrador, $comite]);
+
+
 
         //proyectos view
         Permission::create(['name' => 'proyecto.crear'])->syncRoles([$estudiante]);
@@ -51,5 +58,17 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'proyecto.consultarComite'])->syncRoles([$comite]);
         Permission::create(['name' => 'proyecto.consultarDocente'])->syncRoles([$docente]);
         Permission::create(['name' => 'proyecto.ponderados'])->syncRoles([$superadministrador]);
+
+
+
+        //cronograma
+        Permission::create(['name' => 'cronograma.ver'])->syncRoles([$superadministrador, $administrador, $estudiante, $docente, $comite, $bibliotecario]);
+        Permission::create(['name' => 'cronograma.crear'])->syncRoles([$superadministrador, $administrador]);
+        Permission::create(['name' => 'cronograma.editar'])->syncRoles([$superadministrador, $administrador]);
+
+
+
+        //comites
+        Permission::create(['name' => 'comite.ver'])->syncRoles([$superadministrador, $administrador]);
     }
 }
