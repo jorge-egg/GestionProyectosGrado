@@ -9,9 +9,12 @@
         <h2>Cronograma</h2>
     </div>
     <div>
-        <form action="{{ route('grupo.create') }}" method="get">
-            <button class="btn " style="background:#003E65; color:#fff">Nuevo grupo</button>
-        </form>
+        @can('cronograma.crear')
+            <form action="{{ route('grupo.create') }}" method="get">
+                <button class="btn " style="background:#003E65; color:#fff">Nuevo grupo</button>
+            </form>
+        @endcan
+
         <table class="table">
             <thead class="encabezado">
                 <tr>
@@ -20,7 +23,10 @@
                     <th scope="col">Anteproyecto</th>
                     <th scope="col">Proyecto final</th>
                     <th scope="col">Sustentación</th>
-                    <th></th>
+                    @can('cronograma.editar')
+                        <th></th>
+                    @endcan
+
                 </tr>
             </thead>
             <tbody class="columnas">
@@ -49,10 +55,13 @@
                             <form action="{{ route('grupo.edit', $grupo->fech_grup) }}" method="get">
                                 <!--se coloco el inicio del from dentro de la etiqueta td para que lograra capturar el id del grupo-->
                         @endforeach
-                        <td>
-                            <button class="btn btn-warning">editar</button>
-                            </form>
-                        </td>
+                        @can('cronograma.editar')
+                            <td>
+                                <button class="btn btn-warning">editar</button>
+                            </td>
+                        @endcan
+
+                    </form>
                     </tr>
                 @endforeach
 
