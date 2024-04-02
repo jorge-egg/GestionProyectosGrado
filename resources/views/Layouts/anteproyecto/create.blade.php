@@ -34,7 +34,7 @@
         <h5 class="card-title text-center">Docente tutor</h5>
         <div class='card-body'>
             <p class="card-text">
-                {{ $array['valExistDocent'] ? 'El docente asignado para el proyecto es: ' . $array['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un docente asignado.' }}
+                {{ $array['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $array['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
             </p>
             @can('anteproyecto.asigDocent')
                 <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
@@ -95,8 +95,7 @@
                             @can('anteproyecto.aprobarDocumento')
                                 <p style="display: none">{{$valCalif = true}}</p>
                                 @if ($array['valDocAsig'])
-                                <p><b>Nota: </b>Si prefieres no aprobar el documento, por favor, actualiza el estado
-                                    desactivando el interruptor. De lo contrario, actívalo y envía la actualización.</p>
+                                <p><b>Nota: </b>Estimado profesor para nombrar jurados al proyecto, usted debe dar su aprobación al documento.</p>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
                                         name="switchAprobDoc">
