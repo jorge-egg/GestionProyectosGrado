@@ -23,24 +23,30 @@
                     <span class="links_name">Sedes</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('cronograma.index') }}">
-                    <i class='bx bxs-user-badge'></i>
-                    <span class="links_name">Cronograma</span>
-                </a>
-            </li>
+            @can('cronograma.ver')
+                <li>
+                    <a href="{{ route('cronograma.index') }}">
+                        <i class='bx bxs-user-badge'></i>
+                        <span class="links_name">Cronograma</span>
+                    </a>
+                </li>
+            @endcan
+
             <li>
                 <a href="{{ route('proyecto.index') }}">
                     <i class='bx bx-book'></i>
                     <span class="links_name">Proyectos</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('comite.index') }}">
-                    <i class='bx bx-sitemap'></i>
-                    <span class="links_name">Comites</span>
-                </a>
-            </li>
+            @can('comite.ver')
+                <li>
+                    <a href="{{ route('comite.index') }}">
+                        <i class='bx bx-sitemap'></i>
+                        <span class="links_name">Comites</span>
+                    </a>
+                </li>
+            @endcan
+
         </ul>
     </div>
     <div class="contenido">
