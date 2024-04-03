@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Sede;
+use App\Models\User;
 use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\Calificacione;
 use App\Models\FasePropuesta;
 use Illuminate\Support\Carbon;
+use App\Models\SedeProyectosGrado;
 use App\Traits\funcionesUniversales;
 use App\Models\ObservacionesCalificacione;
 
@@ -35,6 +37,7 @@ class FasePropuestasController extends Controller
     public function create(Request $request)
     {
         $idProyecto = $request->idProyecto;
+        $array = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
@@ -50,7 +53,7 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
+        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'array'));
     }
 
     public function createAnterior(Request $request)
@@ -158,5 +161,6 @@ class FasePropuestasController extends Controller
         $validacion = $cantidad < 2 ? true : false;
         return $validacion;
     }
+
 
 }
