@@ -162,5 +162,15 @@ class FasePropuestasController extends Controller
         return $validacion;
     }
 
+    public function asignarDocente(Request $request)
+    {//guarda un docente en la base de datos par el proyecto
+        $idProyecto = $request->idProyecto;
+        $numeroDocumento = $request->numeroDocumento;
+        $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
+        $proyecto->docente = $numeroDocumento;
+        $proyecto->save();
+
+        return redirect()->route('propuesta.create', ['idProyecto'=>$idProyecto]);
+    }
 
 }

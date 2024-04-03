@@ -34,7 +34,7 @@
                                     <th scope="row">{{ $contador }}</th>
                                     <td>{{ $docente->nombre . ' ' . $docente->apellido }}</td>
                                     <td>{{ $docente->sede }}</td>
-                                    <td><button formaction="{{ route('anteproyecto.asigDocente') }}" type="submit"><i class="bi bi-person-fill-add"></i></button></td>
+                                    <td><button formaction="{{ route('propuesta.asigDocente') }}" type="submit"><i class="bi bi-person-fill-add"></i></button></td>
                                 </form>
                             </tr>
                         @endforeach

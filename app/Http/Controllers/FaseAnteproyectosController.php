@@ -55,16 +55,7 @@ class FaseAnteproyectosController extends Controller
 
 
 
-    public function asignarDocente(Request $request)
-    {//guarda un docente en la base de datos par el proyecto
-        $idProyecto = $request->idProyecto;
-        $numeroDocumento = $request->numeroDocumento;
-        $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
-        $proyecto->docente = $numeroDocumento;
-        $proyecto->save();
-
-        return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
-    }
+    
 
     public function verPdf($nombreArchivo)
     { //retorna el pdf
@@ -140,38 +131,4 @@ class FaseAnteproyectosController extends Controller
         return redirect()->back();
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
