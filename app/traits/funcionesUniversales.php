@@ -5,8 +5,10 @@ namespace App\Traits;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
+use App\Models\User;
 use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
+use App\Models\SedeProyectosGrado;
 use App\Models\ObservacionesCalificacione;
 
 trait funcionesUniversales
@@ -95,6 +97,41 @@ trait funcionesUniversales
         } else {
             return $rangoFecha = $this->ultimaFecha($fase);
         }
+    }
+
+
+    //Buscar todos los docentes registrados
+    public function obtenerDocentes($idProyecto){
+        $docentes       = $this->docentes();
+        $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
+        $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
+        $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
+        $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
+
+        return $array = array( //array que transportara todos los datos a la view
+            'idProyecto' => $idProyecto,
+            'valExistDocent' => $valExistDocent,
+            'docenteAsig' => $docenteAsig,
+            'docentes'=>$docentes
+        );
+    }
+
+    public function docentes()
+    { //busca a todos los usuarios con rol de docente
+        $array = [];
+        //$usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        //$filtroRole  = ModelHasRole::join('roles', 'roles.id', 'model_has_roles.role_id')->where('name', 'docente')->get();
+        $usuarios = User::all();
+        foreach($usuarios as $usuario){
+            $docentesRole    = $usuario->roles()->get();
+            foreach($docentesRole as $rol){
+                if($rol->name == 'docente'){
+                    $usuarioUser = UsuariosUser::join('sedes', 'sedes.idSede', 'usuarios_users.usua_sede')->where('usua_users', $usuario->id)->whereNull('deleted_at')->first();
+                    array_push($array, $usuarioUser);
+                }
+            }
+        }
+        return $array;
     }
 
 }

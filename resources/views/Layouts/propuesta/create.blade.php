@@ -15,6 +15,29 @@
                         class="bi bi-arrow-bar-left"></i></button>
             @endif
         </div><br>
+        <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            @component('components.Modales.buscarDocente', [
+                'docentes' => $array['docentes'],
+                'idProyecto' => $array['idProyecto'],
+            ])
+            @endcomponent
+        </div>
+        <div class="card" style="display:{{$propuestaAnterior->estado == 'Aprobado' ? 'flex' : 'none'}}">
+            <h5 class="card-title text-center">Director tutor</h5>
+            <div class='card-body'>
+                <p class="card-text">
+                    {{ $array['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $array['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
+                </p>
+                @can('anteproyecto.asigDocent')
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
+                        style="background:#003E65; color:#fff; width: 100%; display: {{ $array['valExistDocent'] ? 'none' : 'flex' }};">Seleccionar
+                        docente</button>
+                    <p style="display: none">{{ $valRolComite = true }}</p>
+                @endcan
+
+            </div>
+        </div><br>
         <div class="card">
             <h5 class="card-title text-center">Crear propuesta</h5>
             <div class='card-body'>
@@ -35,7 +58,7 @@
                     @endif
 
                     @csrf
-                    <input type="hidden" value="{{ $idProyecto }}" name='idProyecto'>
+                    <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
                     <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idFase'>
                 <div>
                     <label for="titleForPropuestaId">Titulo</label>
@@ -150,8 +173,9 @@
                         <div id="countdown" style="color: red;"></div>
                         @if ($calificacion == 0)
                             <button id="buttonEnviarCalificacion" class="btn"
-                            style="background:#003E65; color:#fff; display:none" formaction="{{route('observaciones.store', 'propuesta')}}">Enviar
-                            calificación</button>
+                                style="background:#003E65; color:#fff; display:none"
+                                formaction="{{ route('observaciones.store', 'propuesta') }}">Enviar
+                                calificación</button>
                         @endif
 
 

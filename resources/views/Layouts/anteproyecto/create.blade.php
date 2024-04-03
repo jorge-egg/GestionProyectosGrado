@@ -22,31 +22,8 @@
             @endif --}}
 
     </div><br>
-    <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        @component('components.Modales.buscarDocente', [
-            'docentes' => $array['docentes'],
-            'idProyecto' => $array['idProyecto'],
-        ])
-        @endcomponent
-    </div>
-    <div class="card">
-        <h5 class="card-title text-center">Docente tutor</h5>
-        <div class='card-body'>
-            <p class="card-text">
-                {{ $array['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $array['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
-            </p>
-            @can('anteproyecto.asigDocent')
-                <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
-                    style="background:#003E65; color:#fff; width: 100%; display: {{ $array['valExistDocent'] ? 'none' : 'flex' }};">Seleccionar
-                    docente</button>
-                    <p style="display: none">{{$valRolComite = true}}</p>
-            @endcan
-
-        </div>
-    </div><br>
-
-    <div class="card" style="display: {{ $array['valExistDocent'] ? 'flex' : 'none' }};">
+    <div class="card" style="display: flex">
+    {{-- <div class="card" style="display: {{ $array['valExistDocent'] ? 'flex' : 'none' }};"> --}}
         <h5 class="card-title text-center">Crear anteproyecto</h5>
         <div class='card-body'>
             <p class="card-text">
@@ -75,7 +52,7 @@
 
                         @elseif ($array['docExist'] == null)
                             @can('anteproyecto.calificar')
-                                <p style="color: red">El documento no ha sido cargado.</p>
+                                <p style="color: red">El documento no ha sido cargado. </p>
                                 {{$valRolComite = true}}
                             @endcan
                             @can('propuesta.agregar')
@@ -200,7 +177,7 @@
                                     </form>
                                 </section>
                             @else
-                                <p style="color: red;">{{$array['anteproyecto']->aprobacionDocen == '1'? 'El Docente no aprobo el documento' : ($array['anteproyecto']->aprobacionDocen == '-1' ? 'No se podra calificar el anteproyecto hasta que el docente apruebe el
+                                <p style="color: red;">{{$array['anteproyecto']->aprobacionDocen == '1'? 'El director no aprobo el documento' : ($array['anteproyecto']->aprobacionDocen == '-1' ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
                                     documento' : '')}}
                                 </p>
                             @endif

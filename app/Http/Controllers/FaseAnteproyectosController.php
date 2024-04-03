@@ -32,50 +32,28 @@ class FaseAnteproyectosController extends Controller
     public function create(Request $request, $idProyecto)
     {
         $this->$idProyecto     = $idProyecto;
-        $docentes       = $this->docentes();
+        //$docentes       = $this->docentes();
         $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
         $anteproyectoAnterior = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
         $anteproyecto = $this->Anteproyecto($anteproyectoAnterior);
         $docExist = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
         $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
-        $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
-        $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
-        $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
         $rangoFecha = $this->rangoFecha('anteproyecto');
         $valDocAsig = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
 
         $array = array( //array que transportara todos los datos a la view
             'idProyecto' => $idProyecto,
             'observaciones' => $observaciones,
-            'docentes' => $docentes,
-            'valExistDocent' => $valExistDocent,
-            'docenteAsig' => $docenteAsig,
-            'docExist' => $docExist,
             'anteproyecto' => $anteproyecto,
             'rangoFecha' => $rangoFecha,
             'valDocAsig' => $valDocAsig,
+            'docExist' => $docExist,
         );
 
         return view('Layouts.anteproyecto.create', compact('array'));
     }
 
-    public function docentes()
-    { //busca a todos los usuarios con rol de docente
-        $array = [];
-        //$usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
-        //$filtroRole  = ModelHasRole::join('roles', 'roles.id', 'model_has_roles.role_id')->where('name', 'docente')->get();
-        $usuarios = User::all();
-        foreach($usuarios as $usuario){
-            $docentesRole    = $usuario->roles()->get();
-            foreach($docentesRole as $rol){
-                if($rol->name == 'docente'){
-                    $usuarioUser = UsuariosUser::join('sedes', 'sedes.idSede', 'usuarios_users.usua_sede')->where('usua_users', $usuario->id)->whereNull('deleted_at')->first();
-                    array_push($array, $usuarioUser);
-                }
-            }
-        }
-        return $array;
-    }
+
 
     public function asignarDocente(Request $request)
     {//guarda un docente en la base de datos par el proyecto
