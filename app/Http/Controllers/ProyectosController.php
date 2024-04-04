@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use notify;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
-use App\Models\Consecutvo;
 use App\Models\Integrante;
 use App\Models\ComitesSede;
 use App\Models\Consecutivo;
-use App\Models\ProyectoFase;
 use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\SedeBiblioteca;
-use App\Models\UsuarioPrograma;
-use App\Models\IntegrantesComite;
 use App\Mail\invitacionIntegrante;
 use App\Models\SedeProyectosGrado;
 use Illuminate\Support\Facades\Mail;
@@ -170,7 +165,7 @@ class ProyectosController extends Controller
             $usuarioConsultado = UsuariosUser::where('numeroDocumento', $codigoUsuario)->first();
             $data = $usuarioConsultado->nombre . " " . $usuarioConsultado->apellido;
             $response = ['data' => $data, 'codigoUsuario' => $codigoUsuario];
-            
+
             return response()->json($response);
         } catch (Exception $e) {
             $data = "Usuario no encontrado";

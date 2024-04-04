@@ -37,9 +37,7 @@
                     <td>{{ $proyecto->codigoproyecto }}</td>
                     <td>{{ $proyecto->usuario }}</td>
                     <td>
-                        <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="post">
-                            @csrf
-                            <input type="hidden" name="idProyecto" value="{{ $proyecto->idProyecto }}">
+                        <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="get">
                             <button type="submit" class='btn btn-primary text-dark'>Propuesta</button>
                         </form>
                     </td>

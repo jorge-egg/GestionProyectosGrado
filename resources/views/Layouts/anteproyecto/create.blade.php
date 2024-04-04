@@ -83,7 +83,21 @@
                                     aprobacion del documento</button>
                                 @endif
                             @endcan
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    @component('components.asignarJurado',[
+        'array' => $array
+    ])
 
+    @endcomponent
+    <div class="card" style="display: flex">
+        <h5 class="card-title text-center">Calificar anteproyecto</h5>
+        <div class='card-body'>
+            <p class="card-text">
                             @php
                                 $aprobDocent = $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
 
