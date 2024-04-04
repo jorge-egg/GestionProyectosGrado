@@ -2,11 +2,13 @@
 
 namespace App\Traits;
 
+use App\Models\ComitesSede;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
 use App\Models\User;
 use App\Models\FechasGrupo;
+use App\Models\IntegrantesComite;
 use App\Models\UsuariosUser;
 use App\Models\SedeProyectosGrado;
 use App\Models\ObservacionesCalificacione;
@@ -132,6 +134,14 @@ trait funcionesUniversales
             }
         }
         return $array;
+    }
+
+    public function obtMiembrosComite($idProyecto){
+        return  ComitesSede::join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
+        ->join('usuarios_users', 'usuarios_users.numeroDocumento', 'integrantes_comites.usuario')
+        ->where('idComite', (SedeProyectosGrado::findOrFail($idProyecto)->comite))
+        ->select('numeroDocumento', 'nombre', 'apellido')
+        ->get();
     }
 
 }

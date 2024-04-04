@@ -40,7 +40,7 @@ class FaseAnteproyectosController extends Controller
         $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
         $rangoFecha = $this->rangoFecha('anteproyecto');
         $valDocAsig = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
-
+        $miembrosComite = $this->obtMiembrosComite($this->$idProyecto );
         $array = array( //array que transportara todos los datos a la view
             'idProyecto' => $idProyecto,
             'observaciones' => $observaciones,
@@ -48,6 +48,7 @@ class FaseAnteproyectosController extends Controller
             'rangoFecha' => $rangoFecha,
             'valDocAsig' => $valDocAsig,
             'docExist' => $docExist,
+            'miembrosComite' => $miembrosComite,
         );
 
         return view('Layouts.anteproyecto.create', compact('array'));
@@ -55,7 +56,7 @@ class FaseAnteproyectosController extends Controller
 
 
 
-    
+
 
     public function verPdf($nombreArchivo)
     { //retorna el pdf

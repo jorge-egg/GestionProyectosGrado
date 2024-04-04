@@ -20,6 +20,7 @@
             @component('components.Modales.buscarDocente', [
                 'docentes' => $array['docentes'],
                 'idProyecto' => $array['idProyecto'],
+                'fase' => 'propuesta'
             ])
             @endcomponent
         </div>
