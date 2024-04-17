@@ -17,6 +17,9 @@ class CreateFaseAnteproyectosTable extends Migration
             $table->bigIncrements("idAnteproyecto");
             $table->string("documento", 20);
             $table->string("aprobacionDocen", 2);
+            $table->text("observaDocent")->nullable();
+            $table->string("juradoUno", 12);
+            $table->string("juradoDos", 12);
             $table->string('estado', 100);
             $table->time('fecha_aplazado')->nullable();
             $table->unsignedBigInteger("ante_proy");

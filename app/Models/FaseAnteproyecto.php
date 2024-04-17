@@ -35,6 +35,9 @@ class FaseAnteproyecto extends Model
         'estado',
 		'ante_proy',
         'aprobacionDocen',
+        'juradoUno',
+        'juradoDos',
+        'observaDocent',
         'fecha_aplazado',
 	];
 

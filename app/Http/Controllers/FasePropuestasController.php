@@ -32,7 +32,7 @@ class FasePropuestasController extends Controller
     public function create(Request $request)
     {
         $idProyecto = $request->idProyecto;
-        $array = $this->obtenerDocentes($idProyecto);
+        $miembrosDocente = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         // Obtener el nombre del integrante asociado al proyecto de grado
         // $integrante = Integrante::where('proyecto', $idProyecto)->first();
@@ -55,6 +55,7 @@ class FasePropuestasController extends Controller
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
         return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'array', 'integrantes','totalCalificacion'));
+
     }
 
     public function createAnterior(Request $request)

@@ -43,7 +43,7 @@ class FaseAnteproyectosController extends Controller
         $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
         $rangoFecha = $this->rangoFecha('anteproyecto');
         $valDocAsig = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
-        $miembrosComite = $this->obtMiembrosComite($this->$idProyecto );
+        $miembrosDocente = $this->obtenerDocentes($this->$idProyecto );
         $array = array( //array que transportara todos los datos a la view
             'idProyecto' => $idProyecto,
             'observaciones' => $observaciones,
@@ -51,10 +51,10 @@ class FaseAnteproyectosController extends Controller
             'rangoFecha' => $rangoFecha,
             'valDocAsig' => $valDocAsig,
             'docExist' => $docExist,
-            'miembrosComite' => $miembrosComite,
+            'integrantes' = $integrantes,
         );
 
-        return view('Layouts.anteproyecto.create', compact('array','integrantes'));
+        return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }
 
 
@@ -95,9 +95,11 @@ class FaseAnteproyectosController extends Controller
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
         if($request->input('switchAprobDoc')){
             $anteproyecto->aprobacionDocen = '2'; //estado de aprobado
+            $anteproyecto->observaDocent = $request->ObsDocent;
             $anteproyecto->save();
         }else{
             $anteproyecto->aprobacionDocen = '1'; //estado de No aprobado
+            $anteproyecto->observaDocent = $request->ObsDocent;
             $anteproyecto->save();
         }
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
@@ -127,12 +129,21 @@ class FaseAnteproyectosController extends Controller
             FaseAnteproyecto::create([
                 'documento' => $newNameFile,
                 'aprobacionDocen' => '-1', //Sin valor definido
+                'juradoUno' => '-1',
+                'juradoDos' => '-1',
                 'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
 
             ]);
         }
         return redirect()->back();
+    }
+
+    public function asigJurado(Request $request){
+        $idProyecto = $request -> idProyecto;
+        $numeroDocumento = $request -> numeroDocumento;
+        $this->asignarJurado($idProyecto, $numeroDocumento);
+        return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
     }
 
 }
