@@ -8,7 +8,9 @@ use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\FaseAnteproyecto;
 use App\Models\SedeProyectosGrado;
+use App\Models\Integrante;
 use App\Traits\funcionesUniversales;
+
 use Illuminate\Support\Facades\Auth;
 
 class FaseAnteproyectosController extends Controller
@@ -32,6 +34,8 @@ class FaseAnteproyectosController extends Controller
     public function create(Request $request, $idProyecto)
     {
         $this->$idProyecto     = $idProyecto;
+        //$docentes       = $this->docentes();
+        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
         $anteproyectoAnterior = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
         $anteproyecto = $this->Anteproyecto($anteproyectoAnterior);
@@ -46,9 +50,9 @@ class FaseAnteproyectosController extends Controller
             'anteproyecto' => $anteproyecto,
             'rangoFecha' => $rangoFecha,
             'valDocAsig' => $valDocAsig,
-            'docExist' => $docExist
+            'docExist' => $docExist,
+            'integrantes' = $integrantes,
         );
-
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }
