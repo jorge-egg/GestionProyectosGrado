@@ -32,14 +32,5 @@ class ComitesSeeder extends Seeder
         DB::table('comites_sedes')->insert([
             'comi_pro' => 6,
         ]);
-        DB::table('comites_sedes')->insert([
-            'comi_pro' => 7,
-        ]);
-        DB::table('comites_sedes')->insert([
-            'comi_pro' => 8,
-        ]);
-        DB::table('comites_sedes')->insert([
-            'comi_pro' => 9,
-        ]);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\FasePropuesta;
 use App\Models\CronogramaGrupo;
+use App\Traits\funcionesUniversales;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedesController;
@@ -15,7 +17,6 @@ use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\FasePropuestasController;
 use App\Http\Controllers\FaseAnteproyectosController;
 use App\Http\Controllers\ObservacionesPropuestaController;
-use App\Models\FasePropuesta;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +109,7 @@ Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store']
 Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior');
 Route::get('/anteproyecto/verpdf/{nombreArchivo}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
 Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
+Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
 
 
 //ponderados
