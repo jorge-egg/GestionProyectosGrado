@@ -26,6 +26,7 @@ class ProyectosController extends Controller
      */
     public function index()
     {
+
         try {
             //Consultar si el usuario tiene un proyecto activo para bloquear la opcion de crear otro
             $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first()->numeroDocumento;
@@ -58,6 +59,7 @@ class ProyectosController extends Controller
     //index para mostrar todos los proyectos de la sede
     public function indextableAll()
     {
+
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $sedeId = Sede::where('idSede', $usuario->usua_sede)->first()->idSede;
         $proyectos = SedeProyectosGrado::where('proy_sede', $sedeId)->get();
@@ -91,6 +93,7 @@ class ProyectosController extends Controller
 
     public function create(Request $request, $integrantes)
     {
+
         try {
             $codigoUsuario = $integrantes == '2' ? $request->codUsuario : null; //obtiene elcodigo del segundo integrante
             $anoActual       = Carbon::now()->format('Y');

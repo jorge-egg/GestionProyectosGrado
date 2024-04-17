@@ -3,8 +3,10 @@
     <br>
     <form action="{{ route('propuesta.store', 'propuesta') }}" method='POST'>
         <div style="display: flex; flex-direction:row; justify-content: space-around">
-
-            <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
+            <div>
+                <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
+                <p class="fs-4">Calificación: {{ number_format($totalCalificacion, 2) }}</p>
+            </div>
             <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
             @if ($estadoButton)
                 <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i
@@ -15,16 +17,17 @@
                         class="bi bi-arrow-bar-left"></i></button>
             @endif
         </div><br>
+
         <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             @component('components.Modales.buscarDocente', [
                 'docentes' => $array['docentes'],
                 'idProyecto' => $array['idProyecto'],
-                'fase' => 'propuesta'
+                'fase' => 'propuesta',
             ])
             @endcomponent
         </div>
-        <div class="card" style="display:{{$propuestaAnterior->estado == 'Aprobado' ? 'flex' : 'none'}}">
+        <div class="card" style="display:{{ $propuestaAnterior->estado == 'Aprobado' ? 'flex' : 'none' }}">
             <h5 class="card-title text-center">Director tutor</h5>
             <div class='card-body'>
                 <p class="card-text">
@@ -39,28 +42,36 @@
 
             </div>
         </div><br>
+
         <div class="card">
             <h5 class="card-title text-center">Crear propuesta</h5>
             <div class='card-body'>
                 <p class="card-text">
-                    @can('propuesta.calificar')
-                        <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff"
-                            onclick="mostrarCamposCalificacion()">Calificar</button>
-                    @endcan
-                    @if ($propuestaAnterior->estado == 'Aprobado')
-                        <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente
-                            fase.</span>
-                    @elseif ($propuestaAnterior->estado == 'Aplazado con modificaciones')
-                        <span style="color: red;">Tiene 10 días hábiles para enviar la corrección, después de eso no tendrá
-                            más oportunidades.</span>
-                    @elseif ($propuestaAnterior->estado == 'Rechazado')
-                        <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
-                            proyecto.</span>
-                    @endif
+                <div>
+                    @foreach ($integrantes as $key => $integrante)
+                        <h1>Integrante {{ $key + 1 }}: {{ $integrante->usuarios_user->nombre }}
+                            {{ $integrante->usuarios_user->apellido }}</h1>
+                    @endforeach
+                </div>
+                <br>
+                @can('propuesta.calificar')
+                    <button type="button" id="calificar" class="btn" style="background:#003E65; color:#fff"
+                        onclick="mostrarCamposCalificacion()">Calificar</button>
+                @endcan
+                @if ($propuestaAnterior->estado == 'Aprobado')
+                    <span style="color: red;">Esta fase del proyecto ha sido completada, pase a la siguiente
+                        fase.</span>
+                @elseif ($propuestaAnterior->estado == 'Aplazado con modificaciones')
+                    <span style="color: red;">Tiene 10 días hábiles para enviar la corrección, después de eso no tendrá
+                        más oportunidades.</span>
+                @elseif ($propuestaAnterior->estado == 'Rechazado')
+                    <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
+                        proyecto.</span>
+                @endif
 
-                    @csrf
-                    <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
-                    <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idFase'>
+                @csrf
+                <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
+                <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idFase'>
                 <div>
                     <label for="titleForPropuestaId">Titulo</label>
                     <div class="input-group mb-3">

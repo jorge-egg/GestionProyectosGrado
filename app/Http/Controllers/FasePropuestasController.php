@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Calificacione;
 use App\Models\FasePropuesta;
 use App\Models\SedeProyectosGrado;
+use App\Models\Integrante;
 use App\Traits\funcionesUniversales;
 
 class FasePropuestasController extends Controller
@@ -33,6 +34,11 @@ class FasePropuestasController extends Controller
         $idProyecto = $request->idProyecto;
         $array = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
+        // Obtener el nombre del integrante asociado al proyecto de grado
+        // $integrante = Integrante::where('proyecto', $idProyecto)->first();
+        // $nombreIntegrante = $integrante ? $integrante->usuarios_user->nombre : 'N/A';
+        // $apellidoIntegrante = $integrante ? $integrante->usuarios_user->apellido : 'N/A';
+        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = true;
@@ -40,14 +46,15 @@ class FasePropuestasController extends Controller
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
-                ->get()->count();
+                ->sum('calificaciones.calificacion'); // Suma de las calificaciones
+                // ->get()->count();
         } catch (Exception $e) {
             $totalCalificacion = 0;
         }
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'array'));
+        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'array', 'integrantes','totalCalificacion'));
     }
 
     public function createAnterior(Request $request)
@@ -57,7 +64,7 @@ class FasePropuestasController extends Controller
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
 
-        $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true:false;
+        $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true : false;
         $rangoFecha = $this->rangoFecha('propuesta');
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
@@ -164,7 +171,7 @@ class FasePropuestasController extends Controller
         $proyecto->docente = $numeroDocumento;
         $proyecto->save();
 
-        return redirect()->route('propuesta.create', ['idProyecto'=>$idProyecto]);
+        return redirect()->route('propuesta.create', ['idProyecto' => $idProyecto]);
     }
 
 }

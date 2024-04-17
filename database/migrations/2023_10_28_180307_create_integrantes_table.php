@@ -19,7 +19,7 @@ class CreateIntegrantesTable extends Migration
             $table->unsignedBigInteger('proyecto');
             $table->foreign("usuario")->references("numeroDocumento")->on("usuarios_users")->onDelete('cascade');
             $table->foreign('proyecto')->references('idProyecto')->on('sede_proyectos_grado')->onDelete('cascade');
-            
+
         });
     }
 
