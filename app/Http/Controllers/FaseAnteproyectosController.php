@@ -51,7 +51,7 @@ class FaseAnteproyectosController extends Controller
             'rangoFecha' => $rangoFecha,
             'valDocAsig' => $valDocAsig,
             'docExist' => $docExist,
-            'integrantes' = $integrantes,
+            'integrantes' => $integrantes,
         );
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));

@@ -31,14 +31,11 @@ class FasePropuestasController extends Controller
      */
     public function create(Request $request)
     {
+
         $idProyecto = $request->idProyecto;
+        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $miembrosDocente = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
-        // Obtener el nombre del integrante asociado al proyecto de grado
-        // $integrante = Integrante::where('proyecto', $idProyecto)->first();
-        // $nombreIntegrante = $integrante ? $integrante->usuarios_user->nombre : 'N/A';
-        // $apellidoIntegrante = $integrante ? $integrante->usuarios_user->apellido : 'N/A';
-        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = true;
@@ -54,7 +51,7 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'array', 'integrantes','totalCalificacion'));
+        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'miembrosDocente', 'integrantes', 'totalCalificacion'));
 
     }
 

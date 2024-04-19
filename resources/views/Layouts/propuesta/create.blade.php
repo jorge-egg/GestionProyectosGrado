@@ -72,7 +72,7 @@
                 @endif
 
                 @csrf
-                <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
+                <input type="hidden" value="{{ $miembrosDocente['idProyecto'] }}" name='idProyecto'>
                 <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idFase'>
 
                 <div>
