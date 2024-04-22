@@ -46,9 +46,9 @@
                         <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
                         <input type="hidden" value="{{ $array['anteproyecto']->idAnteproyecto }}" name='idFase'>
                         <div>
-                            @foreach ($integrantes as $key => $integrante)
-                                <h1>Integrante {{ $key + 1 }}: {{ $integrante->usuarios_user->nombre }}
-                                    {{ $integrante->usuarios_user->apellido }}</h1>
+                            @foreach ($array ['integrantes'] as $key =>$array ['integrantes'])
+                                <h1>Integrante {{ $key + 1 }}: {{ $array ['integrantes']->usuarios_user->nombre }}
+                                    {{ $array ['integrantes']->usuarios_user->apellido }}</h1>
                             @endforeach
                         </div>
                         <br>
