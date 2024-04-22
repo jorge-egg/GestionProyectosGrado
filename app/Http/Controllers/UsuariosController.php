@@ -15,7 +15,8 @@ use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreusuariosRequest;
 use App\Http\Requests\UpdateusuariosRequest;
 use Illuminate\Routing\Matching\HostValidator;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 class UsuariosController extends Controller
 {
     /**
@@ -48,8 +49,8 @@ class UsuariosController extends Controller
     public function getProgramasBySede($sedeId)
     {
         $programas = SedesFacultade::join('sede_programas', 'sede_programas.prog_facu', 'sedes_facultades.idFacultad')
-        ->where('facu_sede', $sedeId)
-        ->get();
+            ->where('facu_sede', $sedeId)
+            ->get();
         return response()->json($programas);
     }
 
@@ -59,13 +60,25 @@ class UsuariosController extends Controller
      * @param  \App\Http\Requests\StoreusuariosRequest  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
+        // Definir reglas de validación personalizadas
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|confirmed',
+        ]);
 
-        // Creación de User
+        // Verificar si la validación ha fallado
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Si la validación pasa, continuar con el proceso de almacenamiento
+
+        // Validaciones y creación de User
         $user = User::create([
-            'usuario' => $request->input('numeroDocumento'), // Utilizar el número de documento como usuario
-            'password' => bcrypt($request->input('numeroDocumento')), // Utilizar el número de documento como contraseña
+            'usuario' => $request->input('numeroDocumento'),
+            'password' => bcrypt($request->input('password')),
         ]);
 
         // Validaciones y creación de UsuariosUser
@@ -75,23 +88,26 @@ class UsuariosController extends Controller
             'email' => $request->input('email'),
             'numeroCelular' => $request->input('numeroCelular'),
             'usua_sede' => $request->input('usua_sede'),
-            'usua_users' => $user->id, // Utilizar el ID del usuario recién creado
+            'usua_users' => $user->id,
             'usua_estado' => 1,
         ]);
         $usuariosUser->numeroDocumento = $request->input('numeroDocumento');
         $usuariosUser->save();
 
-        // Asignación de roles al usuario
-        $user->assignRole($request->input('roles'));
+        // Asignación del rol estudiante al usuario
+        $user->assignRole('invitado');
 
         // Creación de UsuarioPrograma
         $usuarioPrograma = UsuarioPrograma::create([
-            'usuario' => $usuariosUser->numeroDocumento, // Relacionar con UsuariosUser
+            'usuario' => $usuariosUser->numeroDocumento,
             'programa' => $request->input('programa'),
         ]);
+        // Notificar éxito mediante sesión flash
+        Session::flash('success', 'El usuario se ha creado exitosamente.');
 
-        return redirect()->route('usuarios.index');
+        return redirect()->back();
     }
+
 
 
     /**
