@@ -96,7 +96,7 @@ class UsuariosController extends Controller
         $usuariosUser->save();
 
         // Asignación del rol estudiante al usuario
-        $user->assignRole('invitado');
+        $user->assignRole('estudiante');
 
         // Creación de UsuarioPrograma
         $usuarioPrograma = UsuarioPrograma::create([
