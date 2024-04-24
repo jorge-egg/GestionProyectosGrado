@@ -46,35 +46,58 @@
                         <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
                         <input type="hidden" value="{{ $array['anteproyecto']->idAnteproyecto }}" name='idFase'>
                         <div>
-                            @foreach ($array ['integrantes'] as $key =>$array ['integrantes'])
-                                <h1>Integrante {{ $key + 1 }}: {{ $array ['integrantes']->usuarios_user->nombre }}
-                                    {{ $array ['integrantes']->usuarios_user->apellido }}</h1>
+                            @foreach ($array['integrantes'] as $key => $array['integrantes'])
+                                <h1>Integrante {{ $key + 1 }}: {{ $array['integrantes']->usuarios_user->nombre }}
+                                    {{ $array['integrantes']->usuarios_user->apellido }}</h1>
                             @endforeach
                         </div>
                         <br>
-                        <label for="formFile" class="form-label">Documento de anteproyecto</label>
-
                         @if (!$array['rangoFecha'][2])
                             <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
-                        @elseif ($array['docExist'] == null)
+                        @elseif ($array['docExist1'] == null && $array['docExist2'] == null)
                             @can('anteproyecto.calificar')
                                 <p style="color: red">El documento no ha sido cargado. </p>
                                 <input type="hidden">{{ $valRolComite = true }}</input>
                             @endcan
                             @can('propuesta.agregar')
-                                <input class="form-control input-file @error('docAnteProy') is-invalid @enderror" type="file"
-                                    id="formFile" name="docAnteProy">
-                                @error('docAnteProy')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-
+                                <div class="documentos">
+                                    <section class="documentosSec">
+                                        <label for="docAnt" class="form-label">Documento de anteproyecto</label>
+                                        <input class="form-control input-file @error('docAnteProy') is-invalid @enderror"
+                                            type="file" id="docAnt" name="docAnteProy">
+                                        @error('docAnteProy')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </section>
+                                    <section class="documentosSec">
+                                        <label for="docDir" class="form-label">Carta de aprobación Director</label>
+                                        <input class="form-control input-file @error('docDir') is-invalid @enderror"
+                                            type="file" id="docDir" name="docDir">
+                                        @error('docDir')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </section>
+                                </div>
                                 <button type="submit" id="buttonToCreatePropuesta" class="btn"
                                     style="background:#003E65; color:#fff">Agregar</button>
                             @endcan
-                        @elseif ($array['docExist'] != null)
-                            <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist']]) }}"
-                                target="_blank" class="btn btn-warning"><i
-                                    class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist'] }}</i></a>
+                        @elseif ($array['docExist1'] != null && $array['docExist2'] != null)
+                            <div class="documentos">
+                                <section class="documentosSec" style="text-align: center">
+
+                                    <!-- documento del anteproyecto -->
+                                    <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist1'], 'ruta' => '1']) }}"
+                                        target="_blank" class="btn btn-warning"><i
+                                            class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist1'] }} -- documento de anteproyecto</i></a>
+                                </section>
+                                <section class="documentosSec" style="text-align: center">
+                                    <!-- carta del director -->
+                                    <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist2'], 'ruta' => '2']) }}"
+                                        target="_blank" class="btn btn-warning"><i
+                                            class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta del director</i></a>
+                                </section>
+                            </div>
+
                             @can('anteproyecto.aprobarDocumento')
                                 <p style="display: none">{{ $valCalif = true }}</p>
                                 @if ($array['valDocAsig'])
@@ -88,8 +111,9 @@
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-text">Observaciones</span>
-                                        <textarea class="form-control" aria-label="With textarea" name="ObsDocent" required {{$array['anteproyecto']->observaDocent == '' ? '' : 'disabled' }}>{{$array['anteproyecto']->observaDocent}}</textarea>
-                                      </div><br>
+                                        <textarea class="form-control" aria-label="With textarea" name="ObsDocent" required
+                                            {{ $array['anteproyecto']->observaDocent == '' ? '' : 'disabled' }}>{{ $array['anteproyecto']->observaDocent }}</textarea>
+                                    </div><br>
                                     <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
                                         formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
                                         aprobacion del documento</button>
@@ -114,11 +138,14 @@
                 @endcomponent
             </div>
             @php
-                $habilitarButtonJ = $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1' ? 'disabled' : '';
+                $habilitarButtonJ =
+                    $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1'
+                        ? 'disabled'
+                        : '';
             @endphp
             <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
-                        style="background:#003E65; color:#fff; width: 100%;" {{$habilitarButtonJ}}>Seleccionar
-                        jurados</button>
+                style="background:#003E65; color:#fff; width: 100%;" {{ $habilitarButtonJ }}>Seleccionar
+                jurados</button>
         </div>
     </div>
     <br>
@@ -224,7 +251,7 @@
                 ? 'El director no aprobo el documento'
                 : ($array['anteproyecto']->aprobacionDocen == '-1'
                     ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                documento'
+                                                                                                documento'
                     : '') }}
         </p>
         @endif

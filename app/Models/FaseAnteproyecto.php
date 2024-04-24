@@ -32,6 +32,7 @@ class FaseAnteproyecto extends Model
 
 	protected $fillable = [
         'documento',
+        'cartaDirector',
         'estado',
 		'ante_proy',
         'aprobacionDocen',

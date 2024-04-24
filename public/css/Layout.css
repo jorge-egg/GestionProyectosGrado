@@ -13,13 +13,18 @@
 
 body{
     background: rgb(218,216,0);
-background: linear-gradient(27deg, rgba(218,216,0,1) 50%, rgba(0,62,101,1) 50%);
+    background: linear-gradient(27deg, rgba(218,216,0,1) 50%, rgba(0,62,101,1) 50%);
+    width: 100%;
+    height: 100%;
+    border: #000 solid 1px;
 }
 
 main{
     position: relative;
     display: flex;
     flex-direction: column;
+    height: 100%;
+
 }
 
 #logoTitulo{
@@ -65,9 +70,9 @@ main{
     width: 60%;
     padding: 30px;
     position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 10%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 10%);
 }
 
 #infoCardsContainer .card {
@@ -76,20 +81,6 @@ main{
 
 #infoCardsContainer .card:hover {
     transform: translateY(-20px); /* Desplazamos la tarjeta hacia arriba en el hover */
-}
-
-.text-Title {
-  font-size: 22px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  transform: translate(-100%,-100%);
-  background-image: linear-gradient(var(--white-color), var(--secondary-color));
-  background-size: 100% 10px;
-  background-repeat: no-repeat;
-  background-position: 100% 0%;
-  transition: background-size .7s, background-position .5s ease-in-out;
 }
 
 .text-Title:hover {
