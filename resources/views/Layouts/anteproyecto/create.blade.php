@@ -88,13 +88,15 @@
                                     <!-- documento del anteproyecto -->
                                     <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist1'], 'ruta' => '1']) }}"
                                         target="_blank" class="btn btn-warning"><i
-                                            class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist1'] }} -- documento de anteproyecto</i></a>
+                                            class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist1'] }} --
+                                            documento de anteproyecto</i></a>
                                 </section>
                                 <section class="documentosSec" style="text-align: center">
                                     <!-- carta del director -->
                                     <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist2'], 'ruta' => '2']) }}"
                                         target="_blank" class="btn btn-warning"><i
-                                            class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta del director</i></a>
+                                            class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta
+                                            del director</i></a>
                                 </section>
                             </div>
 
@@ -127,9 +129,28 @@
     <br>
     <div class="card">
         <h5 class="card-title text-center">Jurados</h5>
-        <div class='card-body'>
+
+        <div class='card-body' style="text-align: center">
+            @php
+                    $JuradoUno =
+                        $array['anteproyecto']->juradoUno == '-1'
+                            ? (object) ['nombre' => 'Sin asignar', 'apellido' => '']
+                            : App\Models\UsuariosUser::where('numeroDocumento', $array['anteproyecto']->juradoUno)
+                                ->select('nombre', 'apellido')
+                                ->first();
+                    $JuradoDos =
+                        $array['anteproyecto']->juradoDos == '-1'
+                            ? (object) ['nombre' => 'Sin asignar', 'apellido' => '']
+                            : App\Models\UsuariosUser::where('numeroDocumento', $array['anteproyecto']->juradoDos)
+                                ->select('nombre', 'apellido')
+                                ->first();
+
+                @endphp
+                <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
+                <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
             <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
+
                 @component('components.Modales.buscarDocente', [
                     'docentes' => $miembrosDocente['docentes'],
                     'idProyecto' => $miembrosDocente['idProyecto'],
@@ -140,11 +161,11 @@
             @php
                 $habilitarButtonJ =
                     $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1'
-                        ? 'disabled'
-                        : '';
+                        ? 'none'
+                        : 'block';
             @endphp
             <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
-                style="background:#003E65; color:#fff; width: 100%;" {{ $habilitarButtonJ }}>Seleccionar
+                style="background:#003E65; color:#fff; width: 100%; display: {{ $habilitarButtonJ }}">Seleccionar
                 jurados</button>
         </div>
     </div>
@@ -251,7 +272,7 @@
                 ? 'El director no aprobo el documento'
                 : ($array['anteproyecto']->aprobacionDocen == '-1'
                     ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                documento'
+                                                                                                            documento'
                     : '') }}
         </p>
         @endif
