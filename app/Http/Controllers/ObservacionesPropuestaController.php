@@ -45,17 +45,22 @@ class ObservacionesPropuestaController extends Controller
      */
     public function store(Request $request, $fase)
     {
-        
+
+        $numeroJurado = '-1';
         switch ($fase) {
             case 'propuesta':
-
+                $tamaño = 5; //asigan la cantidad de observaciones y calificaciones
                 ObservacionesCalificacione::insert($this->cargarObservacionesPropuesta($request));
                 Calificacione::insert($this->cargarCalificacionesPropuesta($request));
+                $numeroJurado = '-1';
                 break;
 
             case 'anteproyecto':
+                //dd($request->tituloObservacion);
+                $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
                 ObservacionesCalificacione::insert($this->cargarObservacionesAnteproyecto($request));
                 Calificacione::insert($this->cargarCalificacionesAnteproyecto($request));
+                $numeroJurado = $request->numeroJurado;
                 break;
 
             default:
@@ -63,19 +68,36 @@ class ObservacionesPropuestaController extends Controller
                 break;
         }
 
-        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take(5)->pluck('idCalificacion');
-        $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take(5)->pluck('idObservacion');
+        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take($tamaño)->pluck('idCalificacion');
+        $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take($tamaño)->pluck('idObservacion');
         $combineData = $idCalificaciones->combine($idObservaciones);
-        $combineData->each(function ($observacionId, $calificacionId) use ($request, $fase) {
+        $combineData->each(function ($observacionId, $calificacionId) use ($request, $fase, $numeroJurado) {
+            //dd($fase);
             FaseCalOb::create([
                 $fase => $request->idFase,
                 'calificacion_fase' => $calificacionId,
                 'observacion_fase' => $observacionId,
+                'numeroJurado' => $numeroJurado,
             ]);
         });
 
         $this->cambioEstado($request->idFase, $fase);
-        return redirect()->route('proyecto.indextableComite');
+
+        switch ($fase) {
+            case 'propuesta':
+                return redirect()->route('proyecto.indextableComite');
+                break;
+
+            case 'anteproyecto':
+                return redirect()->route('proyecto.indextableDocente');
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+
     }
 
     public function cargarObservacionesPropuesta($request){
@@ -248,12 +270,16 @@ class ObservacionesPropuestaController extends Controller
 
     public function cambioEstado($idfase, $fase){
         $total = 0;
+
         $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idfase)
                 ->get();
+
         foreach ($calificacionesAnterior as $calificacion) {
             $total+=$calificacion->calificacion;
+
         }
+
         $propuesta = $fase == 'propuesta' ? FasePropuesta::findOrFail($idfase) :
             ($fase == 'anteproyecto' ? FaseAnteproyecto::findOrFail($idfase) :
             ($fase == 'proyectoFinal' ? FaseProyectosfinale::findOrFail($idfase):
@@ -268,6 +294,7 @@ class ObservacionesPropuestaController extends Controller
             $propuesta -> estado = 'Rechazado';
             $propuesta -> save();
         }
+
     }
 
 

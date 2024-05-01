@@ -20,6 +20,7 @@ class CreateFaseCalObsTable extends Migration
             $table->unsignedBigInteger("anteproyecto")->nullable();
             $table->unsignedBigInteger("proyecto_final")->nullable();
             $table->unsignedBigInteger("sustentacion")->nullable();
+            $table->string("numeroJurado", 2);
             $table->unsignedBigInteger("observacion_fase");
             $table->foreign("calificacion_fase")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
             $table->foreign("propuesta")->references("idPropuesta")->on("fase_propuestas")->onDelete('cascade');

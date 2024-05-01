@@ -13,15 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class FaseAnteproyectosController extends Controller
 {
     use funcionesUniversales;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -51,6 +42,7 @@ class FaseAnteproyectosController extends Controller
                                     'docExist2' => $docExist2,
                                     'integrantes' => $integrantes,
                                 );
+                                //dd($observaciones);
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }

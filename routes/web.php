@@ -110,7 +110,7 @@ Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class,
 Route::get('/anteproyecto/verpdf/{nombreArchivo}/{ruta}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
 Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
 Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
-
+Route::post('/cambioJurado', [FaseAnteproyectosController::class, 'cambioJurado'])->name('cambioJurado');
 
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
