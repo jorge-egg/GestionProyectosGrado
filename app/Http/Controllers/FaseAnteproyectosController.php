@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\ModelHasRole;
-use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\FaseAnteproyecto;
 use App\Models\SedeProyectosGrado;
@@ -16,15 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class FaseAnteproyectosController extends Controller
 {
     use funcionesUniversales;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,26 +21,28 @@ class FaseAnteproyectosController extends Controller
      */
     public function create(Request $request, $idProyecto)
     {
-        $this->$idProyecto     = $idProyecto;
-        //$docentes       = $this->docentes();
-        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
-        $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyectoAnterior = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
-        $anteproyecto = $this->Anteproyecto($anteproyectoAnterior);
-        $docExist = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
-        $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
-        $rangoFecha = $this->rangoFecha('anteproyecto');
-        $valDocAsig = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
-        $miembrosDocente = $this->obtenerDocentes($this->$idProyecto );
-        $array = array( //array que transportara todos los datos a la view
-            'idProyecto' => $idProyecto,
-            'observaciones' => $observaciones,
-            'anteproyecto' => $anteproyecto,
-            'rangoFecha' => $rangoFecha,
-            'valDocAsig' => $valDocAsig,
-            'docExist' => $docExist,
-            'integrantes' => $integrantes,
-        );
+        $this->$idProyecto      = $idProyecto;
+        $integrantes            = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
+        $proyecto               = SedeProyectosGrado::findOrFail($idProyecto);
+        $anteproyectoAnterior   = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
+        $anteproyecto           = $this->Anteproyecto($anteproyectoAnterior);
+        $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
+        $docExist2              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->cartaDirector : null);
+        $observaciones          = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
+        $rangoFecha             = $this->rangoFecha('anteproyecto');
+        $valDocAsig             = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
+        $miembrosDocente        = $this->obtenerDocentes($this->$idProyecto );
+        $array                  = array( //array que transportara todos los datos a la view
+                                    'idProyecto' => $idProyecto,
+                                    'observaciones' => $observaciones,
+                                    'anteproyecto' => $anteproyecto,
+                                    'rangoFecha' => $rangoFecha,
+                                    'valDocAsig' => $valDocAsig,
+                                    'docExist1' => $docExist1,
+                                    'docExist2' => $docExist2,
+                                    'integrantes' => $integrantes,
+                                );
+                                //dd($observaciones);
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }
@@ -61,9 +51,14 @@ class FaseAnteproyectosController extends Controller
 
 
 
-    public function verPdf($nombreArchivo)
+    public function verPdf($nombreArchivo, $ruta)
     { //retorna el pdf
-        $rutaArchivo = public_path('files/anteproyecto/'.$nombreArchivo);
+        if($ruta == '1'){
+            $rutaArchivo = public_path('files/anteproyecto/'.$nombreArchivo);
+        }else if($ruta == '2'){
+            $rutaArchivo = public_path('files/directorCarta/'.$nombreArchivo);
+        }
+
 
         // Verificar si el archivo existe
         if (file_exists($rutaArchivo)) {
@@ -90,9 +85,13 @@ class FaseAnteproyectosController extends Controller
 
     public function aprobarDoc(Request $request)
     { //cambia el estado en la base de datos de la aprobacion del documento
+
         $idProyecto = $request->idProyecto;
+
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
+        
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
+
         if($request->input('switchAprobDoc')){
             $anteproyecto->aprobacionDocen = '2'; //estado de aprobado
             $anteproyecto->observaDocent = $request->ObsDocent;
@@ -102,6 +101,7 @@ class FaseAnteproyectosController extends Controller
             $anteproyecto->observaDocent = $request->ObsDocent;
             $anteproyecto->save();
         }
+
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
 
 
@@ -116,18 +116,24 @@ class FaseAnteproyectosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'docAnteProy' => 'required|mimes:pdf|max:3048', // Solo permite archivos PDF de hasta 2MB
+            'docAnteProy' => 'required|mimes:pdf|max:3048',
+            'docDir' => 'required|mimes:pdf|max:3048', // Solo permite archivos PDF de hasta 2MB
         ]);
 
         $proyecto = SedeProyectosGrado::findOrFail($request->idProyecto);
         $contador = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->count();
-        if($request->hasFile("docAnteProy")){
-            $file = $request->file("docAnteProy");
-            $newNameFile = $proyecto->codigoproyecto . "AP".$contador."." . $file->guessExtension();
-            $ruta = public_path('files/anteproyecto/'.$newNameFile);
-            copy($file, $ruta);
+        if($request->hasFile("docAnteProy") && $request->hasFile("docDir")){
+            $file1 = $request->file("docAnteProy");
+            $file2 = $request->file("docDir");
+            $newNameFile1 = $proyecto->codigoproyecto . "AP".$contador."." . $file1->guessExtension();
+            $newNameFile2 = $proyecto->codigoproyecto . "AP".$contador."." . $file2->guessExtension();
+            $ruta1 = public_path('files/anteproyecto/'.$newNameFile1);
+            $ruta2 = public_path('files/directorCarta/'.$newNameFile2);
+            copy($file1, $ruta1);
+            copy($file2, $ruta2);
             FaseAnteproyecto::create([
-                'documento' => $newNameFile,
+                'documento' => $newNameFile1,
+                'cartaDirector' => $newNameFile2,
                 'aprobacionDocen' => '-1', //Sin valor definido
                 'juradoUno' => '-1',
                 'juradoDos' => '-1',

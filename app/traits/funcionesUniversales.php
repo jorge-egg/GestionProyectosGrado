@@ -26,17 +26,46 @@ trait funcionesUniversales
                 ->where($fase, $idFase)
                 ->orderBy('idObservacion', 'asc')
                 ->get();
-            //dd($observacionesAnterior);
             $array = [];
-            foreach ($observacionesAnterior as $observacion) {
-                $dato = $observacion->observacion;
-                array_push($array, $dato);
+
+            if ($fase == 'anteproyecto') {
+                $array1 = [];
+                $array2 = [];
+                foreach ($observacionesAnterior as $observacion) {
+                    if ($observacion->numeroJurado == '1') {
+                        $dato1 = $observacion->observacion;
+                        array_push($array1, $dato1);
+
+                    } else if ($observacion->numeroJurado == '2') {
+                        $dato2 = $observacion->observacion;
+                        array_push($array2, $dato2);
+                    }
+                }
+
+                if (!isset($observacionesAnterior[0])) {
+                    for ($i = 0; $i < $cantObs; $i++) {
+                        array_push($array1, "");
+                        array_push($array2, "");
+                    }
+                }
+                array_push($array, $array1);
+                array_push($array, $array2);
+            } else {
+                foreach ($observacionesAnterior as $observacion) {
+                    $dato = [$observacion->observacion];
+                    array_push($array, $dato);
+                }
             }
-            if ($observacionesAnterior->empty()) {
+
+
+
+            //dd($array);
+            if (!isset($observacionesAnterior[0])) {
                 for ($i = 0; $i < $cantObs; $i++) {
                     array_push($array, "");
                 }
             }
+            //dd($array);
         } catch (Exception $e) {
             $array = [];
             for ($i = 0; $i < $cantObs; $i++) {
@@ -96,7 +125,8 @@ trait funcionesUniversales
     }
 
     //establece el valor de las fechas segun lo obtenido en la funcion ultimaFecha
-    public function rangoFecha($fase){
+    public function rangoFecha($fase)
+    {
         if ($this->ultimaFecha($fase) == null) {
             return $rangoFecha = $array = ["--", "--", false];
         } else {
@@ -106,7 +136,8 @@ trait funcionesUniversales
 
 
     //Buscar todos los docentes registrados
-    public function obtenerDocentes($idProyecto){
+    public function obtenerDocentes($idProyecto)
+    {
         $docentes       = $this->docentes();
         $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
         $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
@@ -117,7 +148,7 @@ trait funcionesUniversales
             'idProyecto' => $idProyecto,
             'valExistDocent' => $valExistDocent,
             'docenteAsig' => $docenteAsig,
-            'docentes'=>$docentes
+            'docentes' => $docentes
         );
     }
 
@@ -127,20 +158,20 @@ trait funcionesUniversales
         //$usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         //$filtroRole  = ModelHasRole::join('roles', 'roles.id', 'model_has_roles.role_id')->where('name', 'docente')->get();
         $usuarios = User::all();
-        foreach($usuarios as $usuario){
+        foreach ($usuarios as $usuario) {
             $docentesRole    = $usuario->roles()->get();
 
-            foreach($docentesRole as $rol){ //este foreach se realiza debido a que un usuario puede tener varios roles
-                if($rol->name == 'docente'){
+            foreach ($docentesRole as $rol) { //este foreach se realiza debido a que un usuario puede tener varios roles
+                if ($rol->name == 'docente') {
                     //$usuarioUser = UsuariosUser::join('sedes', 'sedes.idSede', 'usuarios_users.usua_sede')->where('usua_users', $usuario->id)->whereNull('deleted_at')->first();
 
-                    $usuarioUser = UsuarioPrograma::join('sede_programas','usuario_programas.programa', 'sede_programas.idPrograma')
-                    ->join('usuarios_users as us', 'usuario_programas.usuario', 'us.numeroDocumento')
-                    ->join('sedes', 'us.usua_sede', 'sedes.idSede')
-                    ->where('usuario', $usuario->usuario)
-                    ->whereNull('us.deleted_at')
-                    ->select('numeroDocumento', 'nombre', 'apellido', 'sede', 'usuario_programas.programa', 'usua_users')
-                    ->first();
+                    $usuarioUser = UsuarioPrograma::join('sede_programas', 'usuario_programas.programa', 'sede_programas.idPrograma')
+                        ->join('usuarios_users as us', 'usuario_programas.usuario', 'us.numeroDocumento')
+                        ->join('sedes', 'us.usua_sede', 'sedes.idSede')
+                        ->where('usuario', $usuario->usuario)
+                        ->whereNull('us.deleted_at')
+                        ->select('numeroDocumento', 'nombre', 'apellido', 'sede', 'usuario_programas.programa', 'usua_users')
+                        ->first();
 
                     array_push($array, $usuarioUser);
                 }
@@ -150,24 +181,25 @@ trait funcionesUniversales
         return $array;
     }
 
-    public function obtMiembrosComite($idProyecto){
+    public function obtMiembrosComite($idProyecto)
+    {
         return  ComitesSede::join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
-        ->join('usuarios_users', 'usuarios_users.numeroDocumento', 'integrantes_comites.usuario')
-        ->where('idComite', (SedeProyectosGrado::findOrFail($idProyecto)->comite))
-        ->select('numeroDocumento', 'nombre', 'apellido')
-        ->get();
+            ->join('usuarios_users', 'usuarios_users.numeroDocumento', 'integrantes_comites.usuario')
+            ->where('idComite', (SedeProyectosGrado::findOrFail($idProyecto)->comite))
+            ->select('numeroDocumento', 'nombre', 'apellido')
+            ->get();
     }
 
-    public function asignarJurado($idProyecto, $numeroDocumento){
+    public function asignarJurado($idProyecto, $numeroDocumento)
+    {
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
-        if($anteproyecto->juradoUno != '-1'){
+        if ($anteproyecto->juradoUno != '-1') {
             $anteproyecto->juradoDos = $numeroDocumento; //estado de aprobado
             $anteproyecto->save();
-        }else{
+        } else {
             $anteproyecto->juradoUno = $numeroDocumento; //estado de aprobado
             $anteproyecto->save();
         }
     }
-
 }

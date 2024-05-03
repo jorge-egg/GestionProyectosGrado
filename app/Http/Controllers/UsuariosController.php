@@ -66,6 +66,7 @@ class UsuariosController extends Controller
         // Definir reglas de validación personalizadas
         $validator = Validator::make($request->all(), [
             'password' => 'required|confirmed',
+            'numeroDocumento' => 'required|numeric|unique:usuarios_users,numeroDocumento'
         ]);
 
         // Verificar si la validación ha fallado
@@ -95,7 +96,7 @@ class UsuariosController extends Controller
         $usuariosUser->save();
 
         // Asignación del rol estudiante al usuario
-        $user->assignRole('invitado');
+        $user->assignRole('estudiante');
 
         // Creación de UsuarioPrograma
         $usuarioPrograma = UsuarioPrograma::create([
@@ -105,7 +106,7 @@ class UsuariosController extends Controller
         // Notificar éxito mediante sesión flash
         Session::flash('success', 'El usuario se ha creado exitosamente.');
 
-        return redirect()->back();
+        return view('welcome');
     }
 
 

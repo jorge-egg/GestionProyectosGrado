@@ -16,6 +16,7 @@ class CreateFaseAnteproyectosTable extends Migration
         Schema::create('fase_anteproyectos', function (Blueprint $table) {
             $table->bigIncrements("idAnteproyecto");
             $table->string("documento", 20);
+            $table->string("cartaDirector", 20);
             $table->string("aprobacionDocen", 2);
             $table->text("observaDocent")->nullable();
             $table->string("juradoUno", 12);

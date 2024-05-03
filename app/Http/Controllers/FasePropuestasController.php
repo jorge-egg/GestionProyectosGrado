@@ -52,7 +52,6 @@ class FasePropuestasController extends Controller
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
         return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'miembrosDocente', 'integrantes', 'totalCalificacion'));
-
     }
 
     public function createAnterior(Request $request)

@@ -22,7 +22,6 @@ class RoleSeeder extends Seeder
         $docente = Role::create(['name' => 'docente']);
         $comite = Role::create(['name' => 'comite']);
         $bibliotecario = Role::create(['name' => 'bibliotecario']);
-        $invitado = Role::create(['name' => 'invitado']);
 
 
 
@@ -64,7 +63,7 @@ class RoleSeeder extends Seeder
 
 
         //cronograma
-        Permission::create(['name' => 'cronograma.ver'])->syncRoles([$superadministrador, $administrador, $estudiante, $docente, $comite, $bibliotecario, $invitado]);
+        Permission::create(['name' => 'cronograma.ver'])->syncRoles([$superadministrador, $administrador, $estudiante, $docente, $comite, $bibliotecario]);
         Permission::create(['name' => 'cronograma.crear'])->syncRoles([$superadministrador, $administrador]);
         Permission::create(['name' => 'cronograma.editar'])->syncRoles([$superadministrador, $administrador]);
 
