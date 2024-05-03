@@ -8,7 +8,9 @@ use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
 use App\Models\FaseAnteproyecto;
 use App\Models\SedeProyectosGrado;
+use App\Models\Integrante;
 use App\Traits\funcionesUniversales;
+
 use Illuminate\Support\Facades\Auth;
 
 class FaseAnteproyectosController extends Controller
@@ -32,61 +34,32 @@ class FaseAnteproyectosController extends Controller
     public function create(Request $request, $idProyecto)
     {
         $this->$idProyecto     = $idProyecto;
-        $docentes       = $this->docentes();
+        //$docentes       = $this->docentes();
+        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
         $anteproyectoAnterior = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
         $anteproyecto = $this->Anteproyecto($anteproyectoAnterior);
         $docExist = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
         $observaciones = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
-        $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
-        $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
-        $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
         $rangoFecha = $this->rangoFecha('anteproyecto');
         $valDocAsig = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
-
+        $miembrosDocente = $this->obtenerDocentes($this->$idProyecto );
         $array = array( //array que transportara todos los datos a la view
             'idProyecto' => $idProyecto,
             'observaciones' => $observaciones,
-            'docentes' => $docentes,
-            'valExistDocent' => $valExistDocent,
-            'docenteAsig' => $docenteAsig,
-            'docExist' => $docExist,
             'anteproyecto' => $anteproyecto,
             'rangoFecha' => $rangoFecha,
             'valDocAsig' => $valDocAsig,
+            'docExist' => $docExist,
+            'integrantes' => $integrantes,
         );
 
-        return view('Layouts.anteproyecto.create', compact('array'));
+        return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }
 
-    public function docentes()
-    { //busca a todos los usuarios con rol de docente
-        $array = [];
-        //$usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
-        //$filtroRole  = ModelHasRole::join('roles', 'roles.id', 'model_has_roles.role_id')->where('name', 'docente')->get();
-        $usuarios = User::all();
-        foreach($usuarios as $usuario){
-            $docentesRole    = $usuario->roles()->get();
-            foreach($docentesRole as $rol){
-                if($rol->name == 'docente'){
-                    $usuarioUser = UsuariosUser::join('sedes', 'sedes.idSede', 'usuarios_users.usua_sede')->where('usua_users', $usuario->id)->whereNull('deleted_at')->first();
-                    array_push($array, $usuarioUser);
-                }
-            }
-        }
-        return $array;
-    }
 
-    public function asignarDocente(Request $request)
-    {//guarda un docente en la base de datos par el proyecto
-        $idProyecto = $request->idProyecto;
-        $numeroDocumento = $request->numeroDocumento;
-        $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
-        $proyecto->docente = $numeroDocumento;
-        $proyecto->save();
 
-        return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
-    }
+
 
     public function verPdf($nombreArchivo)
     { //retorna el pdf
@@ -122,9 +95,11 @@ class FaseAnteproyectosController extends Controller
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
         if($request->input('switchAprobDoc')){
             $anteproyecto->aprobacionDocen = '2'; //estado de aprobado
+            $anteproyecto->observaDocent = $request->ObsDocent;
             $anteproyecto->save();
         }else{
             $anteproyecto->aprobacionDocen = '1'; //estado de No aprobado
+            $anteproyecto->observaDocent = $request->ObsDocent;
             $anteproyecto->save();
         }
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
@@ -154,6 +129,8 @@ class FaseAnteproyectosController extends Controller
             FaseAnteproyecto::create([
                 'documento' => $newNameFile,
                 'aprobacionDocen' => '-1', //Sin valor definido
+                'juradoUno' => '-1',
+                'juradoDos' => '-1',
                 'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
 
@@ -162,38 +139,11 @@ class FaseAnteproyectosController extends Controller
         return redirect()->back();
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function asigJurado(Request $request){
+        $idProyecto = $request -> idProyecto;
+        $numeroDocumento = $request -> numeroDocumento;
+        $this->asignarJurado($idProyecto, $numeroDocumento);
+        return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

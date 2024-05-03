@@ -6,8 +6,8 @@
 @endsection
 
 @section('dashboard_content')
-    {{$valRolComite = false}}
-    {{$valCalif = false}}
+    {{ $valRolComite = false }}
+    {{ $valCalif = false }}
     <br>
     <div style="display: flex; flex-direction:row; justify-content: space-around;">
         <p class="fs-4">Estado: {{ $array['anteproyecto']->estado }}</p>
@@ -22,31 +22,8 @@
             @endif --}}
 
     </div><br>
-    <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        @component('components.Modales.buscarDocente', [
-            'docentes' => $array['docentes'],
-            'idProyecto' => $array['idProyecto'],
-        ])
-        @endcomponent
-    </div>
-    <div class="card">
-        <h5 class="card-title text-center">Docente tutor</h5>
-        <div class='card-body'>
-            <p class="card-text">
-                {{ $array['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $array['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
-            </p>
-            @can('anteproyecto.asigDocent')
-                <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
-                    style="background:#003E65; color:#fff; width: 100%; display: {{ $array['valExistDocent'] ? 'none' : 'flex' }};">Seleccionar
-                    docente</button>
-                    <p style="display: none">{{$valRolComite = true}}</p>
-            @endcan
-
-        </div>
-    </div><br>
-
-    <div class="card" style="display: {{ $array['valExistDocent'] ? 'flex' : 'none' }};">
+    <div class="card" style="display: flex">
+        {{-- <div class="card" style="display: {{ $array['valExistDocent'] ? 'flex' : 'none' }};"> --}}
         <h5 class="card-title text-center">Crear anteproyecto</h5>
         <div class='card-body'>
             <p class="card-text">
@@ -68,15 +45,21 @@
                         @csrf
                         <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
                         <input type="hidden" value="{{ $array['anteproyecto']->idAnteproyecto }}" name='idFase'>
+                        <div>
+                            @foreach ($array ['integrantes'] as $key =>$array ['integrantes'])
+                                <h1>Integrante {{ $key + 1 }}: {{ $array ['integrantes']->usuarios_user->nombre }}
+                                    {{ $array ['integrantes']->usuarios_user->apellido }}</h1>
+                            @endforeach
+                        </div>
+                        <br>
                         <label for="formFile" class="form-label">Documento de anteproyecto</label>
 
                         @if (!$array['rangoFecha'][2])
                             <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
-
                         @elseif ($array['docExist'] == null)
                             @can('anteproyecto.calificar')
-                                <p style="color: red">El documento no ha sido cargado.</p>
-                                {{$valRolComite = true}}
+                                <p style="color: red">El documento no ha sido cargado. </p>
+                                <input type="hidden">{{ $valRolComite = true }}</input>
                             @endcan
                             @can('propuesta.agregar')
                                 <input class="form-control input-file @error('docAnteProy') is-invalid @enderror" type="file"
@@ -93,127 +76,168 @@
                                 target="_blank" class="btn btn-warning"><i
                                     class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist'] }}</i></a>
                             @can('anteproyecto.aprobarDocumento')
-                                <p style="display: none">{{$valCalif = true}}</p>
+                                <p style="display: none">{{ $valCalif = true }}</p>
                                 @if ($array['valDocAsig'])
-                                <p><b>Nota: </b>Estimado profesor para nombrar jurados al proyecto, usted debe dar su aprobación al documento.</p>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
-                                        name="switchAprobDoc">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del docente</label>
-                                </div>
-                                <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
-                                    formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
-                                    aprobacion del documento</button>
+                                    <p><b>Nota: </b>Estimado profesor para nombrar jurados al proyecto, usted debe dar su
+                                        aprobación al documento.</p>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                                            name="switchAprobDoc">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del
+                                            docente</label>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Observaciones</span>
+                                        <textarea class="form-control" aria-label="With textarea" name="ObsDocent" required {{$array['anteproyecto']->observaDocent == '' ? '' : 'disabled' }}>{{$array['anteproyecto']->observaDocent}}</textarea>
+                                      </div><br>
+                                    <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
+                                        formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
+                                        aprobacion del documento</button>
                                 @endif
                             @endcan
-
-                            @php
-                                $aprobDocent = $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
-
-                            @endphp
-
-                            @if ($aprobDocent == '2')
-                                <section id="cont-calf">
-                                    <form action="{{ route('anteproyecto.store') }}" method='POST'>
-                                        @csrf
-                                        <h5>Titulo</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'tituloCalificacion',
-                                            'nameTextArea' => 'tituloObservacion',
-                                            'obsArray' => $array['observaciones'][0],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => $valCalif ? 'flex' : 'none',
-                                        ])
-                                        @endcomponent
-                                        <h5>Introducción</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'introCalificacion',
-                                            'nameTextArea' => 'introObservacion',
-                                            'obsArray' => $array['observaciones'][1],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <h5>Planteamiento del problema</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'planProbCalificacion',
-                                            'nameTextArea' => 'planProbObservacion',
-                                            'obsArray' => $array['observaciones'][2],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <h5>Justificación</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'justCalificacion',
-                                            'nameTextArea' => 'justObservacion',
-                                            'obsArray' => $array['observaciones'][3],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <h5>Marco referencial</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'marcRefCalificacion',
-                                            'nameTextArea' => 'marcRefObservacion',
-                                            'obsArray' => $array['observaciones'][4],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <h5>Metodologia</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'metodCalificacion',
-                                            'nameTextArea' => 'metodObservacion',
-                                            'obsArray' => $array['observaciones'][5],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <h5>Elementos de administración y control</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'admCtrCalificacion',
-                                            'nameTextArea' => 'admCtrObservacion',
-                                            'obsArray' => $array['observaciones'][6],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <h5>Normas de presentación en el documento y Referencias bibliográficas</h5>
-                                        @component('components.calificacionObser', [
-                                            'nameSelect' => 'normBibliCalificacion',
-                                            'nameTextArea' => 'normBibliObservacion',
-                                            'obsArray' => $array['observaciones'][7],
-                                            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-                                            'styleDisplayGeneral' => 'flex'
-                                        ])
-                                        @endcomponent
-                                        <br>
-                                        <div class="mb-3">
-                                            <button id="buttonEnviarCalificacion"
-                                                formaction="{{ route('observaciones.store', 'anteproyecto') }}" class="btn"
-                                                style="background:#003E65; color:#fff">Enviar
-                                                calificación</button>
-
-                                            </p>
-                                        </div>
-                                    </form>
-                                </section>
-                            @else
-                                <p style="color: red;">{{$array['anteproyecto']->aprobacionDocen == '1'? 'El Docente no aprobo el documento' : ($array['anteproyecto']->aprobacionDocen == '-1' ? 'No se podra calificar el anteproyecto hasta que el docente apruebe el
-                                    documento' : '')}}
-                                </p>
-                            @endif
-
-                        @endif
                     </form>
                 </div>
-
-
             </div>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <h5 class="card-title text-center">Jurados</h5>
+        <div class='card-body'>
+            <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                @component('components.Modales.buscarDocente', [
+                    'docentes' => $miembrosDocente['docentes'],
+                    'idProyecto' => $miembrosDocente['idProyecto'],
+                    'fase' => 'anteproyecto',
+                ])
+                @endcomponent
+            </div>
+            @php
+                $habilitarButtonJ = $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1' ? 'disabled' : '';
+            @endphp
+            <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
+                        style="background:#003E65; color:#fff; width: 100%;" {{$habilitarButtonJ}}>Seleccionar
+                        jurados</button>
+        </div>
+    </div>
+    <br>
+    <div class="card" style="display: flex">
+        <h5 class="card-title text-center">Calificar anteproyecto</h5>
+        <div class='card-body'>
+            <p class="card-text">
+                @php
+                    $aprobDocent = $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
+
+                @endphp
+
+                @if ($aprobDocent == '2')
+                    <section id="cont-calf">
+                        <form action="{{ route('anteproyecto.store') }}" method='POST'>
+                            @csrf
+                            <h5>Titulo</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'tituloCalificacion',
+                                'nameTextArea' => 'tituloObservacion',
+                                'obsArray' => $array['observaciones'][0],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => $valCalif ? 'flex' : 'none',
+                            ])
+                            @endcomponent
+                            <h5>Introducción</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'introCalificacion',
+                                'nameTextArea' => 'introObservacion',
+                                'obsArray' => $array['observaciones'][1],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <h5>Planteamiento del problema</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'planProbCalificacion',
+                                'nameTextArea' => 'planProbObservacion',
+                                'obsArray' => $array['observaciones'][2],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <h5>Justificación</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'justCalificacion',
+                                'nameTextArea' => 'justObservacion',
+                                'obsArray' => $array['observaciones'][3],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <h5>Marco referencial</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'marcRefCalificacion',
+                                'nameTextArea' => 'marcRefObservacion',
+                                'obsArray' => $array['observaciones'][4],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <h5>Metodologia</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'metodCalificacion',
+                                'nameTextArea' => 'metodObservacion',
+                                'obsArray' => $array['observaciones'][5],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <h5>Elementos de administración y control</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'admCtrCalificacion',
+                                'nameTextArea' => 'admCtrObservacion',
+                                'obsArray' => $array['observaciones'][6],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <h5>Normas de presentación en el documento y Referencias bibliográficas</h5>
+                            @component('components.calificacionObser', [
+                                'nameSelect' => 'normBibliCalificacion',
+                                'nameTextArea' => 'normBibliObservacion',
+                                'obsArray' => $array['observaciones'][7],
+                                'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
+                                'styleDisplayGeneral' => 'flex',
+                            ])
+                            @endcomponent
+                            <br>
+                            <div class="mb-3">
+                                <button id="buttonEnviarCalificacion"
+                                    formaction="{{ route('observaciones.store', 'anteproyecto') }}" class="btn"
+                                    style="background:#003E65; color:#fff">Enviar
+                                    calificación</button>
+
+            </p>
+        </div>
+        </form>
+        </section>
+    @else
+        <p style="color: red;">
+            {{ $array['anteproyecto']->aprobacionDocen == '1'
+                ? 'El director no aprobo el documento'
+                : ($array['anteproyecto']->aprobacionDocen == '-1'
+                    ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
+                                                documento'
+                    : '') }}
+        </p>
+        @endif
+
+        @endif
+        </form>
+    </div>
 
 
-        @section('js')
+    </div>
 
-        @endsection
-    @stop
+
+@section('js')
+
+@endsection
+@stop

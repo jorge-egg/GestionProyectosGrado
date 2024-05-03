@@ -19,8 +19,8 @@
                 <div class="row mb-2">
                     <div class="form-group mb-2">
 
-                        <label for="usuario">Usuario</label>
-                        <input name="usuario" type="text" class="form-control" id="usuario" aria-describedby="emailHelp" placeholder="Ingrese su usuario" required autofocus>
+                        <label for="usuario">Numero de documento</label>
+                        <input name="usuario" type="text" class="form-control" id="usuario" aria-describedby="emailHelp" placeholder="Ingrese su numero de documento" required autofocus>
                     </div>
                 </div>
 
@@ -56,7 +56,9 @@
                         <div class="col-sm-12 d-flex justify-content-end">
                             <a href="{{ route('password.request') }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">¿Olvidaste tu contraseña?</a>
                         </div>
+
                     @endif
+                    <a href="{{ route('usuarios.create')}}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Registrarse</a>
                 </div>
 
             </div>

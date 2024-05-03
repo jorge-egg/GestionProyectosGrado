@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\FasePropuesta;
 use App\Models\CronogramaGrupo;
+use App\Traits\funcionesUniversales;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedesController;
@@ -95,18 +97,19 @@ Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->nam
 
 //propuesta
 Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
-Route::post('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
+Route::get('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
 Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
 Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
+Route::post('/propuestas/asignarDocente', [FasePropuestasController::class, 'asignarDocente'])->name('propuesta.asigDocente');
 
 //anteproyecto
 Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create');
 Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store'])->name('anteproyecto.store');
 Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior');
-Route::post('/anteproyecto/asignarDocente', [FaseAnteproyectosController::class, 'asignarDocente'])->name('anteproyecto.asigDocente');
 Route::get('/anteproyecto/verpdf/{nombreArchivo}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
 Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
+Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
 
 
 //ponderados

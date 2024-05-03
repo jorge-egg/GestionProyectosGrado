@@ -17,12 +17,14 @@
                 </a>
             </li>
             @endcan
+            @can('sede.ver')
             <li>
                 <a href="{{ route('sedes.index') }}">
                     <i class='bx bxs-institution'></i>
                     <span class="links_name">Sedes</span>
                 </a>
             </li>
+            @endcan
             @can('cronograma.ver')
                 <li>
                     <a href="{{ route('cronograma.index') }}">
@@ -31,13 +33,14 @@
                     </a>
                 </li>
             @endcan
-
+            @can('proyecto.ver')
             <li>
                 <a href="{{ route('proyecto.index') }}">
                     <i class='bx bx-book'></i>
                     <span class="links_name">Proyectos</span>
                 </a>
             </li>
+            @endcan
             @can('comite.ver')
                 <li>
                     <a href="{{ route('comite.index') }}">

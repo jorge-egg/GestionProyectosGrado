@@ -5,9 +5,16 @@ namespace App\Traits;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
+use App\Models\User;
+use App\Models\ComitesSede;
 use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
+use App\Models\UsuarioPrograma;
+use App\Models\FaseAnteproyecto;
+use App\Models\IntegrantesComite;
+use App\Models\SedeProyectosGrado;
 use App\Models\ObservacionesCalificacione;
+use Symfony\Component\HttpFoundation\Request;
 
 trait funcionesUniversales
 {
@@ -94,6 +101,72 @@ trait funcionesUniversales
             return $rangoFecha = $array = ["--", "--", false];
         } else {
             return $rangoFecha = $this->ultimaFecha($fase);
+        }
+    }
+
+
+    //Buscar todos los docentes registrados
+    public function obtenerDocentes($idProyecto){
+        $docentes       = $this->docentes();
+        $proyecto       = SedeProyectosGrado::findOrFail($idProyecto);
+        $valExistDocent = ($proyecto->docente) == null ? false : true; //valida si ya se asigno un docente al proyecto
+        $docente        = $valExistDocent ? UsuariosUser::findOrFail($proyecto->docente) : null;
+        $docenteAsig    = $valExistDocent ? $docente->nombre . " " . $docente->apellido : null;
+
+        return $array = array( //array que transportara todos los datos a la view
+            'idProyecto' => $idProyecto,
+            'valExistDocent' => $valExistDocent,
+            'docenteAsig' => $docenteAsig,
+            'docentes'=>$docentes
+        );
+    }
+
+    public function docentes()
+    { //busca a todos los usuarios con rol de docente
+        $array = [];
+        //$usuario     = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
+        //$filtroRole  = ModelHasRole::join('roles', 'roles.id', 'model_has_roles.role_id')->where('name', 'docente')->get();
+        $usuarios = User::all();
+        foreach($usuarios as $usuario){
+            $docentesRole    = $usuario->roles()->get();
+
+            foreach($docentesRole as $rol){ //este foreach se realiza debido a que un usuario puede tener varios roles
+                if($rol->name == 'docente'){
+                    //$usuarioUser = UsuariosUser::join('sedes', 'sedes.idSede', 'usuarios_users.usua_sede')->where('usua_users', $usuario->id)->whereNull('deleted_at')->first();
+
+                    $usuarioUser = UsuarioPrograma::join('sede_programas','usuario_programas.programa', 'sede_programas.idPrograma')
+                    ->join('usuarios_users as us', 'usuario_programas.usuario', 'us.numeroDocumento')
+                    ->join('sedes', 'us.usua_sede', 'sedes.idSede')
+                    ->where('usuario', $usuario->usuario)
+                    ->whereNull('us.deleted_at')
+                    ->select('numeroDocumento', 'nombre', 'apellido', 'sede', 'usuario_programas.programa', 'usua_users')
+                    ->first();
+
+                    array_push($array, $usuarioUser);
+                }
+            }
+        }
+
+        return $array;
+    }
+
+    public function obtMiembrosComite($idProyecto){
+        return  ComitesSede::join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
+        ->join('usuarios_users', 'usuarios_users.numeroDocumento', 'integrantes_comites.usuario')
+        ->where('idComite', (SedeProyectosGrado::findOrFail($idProyecto)->comite))
+        ->select('numeroDocumento', 'nombre', 'apellido')
+        ->get();
+    }
+
+    public function asignarJurado($idProyecto, $numeroDocumento){
+        $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
+        $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
+        if($anteproyecto->juradoUno != '-1'){
+            $anteproyecto->juradoDos = $numeroDocumento; //estado de aprobado
+            $anteproyecto->save();
+        }else{
+            $anteproyecto->juradoUno = $numeroDocumento; //estado de aprobado
+            $anteproyecto->save();
         }
     }
 
