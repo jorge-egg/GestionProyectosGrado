@@ -41,6 +41,13 @@ trait funcionesUniversales
                         array_push($array2, $dato2);
                     }
                 }
+
+                if (!isset($observacionesAnterior[0])) {
+                    for ($i = 0; $i < $cantObs; $i++) {
+                        array_push($array1, "");
+                        array_push($array2, "");
+                    }
+                }
                 array_push($array, $array1);
                 array_push($array, $array2);
             } else {

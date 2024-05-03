@@ -100,29 +100,31 @@
                                         del director</i></a>
                             </section>
                         </div>
-
-                        @can('anteproyecto.aprobarDocumento')
-                            <p style="display: none">{{ $valCalif = true }}</p>
-                            @if ($array['valDocAsig'])
-                                <p><b>Nota: </b>Estimado profesor, para nombrar jurados al proyecto usted debe dar su
-                                    aprobación al documento.</p>
-                                <br>
-                                <div class="input-group">
-                                    <span class="input-group-text">Observaciones</span>
-                                    <textarea class="form-control" aria-label="With textarea" name="ObsDocent"
-                                        {{ $array['anteproyecto']->observaDocent == '' ? '' : 'disabled' }}>{{ $array['anteproyecto']->observaDocent }}</textarea>
-                                </div><br>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
-                                        name="switchAprobDoc">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del
-                                        docente</label>
-                                </div><br>
-                                <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
-                                    formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
-                                    aprobacion del documento</button>
-                            @endif
-                        @endcan
+                        <form method="post">
+                            @csrf
+                            <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
+                            @can('anteproyecto.aprobarDocumento')
+                                <p style="display: none">{{ $valCalif = true }}</p>
+                                @if ($array['valDocAsig'])
+                                    <p><b>Nota: </b>Estimado profesor, para nombrar jurados al proyecto usted debe dar su
+                                        aprobación al documento.</p>
+                                    <br>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Observaciones</span>
+                                        <textarea class="form-control" aria-label="With textarea" name="ObsDocent"
+                                            {{ $array['anteproyecto']->observaDocent == '' ? '' : 'disabled' }}>{{ $array['anteproyecto']->observaDocent }}</textarea>
+                                    </div><br>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                                            name="switchAprobDoc">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del
+                                            docente</label>
+                                    </div><br>
+                                    <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
+                                        formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
+                                        aprobacion del documento</button>
+                                @endif
+                            @endcan
                         </form>
                 </div>
             </div>
@@ -194,7 +196,7 @@
                     @component('components.anteproyecto.VistaJurados', [
                         'array' => $array,
                         'valRolComite' => $valRolComite,
-                        'jurado' => 0
+                        'jurado' => 0,
                     ])
                     @endcomponent
                 </section>
@@ -202,7 +204,7 @@
                     @component('components.anteproyecto.VistaJurados', [
                         'array' => $array,
                         'valRolComite' => $valRolComite,
-                        'jurado' => 1
+                        'jurado' => 1,
                     ])
                     @endcomponent
                 </section>
@@ -217,7 +219,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                documento'
+                                                                                                                                                                                                                                                                                                                                documento'
                 : '') }}
     </p>
 
@@ -239,6 +241,10 @@
             const secJ1 = document.getElementById('j1'); //section J1
             const secJ2 = document.getElementById('j2'); //section J2
             inputJurado.value = '1';
+            secJ2.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.disabled = true;
+                    textarea.name = 'inactive_' + textarea.name;
+                });
 
             // Manejador de eventos para el clic en el enlace
             enlace1.addEventListener('click', function(event) {
@@ -252,7 +258,20 @@
 
                 secJ1.style.display = 'block';
                 secJ2.style.display = 'none';
+                secJ2.style.disabled = true;
+                secJ1.style.disabled = false;
 
+                // Deshabilitar todos los inputs primero
+                secJ2.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.disabled = true;
+                    textarea.name = 'inactive_' + textarea.name;
+                });
+
+                // Suponiendo que secJ1 es la sección activa, sólo habilitamos los inputs allí
+                secJ1.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.disabled = false;
+                    textarea.name = textarea.name.replace('/^inactive_/', '');
+                });
             });
 
 
@@ -267,7 +286,20 @@
 
                 secJ2.style.display = 'block';
                 secJ1.style.display = 'none';
+                secJ2.style.disabled = false;
+                secJ1.style.disabled = true;
 
+                // Deshabilitar todos los inputs primero
+                secJ1.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.disabled = true;
+                    textarea.name = 'inactive_' + textarea.name;
+                });
+
+                // Suponiendo que secJ1 es la sección activa, sólo habilitamos los inputs allí
+                secJ2.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.disabled = false;
+                    textarea.name = textarea.name.replaceAll('inactive_', '');
+                });
             });
 
         });

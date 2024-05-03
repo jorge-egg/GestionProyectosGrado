@@ -5,6 +5,7 @@
 
         <input type="hidden" value="{{ $array['anteproyecto']->idAnteproyecto }}" name='idFase'>
         @php
+            $contador = 0;
             $subItems = [
                 'Titulo' => [
                     '1.1 El título es coherente y adecuado con el contenido del Proyecto',
@@ -65,7 +66,31 @@
                     '8.6 Las referencias se citan de acuerdo con la norma APA',
                     '8.7 Las fuentes de consulta son fiables con autor específico y contienen rigor científico. (mínimo 15 referencias)',
                 ],
-            ]
+            ];
+            $names = [
+                'observaciones' => [
+                    'tituloObservacion',
+                    'introObservacion',
+                    'planProbObservacion',
+                    'justObservacion',
+                    'marcRefObservacion',
+                    'metodObservacion',
+                    'admCtrObservacion',
+                    'normBibliObservacion',
+
+                ],
+                'calificacion' => [
+                    'tituloCalificacion',
+                    'introCalificacion',
+                    'planProbCalificacion',
+                    'justCalificacion',
+                    'marcRefCalificacion',
+                    'metodCalificacion',
+                    'admCtrCalificacion',
+                    'normBibliCalificacion',
+                ],
+
+            ];
         @endphp
         @foreach ($subItems as $clave => $valor)
             <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -74,16 +99,20 @@
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#flush-collapse{{ str_replace(" ", "", $clave) }}" aria-expanded="false" aria-controls="flush-collapse{{ str_replace(" ", "", $clave) }}">
                             <h5>{{ $clave }}</h5>
-                        </button>
-                    </h2>
+                        </button><br>
+                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{$names['observaciones'][$contador]}}">
+                            {{$array['observaciones'][$jurado][$contador]}}
+                        </textarea>
+                        <input type="text" name="canti{{str_replace(" ", "", $clave)}}" value="{{count($valor)}}">
+                    </h2><br>
 
                     <div id="flush-collapse{{ str_replace(" ", "", $clave) }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ str_replace(" ", "", $clave) }}"
                         data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body" style="display: block">
                             @component('components.anteproyecto.calificacionObser', [
                                 'subItems' => $valor,
-                                'nameSelect' => 'tituloCalificacion',
-                                'nameTextArea' => 'tituloObservacion',
+                                'item' => str_replace(" ", "", $clave),
+                                'nameSelect' => $names['calificacion'][$contador],
                                 'obsArray' => $array['observaciones'][$jurado][0],
                                 'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
                                 'styleDisplayGeneral' => 'flex',
@@ -92,27 +121,11 @@
                         </div>
                     </div>
                 </div>
+                @php
+                    $contador++;
+                @endphp
+
         @endforeach
-
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    <h5></h5>
-                </button>
-            </h2>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                    <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this
-                    being filled with some actual content.</div>
-            </div>
-        </div>
-
-
-
-
 
 
         {{-- @component('components.anteproyecto.calificacionObser', [
@@ -126,7 +139,7 @@
         {{-- <h5></h5>
         @component('components.anteproyecto.calificacionObser', [
             'nameSelect' => 'planProbCalificacion',
-            'nameTextArea' => 'planProbObservacion',
+            'nameTextArea' => ,
             'obsArray' => $array['observaciones'][$jurado][2],
             'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
             'styleDisplayGeneral' => 'flex',
@@ -135,7 +148,7 @@
         {{-- <h5></h5>
         @component('components.anteproyecto.calificacionObser', [
             'nameSelect' => 'justCalificacion',
-            'nameTextArea' => 'justObservacion',
+            'nameTextArea' => ,
             'obsArray' => $array['observaciones'][$jurado][3],
             'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
             'styleDisplayGeneral' => 'flex',
@@ -144,7 +157,7 @@
         <h5></h5>
         @component('components.anteproyecto.calificacionObser', [
             'nameSelect' => 'marcRefCalificacion',
-            'nameTextArea' => 'marcRefObservacion',
+            'nameTextArea' => ,
             'obsArray' => $array['observaciones'][$jurado][4],
             'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
             'styleDisplayGeneral' => 'flex',
@@ -153,7 +166,7 @@
         <h5></h5>
         @component('components.anteproyecto.calificacionObser', [
             'nameSelect' => 'metodCalificacion',
-            'nameTextArea' => 'metodObservacion',
+            'nameTextArea' => ,
             'obsArray' => $array['observaciones'][$jurado][5],
             'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
             'styleDisplayGeneral' => 'flex',
@@ -162,7 +175,7 @@
         <h5></h5>
         @component('components.anteproyecto.calificacionObser', [
             'nameSelect' => 'admCtrCalificacion',
-            'nameTextArea' => 'admCtrObservacion',
+            'nameTextArea' => ,
             'obsArray' => $array['observaciones'][$jurado][6],
             'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
             'styleDisplayGeneral' => 'flex',
@@ -171,7 +184,7 @@
         <h5></h5>
         @component('components.anteproyecto.calificacionObser', [
             'nameSelect' => 'normBibliCalificacion',
-            'nameTextArea' => 'normBibliObservacion',
+            'nameTextArea' =>
             'obsArray' => $array['observaciones'][$jurado][7],
             'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
             'styleDisplayGeneral' => 'flex',

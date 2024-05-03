@@ -85,9 +85,13 @@ class FaseAnteproyectosController extends Controller
 
     public function aprobarDoc(Request $request)
     { //cambia el estado en la base de datos de la aprobacion del documento
+
         $idProyecto = $request->idProyecto;
+
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
+        
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
+
         if($request->input('switchAprobDoc')){
             $anteproyecto->aprobacionDocen = '2'; //estado de aprobado
             $anteproyecto->observaDocent = $request->ObsDocent;
@@ -97,6 +101,7 @@ class FaseAnteproyectosController extends Controller
             $anteproyecto->observaDocent = $request->ObsDocent;
             $anteproyecto->save();
         }
+
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
 
 
