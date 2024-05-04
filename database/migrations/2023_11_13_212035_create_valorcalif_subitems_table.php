@@ -15,6 +15,7 @@ class CreateValorcalifSubitemsTable extends Migration
     {
         Schema::create('valorcalif_subitems', function (Blueprint $table) {
             $table->bigIncrements('idValorCalifSubitem');
+            $table->string('valor', 7);
             $table->timestamps();
         });
     }
