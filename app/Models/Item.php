@@ -14,13 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idItem
  * @property string $item
+ * @property int $sub_items
  * 
- * @property Collection|Calificacione[] $calificaciones
- * @property Collection|PonderadosPropuestum[] $ponderados_propuesta
- * @property Collection|ObservacionesCalificacione[] $observaciones_calificaciones
+ * @property SubItem $sub_item
  * @property Collection|PonderadoAnteproyecto[] $ponderado_anteproyectos
  * @property Collection|PonderadoProyectof[] $ponderado_proyectofs
  * @property Collection|PonderadoSustentacion[] $ponderado_sustentacions
+ * @property Collection|Calificacione[] $calificaciones
+ * @property Collection|PonderadosPropuestum[] $ponderados_propuesta
  *
  * @package App\Models
  */
@@ -30,23 +31,18 @@ class Item extends Model
 	protected $primaryKey = 'idItem';
 	public $timestamps = false;
 
-	protected $fillable = [
-		'item'
+	protected $casts = [
+		'sub_items' => 'int'
 	];
 
-	public function calificaciones()
-	{
-		return $this->hasMany(Calificacione::class, 'cal_item');
-	}
+	protected $fillable = [
+		'item',
+		'sub_items'
+	];
 
-	public function ponderados_propuesta()
+	public function sub_item()
 	{
-		return $this->hasMany(PonderadosPropuestum::class, 'item_pond');
-	}
-
-	public function observaciones_calificaciones()
-	{
-		return $this->hasMany(ObservacionesCalificacione::class, 'obs_item');
+		return $this->belongsTo(SubItem::class, 'sub_items');
 	}
 
 	public function ponderado_anteproyectos()
@@ -62,5 +58,15 @@ class Item extends Model
 	public function ponderado_sustentacions()
 	{
 		return $this->hasMany(PonderadoSustentacion::class, 'item_pond');
+	}
+
+	public function calificaciones()
+	{
+		return $this->hasMany(Calificacione::class, 'cal_item');
+	}
+
+	public function ponderados_propuesta()
+	{
+		return $this->hasMany(PonderadosPropuestum::class, 'item_pond');
 	}
 }

@@ -11,16 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Sede
- *
+ * 
  * @property int $idSede
  * @property string $sede
  * @property string $direccion
  * @property string $email
  * @property string $telefono
- *
+ * 
  * @property Collection|SedesFacultade[] $sedes_facultades
  * @property Collection|UsuariosUser[] $usuarios_users
- * @property Collection|SedePrograma[] $sede_programas
  * @property Collection|ProyectoCronograma[] $proyecto_cronogramas
  * @property Collection|SedeBiblioteca[] $sede_bibliotecas
  * @property Collection|SedeProyectosGrado[] $sede_proyectos_grados

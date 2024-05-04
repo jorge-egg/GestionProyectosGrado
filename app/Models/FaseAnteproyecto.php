@@ -11,10 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseAnteproyecto
- *
+ * 
  * @property int $idAnteproyecto
+ * @property string $documento
+ * @property string $cartaDirector
+ * @property string $aprobacionDocen
+ * @property string|null $observaDocent
+ * @property string $juradoUno
+ * @property string $juradoDos
+ * @property string $estado
+ * @property time without time zone|null $fecha_aplazado
  * @property int $ante_proy
- *
+ * 
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -27,19 +35,20 @@ class FaseAnteproyecto extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+		'fecha_aplazado' => 'time without time zone',
 		'ante_proy' => 'int'
 	];
 
 	protected $fillable = [
-        'documento',
-        'cartaDirector',
-        'estado',
-		'ante_proy',
-        'aprobacionDocen',
-        'juradoUno',
-        'juradoDos',
-        'observaDocent',
-        'fecha_aplazado',
+		'documento',
+		'cartaDirector',
+		'aprobacionDocen',
+		'observaDocent',
+		'juradoUno',
+		'juradoDos',
+		'estado',
+		'fecha_aplazado',
+		'ante_proy'
 	];
 
 	public function sede_proyectos_grado()
