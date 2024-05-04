@@ -41,7 +41,6 @@ class FaseCalOb extends Model
 		'anteproyecto' => 'int',
 		'proyecto_final' => 'int',
 		'sustentacion' => 'int',
-		'observacion_fase' => 'int'
 	];
 
 	protected $fillable = [
@@ -51,7 +50,6 @@ class FaseCalOb extends Model
 		'proyecto_final',
 		'sustentacion',
         'numeroJurado',
-		'observacion_fase'
 	];
 
 	public function calificacione()
@@ -76,11 +74,6 @@ class FaseCalOb extends Model
 
 	public function fase_sustentacione()
 	{
-		return $this->belongsTo(FaseSustentacione::class, 'sustentacion');
-	}
-
-	public function observaciones_calificacione()
-	{
-		return $this->belongsTo(ObservacionesCalificacione::class, 'observacion_fase');
+		return $this->belongsTo(FaseSustentaciones::class, 'sustentacion');
 	}
 }
