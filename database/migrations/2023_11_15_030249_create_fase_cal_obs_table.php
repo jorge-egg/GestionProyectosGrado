@@ -20,14 +20,14 @@ class CreateFaseCalObsTable extends Migration
             $table->unsignedBigInteger("anteproyecto")->nullable();
             $table->unsignedBigInteger("proyecto_final")->nullable();
             $table->unsignedBigInteger("sustentacion")->nullable();
+            $table->unsignedBigInteger("calif_subitems")->nullable();
             $table->string("numeroJurado", 2);
-            $table->unsignedBigInteger("observacion_fase");
             $table->foreign("calificacion_fase")->references("idCalificacion")->on("calificaciones")->onDelete('cascade');
             $table->foreign("propuesta")->references("idPropuesta")->on("fase_propuestas")->onDelete('cascade');
             $table->foreign("anteproyecto")->references("idAnteproyecto")->on("fase_anteproyectos")->onDelete('cascade');
             $table->foreign("proyecto_final")->references("idProyectofinal")->on("fase_proyectosfinales")->onDelete('cascade');
             $table->foreign("sustentacion")->references("idSustentacion")->on("fase_sustentaciones")->onDelete('cascade');
-            $table->foreign("observacion_fase")->references("idObservacion")->on("observaciones_calificaciones")->onDelete('cascade');
+            $table->foreign("calif_subitems")->references("idCalifSubitem")->on("calif_subitems")->onDelete('cascade');
             $table->timestamps();
         });
     }

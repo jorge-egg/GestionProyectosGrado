@@ -16,6 +16,7 @@ class CreateCalificacionesTable extends Migration
         Schema::create('calificaciones', function (Blueprint $table) {
             $table->bigIncrements("idCalificacion");
             $table->double("calificacion");
+            $table->text("observacion");
             $table->unsignedBigInteger("cal_item");
             $table->foreign("cal_item")->references("idItem")->on("items")->onDelete('cascade');
         });
