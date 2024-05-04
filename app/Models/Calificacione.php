@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Calificacione
- *
+ * 
  * @property int $idCalificacion
  * @property float $calificacion
+ * @property string $observacion
  * @property int $cal_item
- *
+ * 
  * @property Item $item
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -34,8 +35,8 @@ class Calificacione extends Model
 
 	protected $fillable = [
 		'calificacion',
-		'cal_item',
-        'observacion'
+		'observacion',
+		'cal_item'
 	];
 
 	public function item()

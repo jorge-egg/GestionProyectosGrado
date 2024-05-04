@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(itemsSeeder::class);
         $this->call(PonderadosSeeder::class);
         $this->call(ponderado_anteproyectoSeeder::class);
+        $this->call(valorcalif_subitemsSeeder::class);
 
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FasePropuesta
- *
+ * 
  * @property int $idPropuesta
  * @property string $titulo
  * @property string $linea_invs
@@ -21,10 +21,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $obj_especificos
  * @property string $estado
  * @property time without time zone|null $fecha_cierre
+ * @property time without time zone|null $fecha_aplazado
  * @property int $prop_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * 
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -37,6 +38,7 @@ class FasePropuesta extends Model
 
 	protected $casts = [
 		'fecha_cierre' => 'time without time zone',
+		'fecha_aplazado' => 'time without time zone',
 		'prop_proy' => 'int'
 	];
 
@@ -48,7 +50,7 @@ class FasePropuesta extends Model
 		'obj_especificos',
 		'estado',
 		'fecha_cierre',
-        'fecha_aplazado',
+		'fecha_aplazado',
 		'prop_proy'
 	];
 

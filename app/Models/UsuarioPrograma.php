@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idUsuario_programa
  * @property int $usuario
- * @property int $programa
+ * @property int|null $programa
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property UsuariosUser $usuarios_user
- * @property SedePrograma $sede_programa
+ * @property SedePrograma|null $sede_programa
  *
  * @package App\Models
  */

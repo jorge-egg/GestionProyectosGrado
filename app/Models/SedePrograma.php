@@ -12,16 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class SedePrograma
- *
+ * 
  * @property int $idPrograma
  * @property string $programa
  * @property string $siglas
  * @property int $prog_facu
- * @property int $prog_sede
  * @property string|null $deleted_at
- *
+ * 
  * @property SedesFacultade $sedes_facultade
- * @property Sede $sede
  * @property Collection|ComitesSede[] $comites_sedes
  * @property Collection|UsuarioPrograma[] $usuario_programas
  *
@@ -35,13 +33,13 @@ class SedePrograma extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'prog_facu' => 'int',
+		'prog_facu' => 'int'
 	];
 
 	protected $fillable = [
 		'programa',
 		'siglas',
-		'prog_facu',
+		'prog_facu'
 	];
 
 	public function sedes_facultade()
@@ -54,4 +52,8 @@ class SedePrograma extends Model
 		return $this->hasMany(ComitesSede::class, 'comi_pro');
 	}
 
+	public function usuario_programas()
+	{
+		return $this->hasMany(UsuarioPrograma::class, 'programa');
+	}
 }

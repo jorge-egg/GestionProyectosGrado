@@ -11,23 +11,24 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseCalOb
- *
+ * 
  * @property int $id
  * @property int $calificacion_fase
  * @property int|null $propuesta
  * @property int|null $anteproyecto
  * @property int|null $proyecto_final
  * @property int|null $sustentacion
- * @property int $observacion_fase
+ * @property int|null $calif_subitems
+ * @property string $numeroJurado
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * 
  * @property Calificacione $calificacione
  * @property FasePropuesta|null $fase_propuesta
  * @property FaseAnteproyecto|null $fase_anteproyecto
  * @property FaseProyectosfinale|null $fase_proyectosfinale
  * @property FaseSustentacione|null $fase_sustentacione
- * @property ObservacionesCalificacione $observaciones_calificacione
+ * @property CalifSubitem|null $calif_subitem
  *
  * @package App\Models
  */
@@ -41,6 +42,7 @@ class FaseCalOb extends Model
 		'anteproyecto' => 'int',
 		'proyecto_final' => 'int',
 		'sustentacion' => 'int',
+		'calif_subitems' => 'int'
 	];
 
 	protected $fillable = [
@@ -49,7 +51,8 @@ class FaseCalOb extends Model
 		'anteproyecto',
 		'proyecto_final',
 		'sustentacion',
-        'numeroJurado',
+		'calif_subitems',
+		'numeroJurado'
 	];
 
 	public function calificacione()
@@ -74,6 +77,11 @@ class FaseCalOb extends Model
 
 	public function fase_sustentacione()
 	{
-		return $this->belongsTo(FaseSustentaciones::class, 'sustentacion');
+		return $this->belongsTo(FaseSustentacione::class, 'sustentacion');
+	}
+
+	public function calif_subitem()
+	{
+		return $this->belongsTo(CalifSubitem::class, 'calif_subitems');
 	}
 }
