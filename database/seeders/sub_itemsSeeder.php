@@ -14,7 +14,33 @@ class sub_itemsSeeder extends Seeder
     public function run()
     {
         DB::table('sub_items')->insert([
-            'SubItem' => 'Planteamiento del problema',
+            'codigo' => '001',
+            'SubItem' => '',
         ]);
+        DB::table('sub_items')->insert([
+            'codigo' => '002',
+            'SubItem' => '',
+        ]);
+        DB::table('sub_items')->insert([
+            'codigo' => '003',
+            'SubItem' => '',
+        ]);
+        DB::table('sub_items')->insert([
+            'codigo' => '004',
+            'SubItem' => '',
+        ]);
+        DB::table('sub_items')->insert([
+            'codigo' => '005',
+            'SubItem' => '',
+        ]);
+        DB::table('sub_items')->insert([
+            'codigo' => '006',
+            'SubItem' => '',
+        ]);
+        DB::table('sub_items')->insert([
+            'codigo' => '007',
+            'SubItem' => '',
+        ]);
+
     }
 }

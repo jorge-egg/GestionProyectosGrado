@@ -36,7 +36,6 @@ class FasePropuestasController extends Controller
         $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $miembrosDocente = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
-        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = true;
         $rangoFecha = $this->rangoFecha('propuesta');
@@ -51,14 +50,13 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'miembrosDocente', 'integrantes', 'totalCalificacion'));
+        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'miembrosDocente', 'integrantes', 'totalCalificacion'));
     }
 
     public function createAnterior(Request $request)
     {
         $idProyecto = $request->idProyecto;
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
-        $observaciones = $this->ultimaObservacion($propuestaAnterior->idPropuesta, 'propuesta', 5);
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
 
         $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true : false;
@@ -73,7 +71,7 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'observaciones', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
+        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
     }
 
     //consultar si existen propuestas creadas por el usuario y tomar la ultima
@@ -106,19 +104,22 @@ class FasePropuestasController extends Controller
 
             $array = [];
             foreach ($calificacionesAnterior as $calificacion) {
-                $dato = $calificacion->calificacion;
+                $dato = [
+                    'calificacion' => $calificacion->calificacion,
+                    'observacion' => $calificacion->observacion
+                ];
                 array_push($array, $dato);
             }
 
             if (count($calificacionesAnterior) == 0) {
                 for ($i = 0; $i < 5; $i++) {
-                    array_push($array, "--");
+                    array_push($array, ["--", '']);
                 }
             }
         } catch (Exception $e) {
             $array = [];
             for ($i = 0; $i < 5; $i++) {
-                array_push($array, "--");
+                array_push($array, ["--", '']);
             }
         }
         return $array;

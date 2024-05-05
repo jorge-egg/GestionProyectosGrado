@@ -16,20 +16,20 @@ class FechasSeeder extends Seeder
 public function run()
 {
     DB::table('fechas_grupos')->insert([
-        'fecha_apertura' => '2024-04-20',
-        'fecha_cierre' => '2024-04-30',
+        'fecha_apertura' => '2024-05-01',
+        'fecha_cierre' => '2024-06-30',
         'fech_grup' => 1,
         'fech_fase' => 1,
     ]);
     DB::table('fechas_grupos')->insert([
-        'fecha_apertura' => '2024-04-20',
-        'fecha_cierre' => '2024-04-30',
+        'fecha_apertura' => '2024-05-01',
+        'fecha_cierre' => '2024-06-30',
         'fech_grup' => 1,
         'fech_fase' => 2,
     ]);
     DB::table('fechas_grupos')->insert([
-        'fecha_apertura' => '2024-05-03',
-        'fecha_cierre' => '2024-05-30',
+        'fecha_apertura' => '2024-05-01',
+        'fecha_cierre' => '2024-06-30',
         'fech_grup' => 1,
         'fech_fase' => 3,
     ]);
