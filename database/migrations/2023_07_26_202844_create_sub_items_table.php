@@ -17,6 +17,8 @@ class CreateSubItemsTable extends Migration
             $table->bigIncrements('idSubitem');
             $table->string('codigo', 3); //identificador
             $table->string("SubItem");
+            $table->unsignedBigInteger("item");
+            $table->foreign("item")->references("idItem")->on("items")->onDelete('cascade');
             $table->timestamps();
         });
     }

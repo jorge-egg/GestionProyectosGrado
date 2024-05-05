@@ -24,11 +24,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property SedeBiblioteca $sede_biblioteca
  * @property ComitesSede|null $comites_sede
  * @property UsuariosUser|null $usuarios_user
- * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
- * @property Collection|FasePropuesta[] $fase_propuestas
- * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
  * @property Collection|FaseSustentacione[] $fase_sustentaciones
  * @property Collection|Integrante[] $integrantes
+ * @property Collection|FasePropuesta[] $fase_propuestas
+ * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
+ * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
  *
  * @package App\Models
  */
@@ -75,21 +75,6 @@ class SedeProyectosGrado extends Model
 		return $this->belongsTo(UsuariosUser::class, 'docente');
 	}
 
-	public function fase_anteproyectos()
-	{
-		return $this->hasMany(FaseAnteproyecto::class, 'ante_proy');
-	}
-
-	public function fase_propuestas()
-	{
-		return $this->hasMany(FasePropuesta::class, 'prop_proy');
-	}
-
-	public function fase_proyectosfinales()
-	{
-		return $this->hasMany(FaseProyectosfinale::class, 'pfin_proy');
-	}
-
 	public function fase_sustentaciones()
 	{
 		return $this->hasMany(FaseSustentaciones::class, 'sust_proy');
@@ -98,5 +83,20 @@ class SedeProyectosGrado extends Model
 	public function integrantes()
 	{
 		return $this->hasMany(Integrante::class, 'proyecto');
+	}
+
+	public function fase_propuestas()
+	{
+		return $this->hasMany(FasePropuesta::class, 'prop_proy');
+	}
+
+	public function fase_anteproyectos()
+	{
+		return $this->hasMany(FaseAnteproyecto::class, 'ante_proy');
+	}
+
+	public function fase_proyectosfinales()
+	{
+		return $this->hasMany(FaseProyectosfinale::class, 'pfin_proy');
 	}
 }

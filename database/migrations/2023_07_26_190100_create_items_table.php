@@ -16,8 +16,7 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id('idItem');
             $table->string('item');
-            $table->unsignedBigInteger("sub_items");
-            $table->foreign("sub_items")->references("idSubitem")->on("sub_items")->onDelete('cascade');
+
         });
     }
 
