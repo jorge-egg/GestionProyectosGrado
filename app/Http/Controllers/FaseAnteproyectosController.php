@@ -29,6 +29,7 @@ class FaseAnteproyectosController extends Controller
         $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
         $docExist2              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->cartaDirector : null);
         $observaciones          = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
+        //dd($observaciones);
         $rangoFecha             = $this->rangoFecha('anteproyecto');
         $valDocAsig             = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
         $miembrosDocente        = $this->obtenerDocentes($this->$idProyecto );
@@ -89,7 +90,7 @@ class FaseAnteproyectosController extends Controller
         $idProyecto = $request->idProyecto;
 
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
-        
+
         $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
 
         if($request->input('switchAprobDoc')){

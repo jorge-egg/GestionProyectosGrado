@@ -85,14 +85,14 @@
                                 disabled
                             @endcan>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[4] }}</p>
+                            <p class="fw-bold">{{ $calificacion[4]['calificacion'] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'tituloCalificacion',
                         'nameTextArea' => 'tituloObservacion',
-                        'obsArray' => $observaciones[0],
+                        'obsArray' => $calificacion[4]['observacion'],
                     ])
                     @endcomponent
                     <br>
@@ -106,13 +106,13 @@
                             disabled
                         @endcan>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[3] }}</p>
+                            <p class="fw-bold">{{ $calificacion[3]['calificacion'] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'lineaCalificacion',
                         'nameTextArea' => 'lineaObservacion',
-                        'obsArray' => $observaciones[1],
+                        'obsArray' => $calificacion[3]['observacion'],
                     ])
                     @endcomponent
                 </div>
@@ -127,14 +127,14 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->desc_problema }} </textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[2] }}</p>
+                            <p class="fw-bold">{{ $calificacion[2]['calificacion'] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="DescripcionContador"></span></p>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'descProbCalificacion',
                         'nameTextArea' => 'descProbObservacion',
-                        'obsArray' => $observaciones[2],
+                        'obsArray' => $calificacion[2]['observacion'],
                     ])
                     @endcomponent
                 </div>
@@ -149,14 +149,14 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[1] }}</p>
+                            <p class="fw-bold">{{ $calificacion[1]['calificacion'] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'objGenCalificacion',
                         'nameTextArea' => 'objGenObservacion',
-                        'obsArray' => $observaciones[3],
+                        'obsArray' => $calificacion[1]['observacion'],
                     ])
                     @endcomponent
                 </div>
@@ -170,13 +170,13 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[0] }}</p>
+                            <p class="fw-bold">{{ $calificacion[0]['calificacion'] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'objEspCalificacion',
                         'nameTextArea' => 'objEspObservacion',
-                        'obsArray' => $observaciones[4],
+                        'obsArray' => $calificacion[0]['observacion'],
                     ])
                     @endcomponent
                     <br>

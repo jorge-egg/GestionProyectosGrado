@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\FaseCalOb;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Calificacione;
 use App\Models\FaseAnteproyecto;
@@ -12,7 +11,6 @@ use App\Models\FasePropuesta;
 use App\Models\FaseProyectosfinale;
 use App\Models\FaseSustentacione;
 use App\Models\PonderadosPropuesta;
-use App\Models\ObservacionesCalificacione;
 use App\Models\PonderadoAnteproyecto;
 
 class ObservacionesPropuestaController extends Controller
@@ -49,7 +47,6 @@ class ObservacionesPropuestaController extends Controller
         switch ($fase) {
             case 'propuesta':
                 $tamaño = 5; //asigan la cantidad de observaciones y calificaciones
-                ObservacionesCalificacione::insert($this->cargarObservacionesPropuesta($request));
                 Calificacione::insert($this->cargarCalificacionesPropuesta($request));
                 $numeroJurado = '-1';
                 break;
@@ -80,7 +77,7 @@ class ObservacionesPropuestaController extends Controller
                 ];
                 //dd($request->tituloObservacion);
                 $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
-                ObservacionesCalificacione::insert($this->cargarObservacionesAnteproyecto($request, $names['observaciones']));
+                //ObservacionesCalificacione::insert($this->cargarObservacionesAnteproyecto($request, $names['observaciones']));
                 Calificacione::insert($this->cargarCalificacionesAnteproyecto($request, $names['calificacion']));
                 $numeroJurado = $request->numeroJurado;
                 break;
@@ -91,17 +88,15 @@ class ObservacionesPropuestaController extends Controller
         }
 
         $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take($tamaño)->pluck('idCalificacion');
-        $idObservaciones = ObservacionesCalificacione::orderBy('idObservacion', 'desc')->take($tamaño)->pluck('idObservacion');
-        $combineData = $idCalificaciones->combine($idObservaciones);
-        $combineData->each(function ($observacionId, $calificacionId) use ($request, $fase, $numeroJurado) {
+
+        foreach($idCalificaciones as $calificacion) {
             //dd($fase);
             FaseCalOb::create([
                 $fase => $request->idFase,
-                'calificacion_fase' => $calificacionId,
-                'observacion_fase' => $observacionId,
+                'calificacion_fase' => $calificacion,
                 'numeroJurado' => $numeroJurado,
             ]);
-        });
+        }
 
         $this->cambioEstado($request->idFase, $fase);
 
@@ -120,118 +115,38 @@ class ObservacionesPropuestaController extends Controller
         }
     }
 
-    public function cargarObservacionesPropuesta($request)
-    {
-        //conjunto de Observaciones a insertar en la base de datos
-        $dataObservaciones = [
-            [
-                'observacion' => $request->tituloObservacion,
-                'obs_item' => $this->buscarIdItem('Título'),
-            ],
-            //
-            [
-                'observacion' => $request->lineaObservacion,
-                'obs_item' => $this->buscarIdItem('Linea de investigación'),
-            ],
-            //
-            [
-                'observacion' => $request->descProbObservacion,
-                'obs_item' => $this->buscarIdItem('Descripción del problema'),
-            ],
-            //
-            [
-                'observacion' => $request->objGenObservacion,
-                'obs_item' => $this->buscarIdItem('Objetivo general'),
-            ],
-            //
-            [
-                'observacion' => $request->objEspObservacion,
-                'obs_item' => $this->buscarIdItem('Objetivos especificos'),
-            ]
-        ];
-        return $dataObservaciones;
-    }
-    public function cargarObservacionesAnteproyecto($request, $names)
-    {
-        //conjunto de Observaciones a insertar en la base de datos
-
-        foreach($names as $name){
-            $dato1 = $request->$name;
-            $dato2 = $this->buscarIdItem('Título');
-            dd($dato1);
-            // 'observacion' => ,
-            // 'obs_item' =>
-        }
-        $dataObservaciones = [
-            [
-                'observacion' => $request->$names[0],
-                'obs_item' => $this->buscarIdItem('Título'),
-            ],
-            //
-            [
-                'observacion' => $request->introObservacion,
-                'obs_item' => $this->buscarIdItem('Introduccion'),
-            ],
-            //
-            [
-                'observacion' => $request->planProbObservacion,
-                'obs_item' => $this->buscarIdItem('Planteamiento del problema'),
-            ],
-            //
-            [
-                'observacion' => $request->justObservacion,
-                'obs_item' => $this->buscarIdItem('Justificación'),
-            ],
-            //
-            [
-                'observacion' => $request->marcRefObservacion,
-                'obs_item' => $this->buscarIdItem('Marco referencial'),
-            ],
-            //
-            [
-                'observacion' => $request->metodObservacion,
-                'obs_item' => $this->buscarIdItem('Metodología'),
-            ],
-            //
-            [
-                'observacion' => $request->admCtrObservacion,
-                'obs_item' => $this->buscarIdItem('Elementos de administración y control'),
-            ],
-            //
-            [
-                'observacion' => $request->normBibliObservacion,
-                'obs_item' => $this->buscarIdItem('Normas de presentación en el documento y referencias bibliográficas'),
-            ],
-        ];
-        return $dataObservaciones;
-    }
 
     public function cargarCalificacionesPropuesta($request)
     {
         //Conjunto de calificaciones a insertar en la base de datos
         $dataCalificaciones = [
             [
-                'calificacion' => $this->calcularCalificacion('Título', $request->tituloCalificacion, 'propuesta', 0),
+                'observacion' => $request->tituloObservacion,
+                'calificacion' => $this->calcularCalificacion('Título', $request->tituloCalificacion, 'propuesta'),
                 'cal_item' => $this->buscarIdItem('Título'),
             ],
             //
             [
-                'calificacion' => $this->calcularCalificacion('Linea de investigación', $request->lineaCalificacion, 'propuesta', 0),
+                'observacion' => $request->lineaObservacion,
+                'calificacion' => $this->calcularCalificacion('Linea de investigación', $request->lineaCalificacion, 'propuesta'),
                 'cal_item' => $this->buscarIdItem('Linea de investigación'),
             ],
             //
             [
-                'calificacion' => $this->calcularCalificacion('Descripción del problema', $request->descProbCalificacion, 'propuesta', 0),
+                'observacion' => $request->descProbObservacion,
+                'calificacion' => $this->calcularCalificacion('Descripción del problema', $request->descProbCalificacion, 'propuesta'),
                 'cal_item' => $this->buscarIdItem('Descripción del problema'),
             ],
             //
             [
-                'calificacion' => $this->calcularCalificacion('Objetivo general', $request->objGenCalificacion, 'propuesta', 0),
+                'observacion' => $request->objGenObservacion,
+                'calificacion' => $this->calcularCalificacion('Objetivo general', $request->objGenCalificacion, 'propuesta'),
                 'cal_item' => $this->buscarIdItem('Objetivo general'),
             ],
             //
             [
-                'calificacion' => $this->calcularCalificacion('Objetivos especificos', $request->objEspCalificacion, 'propuesta', 0),
+                'observacion' => $request->objEspObservacion,
+                'calificacion' => $this->calcularCalificacion('Objetivos especificos', $request->objEspCalificacion, 'propuesta'),
                 'cal_item' => $this->buscarIdItem('Objetivos especificos'),
             ]
         ];
@@ -255,41 +170,50 @@ class ObservacionesPropuestaController extends Controller
         //dd('canti'.str_replace(" ", "", $clave[0]));
         $dataCalificaciones = [
             [
+                'observacion' => $request->$names[0],
                 'calificacion' => $this->calcularCalificacion('Título', $request->tituloCalificacion, 'anteproyecto', $request->cantiTitulo, $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Título'),
             ],
             //
             [
+                'observacion' => $request->introObservacion,
                 'calificacion' => $this->calcularCalificacion('Introduccion', $request->introCalificacion, 'anteproyecto', $request->cant.str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Introduccion'),
             ],
             //
             [
+                'observacion' => $request->planProbObservacion,
                 'calificacion' => $this->calcularCalificacion('Planteamiento del problema', $request->planProbCalificacion, 'anteproyecto', $request->cant . str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Planteamiento del problema'),
             ],
             //
             [
+                'observacion' => $request->justObservacion,
                 'calificacion' => $this->calcularCalificacion('Justificación', $request->justCalificacion, 'anteproyecto', $request->cant . str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Justificación'),
             ],
             //
             [
+                'observacion' => $request->marcRefObservacion,
                 'calificacion' => $this->calcularCalificacion('Marco referencial', $request->marcRefCalificacion, 'anteproyecto', $request->cant . str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Marco referencial'),
             ],
             //
             [
+
+                'observacion' => $request->metodObservacion,
                 'calificacion' => $this->calcularCalificacion('Metodología', $request->metodCalificacion, 'anteproyecto', $request->cant . str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Metodología'),
             ],
             //
             [
+                'observacion' => $request->admCtrObservacion,
                 'calificacion' => $this->calcularCalificacion('Elementos de administración y control', $request->admCtrCalificacion, 'anteproyecto', $request->cant . str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Elementos de administración y control'),
             ],
             //
             [
+                'observacion' => $request->normBibliObservacion,
                 'calificacion' => $this->calcularCalificacion('Normas de presentación en el documento y referencias bibliográficas', $request->normBibliCalificacion, 'anteproyecto', $request->cant . str_replace(" ", "", $clave[0]), $request,0, $names),
                 'cal_item' => $this->buscarIdItem('Normas de presentación en el documento y referencias bibliográficas'),
             ]
@@ -303,7 +227,7 @@ class ObservacionesPropuestaController extends Controller
         return $idItem;
     }
 
-    public function calcularCalificacion($item, $select, $fase, $cantSubItems, $request, $numItem, $names)
+    public function calcularCalificacion($item, $select, $fase)
     { //calcula la nota tipo double en base al item y a la opcion del select
 
         //dd($names);

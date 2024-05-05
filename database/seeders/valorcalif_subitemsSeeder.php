@@ -14,7 +14,7 @@ class valorcalif_subitemsSeeder extends Seeder
     public function run()
     {
         DB::table('valorcalif_subitems')->insert([
-            'valor' => 'Si',
+            'valor' => 'Sí',
         ]);
         DB::table('valorcalif_subitems')->insert([
             'valor' => 'No',

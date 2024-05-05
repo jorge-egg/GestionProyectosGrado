@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Calificacione;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
@@ -11,10 +12,7 @@ use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use App\Models\UsuarioPrograma;
 use App\Models\FaseAnteproyecto;
-use App\Models\IntegrantesComite;
 use App\Models\SedeProyectosGrado;
-use App\Models\ObservacionesCalificacione;
-use Symfony\Component\HttpFoundation\Request;
 
 trait funcionesUniversales
 {
@@ -22,7 +20,7 @@ trait funcionesUniversales
     public function ultimaObservacion($idFase, $fase, $cantObs)
     {
         try {
-            $observacionesAnterior = ObservacionesCalificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
+            $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
                 ->where($fase, $idFase)
                 ->orderBy('idObservacion', 'asc')
                 ->get();
@@ -67,9 +65,20 @@ trait funcionesUniversales
             }
             //dd($array);
         } catch (Exception $e) {
+            $array1 = [];
+            $array2 = [];
             $array = [];
-            for ($i = 0; $i < $cantObs; $i++) {
-                array_push($array, "");
+            if ($fase == 'anteproyecto') {
+                for ($i = 0; $i < $cantObs; $i++) {
+                    array_push($array1, "");
+                    array_push($array2, "");
+                }
+                array_push($array, $array1);
+                array_push($array, $array2);
+            }else{
+                for ($i = 0; $i < $cantObs; $i++) {
+                    array_push($array, "");
+                }
             }
         }
         return $array;
