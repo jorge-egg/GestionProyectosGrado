@@ -11,16 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Item
- *
+ * 
  * @property int $idItem
+ * @property string $codigoItem
  * @property string $item
- *
+ * 
+ * @property Collection|SubItem[] $sub_items
  * @property Collection|Calificacione[] $calificaciones
  * @property Collection|PonderadosPropuestum[] $ponderados_propuesta
  * @property Collection|PonderadoAnteproyecto[] $ponderado_anteproyectos
  * @property Collection|PonderadoProyectof[] $ponderado_proyectofs
  * @property Collection|PonderadoSustentacion[] $ponderado_sustentacions
- * @property Collection|SubItem[] $sub_items
  *
  * @package App\Models
  */
@@ -31,9 +32,14 @@ class Item extends Model
 	public $timestamps = false;
 
 	protected $fillable = [
-        'codigoItem',
+		'codigoItem',
 		'item'
 	];
+
+	public function sub_items()
+	{
+		return $this->hasMany(SubItem::class, 'item');
+	}
 
 	public function calificaciones()
 	{
@@ -58,10 +64,5 @@ class Item extends Model
 	public function ponderado_sustentacions()
 	{
 		return $this->hasMany(PonderadoSustentacion::class, 'item_pond');
-	}
-
-	public function sub_items()
-	{
-		return $this->hasMany(SubItem::class, 'item');
 	}
 }

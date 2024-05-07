@@ -16,7 +16,8 @@ class CreateCalifSubitemsTable extends Migration
         Schema::create('calif_subitems', function (Blueprint $table) {
             $table->bigIncrements('idCalifSubitem');
             $table->unsignedBigInteger('ValorCalifSubitem');
-            $table->foreign("ValorCalifSubitem")->references("idValorCalifSubitem")->on("valorcalif_subitems")->onDelete('cascade');
+            $table->unsignedBigInteger('subitem');
+            $table->foreign("subitem")->references("idSubitem")->on("sub_items")->onDelete('cascade');
             $table->timestamps();
         });
     }
