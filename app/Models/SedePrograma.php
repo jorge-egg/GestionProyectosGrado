@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * 
  * @property SedesFacultade $sedes_facultade
- * @property Collection|UsuarioPrograma[] $usuario_programas
  * @property Collection|ComitesSede[] $comites_sedes
+ * @property Collection|UsuarioPrograma[] $usuario_programas
  *
  * @package App\Models
  */
@@ -47,13 +47,13 @@ class SedePrograma extends Model
 		return $this->belongsTo(SedesFacultade::class, 'prog_facu');
 	}
 
-	public function usuario_programas()
-	{
-		return $this->hasMany(UsuarioPrograma::class, 'programa');
-	}
-
 	public function comites_sedes()
 	{
 		return $this->hasMany(ComitesSede::class, 'comi_pro');
+	}
+
+	public function usuario_programas()
+	{
+		return $this->hasMany(UsuarioPrograma::class, 'programa');
 	}
 }

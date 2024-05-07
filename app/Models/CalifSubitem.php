@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $idCalifSubitem
  * @property int $ValorCalifSubitem
+ * @property int $subitem
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property ValorcalifSubitem $valorcalif_subitem
+ * @property SubItem $sub_item
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
@@ -29,16 +30,18 @@ class CalifSubitem extends Model
 	protected $primaryKey = 'idCalifSubitem';
 
 	protected $casts = [
-		'ValorCalifSubitem' => 'int'
+		'ValorCalifSubitem' => 'int',
+		'subitem' => 'int'
 	];
 
 	protected $fillable = [
-		'ValorCalifSubitem'
+		'ValorCalifSubitem',
+		'subitem'
 	];
 
-	public function valorcalif_subitem()
+	public function sub_item()
 	{
-		return $this->belongsTo(ValorcalifSubitem::class, 'ValorCalifSubitem');
+		return $this->belongsTo(SubItem::class, 'subitem');
 	}
 
 	public function fase_cal_obs()
