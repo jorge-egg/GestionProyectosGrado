@@ -16,7 +16,7 @@ class CreateSubItemsTable extends Migration
         Schema::create('sub_items', function (Blueprint $table) {
             $table->bigIncrements('idSubitem');
             $table->string('codigo', 3); //identificador
-            $table->string("SubItem");
+            $table->text("SubItem");
             $table->unsignedBigInteger("item");
             $table->foreign("item")->references("idItem")->on("items")->onDelete('cascade');
             $table->timestamps();

@@ -12,10 +12,51 @@ use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use App\Models\UsuarioPrograma;
 use App\Models\FaseAnteproyecto;
+use App\Models\Item;
 use App\Models\SedeProyectosGrado;
+use App\Models\SubItem;
 
 trait funcionesUniversales
 {
+
+    public function buscarNombresItems($fase){ //Sen encarga de obtener el nombre y codigo de items y subitems
+        $codigos =[
+            'propuesta' => [
+
+            ],
+            'anteproyecto' => [
+                '001',
+                '006',
+                '007',
+                '008',
+                '009',
+                '010',
+                '011',
+                '012'
+            ]
+        ];
+        $items = Item::whereIn('codigoItem', $codigos['anteproyecto'])->get();
+        //dd($items);
+        $Integracion = [];
+
+        foreach ($items as $item) {
+            $key = $item->item; // La variable $key no es necesaria si no la usas más adelante
+            $valor = SubItem::where('item', $item->idItem)->get(); // Obtienes todos los SubItems relacionados
+
+            // Verifica si ya existe la clave en el array y si no, inicialízala como un array vacío
+            if (!isset($Integracion[$item->item])) {
+                $Integracion[$item->item] = [];
+            }
+
+            // Añade el valor al array correspondiente
+
+            $Integracion[$item->item] = $valor;
+        }
+        //dd($Integracion['Título'][0]->SubItem);
+
+        return $Integracion;
+
+    }
     //consultar si existen observaciones creadas por el usuario y tomar la ultima
     public function ultimaObservacion($idFase, $fase, $cantObs)
     {

@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Item
- * 
+ *
  * @property int $idItem
  * @property string $item
- * 
+ *
  * @property Collection|Calificacione[] $calificaciones
  * @property Collection|PonderadosPropuestum[] $ponderados_propuesta
  * @property Collection|PonderadoAnteproyecto[] $ponderado_anteproyectos
@@ -31,6 +31,7 @@ class Item extends Model
 	public $timestamps = false;
 
 	protected $fillable = [
+        'codigoItem',
 		'item'
 	];
 

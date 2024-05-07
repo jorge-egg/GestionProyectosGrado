@@ -20,6 +20,10 @@ class ponderado_anteproyectoSeeder extends Seeder
         ]);
         DB::table('ponderado_anteproyecto')->insert([
             'ponderado' => 0.4,
+            'item_pond' => 6,
+        ]);
+        DB::table('ponderado_anteproyecto')->insert([
+            'ponderado' => 0.4,
             'item_pond' => 7,
         ]);
         DB::table('ponderado_anteproyecto')->insert([
@@ -27,24 +31,20 @@ class ponderado_anteproyectoSeeder extends Seeder
             'item_pond' => 8,
         ]);
         DB::table('ponderado_anteproyecto')->insert([
-            'ponderado' => 0.4,
+            'ponderado' => 1.0,
             'item_pond' => 9,
         ]);
         DB::table('ponderado_anteproyecto')->insert([
-            'ponderado' => 1.0,
+            'ponderado' => 0.8,
             'item_pond' => 10,
         ]);
         DB::table('ponderado_anteproyecto')->insert([
-            'ponderado' => 0.8,
+            'ponderado' => 1.3,
             'item_pond' => 11,
         ]);
         DB::table('ponderado_anteproyecto')->insert([
-            'ponderado' => 1.3,
-            'item_pond' => 6,
-        ]);
-        DB::table('ponderado_anteproyecto')->insert([
             'ponderado' => 0.4,
-            'item_pond' => 13,
+            'item_pond' => 12,
         ]);
     }
 }

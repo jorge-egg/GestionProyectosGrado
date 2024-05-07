@@ -240,7 +240,7 @@
             const inputJurado = document.getElementById('inputJurado'); //numero del jurado
             const secJ1 = document.getElementById('j1'); //section J1
             const secJ2 = document.getElementById('j2'); //section J2
-            inputJurado.value = '1';
+            inputJurado.value = '0';
             secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.disabled = true;
                     textarea.name = 'inactive_' + textarea.name;
@@ -251,7 +251,7 @@
                 // Previene el comportamiento predeterminado del enlace
                 event.preventDefault();
 
-                inputJurado.value = '1';
+                inputJurado.value = '0';
 
                 enlace1.classList.add('active');
                 enlace2.classList.remove('active');
@@ -279,7 +279,7 @@
                 // Previene el comportamiento predeterminado del enlace
                 event.preventDefault();
 
-                inputJurado.value = '2';
+                inputJurado.value = '1';
 
                 enlace2.classList.add('active');
                 enlace1.classList.remove('active');

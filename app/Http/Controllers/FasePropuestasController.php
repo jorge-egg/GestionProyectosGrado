@@ -37,6 +37,7 @@ class FasePropuestasController extends Controller
         $miembrosDocente = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
+        //dd($calificacion);
         $estadoButton = true;
         $rangoFecha = $this->rangoFecha('propuesta');
         try {
@@ -113,13 +114,21 @@ class FasePropuestasController extends Controller
 
             if (count($calificacionesAnterior) == 0) {
                 for ($i = 0; $i < 5; $i++) {
-                    array_push($array, ["--", '']);
+                    $dato = [
+                        'calificacion' => "--",
+                        'observacion' => ''
+                    ];
+                    array_push($array, $dato);
                 }
             }
         } catch (Exception $e) {
             $array = [];
             for ($i = 0; $i < 5; $i++) {
-                array_push($array, ["--", '']);
+                $dato = [
+                    'calificacion' => "--",
+                    'observacion' => ''
+                ];
+                array_push($array, $dato);
             }
         }
         return $array;
