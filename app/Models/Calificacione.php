@@ -16,10 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $calificacion
  * @property string $observacion
  * @property int $cal_item
- * @property int $califSubitem
  * 
  * @property Item $item
- * @property CalifSubitem $calif_subitem
+ * @property Collection|CalifSubitem[] $calif_subitems
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
  * @package App\Models
@@ -32,15 +31,13 @@ class Calificacione extends Model
 
 	protected $casts = [
 		'calificacion' => 'float',
-		'cal_item' => 'int',
-		'califSubitem' => 'int'
+		'cal_item' => 'int'
 	];
 
 	protected $fillable = [
 		'calificacion',
 		'observacion',
-		'cal_item',
-		'califSubitem'
+		'cal_item'
 	];
 
 	public function item()
@@ -48,9 +45,9 @@ class Calificacione extends Model
 		return $this->belongsTo(Item::class, 'cal_item');
 	}
 
-	public function calif_subitem()
+	public function calif_subitems()
 	{
-		return $this->belongsTo(CalifSubitem::class, 'califSubitem');
+		return $this->hasMany(CalifSubitem::class, 'calificacion');
 	}
 
 	public function fase_cal_obs()

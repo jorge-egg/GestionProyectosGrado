@@ -18,9 +18,9 @@ class CreateCalificacionesTable extends Migration
             $table->double("calificacion");
             $table->text("observacion");
             $table->unsignedBigInteger("cal_item");
-            $table->unsignedBigInteger("califSubitem");
+
             $table->foreign("cal_item")->references("idItem")->on("items")->onDelete('cascade');
-            $table->foreign("califSubitem")->references("idCalifSubitem")->on("calif_subitems")->onDelete('cascade');
+            
         });
     }
 
