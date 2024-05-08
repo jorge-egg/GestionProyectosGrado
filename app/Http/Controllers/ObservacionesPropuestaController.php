@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\FaseCalOb;
 use Illuminate\Http\Request;
 use App\Models\Calificacione;
+use App\Models\CalifSubitem;
 use App\Models\FaseAnteproyecto;
 use App\Models\FasePropuesta;
 use App\Models\FaseProyectosfinale;
@@ -195,11 +196,19 @@ class ObservacionesPropuestaController extends Controller
 
             if ($request->$nombreSubItem == "si") {
                 $totalCalificacion += ($ponderado->ponderado / $cantSubItems);
+                $valor = 1;
+
             } else if ($request->$nombreSubItem == "parcial") {
                 $totalCalificacion += (($ponderado->ponderado / $cantSubItems) / 2.0);
+                $valor = 2;
             } else if ($request->$nombreSubItem == "no") {
                 $totalCalificacion += 0;
+                $valor = 3;
             }
+            CalifSubitem::create([
+                    'ValorCalifSubitem' => $valor,
+                    'subitem' => $name->idSubitem,
+                ]);
         }
         return $totalCalificacion ;
 
