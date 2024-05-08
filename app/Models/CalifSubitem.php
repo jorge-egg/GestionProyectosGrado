@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property ValorcalifSubitem $valorcalif_subitem
  * @property SubItem $sub_item
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -38,6 +39,11 @@ class CalifSubitem extends Model
 		'ValorCalifSubitem',
 		'subitem'
 	];
+
+	public function valorcalif_subitem()
+	{
+		return $this->belongsTo(ValorcalifSubitem::class, 'ValorCalifSubitem');
+	}
 
 	public function sub_item()
 	{

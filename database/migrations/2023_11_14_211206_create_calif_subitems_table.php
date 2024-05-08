@@ -18,6 +18,7 @@ class CreateCalifSubitemsTable extends Migration
             $table->unsignedBigInteger('ValorCalifSubitem');
             $table->unsignedBigInteger('subitem');
             $table->foreign("subitem")->references("idSubitem")->on("sub_items")->onDelete('cascade');
+            $table->foreign("ValorCalifSubitem")->references("idValorCalifSubitem")->on("valorcalif_subitems")->onDelete('cascade');
             $table->timestamps();
         });
     }
