@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $anteproyecto
  * @property int|null $proyecto_final
  * @property int|null $sustentacion
- * @property int|null $calif_subitems
  * @property string $numeroJurado
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -28,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property FaseAnteproyecto|null $fase_anteproyecto
  * @property FaseProyectosfinale|null $fase_proyectosfinale
  * @property FaseSustentacione|null $fase_sustentacione
- * @property CalifSubitem|null $calif_subitem
  *
  * @package App\Models
  */
@@ -41,8 +39,7 @@ class FaseCalOb extends Model
 		'propuesta' => 'int',
 		'anteproyecto' => 'int',
 		'proyecto_final' => 'int',
-		'sustentacion' => 'int',
-		'calif_subitems' => 'int'
+		'sustentacion' => 'int'
 	];
 
 	protected $fillable = [
@@ -51,7 +48,6 @@ class FaseCalOb extends Model
 		'anteproyecto',
 		'proyecto_final',
 		'sustentacion',
-		'calif_subitems',
 		'numeroJurado'
 	];
 
@@ -78,10 +74,5 @@ class FaseCalOb extends Model
 	public function fase_sustentacione()
 	{
 		return $this->belongsTo(FaseSustentacione::class, 'sustentacion');
-	}
-
-	public function calif_subitem()
-	{
-		return $this->belongsTo(CalifSubitem::class, 'calif_subitems');
 	}
 }

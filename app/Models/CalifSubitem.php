@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property ValorcalifSubitem $valorcalif_subitem
  * @property SubItem $sub_item
- * @property Collection|FaseCalOb[] $fase_cal_obs
+ * @property Collection|Calificacione[] $calificaciones
  *
  * @package App\Models
  */
@@ -50,8 +50,8 @@ class CalifSubitem extends Model
 		return $this->belongsTo(SubItem::class, 'subitem');
 	}
 
-	public function fase_cal_obs()
+	public function calificaciones()
 	{
-		return $this->hasMany(FaseCalOb::class, 'calif_subitems');
+		return $this->hasMany(Calificacione::class, 'califSubitem');
 	}
 }
