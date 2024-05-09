@@ -17,20 +17,25 @@
                             data-bs-target="#flush-collapse{{ str_replace(" ", "", $clave) }}" aria-expanded="false" aria-controls="flush-collapse{{ str_replace(" ", "", $clave) }}">
                             <h5>{{ $clave }}</h5>
                         </button><br>
-                        <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs'.$contador }}">
-                            {{$array['observaciones'][$jurado][$contador]}}
-                        </textarea>
+                        <div class="input-group mb-3 campos-calificacion" style="display: flex; padding: 15px">
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs'.$contador }}">
+                                {{$array['observaciones'][$jurado][$contador][0]}}
+                            </textarea>
+                            <span class="input-group-text" id="basic-addon2" style="display: flex">
+                                <p>{{$array['observaciones'][$jurado][$contador][1]}}</p>
+                            </span>
 
-                        <input type="text" name="{{ 'canti'.$contador }}" value="{{count($valor)}}">
+                            <input type="hidden" name="{{ 'canti'.$contador }}" value="{{count($valor)}}">
+                        </div>
                     </h2><br>
 
                     <div id="flush-collapse{{ str_replace(" ", "", $clave) }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ str_replace(" ", "", $clave) }}"
                         data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body" style="display: block">
+
                             @component('components.anteproyecto.calificacionObser', [
                                 'subItems' => $valor,
                                 'item' => str_replace(" ", "", $clave),
-                                'obsArray' => $array['observaciones'][$jurado][0],
                                 'jurado' => $jurado,
                                 'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
                                 'styleDisplayGeneral' => 'flex',

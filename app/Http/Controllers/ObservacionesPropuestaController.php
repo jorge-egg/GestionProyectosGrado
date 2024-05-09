@@ -11,6 +11,7 @@ use App\Models\FaseAnteproyecto;
 use App\Models\FasePropuesta;
 use App\Models\FaseProyectosfinale;
 use App\Models\FaseSustentacione;
+use App\Models\FaseSustentaciones;
 use App\Models\PonderadosPropuesta;
 use App\Models\PonderadoAnteproyecto;
 use App\Traits\funcionesUniversales;
@@ -251,7 +252,7 @@ class ObservacionesPropuestaController extends Controller
         }
 
         $propuesta = $fase == 'propuesta' ? FasePropuesta::findOrFail($idfase) : ($fase == 'anteproyecto' ? FaseAnteproyecto::findOrFail($idfase) : ($fase == 'proyectoFinal' ? FaseProyectosfinale::findOrFail($idfase) :
-            FaseSustentacione::findOrFail($idfase)));
+            FaseSustentaciones::findOrFail($idfase)));
         if ($total >= 3.5) {
             $propuesta->estado = 'Aprobado';
             $propuesta->save();
@@ -265,14 +266,14 @@ class ObservacionesPropuestaController extends Controller
     }
 
 
-    public function ultimaObservacion($idPropuesta)
-    {
-        $observacionesAnterior = ObservacionesCalificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
-            ->where('propuesta', $idPropuesta)
-            ->orderBy('idObservacion', 'asc')
-            ->get();
-        return $observacionesAnterior;
-    }
+    // public function ultimaObservacion($idPropuesta)
+    // {
+    //     $observacionesAnterior = ObservacionesCalificaciones::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
+    //         ->where('propuesta', $idPropuesta)
+    //         ->orderBy('idObservacion', 'asc')
+    //         ->get();
+    //     return $observacionesAnterior;
+    // }
     public function ultimaCalificacion($idPropuesta)
     {
         $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')

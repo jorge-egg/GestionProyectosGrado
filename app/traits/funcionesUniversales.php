@@ -61,9 +61,9 @@ trait funcionesUniversales
     public function ultimaObservacion($idFase, $fase, $cantObs)
     {
         try {
-            $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.observacion_fase', 'observaciones_calificaciones.idObservacion')
+            $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
-                ->orderBy('idObservacion', 'asc')
+                ->orderBy('idCalificacion', 'asc')
                 ->get();
             $array = [];
 
@@ -71,20 +71,20 @@ trait funcionesUniversales
                 $array1 = [];
                 $array2 = [];
                 foreach ($observacionesAnterior as $observacion) {
-                    if ($observacion->numeroJurado == '1') {
-                        $dato1 = $observacion->observacion;
+                    if ($observacion->numeroJurado == '0') {
+                        $dato1 = [$observacion->observacion, $observacion->calificacion];
                         array_push($array1, $dato1);
 
-                    } else if ($observacion->numeroJurado == '2') {
-                        $dato2 = $observacion->observacion;
+                    } else if ($observacion->numeroJurado == '1') {
+                        $dato2 = [$observacion->observacion, $observacion->calificacion];
                         array_push($array2, $dato2);
                     }
                 }
 
                 if (!isset($observacionesAnterior[0])) {
                     for ($i = 0; $i < $cantObs; $i++) {
-                        array_push($array1, "");
-                        array_push($array2, "");
+                        array_push($array1, ["",""]);
+                        array_push($array2, ["",""]);
                     }
                 }
                 array_push($array, $array1);
@@ -111,8 +111,8 @@ trait funcionesUniversales
             $array = [];
             if ($fase == 'anteproyecto') {
                 for ($i = 0; $i < $cantObs; $i++) {
-                    array_push($array1, "");
-                    array_push($array2, "");
+                    array_push($array1, ["",""]);
+                    array_push($array2, ["",""]);
                 }
                 array_push($array, $array1);
                 array_push($array, $array2);
