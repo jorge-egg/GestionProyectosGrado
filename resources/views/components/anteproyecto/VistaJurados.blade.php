@@ -20,9 +20,10 @@
                             <h5>{{ $clave }}</h5>
                         </button><br>
                         <div class="input-group mb-3 campos-calificacion" style="display: flex; padding: 15px">
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs'.$contador }}">
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs'.$contador }}" {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '' : 'disabled'}}>
                                 {{$array['observaciones'][$jurado][$contador][0]}}
                             </textarea>
+
                             <span class="input-group-text" id="basic-addon2" style="display: flex">
                                 <p>{{$array['observaciones'][$jurado][$contador][1]}}</p>
                             </span>
@@ -36,6 +37,7 @@
                         <div class="accordion-body" style="display: block">
 
                             @component('components.anteproyecto.calificacionObser', [
+                                'idJurado' => $array,
                                 'subItems' => $valor,
                                 'longitud' => $g,
                                 'jurado' => $jurado,
@@ -53,76 +55,15 @@
 
         @endforeach
 
-
-        {{-- @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'tituloCalificacion',
-            'nameTextArea' => 'tituloObservacion',
-            'obsArray' => $array['observaciones'][$jurado][0],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent --}}
-        {{-- <h5></h5>
-        @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'planProbCalificacion',
-            'nameTextArea' => ,
-            'obsArray' => $array['observaciones'][$jurado][2],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent --}}
-        {{-- <h5></h5>
-        @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'justCalificacion',
-            'nameTextArea' => ,
-            'obsArray' => $array['observaciones'][$jurado][3],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent
-        <h5></h5>
-        @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'marcRefCalificacion',
-            'nameTextArea' => ,
-            'obsArray' => $array['observaciones'][$jurado][4],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent
-        <h5></h5>
-        @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'metodCalificacion',
-            'nameTextArea' => ,
-            'obsArray' => $array['observaciones'][$jurado][5],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent
-        <h5></h5>
-        @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'admCtrCalificacion',
-            'nameTextArea' => ,
-            'obsArray' => $array['observaciones'][$jurado][6],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent
-        <h5></h5>
-        @component('components.anteproyecto.calificacionObser', [
-            'nameSelect' => 'normBibliCalificacion',
-            'nameTextArea' =>
-            'obsArray' => $array['observaciones'][$jurado][7],
-            'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
-            'styleDisplayGeneral' => 'flex',
-        ])
-        @endcomponent --}}
-
         <br>
+        @can('anteproyecto.calificar')
         <div class="mb-3">
             <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', 'anteproyecto') }}"
                 class="btn" style="background:#003E65; color:#fff">Enviar
                 calificación</button>
         </div>
+        @endcan
+
 
     </section>
     </p>

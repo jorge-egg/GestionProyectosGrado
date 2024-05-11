@@ -149,6 +149,6 @@ class CronogramaController extends Controller
      */
     public function destroy($id)
     {
-        
+
     }
 }

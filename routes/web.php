@@ -65,6 +65,7 @@ Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('pro
 Route::get('/proyectos/indextable', [ProyectosController::class, 'indextable'])->name('proyecto.indextable');
 Route::get('/proyectos/indextableAll', [ProyectosController::class, 'indextableAll'])->name('proyecto.indextableAll');
 Route::get('/proyectos/indextableComite', [ProyectosController::class, 'indextableComite'])->name('proyecto.indextableComite');
+Route::get('/proyectos/indextableJurado', [ProyectosController::class, 'indextableJurado'])->name('proyecto.indextableJurado');
 Route::get('/proyectos/indextableDocente', [ProyectosController::class, 'indextableDocente'])->name('proyecto.indextableDocente');
 Route::post('/proyectos/create/{integrantes}', [ProyectosController::class, 'create'])->name('proyecto.create');
 Route::get('/usuario/consulta', [ProyectosController::class, 'buscarIntegrante'])->name('buscarIntegrante');

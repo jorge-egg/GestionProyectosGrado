@@ -99,30 +99,50 @@
                                         class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta
                                         del director</i></a>
                             </section>
+                            @can('propuesta.agregar')
+                                <p style="color: red">Por favor espere a que el director del proyecto califique los documentos
+                                    cargados</p>
+                            @endcan
                         </div>
+                        @php
+                            $aprobDocent =
+                                $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
+                        @endphp
                         <form method="post">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
                             @can('anteproyecto.aprobarDocumento')
                                 <p style="display: none">{{ $valCalif = true }}</p>
                                 @if ($array['valDocAsig'])
-                                    <p><b>Nota: </b>Estimado profesor, para nombrar jurados al proyecto usted debe dar su
+                                    <p style="display: {{ $aprobDocent == '-1' ? 'block' : 'none' }}"><b>Nota: </b>Estimado
+                                        profesor, para nombrar jurados al proyecto usted debe dar su
                                         aprobación al documento.</p>
                                     <br>
                                     <div class="input-group">
                                         <span class="input-group-text">Observaciones</span>
                                         <textarea class="form-control" aria-label="With textarea" name="ObsDocent"
-                                            {{ $array['anteproyecto']->observaDocent == '' ? '' : 'disabled' }}>{{ $array['anteproyecto']->observaDocent }}</textarea>
+                                            {{ $aprobDocent == '-1' ? '' : 'disabled' }}>{{ $array['anteproyecto']->observaDocent }}</textarea>
                                     </div><br>
-                                    <div class="form-check form-switch">
+                                    <div class="form-check form-switch"
+                                        style="display: {{ $aprobDocent == '-1' ? 'block' : 'none' }}"
+                                        {{ $aprobDocent == '-1' ? '' : 'disabled' }}>
                                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
                                             name="switchAprobDoc">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Aprobación del
                                             docente</label>
                                     </div><br>
-                                    <button class="btn" style="background:#003E65; color:#fff; margin-bottom: 10px"
+                                    <button class="btn"
+                                        style="background:#003E65; color:#fff; margin-bottom: 10px; display: {{ $aprobDocent == '-1' ? 'block' : 'none' }}"
+                                        {{ $aprobDocent == '-1' ? '' : 'disabled' }}
                                         formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
                                         aprobacion del documento</button>
+                                    @if ($aprobDocent == '1')
+                                        <p style="color: red">Los documentos NO fueron aprobados por el director del proyecto
+                                        </p>
+                                    @elseif ($aprobDocent == '2')
+                                        <p style="color: rgb(0, 62, 101)"><b>Los documentos fueron aprobados por el director del
+                                                proyecto</b></p>
+                                    @endif
                                 @endif
                             @endcan
                         </form>
@@ -131,68 +151,72 @@
         </div>
     </div>
     <br>
-    <div class="card">
+    <div class="card" style="display: {{ $aprobDocent == '-1' || $aprobDocent == '1' ? 'none' : 'block' }}">
         <h5 class="card-title text-center">Jurados</h5>
 
         <div class='card-body' style="text-align: center">
-            @php
-                $JuradoUno =
-                    $array['anteproyecto']->juradoUno == '-1'
-                        ? (object) ['nombre' => 'Sin asignar', 'apellido' => '']
-                        : App\Models\UsuariosUser::where('numeroDocumento', $array['anteproyecto']->juradoUno)
-                            ->select('nombre', 'apellido')
-                            ->first();
-                $JuradoDos =
-                    $array['anteproyecto']->juradoDos == '-1'
-                        ? (object) ['nombre' => 'Sin asignar', 'apellido' => '']
-                        : App\Models\UsuariosUser::where('numeroDocumento', $array['anteproyecto']->juradoDos)
-                            ->select('nombre', 'apellido')
-                            ->first();
+            <p style="color: red; display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1'? 'block' : 'none' }}">Por favor espere a que se le asignen los jurados a la fase de anteproyecto</p>
+            <p style="color: red; display:{{ $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1'? 'block' : 'none' }}">Los jurados fueron asignados exitosamente</p>
+            @can('anteproyecto.verJurados')
+                @php
+                    $JuradoUno =
+                        $array['anteproyecto']->juradoUno == '-1'
+                            ? (object) ['nombre' => 'Sin asignar', 'apellido' => '']
+                            : App\Models\UsuariosUser::where('numeroDocumento', $array['anteproyecto']->juradoUno)
+                                ->select('nombre', 'apellido')
+                                ->first();
+                    $JuradoDos =
+                        $array['anteproyecto']->juradoDos == '-1'
+                            ? (object) ['nombre' => 'Sin asignar', 'apellido' => '']
+                            : App\Models\UsuariosUser::where('numeroDocumento', $array['anteproyecto']->juradoDos)
+                                ->select('nombre', 'apellido')
+                                ->first();
 
-            @endphp
-            <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
-            <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
-            <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+                @endphp
+                <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
+                <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
+                <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
 
-                @component('components.Modales.buscarDocente', [
-                    'docentes' => $miembrosDocente['docentes'],
-                    'idProyecto' => $miembrosDocente['idProyecto'],
-                    'fase' => 'anteproyecto',
-                ])
-                @endcomponent
-            </div>
-            @php
-                $habilitarButtonJ =
-                    $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1'
-                        ? 'none'
-                        : 'block';
-            @endphp
-            <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
-                style="background:#003E65; color:#fff; width: 100%; display: {{ $habilitarButtonJ }}">Seleccionar
-                jurados</button>
+                    @component('components.Modales.buscarDocente', [
+                        'docentes' => $miembrosDocente['docentes'],
+                        'idProyecto' => $miembrosDocente['idProyecto'],
+                        'fase' => 'anteproyecto',
+                    ])
+                    @endcomponent
+                </div>
+                @php
+                    $habilitarButtonJ =
+                        $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1'
+                            ? 'none'
+                            : 'block';
+                @endphp
+                @can('anteproyecto.asigJurados')
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
+                        style="background:#003E65; color:#fff; width: 100%; display: {{ $habilitarButtonJ }}">Seleccionar
+                        jurados</button>
+                @endcan
+            @endcan
         </div>
     </div>
     <br>
-    @php
-        $aprobDocent = $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
-    @endphp
+
     @if ($aprobDocent == '2')
-        <div class="card" style="display: flex">
+        <div class="card" style="display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1'? 'none' : 'flex' }}">
 
             <ul class="nav nav-tabs">
-                <li class="nav-item">
+                <li class="nav-item" style="display: {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block'}}">
                     <a class="nav-link active" aria-current="page" id="juradoUnoButton" style="cursor: pointer;">Jurado
                         1</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" style="display: {{$array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block'}}">
                     <a class="nav-link" aria-current="page" id="juradoDosButton" style="cursor: pointer;">Jurado 2</a>
                 </li>
             </ul>
             <form action="{{ route('anteproyecto.store') }}" method='POST'>
                 @csrf
-                <input type="hidden" id="inputJurado" name="numeroJurado">
-                <section id="j1" style="display: block">
+                <input type="hidden" id="inputJurado" name="numeroJurado" value="{{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '1' : ($array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '0' : '0') }}">
+                <section id="j1" style="display: {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : ($array['anteproyecto']->juradoDos != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento && $array['anteproyecto']->juradoUno != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'block' : 'block')}}">
                     @component('components.anteproyecto.VistaJurados', [
                         'array' => $array,
                         'valRolComite' => $valRolComite,
@@ -200,7 +224,7 @@
                     ])
                     @endcomponent
                 </section>
-                <section id="j2" style="display: none">
+                <section id="j2" style="display: {{$array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : ($array['anteproyecto']->juradoDos != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento && $array['anteproyecto']->juradoUno != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block')}}">
                     @component('components.anteproyecto.VistaJurados', [
                         'array' => $array,
                         'valRolComite' => $valRolComite,
@@ -219,7 +243,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                                documento'
+                                                                                                                                                                                                                                                                                                                                                documento'
                 : '') }}
     </p>
 
@@ -240,11 +264,7 @@
             const inputJurado = document.getElementById('inputJurado'); //numero del jurado
             const secJ1 = document.getElementById('j1'); //section J1
             const secJ2 = document.getElementById('j2'); //section J2
-            inputJurado.value = '0';
-            secJ2.querySelectorAll('textarea').forEach(textarea => {
-                    textarea.disabled = true;
-                    textarea.name = 'inactive_' + textarea.name;
-                });
+            //inputJurado.value = '0';
 
             // Manejador de eventos para el clic en el enlace
             enlace1.addEventListener('click', function(event) {
@@ -261,17 +281,6 @@
                 secJ2.style.disabled = true;
                 secJ1.style.disabled = false;
 
-                // Deshabilitar todos los inputs primero
-                secJ2.querySelectorAll('textarea').forEach(textarea => {
-                    textarea.disabled = true;
-                    textarea.name = 'inactive_' + textarea.name;
-                });
-
-                // Suponiendo que secJ1 es la sección activa, sólo habilitamos los inputs allí
-                secJ1.querySelectorAll('textarea').forEach(textarea => {
-                    textarea.disabled = false;
-                    textarea.name = textarea.name.replace('/^inactive_/', '');
-                });
             });
 
 
@@ -288,18 +297,6 @@
                 secJ1.style.display = 'none';
                 secJ2.style.disabled = false;
                 secJ1.style.disabled = true;
-
-                // Deshabilitar todos los inputs primero
-                secJ1.querySelectorAll('textarea').forEach(textarea => {
-                    textarea.disabled = true;
-                    textarea.name = 'inactive_' + textarea.name;
-                });
-
-                // Suponiendo que secJ1 es la sección activa, sólo habilitamos los inputs allí
-                secJ2.querySelectorAll('textarea').forEach(textarea => {
-                    textarea.disabled = false;
-                    textarea.name = textarea.name.replaceAll('inactive_', '');
-                });
             });
 
         });

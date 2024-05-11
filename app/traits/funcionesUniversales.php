@@ -90,8 +90,8 @@ trait funcionesUniversales
 
                 if (!isset($observacionesAnterior[0])) {
                     for ($i = 0; $i < $cantObs; $i++) {
-                        array_push($array1, ["--","--"]);
-                        array_push($array2, ["--","--"]);
+                        array_push($array1, ["","--"]);
+                        array_push($array2, ["","--"]);
                     }
                 }
                 array_push($array, $array1);
