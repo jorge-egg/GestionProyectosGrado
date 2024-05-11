@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Calificacione;
+use App\Models\CalifSubitem;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
@@ -60,31 +61,37 @@ trait funcionesUniversales
     //consultar si existen observaciones creadas por el usuario y tomar la ultima
     public function ultimaObservacion($idFase, $fase, $cantObs)
     {
+
         try {
             $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
             $array = [];
-
+            //dd($observacionesAnterior);
             if ($fase == 'anteproyecto') {
                 $array1 = [];
                 $array2 = [];
                 foreach ($observacionesAnterior as $observacion) {
                     if ($observacion->numeroJurado == '0') {
-                        $dato1 = [$observacion->observacion, $observacion->calificacion];
-                        array_push($array1, $dato1);
+                        $subitems = CalifSubitem::join('valorcalif_subitems', 'valorcalif_subitems.idValorCalifSubitem', 'calif_subitems.ValorCalifSubitem')
+                        ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
+                        //dd($subitems);
 
+                        $dato1 = [$observacion->observacion, $observacion->calificacion, $subitems, $observacion->idCalificacion];
+                        array_push($array1, $dato1);
                     } else if ($observacion->numeroJurado == '1') {
-                        $dato2 = [$observacion->observacion, $observacion->calificacion];
+                        $subitems = CalifSubitem::join('valorcalif_subitems', 'valorcalif_subitems.idValorCalifSubitem', 'calif_subitems.ValorCalifSubitem')
+                        ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
+                        $dato2 = [$observacion->observacion, $observacion->calificacion, $subitems, $observacion->idCalificacion];
                         array_push($array2, $dato2);
                     }
                 }
 
                 if (!isset($observacionesAnterior[0])) {
                     for ($i = 0; $i < $cantObs; $i++) {
-                        array_push($array1, ["",""]);
-                        array_push($array2, ["",""]);
+                        array_push($array1, ["--","--"]);
+                        array_push($array2, ["--","--"]);
                     }
                 }
                 array_push($array, $array1);
@@ -111,8 +118,8 @@ trait funcionesUniversales
             $array = [];
             if ($fase == 'anteproyecto') {
                 for ($i = 0; $i < $cantObs; $i++) {
-                    array_push($array1, ["",""]);
-                    array_push($array2, ["",""]);
+                    array_push($array1, ["--","--"]);
+                    array_push($array2, ["--","--"]);
                 }
                 array_push($array, $array1);
                 array_push($array, $array2);

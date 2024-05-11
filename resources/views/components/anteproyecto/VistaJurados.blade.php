@@ -9,7 +9,9 @@
             $jurado
         @endphp
         @foreach ($array['nameItems'] as $clave => $valor)
-
+            @php
+                $g = count($valor);
+            @endphp
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-heading{{ str_replace(" ", "", $clave) }}">
@@ -35,8 +37,9 @@
 
                             @component('components.anteproyecto.calificacionObser', [
                                 'subItems' => $valor,
-                                'item' => str_replace(" ", "", $clave),
+                                'longitud' => $g,
                                 'jurado' => $jurado,
+                                'valSelects' => $array['observaciones'][$jurado][$contador],
                                 'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
                                 'styleDisplayGeneral' => 'flex',
                             ])
