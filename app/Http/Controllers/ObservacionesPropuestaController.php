@@ -144,7 +144,7 @@ class ObservacionesPropuestaController extends Controller
         $incrementador = 0;
         $itemsSubItems = $this->buscarNombresItems('anteproyecto');
 
-        //dd($itemsSubItems);
+        //dd($request);
 
         foreach ($itemsSubItems as $clave => $valor) {
             $dataCalificaciones = [];
@@ -195,6 +195,7 @@ class ObservacionesPropuestaController extends Controller
     public function calcCalifAnteproy($item, $select, $fase, $request, $names, $numSubItems, $nameObs)
     { //calcula la nota tipo double en base al item y a la opcion del select
         $idCalificacion = Calificacione::orderBy('idCalificacion', 'desc')->take(1)->pluck('idCalificacion');$idCalificacion = Calificacione::orderBy('idCalificacion', 'desc')->take(1)->pluck('idCalificacion');
+        //dd($idCalificacion);
         if(!isset($idCalificacion[0])){
             $idCalificacion = [];
             array_push($idCalificacion, 0);
@@ -210,7 +211,7 @@ class ObservacionesPropuestaController extends Controller
         foreach($names as $name){
             $jurado = $request->numeroJurado;
             $nombreSubItem = $name->codigo.$jurado;
-
+            //dd($request->$nombreSubItem);
             if ($request->$nombreSubItem == "si") {
                 $totalCalificacion += ($ponderado->ponderado / $request->$numSubItems);
                 $valor = 1;
@@ -221,12 +222,13 @@ class ObservacionesPropuestaController extends Controller
                 $totalCalificacion += 0;
                 $valor = 2;
             }
+
             array_push($datos,[
                     'ValorCalifSubitem' => $valor,
                     'calificacion' => $idCalificacion[0]+1,
                     'subitem' => $name->idSubitem,
             ]);
-
+            //dd($request->$nameObs);
         }
         Calificacione::insert([
             'observacion' => $request->$nameObs,

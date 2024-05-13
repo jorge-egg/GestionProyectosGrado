@@ -155,8 +155,12 @@
         <h5 class="card-title text-center">Jurados</h5>
 
         <div class='card-body' style="text-align: center">
-            <p style="color: red; display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1'? 'block' : 'none' }}">Por favor espere a que se le asignen los jurados a la fase de anteproyecto</p>
-            <p style="color: red; display:{{ $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1'? 'block' : 'none' }}">Los jurados fueron asignados exitosamente</p>
+            <p
+                style="color: red; display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1' ? 'block' : 'none' }}">
+                Por favor espere a que se le asignen los jurados a la fase de anteproyecto</p>
+            <p
+                style="color: red; display:{{ $array['anteproyecto']->juradoUno != '-1' && $array['anteproyecto']->juradoDos != '-1' ? 'block' : 'none' }}">
+                Los jurados fueron asignados exitosamente</p>
             @can('anteproyecto.verJurados')
                 @php
                     $JuradoUno =
@@ -202,21 +206,26 @@
     <br>
 
     @if ($aprobDocent == '2')
-        <div class="card" style="display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1'? 'none' : 'flex' }}">
+        <div class="card"
+            style="display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1' ? 'none' : 'flex' }}">
 
             <ul class="nav nav-tabs">
-                <li class="nav-item" style="display: {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block'}}">
+                <li class="nav-item"
+                    style="display: {{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block' }}">
                     <a class="nav-link active" aria-current="page" id="juradoUnoButton" style="cursor: pointer;">Jurado
                         1</a>
                 </li>
-                <li class="nav-item" style="display: {{$array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block'}}">
+                <li class="nav-item"
+                    style="display: {{ $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block' }}">
                     <a class="nav-link" aria-current="page" id="juradoDosButton" style="cursor: pointer;">Jurado 2</a>
                 </li>
             </ul>
             <form action="{{ route('anteproyecto.store') }}" method='POST'>
                 @csrf
-                <input type="hidden" id="inputJurado" name="numeroJurado" value="{{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '1' : ($array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '0' : '0') }}">
-                <section id="j1" style="display: {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : ($array['anteproyecto']->juradoDos != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento && $array['anteproyecto']->juradoUno != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'block' : 'block')}}">
+                <input type="hidden" id="inputJurado" name="numeroJurado"
+                    value="{{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '1' : ($array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '0' : '0') }}">
+                <section id="j1"
+                    style="display: {{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : ($array['anteproyecto']->juradoDos != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento && $array['anteproyecto']->juradoUno != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'block' : 'block') }}">
                     @component('components.anteproyecto.VistaJurados', [
                         'array' => $array,
                         'valRolComite' => $valRolComite,
@@ -224,7 +233,8 @@
                     ])
                     @endcomponent
                 </section>
-                <section id="j2" style="display: {{$array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : ($array['anteproyecto']->juradoDos != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento && $array['anteproyecto']->juradoUno != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block')}}">
+                <section id="j2"
+                    style="display: {{ $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : ($array['anteproyecto']->juradoDos != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento && $array['anteproyecto']->juradoUno != App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? 'none' : 'block') }}">
                     @component('components.anteproyecto.VistaJurados', [
                         'array' => $array,
                         'valRolComite' => $valRolComite,
@@ -243,7 +253,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                                                documento'
+                                                                                                                                                                                                                                                                                                                                                        documento'
                 : '') }}
     </p>
 
@@ -257,18 +267,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // Accede al enlace por su ID
             const enlace1 = document.getElementById('juradoUnoButton');
             const enlace2 = document.getElementById('juradoDosButton');
-            const inputJurado = document.getElementById('inputJurado'); //numero del jurado
-            const secJ1 = document.getElementById('j1'); //section J1
-            const secJ2 = document.getElementById('j2'); //section J2
-            //inputJurado.value = '0';
+            const inputJurado = document.getElementById('inputJurado');
+            const secJ1 = document.getElementById('j1');
+            const secJ2 = document.getElementById('j2');
 
-            // Manejador de eventos para el clic en el enlace
+            if (inputJurado.value === '0') {
+                secJ2.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.name = 'inactive_' + textarea.name;
+                });
+
+                secJ1.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.name = textarea.name.replace(/^inactive_/, '');
+                });
+            } else if (inputJurado.value === '1') {
+                secJ1.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.name = 'inactive_' + textarea.name;
+                });
+
+                secJ2.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.name = textarea.name.replaceAll('inactive_', '');
+                });
+            }
+
             enlace1.addEventListener('click', function(event) {
-                // Previene el comportamiento predeterminado del enlace
                 event.preventDefault();
 
                 inputJurado.value = '0';
@@ -278,14 +301,9 @@
 
                 secJ1.style.display = 'block';
                 secJ2.style.display = 'none';
-                secJ2.style.disabled = true;
-                secJ1.style.disabled = false;
-
             });
 
-
             enlace2.addEventListener('click', function(event) {
-                // Previene el comportamiento predeterminado del enlace
                 event.preventDefault();
 
                 inputJurado.value = '1';
@@ -295,10 +313,8 @@
 
                 secJ2.style.display = 'block';
                 secJ1.style.display = 'none';
-                secJ2.style.disabled = false;
-                secJ1.style.disabled = true;
             });
-
         });
     </script>
+
 @stop
