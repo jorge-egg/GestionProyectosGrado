@@ -88,7 +88,7 @@ class ObservacionesPropuestaController extends Controller
                 break;
 
             case 'anteproyecto':
-                return redirect()->route('proyecto.indextableDocente');
+                return redirect()->route('proyecto.indextableJurado');
                 break;
 
             default:

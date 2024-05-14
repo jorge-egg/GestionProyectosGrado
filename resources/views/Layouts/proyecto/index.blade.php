@@ -29,7 +29,8 @@
                 </button>
             @else
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular" data-bs-toggle="modal"
-                    data-bs-target="#confirmacionIntegrante">Crear un proyecto</button>
+                    data-bs-target="#confirmacionIntegrante"><h3><b>Crear un proyecto</b></h3><br>
+                    <p><small>Crea un proyecto de grado indiviual o en pareja (maximo 2 integrantes).</small></p></button>
             @endif
         @endcan
         @can('proyecto.consultar')

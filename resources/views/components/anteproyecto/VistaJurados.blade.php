@@ -20,12 +20,12 @@
                             <h5>{{ $clave }}</h5>
                         </button><br>
                         <div class="input-group mb-3 campos-calificacion" style="display: flex; padding: 15px">
-                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs'.$contador }}" {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '' : 'disabled'}}>
+                            <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs'.$contador }}" {{$array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '' : 'disabled'}} {{$array['observaciones'][$jurado][$contador][0] == '' ? '': 'disabled'}}>
                                 {{$array['observaciones'][$jurado][$contador][0]}}
                             </textarea>
 
                             <span class="input-group-text" id="basic-addon2" style="display: flex">
-                                <p>{{$array['observaciones'][$jurado][$contador][1]}}</p>
+                                <p>{{round($array['observaciones'][$jurado][$contador][1], 3)}}</p>
                             </span>
 
                             <input type="hidden" name="{{ 'canti'.$contador }}" value="{{count($valor)}}">
@@ -57,11 +57,14 @@
 
         <br>
         @can('anteproyecto.calificar')
+        @if ($array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento)
         <div class="mb-3">
             <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', 'anteproyecto') }}"
                 class="btn" style="background:#003E65; color:#fff">Enviar
                 calificación</button>
         </div>
+        @endif
+
         @endcan
 
 
