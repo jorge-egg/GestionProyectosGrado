@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Http\Controllers\FasePropuestasController;
 use App\Models\Calificacione;
 use App\Models\CalifSubitem;
 use Exception;
@@ -13,6 +14,7 @@ use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use App\Models\UsuarioPrograma;
 use App\Models\FaseAnteproyecto;
+use App\Models\FaseProyectosfinale;
 use App\Models\Item;
 use App\Models\SedeProyectosGrado;
 use App\Models\SubItem;
@@ -33,9 +35,27 @@ trait funcionesUniversales
                 '010',
                 '011',
                 '012'
+            ],
+            'proyFinal' => [
+                '001',
+                '006',
+                '007',
+                '008',
+                '009',
+                '010',
+                '013',
+                '012'
             ]
         ];
-        $items = Item::whereIn('codigoItem', $codigos['anteproyecto'])->get();
+        switch($fase){
+            case 'anteproyecto':
+                $items = Item::whereIn('codigoItem', $codigos['anteproyecto'])->get();
+                break;
+            case 'proyFinal':
+                $items = Item::whereIn('codigoItem', $codigos['proyFinal'])->get();
+                break;
+        }
+
         //dd($items);
         $Integracion = [];
 
@@ -68,6 +88,7 @@ trait funcionesUniversales
             $array = [];
             //dd($observacionesAnterior);
             if ($fase == 'anteproyecto') {
+
                 $array1 = [];
                 $array2 = [];
                 foreach ($observacionesAnterior as $observacion) {
@@ -91,8 +112,14 @@ trait funcionesUniversales
                         array_push($array1, ["", "--", []]);
                         array_push($array2, ["", "--", []]);
                     }
-                } else if (!isset($array1[0])) {
+                } else if (!isset($array2[0])) {
                     for ($i = 0; $i < $cantObs; $i++) {
+                        //dd('g');
+                        array_push($array2, ["", "--", []]);
+                    }
+                } else if(!isset($array1[0])){
+                    for ($i = 0; $i < $cantObs; $i++) {
+                        //dd('g');
                         array_push($array1, ["", "--", []]);
                     }
                 }
@@ -132,6 +159,7 @@ trait funcionesUniversales
                 }
             }
         }
+        //dd($array);
         return $array;
     }
 
@@ -250,16 +278,27 @@ trait funcionesUniversales
             ->get();
     }
 
-    public function asignarJurado($idProyecto, $numeroDocumento)
+    public function asignarJurado($idProyecto, $numeroDocumento, $fase)
     {
+
+        $sqlFase = (object)[];
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
-        if ($anteproyecto->juradoUno != '-1') {
-            $anteproyecto->juradoDos = $numeroDocumento; //estado de aprobado
-            $anteproyecto->save();
+        switch($fase){
+            case 'anteproyecto':
+
+                $sqlFase = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
+                break;
+            case 'proFinal':
+                $sqlFase = FaseProyectosfinale::where('pfin_proy', $proyecto->idProyecto)->orderByDesc('idProyectofinal')->first();
+                break;
+        }
+        //dd($sqlFase);
+        if ($sqlFase->juradoUno != '-1') {
+            $sqlFase->juradoDos = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
         } else {
-            $anteproyecto->juradoUno = $numeroDocumento; //estado de aprobado
-            $anteproyecto->save();
+            $sqlFase->juradoUno = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
         }
     }
 }

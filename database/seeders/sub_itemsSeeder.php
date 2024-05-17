@@ -227,17 +227,17 @@ class sub_itemsSeeder extends Seeder
         ]);
         DB::table('sub_items')->insert([
             'codigo' => '043',
-            'SubItem' => '9.1 Las fuentes de consulta son fiables con autor específico y contienen rigor científico. (mínimo 15 referencias)',
+            'SubItem' => '9.1 Esta organizado por subcapítulos en concordancia con cada uno de los objetivos espedíficos propuestos.',
             'item' => 13,
         ]);
         DB::table('sub_items')->insert([
             'codigo' => '044',
-            'SubItem' => '9.2 Las fuentes de consulta son fiables con autor específico y contienen rigor científico. (mínimo 15 referencias)',
+            'SubItem' => '9.2 Cada subcapítulo evidencia el proceso y acciones llevadas a cabo para responder a los objetivos y necesidades planteadas.',
             'item' => 13,
         ]);
         DB::table('sub_items')->insert([
             'codigo' => '045',
-            'SubItem' => '9.3 Las fuentes de consulta son fiables con autor específico y contienen rigor científico. (mínimo 15 referencias)',
+            'SubItem' => '9.3 Las conclusiones y recomendaciones están acordes a la investigación.',
             'item' => 13,
         ]);
 

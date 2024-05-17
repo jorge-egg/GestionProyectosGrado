@@ -25,7 +25,7 @@
     </div><br>
     <div class="card" style="display: flex">
         {{-- <div class="card" style="display: {{ $array['valExistDocent'] ? 'flex' : 'none' }};"> --}}
-        <h5 class="card-title text-center">Crear anteproyecto</h5>
+        <h5 class="card-title text-center">Crear proyecto final</h5>
         <div class='card-body'>
             <p class="card-text">
 
@@ -52,9 +52,9 @@
 
                     @if (!$array['rangoFecha'][2])
                         <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
-                    @elseif ($array['docExist1'] == null && $array['docExist2'] == null)
+                    @elseif ($array['docExist1'] == null)
                         <p style="color: red">El documento no ha sido cargado. </p>
-                        <form action="{{ route('anteproyecto.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('proyectoFinal.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
 
@@ -68,36 +68,21 @@
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </section>
-                                    <section class="documentosSec">
-                                        <label for="docDir" class="form-label">Carta de aprobación Director</label>
-                                        <input class="form-control input-file @error('docDir') is-invalid @enderror"
-                                            type="file" id="docDir" name="docDir">
-                                        @error('docDir')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </section>
                                 </div>
                                 <button type="submit" id="buttonToCreatePropuesta" class="btn"
                                     style="background:#003E65; color:#fff">Agregar</button>
                             @endcan
                         </form>
-                    @elseif ($array['docExist1'] != null && $array['docExist2'] != null)
+                    @elseif ($array['docExist1'] != null)
                         <p style="display: none">{{ $valRolComite = true }}</p>
                         <div class="documentos">
                             <section class="documentosSec" style="text-align: center">
 
                                 <!-- documento del anteproyecto -->
-                                <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist1'], 'ruta' => '1']) }}"
+                                <a href="{{ route('proyectoFinal.verpdf', ['nombreArchivo' => $array['docExist1'], 'ruta' => '1']) }}"
                                     target="_blank" class="btn btn-warning"><i
                                         class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist1'] }} --
                                         documento de anteproyecto</i></a>
-                            </section>
-                            <section class="documentosSec" style="text-align: center">
-                                <!-- carta del director -->
-                                <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist2'], 'ruta' => '2']) }}"
-                                    target="_blank" class="btn btn-warning"><i
-                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta
-                                        del director</i></a>
                             </section>
                             @can('propuesta.agregar')
                                 <p style="color: red">Por favor espere a que el director del proyecto califique los documentos
@@ -134,7 +119,7 @@
                                     <button class="btn"
                                         style="background:#003E65; color:#fff; margin-bottom: 10px; display: {{ $aprobDocent == '-1' ? 'block' : 'none' }}"
                                         {{ $aprobDocent == '-1' ? '' : 'disabled' }}
-                                        formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
+                                        formaction="{{ route('proyectoFinal.aprobDoc') }}">Enviar actualizacion de estado de
                                         aprobacion del documento</button>
                                     @if ($aprobDocent == '1')
                                         <p style="color: red">Los documentos NO fueron aprobados por el director del proyecto
@@ -185,7 +170,7 @@
                     @component('components.Modales.buscarDocente', [
                         'docentes' => $miembrosDocente['docentes'],
                         'idProyecto' => $miembrosDocente['idProyecto'],
-                        'fase' => 'anteproyecto',
+                        'fase' => 'proFinal',
                     ])
                     @endcomponent
                 </div>
@@ -220,7 +205,7 @@
                     <a class="nav-link" aria-current="page" id="juradoDosButton" style="cursor: pointer;">Jurado 2</a>
                 </li>
             </ul>
-            <form action="{{ route('anteproyecto.store') }}" method='POST'>
+            <form action="{{ route('proyectoFinal.store') }}" method='POST'>
                 @csrf
                 <input type="hidden" id="inputJurado" name="numeroJurado"
                     value="{{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '1' : ($array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '0' : '0') }}">
@@ -230,8 +215,8 @@
                         'array' => $array,
                         'valRolComite' => $valRolComite,
                         'jurado' => 0,
-                        'fase' => 'anteproyecto',
-                        'idFase' => $array['anteproyecto']->idAnteproyecto
+                        'fase' => 'proyFinal',
+                        'idFase' => $array['anteproyecto']->idProyectofinal
                     ])
                     @endcomponent
                 </section>
@@ -241,11 +226,12 @@
                         'array' => $array,
                         'valRolComite' => $valRolComite,
                         'jurado' => 1,
-                        'fase' => 'anteproyecto',
-                        'idFase' => $array['anteproyecto']->idAnteproyecto
+                        'fase' => 'proyFinal',
+                        'idFase' => $array['anteproyecto']->idProyectofinal
                     ])
                     @endcomponent
                 </section>
+
             </form>
 
 

@@ -1,12 +1,7 @@
 <?php
 
-use App\Models\FasePropuesta;
-use App\Models\CronogramaGrupo;
-use App\Traits\funcionesUniversales;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedesController;
-use App\Models\ObservacionesCalificacione;
 use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProyectosController;
@@ -16,6 +11,7 @@ use App\Http\Controllers\PonderadosController;
 use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\FasePropuestasController;
 use App\Http\Controllers\FaseAnteproyectosController;
+use App\Http\Controllers\FaseProyectoFinalController;
 use App\Http\Controllers\ObservacionesPropuestaController;
 
 /*
@@ -111,7 +107,7 @@ Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class,
 Route::get('/anteproyecto/verpdf/{nombreArchivo}/{ruta}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
 Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
 Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
-Route::post('/cambioJurado', [FaseAnteproyectosController::class, 'cambioJurado'])->name('cambioJurado');
+
 
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
@@ -123,4 +119,13 @@ Route::post('/observaciones/update', [ObservacionesPropuestaController::class, '
 
 //mail routes
 route::get('/aceptarInvitacion/{usuario}/{proyecto}', [ProyectosController::class, 'segundoIntegrante'])->name('segundoIntegrante');
+
+
+//Proyecto final
+Route::get('/proyectoFinal/create/{idProyecto}', [FaseProyectoFinalController::class, 'create'])->name('proyectoFinal.create');
+Route::post('/proyectoFinal/store', [FaseProyectoFinalController::class, 'store'])->name('proyectoFinal.store');
+Route::post('/proyectoFinal/createAnterior', [FaseProyectoFinalController::class, 'createAnterior'])->name('proyectoFinal.createAnterior');
+Route::get('/proyectoFinal/verpdf/{nombreArchivo}/{ruta}', [FaseProyectoFinalController::class, 'verPdf'])->name('proyectoFinal.verpdf');
+Route::post('/proyectoFinal/aprobarDocumento', [FaseProyectoFinalController::class, 'aprobarDoc'])->name('proyectoFinal.aprobDoc');
+Route::post('/proyectoFinal/asignarJurado', [FaseProyectoFinalController::class, 'asigJurado'])->name('proyectoFinal.asigJurado');
 

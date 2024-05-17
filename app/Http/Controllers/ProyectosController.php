@@ -87,6 +87,15 @@ class ProyectosController extends Controller
         ->where('juradoUno', $usuario->numeroDocumento)
         ->orWhere('juradoDos', $usuario->numeroDocumento)
         ->get();
+
+        if(!isset($proyectos)){
+            dd($proyectos);
+            $proyectos = SedeProyectosGrado::join('fase_proyectosfinales', 'fase_proyectosfinales.pfin_proy', 'sede_proyectos_grado.idProyecto')
+            ->where('juradoUno', $usuario->numeroDocumento)
+            ->orWhere('juradoDos', $usuario->numeroDocumento)
+            ->get();
+        }
+
         //dd($proyectos);
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }

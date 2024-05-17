@@ -39,7 +39,6 @@
                                         @endphp
 
                                         @foreach ($docentes as $docente)
-
                                             @if ($programa->idPrograma == $docente->programa)
                                                 @php
                                                     $contador++;
@@ -56,16 +55,24 @@
                                                         <td>{{ $docente->sede }}</td>
                                                         <td>
                                                             @if ($fase == 'propuesta')
-                                                                <button formaction="{{ route('propuesta.asigDocente') }}"
-                                                                type="submit"><i
-                                                                class="bi bi-person-fill-add"></i></button>
+                                                                <button
+                                                                    formaction="{{ route('propuesta.asigDocente') }}"
+                                                                    type="submit"><i
+                                                                        class="bi bi-person-fill-add"></i></button>
                                                             @endif
                                                             @if ($fase == 'anteproyecto')
-                                                            <button formaction="{{ route('anteproyecto.asigJurado') }}"
-                                                            type="submit"><i
-                                                            class="bi bi-person-fill-add"></i></button>
+                                                                <button
+                                                                    formaction="{{ route('anteproyecto.asigJurado') }}"
+                                                                    type="submit"><i
+                                                                        class="bi bi-person-fill-add"></i></button>
                                                             @endif
-                                                            </td>
+                                                            @if ($fase == 'proFinal')
+                                                                <button
+                                                                    formaction="{{ route('proyectoFinal.asigJurado') }}"
+                                                                    type="submit"><i
+                                                                        class="bi bi-person-fill-add"></i></button>
+                                                            @endif
+                                                        </td>
                                                     </form>
                                                 </tr>
                                             @endif

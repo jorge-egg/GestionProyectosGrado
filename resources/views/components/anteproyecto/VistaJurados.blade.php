@@ -3,7 +3,7 @@
     <p class="card-text">
     <section id="cont-calf">
 
-        <input type="hidden" value="{{ $array['anteproyecto']->idAnteproyecto }}" name='idFase'>
+        <input type="text" value="{{ $idFase }}" name='idFase'>
         @php
             $contador = 0;
             $jurado
@@ -59,7 +59,7 @@
         @can('anteproyecto.calificar')
         @if ($array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento)
         <div class="mb-3">
-            <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', 'anteproyecto') }}"
+            <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', $fase) }}"
                 class="btn" style="background:#003E65; color:#fff">Enviar
                 calificación</button>
         </div>
