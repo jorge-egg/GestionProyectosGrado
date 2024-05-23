@@ -13,6 +13,7 @@ use App\Http\Controllers\FasePropuestasController;
 use App\Http\Controllers\FaseAnteproyectosController;
 use App\Http\Controllers\FaseProyectoFinalController;
 use App\Http\Controllers\ObservacionesPropuestaController;
+use App\Models\FasePropuesta;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,7 @@ Route::get('/grupos/edit/{id}', [CronogramaController::class, 'edit'])->name('gr
 Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->name('grupo.update');
 
 
+
 //propuesta
 Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
 Route::get('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
@@ -99,6 +101,8 @@ Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->na
 Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
 Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
 Route::post('/propuestas/asignarDocente', [FasePropuestasController::class, 'asignarDocente'])->name('propuesta.asigDocente');
+
+
 
 //anteproyecto
 Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create');
@@ -109,16 +113,21 @@ Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::clas
 Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
 
 
+
 //ponderados
 Route::get('/ponderados/index', [PonderadosController::class, 'index'])->name('ponderados.index');
+
 
 
 //observaciones
 Route::post('/observaciones/store/{fase}', [ObservacionesPropuestaController::class, 'store'])->name('observaciones.store');
 Route::post('/observaciones/update', [ObservacionesPropuestaController::class, 'update'])->name('observaciones.update');
 
+
+
 //mail routes
 route::get('/aceptarInvitacion/{usuario}/{proyecto}', [ProyectosController::class, 'segundoIntegrante'])->name('segundoIntegrante');
+
 
 
 //Proyecto final
@@ -128,4 +137,6 @@ Route::post('/proyectoFinal/createAnterior', [FaseProyectoFinalController::class
 Route::get('/proyectoFinal/verpdf/{nombreArchivo}/{ruta}', [FaseProyectoFinalController::class, 'verPdf'])->name('proyectoFinal.verpdf');
 Route::post('/proyectoFinal/aprobarDocumento', [FaseProyectoFinalController::class, 'aprobarDoc'])->name('proyectoFinal.aprobDoc');
 Route::post('/proyectoFinal/asignarJurado', [FaseProyectoFinalController::class, 'asigJurado'])->name('proyectoFinal.asigJurado');
+
+
 

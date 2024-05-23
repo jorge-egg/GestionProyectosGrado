@@ -7,6 +7,9 @@
             </a>
         </div>
         <div class="modal-body">
+            <h3><b>DIR = Director del proyecto</b></h3>
+            <h3><b>AP = Anteproyecto</b></h3>
+            <h3><b>PF = Proyecto final</b></h3>
             <div class="accordion" id="accordionExample">
                 @php
                     $programas = App\Models\SedePrograma::all();
@@ -30,6 +33,9 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Docente</th>
                                             <th scope="col">Sede</th>
+                                            <th scope="col">DIR</th>
+                                            <th scope="col">AP</th>
+                                            <th scope="col">PF</th>
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
@@ -51,8 +57,40 @@
                                                         <input type="hidden" value={{ $docente->numeroDocumento }}
                                                             name="numeroDocumento">
                                                         <th scope="row">{{ $contador }}</th>
+
+
+
                                                         <td>{{ $docente->nombre . ' ' . $docente->apellido }}</td>
+
+
+
                                                         <td>{{ $docente->sede }}</td>
+
+
+
+                                                        <!--numero de Director de proyectos-->
+                                                        <td>{{ App\Models\SedeProyectosGrado::where('docente', $docente->numeroDocumento)
+                                                            ->count()
+                                                        }}</td>
+
+
+
+                                                        <!--numero de Anteproyeto commo jurados-->
+                                                        <td>{{ App\Models\FaseAnteproyecto::where('juradoUno', $docente->numeroDocumento)
+                                                            ->orWhere('juradoDos', $docente->numeroDocumento)
+                                                            ->count()
+                                                        }}</td>
+
+
+
+                                                        <!--numero de Proyecto final commo jurados-->
+                                                        <td>{{ App\Models\FaseProyectosfinale::where('juradoUno', $docente->numeroDocumento)
+                                                            ->orWhere('juradoDos', $docente->numeroDocumento)
+                                                            ->count()
+                                                        }}</td>
+
+
+
                                                         <td>
                                                             @if ($fase == 'propuesta')
                                                                 <button
@@ -61,12 +99,14 @@
                                                                         class="bi bi-person-fill-add"></i></button>
                                                             @endif
                                                             @if ($fase == 'anteproyecto')
+                                                                <input type="hidden" class="JIdentificador" name="JIdentificador">
                                                                 <button
                                                                     formaction="{{ route('anteproyecto.asigJurado') }}"
                                                                     type="submit"><i
                                                                         class="bi bi-person-fill-add"></i></button>
                                                             @endif
                                                             @if ($fase == 'proFinal')
+                                                                <input type="text" class="JIdentificador" name="JIdentificador">
                                                                 <button
                                                                     formaction="{{ route('proyectoFinal.asigJurado') }}"
                                                                     type="submit"><i

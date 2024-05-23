@@ -81,13 +81,21 @@ trait funcionesUniversales
     {
 
         try {
-            $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+            if($fase == 'anteproyecto'){
+                $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
+            }else if($fase == 'proyecto_final'){
+                $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+                ->where($fase, $idFase)
+                ->orderBy('idCalificacion', 'asc')
+                ->get();
+            }
+
             $array = [];
             //dd($observacionesAnterior);
-            if ($fase == 'anteproyecto') {
+            if ($fase == 'anteproyecto' || $fase == 'proyecto_final') {
 
                 $array1 = [];
                 $array2 = [];
@@ -238,6 +246,7 @@ trait funcionesUniversales
             'docenteAsig' => $docenteAsig,
             'docentes' => $docentes
         );
+
     }
 
     public function docentes()
@@ -265,7 +274,7 @@ trait funcionesUniversales
                 }
             }
         }
-
+        //dd($array);
         return $array;
     }
 
@@ -278,26 +287,35 @@ trait funcionesUniversales
             ->get();
     }
 
-    public function asignarJurado($idProyecto, $numeroDocumento, $fase)
+    public function asignarJurado($idProyecto, $numeroDocumento, $fase, $numJurado)
     {
 
         $sqlFase = (object)[];
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
         switch($fase){
             case 'anteproyecto':
-
                 $sqlFase = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
                 break;
             case 'proFinal':
                 $sqlFase = FaseProyectosfinale::where('pfin_proy', $proyecto->idProyecto)->orderByDesc('idProyectofinal')->first();
                 break;
         }
-        //dd($sqlFase);
-        if ($sqlFase->juradoUno != '-1') {
+        //dd($numJurado);
+        if ($sqlFase->juradoUno != '-1' && $numJurado == null)
+        {
             $sqlFase->juradoDos = $numeroDocumento; //estado de aprobado
             $sqlFase->save();
-        } else {
+        } else if($sqlFase->juradoDos != '-1' && $numJurado == null)
+        {
             $sqlFase->juradoUno = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
+        }else if($numJurado == '1'){
+            //dd($numJurado);
+            $sqlFase->juradoUno = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
+        }else if($numJurado == '2'){
+            //dd($numJurado);
+            $sqlFase->juradoDos = $numeroDocumento; //estado de aprobado
             $sqlFase->save();
         }
     }

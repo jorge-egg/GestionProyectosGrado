@@ -148,11 +148,10 @@ class FaseAnteproyectosController extends Controller
     }
 
     public function asigJurado(Request $request){
-
         $idProyecto = $request -> idProyecto;
-        //dd($idProyecto);
+        $numJurado = $request-> JIdentificador;
         $numeroDocumento = $request -> numeroDocumento;
-        $this->asignarJurado($idProyecto, $numeroDocumento, 'anteproyecto');
+        $this->asignarJurado($idProyecto, $numeroDocumento, 'anteproyecto', $numJurado);
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
     }
 

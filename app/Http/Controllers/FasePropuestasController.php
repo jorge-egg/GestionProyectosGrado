@@ -181,4 +181,5 @@ class FasePropuestasController extends Controller
         return redirect()->route('propuesta.create', ['idProyecto' => $idProyecto]);
     }
 
+
 }

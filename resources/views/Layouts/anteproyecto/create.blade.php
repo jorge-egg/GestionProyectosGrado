@@ -177,10 +177,24 @@
                                 ->first();
 
                 @endphp
-                <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
-                <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
-                <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                <section style="display: flex; flex-direction: row; text-align: center; justify-content: center">
+
+                    <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
+                    <button type="button" id="SelectJ1" data-bs-toggle="modal" data-bs-target="#buscarDocente"
+                        style="height: 30px; width: 30px; margin-left: 10px; display: {{ $array['anteproyecto']->juradoUno != '-1' ? 'block' : 'none' }}">
+                        <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
+                    </button>
+                </section>
+                <section style="display: flex; flex-direction: row; text-align: center; justify-content: center">
+
+                    <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
+                    <button type="button" id="SelectJ2" data-bs-toggle="modal" data-bs-target="#buscarDocente"
+                        style="height: 30px; width: 30px; margin-left: 10px; display: {{ $array['anteproyecto']->juradoDos != '-1' ? 'block' : 'none' }}">
+                        <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
+                    </button>
+                </section>
+                <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
 
                     @component('components.Modales.buscarDocente', [
                         'docentes' => $miembrosDocente['docentes'],
@@ -231,7 +245,7 @@
                         'valRolComite' => $valRolComite,
                         'jurado' => 0,
                         'fase' => 'anteproyecto',
-                        'idFase' => $array['anteproyecto']->idAnteproyecto
+                        'idFase' => $array['anteproyecto']->idAnteproyecto,
                     ])
                     @endcomponent
                 </section>
@@ -242,7 +256,7 @@
                         'valRolComite' => $valRolComite,
                         'jurado' => 1,
                         'fase' => 'anteproyecto',
-                        'idFase' => $array['anteproyecto']->idAnteproyecto
+                        'idFase' => $array['anteproyecto']->idAnteproyecto,
                     ])
                     @endcomponent
                 </section>
@@ -257,7 +271,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                                                        documento'
+                                                                                                                                                                                                                                                                                                                                                                        documento'
                 : '') }}
     </p>
 
@@ -271,6 +285,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const btnSelectJurado1 = document.getElementById('SelectJ1');
+            const btnSelectJurado2 = document.getElementById('SelectJ2');
+            const JIdentificador = document.getElementById('JIdentificador');
             const enlace1 = document.getElementById('juradoUnoButton');
             const enlace2 = document.getElementById('juradoDosButton');
             const inputJurado = document.getElementById('inputJurado');
@@ -318,6 +335,22 @@
                 secJ2.style.display = 'block';
                 secJ1.style.display = 'none';
             });
+
+            btnSelectJurado1.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.JIdentificador').forEach(function(input) {
+                    input.value = '1';
+                });
+            });
+
+            btnSelectJurado2.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.JIdentificador').forEach(function(input) {
+                    input.value = '2';
+                });
+            });
+
+
         });
     </script>
 

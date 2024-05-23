@@ -28,7 +28,7 @@ class FaseProyectoFinalController extends Controller
         $anteproyecto           = $this->proyectoFinal($anteproyectoAnterior);
         //dd($anteproyecto);
         $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
-        $observaciones          = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
+        $observaciones          = $this->ultimaObservacion($anteproyecto->idProyectofinal, 'proyecto_final', 8);
         $itemsSubItems          = $this->buscarNombresItems('proyFinal');
         $rangoFecha             = $this->rangoFecha('anteproyecto');
         $valDocAsig             = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
