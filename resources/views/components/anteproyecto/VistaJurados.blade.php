@@ -1,3 +1,4 @@
+
 <h5 class="card-title text-center">Calificar anteproyecto</h5>
 <div class='card-body'>
     <p class="card-text">
@@ -25,12 +26,17 @@
                             </textarea>
 
                             <span class="input-group-text" id="basic-addon2" style="display: flex">
-                                <p>{{round($array['observaciones'][$jurado][$contador][1], 3)}}</p>
+                                <p class="pCalif">{{round($array['observaciones'][$jurado][$contador][1], 3)}}</p>
                             </span>
 
                             <input type="hidden" name="{{ 'canti'.$contador }}" value="{{count($valor)}}">
                         </div>
                     </h2><br>
+
+
+
+
+
 
                     <div id="flush-collapse{{ str_replace(" ", "", $clave) }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ str_replace(" ", "", $clave) }}"
                         data-bs-parent="#accordionFlushExample">
@@ -42,6 +48,7 @@
                                 'longitud' => $g,
                                 'jurado' => $jurado,
                                 'valSelects' => $array['observaciones'][$jurado][$contador],
+                                'itemId' => $array['observaciones'][2],
                                 'styleDisplaySpan' => $valRolComite ? 'flex' : 'none',
                                 'styleDisplayGeneral' => 'flex',
                             ])
@@ -71,3 +78,20 @@
     </section>
     </p>
 </div>
+
+
+<script>
+    let array5 = [];
+
+    var array1 =  {!! json_encode($array['observaciones'][$jurado][0]) !!};
+
+    console.log(array1);
+    const pCalif = document.querySelectorAll('.pCalif').forEach(function(input){
+
+        array5.push(Number(input.textContent));
+
+    });
+
+
+</script>
+

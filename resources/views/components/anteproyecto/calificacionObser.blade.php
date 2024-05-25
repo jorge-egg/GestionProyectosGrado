@@ -1,7 +1,16 @@
+
+
 @php
     $contador = 0;
-
-    //dd($valSelects[2]);
+    $ponderado = null;
+    //dd($subItems[1]);
+    //dd($itemId);
+    foreach ($itemId as $item) {
+        if($item->item_pond == $subItems[1]){
+            $ponderado = $item->ponderado;
+            $ponderadoSub = $ponderado/count($subItems[0]);
+        }
+    }
     $valor = '';
     $array = [];
     //dd('kk');
@@ -9,20 +18,23 @@
         foreach ($valSelects[2] as $key) {
             array_push($array, $key->valor);
         }
-        //dd($array);
+        //dd($array.'2');
     }else{
-        //dd('hola');
-        for($i = 0 ; $i < count($subItems); $i++) {
+        //dd($subItems);
+        for($i = 0 ; $i < count($subItems[0]); $i++) {
             array_push($array, 'no');
         }
     }
+    //dd($array);
 @endphp
 
 
 
-@foreach ($subItems as $subItem)
+@foreach ($subItems[0] as $subItem)
+
     <div class="input-group mb-3 campos-calificacion" style="display: flex">
         <p class="form-control auto-expand">
+
             {{ $subItem->SubItem }}
 
         </p>
@@ -35,7 +47,11 @@
             </select>
         </span>
     </div>
+
     @php
         $contador++;
     @endphp
 @endforeach
+
+
+

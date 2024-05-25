@@ -16,6 +16,7 @@ use App\Models\UsuarioPrograma;
 use App\Models\FaseAnteproyecto;
 use App\Models\FaseProyectosfinale;
 use App\Models\Item;
+use App\Models\PonderadoAnteproyecto;
 use App\Models\SedeProyectosGrado;
 use App\Models\SubItem;
 
@@ -70,9 +71,9 @@ trait funcionesUniversales
 
             // Añade el valor al array correspondiente
 
-            $Integracion[$item->item] = $valor;
+            $Integracion[$item->item] = [$valor, $item->idItem];
         }
-        //dd($Integracion['Título'][0]->SubItem);
+        //dd($Integracion);
 
         return $Integracion;
     }
@@ -82,6 +83,7 @@ trait funcionesUniversales
 
         try {
             if($fase == 'anteproyecto'){
+                $ponderados = PonderadoAnteproyecto::all();
                 $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
@@ -133,7 +135,8 @@ trait funcionesUniversales
                 }
                 array_push($array, $array1);
                 array_push($array, $array2);
-                //dd($array);
+                array_push($array, $ponderados);
+
             } else {
                 foreach ($observacionesAnterior as $observacion) {
                     $dato = [$observacion->observacion];
@@ -155,12 +158,14 @@ trait funcionesUniversales
             $array2 = [];
             $array = [];
             if ($fase == 'anteproyecto') {
+                $ponderados = PonderadoAnteproyecto::all();
                 for ($i = 0; $i < $cantObs; $i++) {
                     array_push($array1, ["--", "--", []]);
                     array_push($array2, ["--", "--", []]);
                 }
                 array_push($array, $array1);
                 array_push($array, $array2);
+                array_push($array, $ponderados);
             } else {
                 for ($i = 0; $i < $cantObs; $i++) {
                     array_push($array, "");
