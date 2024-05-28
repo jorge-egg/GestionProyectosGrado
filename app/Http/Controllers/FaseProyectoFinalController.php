@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Integrante;
 use Illuminate\Http\Request;
+use App\Models\FaseAnteproyecto;
 use App\Models\SedeProyectosGrado;
 use App\Models\FaseProyectosfinale;
 use App\Traits\funcionesUniversales;
@@ -28,6 +29,7 @@ class FaseProyectoFinalController extends Controller
         $anteproyecto           = $this->proyectoFinal($anteproyectoAnterior);
         //dd($anteproyecto);
         $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
+        //dd($anteproyecto);
         $observaciones          = $this->ultimaObservacion($anteproyecto->idProyectofinal, 'proyecto_final', 8);
         $itemsSubItems          = $this->buscarNombresItems('proyFinal');
         $rangoFecha             = $this->rangoFecha('anteproyecto');
@@ -55,7 +57,7 @@ class FaseProyectoFinalController extends Controller
     {
         if ($proyectoFinal == null) {
             $proyectoFinal = (object) array(
-                'idAnteproyecto' => "",
+                'idProyectofinal' => "",
                 'documento' => "",
                 'aprobacionDocen' => "",
                 'estado' => "Activo"
@@ -87,8 +89,10 @@ class FaseProyectoFinalController extends Controller
             FaseProyectosfinale::create([
                 'documento' => $newNameFile1,
                 'aprobacionDocen' => '-1', //Sin valor definido
-                'juradoUno' => '-1',
-                'juradoDos' => '-1',
+                'juradoUno' => FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoUno,
+                'juradoDos' => FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoDos,
+                'estadoJUno' => 'Pendiente',
+                'estadoJDos' => 'Pendiente',
                 'estado' => 'Activo',
                 'pfin_proy' => $proyecto->idProyecto,
 

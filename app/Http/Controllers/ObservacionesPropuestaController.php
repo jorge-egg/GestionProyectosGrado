@@ -89,7 +89,7 @@ class ObservacionesPropuestaController extends Controller
             ]);
         }
         //dd($request->idFase);
-        $this->cambioEstado($request->idFase, $fase);
+        $this->cambioEstado($request->idFase, $fase, $numeroJurado);
         //dd($fase);
         switch ($fase) {
             case 'propuesta':
@@ -167,7 +167,7 @@ class ObservacionesPropuestaController extends Controller
 
             $datos = $this->calcCalifAnteproy($clave, 'anteproyecto', $request, $valor,$numSubItems, $nameObs);
 
-            //dd($datos['subItemsCalf'][0]);
+            //dd($datos);
             CalifSubitem::insert($datos);
             //dd('d');
             $incrementador++;
@@ -255,8 +255,9 @@ class ObservacionesPropuestaController extends Controller
         $totalCalificacion = 0;
         $datos = [];
         //dd($names);
-        foreach($names as $name){
+        foreach($names[0] as $name){
             $jurado = $request->numeroJurado;
+            //dd($names);
             $nombreSubItem = $name->codigo.$jurado;
             //dd($request->$nombreSubItem);
             if ($request->$nombreSubItem == "si") {
@@ -288,7 +289,7 @@ class ObservacionesPropuestaController extends Controller
 
     }
 
-    public function cambioEstado($idfase, $fase)
+    public function cambioEstado($idfase, $fase, $numeroJurado)
     {
         $total = 0;
 
@@ -303,16 +304,58 @@ class ObservacionesPropuestaController extends Controller
         $propuesta = $fase == 'propuesta' ? FasePropuesta::findOrFail($idfase) : ($fase == 'anteproyecto' ? FaseAnteproyecto::findOrFail($idfase) : ($fase == 'proyecto_final' ? FaseProyectosfinale::findOrFail($idfase) :
             FaseSustentaciones::findOrFail($idfase)));
 
-        if ($total >= 3.5) {
-            $propuesta->estado = 'Aprobado';
-            $propuesta->save();
-        } else if ($total >= 3 && $total < 3.4) {
-            $propuesta->estado = 'Aplazado con modificaciones';
-            $propuesta->save();
-        } else {
-            $propuesta->estado = 'Rechazado';
-            $propuesta->save();
+
+        switch ($fase) {
+            case 'propuesta':
+                if ($total >= 3.5) {
+                    $propuesta->estado = 'Aprobado';
+                    $propuesta->save();
+                } else if ($total >= 3 && $total < 3.4) {
+                    $propuesta->estado = 'Aplazado con modificaciones';
+                    $propuesta->save();
+                } else {
+                    $propuesta->estado = 'Rechazado';
+                    $propuesta->save();
+                }
+                break;
+
+
+                case 'anteproyecto':
+                    if ($total >= 3.5) {
+                        $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aprobado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aprobado' : null);
+                        $propuesta->save();
+                    } else if ($total >= 3 && $total < 3.4) {
+                        $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aplazado con modificaciones' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aplazado con modificaciones' : null);
+                        $propuesta->save();
+                    } else {
+                        $numeroJurado == '0' ? $propuesta->estadoJUno = 'Rechazado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Rechazado' : null);
+                        $propuesta->save();
+                    }
+
+
+                    $anteproy = FaseAnteproyecto::findOrFail($idfase);
+                    if($anteproy->estadoJUno == 'Pendiente' || $anteproy->estadoJDos == 'Pendiente'){
+                        $anteproy->estado = 'Activo';
+                        $anteproy->save();
+                    }else if($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aprobado'){
+                        $anteproy->estado = 'Aprobado';
+                        $anteproy->save();
+                    }else if(($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aplazado con modificaciones') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aprobado') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones')){
+                        $anteproy->estado = 'Aplazado con modificaciones';
+                        $anteproy->save();
+                    }else if($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado'){
+                        $anteproy->estado = 'Rechazado';
+                        $anteproy->save();
+                    }
+
+                    break;
+
+
+            default:
+                # code...
+                break;
         }
+
     }
 
 

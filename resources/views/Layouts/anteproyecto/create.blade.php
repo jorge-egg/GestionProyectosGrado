@@ -3,7 +3,6 @@
 @section('estilos_adicionales')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/anteproyecto.css') }}">
-    <script src="{{ asset('js/anteproyecto.js') }}"></script>
 @endsection
 
 @section('dashboard_content')

@@ -21,6 +21,8 @@ class CreateFaseProyectosfinalesTable extends Migration
             $table->text("observaDocent")->nullable();
             $table->string("juradoUno", 12);
             $table->string("juradoDos", 12);
+            $table->string("estadoJUno", 100);
+            $table->string("estadoJDos", 100);
             $table->string('estado', 100);
             $table->time('fecha_aplazado')->nullable();
 

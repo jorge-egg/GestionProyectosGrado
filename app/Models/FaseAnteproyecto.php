@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseAnteproyecto
- * 
+ *
  * @property int $idAnteproyecto
  * @property string $documento
  * @property string $cartaDirector
@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $estado
  * @property time without time zone|null $fecha_aplazado
  * @property int $ante_proy
- * 
+ *
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -46,6 +46,8 @@ class FaseAnteproyecto extends Model
 		'observaDocent',
 		'juradoUno',
 		'juradoDos',
+        'estadoJUno',
+        'estadoJDos',
 		'estado',
 		'fecha_aplazado',
 		'ante_proy'

@@ -36,6 +36,8 @@ class FaseProyectosfinale extends Model
 		'observaDocent',
 		'juradoUno',
 		'juradoDos',
+        'estadoJUno',
+        'estadoJDos',
 		'estado',
 		'fecha_aplazado',
 		'pfin_proy'

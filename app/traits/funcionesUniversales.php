@@ -17,6 +17,7 @@ use App\Models\FaseAnteproyecto;
 use App\Models\FaseProyectosfinale;
 use App\Models\Item;
 use App\Models\PonderadoAnteproyecto;
+use App\Models\PonderadoProyectof;
 use App\Models\SedeProyectosGrado;
 use App\Models\SubItem;
 
@@ -89,6 +90,7 @@ trait funcionesUniversales
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
             }else if($fase == 'proyecto_final'){
+                $ponderados = PonderadoProyectof::all();
                 $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
@@ -306,11 +308,13 @@ trait funcionesUniversales
                 break;
         }
         //dd($numJurado);
-        if ($sqlFase->juradoUno != '-1' && $numJurado == null)
+        //dd($sqlFase->juradoUno);
+        if ($sqlFase->juradoUno != '-1' && $numJurado == null && $sqlFase->juradoDos == '-1')
         {
+
             $sqlFase->juradoDos = $numeroDocumento; //estado de aprobado
             $sqlFase->save();
-        } else if($sqlFase->juradoDos != '-1' && $numJurado == null)
+        } else if($sqlFase->juradoUno == '-1' && $numJurado == null)
         {
             $sqlFase->juradoUno = $numeroDocumento; //estado de aprobado
             $sqlFase->save();

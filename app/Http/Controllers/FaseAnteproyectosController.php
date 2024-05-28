@@ -139,6 +139,8 @@ class FaseAnteproyectosController extends Controller
                 'aprobacionDocen' => '-1', //Sin valor definido
                 'juradoUno' => '-1',
                 'juradoDos' => '-1',
+                'estadoJUno' => 'Pendiente',
+                'estadoJDos' => 'Pendiente',
                 'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
 
@@ -149,8 +151,11 @@ class FaseAnteproyectosController extends Controller
 
     public function asigJurado(Request $request){
         $idProyecto = $request -> idProyecto;
+
         $numJurado = $request-> JIdentificador;
+
         $numeroDocumento = $request -> numeroDocumento;
+        
         $this->asignarJurado($idProyecto, $numeroDocumento, 'anteproyecto', $numJurado);
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
     }
