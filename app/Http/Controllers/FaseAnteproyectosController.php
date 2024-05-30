@@ -29,6 +29,7 @@ class FaseAnteproyectosController extends Controller
         $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
         $docExist2              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->cartaDirector : null);
         $observaciones          = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
+        dd($observaciones);
         $itemsSubItems          = $this->buscarNombresItems('anteproyecto');
         $rangoFecha             = $this->rangoFecha('anteproyecto');
         $valDocAsig             = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
@@ -155,7 +156,7 @@ class FaseAnteproyectosController extends Controller
         $numJurado = $request-> JIdentificador;
 
         $numeroDocumento = $request -> numeroDocumento;
-        
+
         $this->asignarJurado($idProyecto, $numeroDocumento, 'anteproyecto', $numJurado);
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
     }

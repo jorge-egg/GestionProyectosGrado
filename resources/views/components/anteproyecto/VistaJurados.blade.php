@@ -3,7 +3,21 @@
     <p class="card-text">
     <section id="cont-calf">
 
-        <input type="text" value="{{ $idFase }}" name='idFase'>
+        <input type="hidden" value="{{ $idFase }}" name='idFase'>
+
+
+@php
+    $calificacion = 0.0;
+    foreach ($array['observaciones'][$jurado] as $calif ) {
+        $calificacion += round($calif[1], 2);
+    }
+@endphp
+
+        <br>
+        <h4 style="display: inline"><b>Estado: </b></h4><p style="display: inline" class="mostrar-estado">{{$jurado == 0 ? $array['anteproyecto']->estadoJUno : $array['anteproyecto']->estadoJDos}}</p><br>
+        <h4 style="display: inline"><b>Calificación: </b></h4><p style="display: inline" class="mostrar-calif">{{$calificacion}}</p>
+        <br>
+        <br>
         @php
             $contador = 0;
             $jurado;
@@ -87,7 +101,7 @@
 
                                     <span class="input-group-text" id="basic-addon2" style="display: flex">
 
-                                        <select class="form-select {{ $contador }} {{ $contador2 + 1 }}"
+                                        <select class="form-select {{ $contador }}" id="{{ $contador2 + 1 }}"
                                             aria-label="Default select example" name="{{ $subItem->codigo . $jurado }}"
                                             {{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '' : 'disabled' }}>
 
@@ -197,18 +211,41 @@
 
             // Obtiene el data-id del select
             let selectClass1 = selectElement.classList[1];
-            let selectClass2 = selectElement.classList[2];
+            let selectClass2 = event.target.id;
 
-            if (Number(selectClass1) === 1 && selectClass2 === undefined) {
-                selectClass2 = 1;
-            }
+            console.log(selectClass2);
+
 
             // Obtiene el valor seleccionado y lo convierte a número
             const selectedValue = selectElement.value;
 
             califSelect[selectClass1][selectClass2 - 1] = selectedValue;
 
-            console.log(recalcularCalif(selectClass1, (selectClass2 - 1), califSelect));
+            var array = recalcularCalif(selectClass1, (selectClass2 - 1), califSelect);
+
+            var calificacionCalc = 0.0;
+
+            array.forEach(element => {
+                calificacionCalc += element[element.length - 1];
+            });
+
+
+            var mostrarCalif = document.querySelectorAll('.mostrar-calif').forEach(function(calif){
+                calif.textContent = calificacionCalc.toFixed(2);
+            });
+
+            var mostrarEstado = document.querySelectorAll('.mostrar-estado').forEach(function(estado){
+                if(calificacionCalc >= 3.5){
+                    estado.textContent = 'Aprobado';
+                }else if(calificacionCalc >= 3 && calificacionCalc < 3.5){
+                    estado.textContent = 'Aplazado con modificaciones';
+                }else{
+                    estado.textContent = 'Rechazado';
+                }
+
+            });
+
+
         }
 
 
@@ -249,8 +286,8 @@
             //let pCalif = document.querySelectorAll('.pCalif-' + posicion1);
 
 
-
-            return array[posicion1][array[posicion1].length - 1] = valorTotal;
+            console.log(array);
+            return array;
         }
 
     });

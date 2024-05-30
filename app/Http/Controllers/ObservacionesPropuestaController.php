@@ -324,7 +324,7 @@ class ObservacionesPropuestaController extends Controller
                     if ($total >= 3.5) {
                         $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aprobado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aprobado' : null);
                         $propuesta->save();
-                    } else if ($total >= 3 && $total < 3.4) {
+                    } else if ($total >= 3 && $total < 3.5) {
                         $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aplazado con modificaciones' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aplazado con modificaciones' : null);
                         $propuesta->save();
                     } else {
