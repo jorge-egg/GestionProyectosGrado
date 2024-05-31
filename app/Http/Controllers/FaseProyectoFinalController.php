@@ -148,7 +148,8 @@ class FaseProyectoFinalController extends Controller
     public function asigJurado(Request $request){
         $idProyecto = $request -> idProyecto;
         $numeroDocumento = $request -> numeroDocumento;
-        $this->asignarJurado($idProyecto, $numeroDocumento, 'proFinal');
+        $numJurado = $request-> JIdentificador;
+        $this->asignarJurado($idProyecto, $numeroDocumento, 'proFinal', $numJurado);
         return redirect()->route('proyectoFinal.create', ['idProyecto'=>$idProyecto]);
     }
 

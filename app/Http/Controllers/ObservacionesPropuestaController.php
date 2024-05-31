@@ -350,6 +350,35 @@ class ObservacionesPropuestaController extends Controller
 
                     break;
 
+                case 'proyecto_final':
+                    if ($total >= 3.5) {
+                        $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aprobado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aprobado' : null);
+                        $propuesta->save();
+                    } else if ($total >= 3 && $total < 3.5) {
+                        $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aplazado con modificaciones' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aplazado con modificaciones' : null);
+                        $propuesta->save();
+                    } else {
+                        $numeroJurado == '0' ? $propuesta->estadoJUno = 'Rechazado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Rechazado' : null);
+                        $propuesta->save();
+                    }
+
+
+                    $anteproy = FaseProyectosfinale::findOrFail($idfase);
+                    if($anteproy->estadoJUno == 'Pendiente' || $anteproy->estadoJDos == 'Pendiente'){
+                        $anteproy->estado = 'Activo';
+                        $anteproy->save();
+                    }else if($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aprobado'){
+                        $anteproy->estado = 'Aprobado';
+                        $anteproy->save();
+                    }else if(($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aplazado con modificaciones') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aprobado') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones')){
+                        $anteproy->estado = 'Aplazado con modificaciones';
+                        $anteproy->save();
+                    }else if($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado'){
+                        $anteproy->estado = 'Rechazado';
+                        $anteproy->save();
+                    }
+
+                    break;
 
             default:
                 # code...

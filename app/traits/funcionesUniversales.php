@@ -90,7 +90,7 @@ trait funcionesUniversales
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
-                dd($observacionesAnterior);
+                
             }else if($fase == 'proyecto_final'){
                 $ponderados = PonderadoProyectof::all();
                 $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
