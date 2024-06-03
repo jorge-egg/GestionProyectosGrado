@@ -249,7 +249,7 @@ class ObservacionesPropuestaController extends Controller
             $ponderado = PonderadoProyectof::where('item_pond', $idItem)->first();
 
         }
-        //dd($ponderado);
+
 
 
         $totalCalificacion = 0;
@@ -278,6 +278,8 @@ class ObservacionesPropuestaController extends Controller
             ]);
             //dd($datos);
         }
+        
+
         Calificacione::insert([
             'observacion' => $request->$nameObs,
             'calificacion' => $totalCalificacion,

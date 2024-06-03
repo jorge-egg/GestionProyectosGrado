@@ -43,7 +43,7 @@
                                     {{ round($array['observaciones'][$jurado][$contador][1], 3) }}</p>
                             </span>
 
-                            <input type="hidden" name="{{ 'canti' . $contador }}" value="{{ count($valor) }}">
+                            <input type="hidden" name="{{ 'canti' . $contador }}" value="{{ count($valor[0]) }}">
                         </div>
                     </h2><br>
 
