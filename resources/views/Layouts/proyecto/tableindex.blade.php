@@ -59,8 +59,7 @@
                         </form>
                     </td>
                     <td>
-                        <form action="#">
-                            @csrf
+                        <form action="{{ route('proyectoFinal.create', $proyecto->idProyecto) }}" method="get">
                             <button type="submit" class="btn" style="background:#003E65; color:#fff">Proyecto
                                 final</button>
                         </form>

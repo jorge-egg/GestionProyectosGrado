@@ -30,9 +30,14 @@
         <div class="card" style="display:{{ $propuestaAnterior->estado == 'Aprobado' ? 'flex' : 'none' }}">
             <h5 class="card-title text-center">Director tutor</h5>
             <div class='card-body'>
-                <p class="card-text">
-                    {{ $miembrosDocente['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $miembrosDocente['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
-                </p>
+                <section style="display: flex; flex-direction: row; text-align: center; justify-content: center">
+                    <p class="card-text" Style="text-align: center;">
+                        {{ $miembrosDocente['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $miembrosDocente['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
+                    </p>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" style="height: 30px; width: 30px; margin-left: 10px; display: {{ $miembrosDocente['valExistDocent'] ? 'block' : 'none' }}" >
+                        <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
+                    </button>
+                </section>
                 @can('anteproyecto.asigDocent')
                     <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" class="btn"
                         style="background:#003E65; color:#fff; width: 100%; display: {{ $miembrosDocente['valExistDocent'] ? 'none' : 'flex' }};">Seleccionar

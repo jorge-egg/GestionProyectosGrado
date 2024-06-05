@@ -62,5 +62,9 @@ class itemsSeeder extends Seeder
             'codigoItem' => '012',
             'item' => 'Normas de presentación en el documento y referencias bibliográficas',
         ]);
+        DB::table('items')->insert([
+            'codigoItem' => '013',
+            'item' => 'Desarrollo del proyecto',
+        ]);
     }
 }

@@ -22,12 +22,15 @@
         @can('proyecto.crear')
             @if ($estado)
                 <button type="submit" class="btn btn-outline-primary btnGrandeRectangular btn-deshabilitado"
-                    data-bs-toggle="modal" data-bs-target="#confirmacionIntegrante" disabled>Crear un
-                    proyecto
+                    data-bs-toggle="modal" data-bs-target="#confirmacionIntegrante" disabled>
+                    <h3><b>Crear un proyecto</b></h3><br>
+                    <p><small>Crea un proyecto de grado indiviual o en pareja (maximo 2 integrantes).</small></p>
+
                 </button>
             @else
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular" data-bs-toggle="modal"
-                    data-bs-target="#confirmacionIntegrante">Crear un proyecto</button>
+                    data-bs-target="#confirmacionIntegrante"><h3><b>Crear un proyecto</b></h3><br>
+                    <p><small>Crea un proyecto de grado indiviual o en pareja (maximo 2 integrantes).</small></p></button>
             @endif
         @endcan
         @can('proyecto.consultar')
@@ -46,14 +49,25 @@
         @can('proyecto.consultarDocente')
             <form action="{{ route('proyecto.indextableDocente') }}" method="get">
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">
-                    <h3><b>Proyectos docente</b></h3><br>
-                    <p><small>Consulta los proyectos que se le han asignado como docente para su aprobación.</small></p>
+                    <h3><b>Proyectos director</b></h3><br>
+                    <p><small>Consulta los proyectos que se le han asignado como docente director para su aprobación.</small></p>
+                </button>
+            </form>
+        @endcan
+        @can('proyecto.consultarDocente')
+            <form action="{{ route('proyecto.indextableJurado') }}" method="get">
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">
+                    <h3><b>Proyectos Jurados</b></h3><br>
+                    <p><small>Consulta los proyectos que se le han asignado como jurado de proyectos de grado.</small></p>
                 </button>
             </form>
         @endcan
         @can('proyecto.consultarComite')
             <form action="{{ route('proyecto.indextableComite') }}" method="get">
-                <button type="submit" class="btn btn-primary  btnGrandeRectangular">Consultar proyectos</button>
+                <button type="submit" class="btn btn-primary  btnGrandeRectangular">
+                    <h3><b>Consultar proyectos comite</b></h3><br>
+                    <p><small>Visualiza los proyectos de grado como miembro de comite.</small></p>
+                </button>
             </form>
         @endcan
         @can('proyecto.ponderados')

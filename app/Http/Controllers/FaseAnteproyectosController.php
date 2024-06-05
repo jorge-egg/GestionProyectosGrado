@@ -29,6 +29,7 @@ class FaseAnteproyectosController extends Controller
         $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
         $docExist2              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->cartaDirector : null);
         $observaciones          = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
+        
         $itemsSubItems          = $this->buscarNombresItems('anteproyecto');
         $rangoFecha             = $this->rangoFecha('anteproyecto');
         $valDocAsig             = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
@@ -44,7 +45,7 @@ class FaseAnteproyectosController extends Controller
                                     'integrantes' => $integrantes,
                                     'nameItems' => $itemsSubItems,
                                 );
-                                //dd($array['observaciones'][0][0][0]);
+                                //dd($array['observaciones']);
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }
@@ -139,6 +140,8 @@ class FaseAnteproyectosController extends Controller
                 'aprobacionDocen' => '-1', //Sin valor definido
                 'juradoUno' => '-1',
                 'juradoDos' => '-1',
+                'estadoJUno' => 'Pendiente',
+                'estadoJDos' => 'Pendiente',
                 'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
 
@@ -149,8 +152,12 @@ class FaseAnteproyectosController extends Controller
 
     public function asigJurado(Request $request){
         $idProyecto = $request -> idProyecto;
+
+        $numJurado = $request-> JIdentificador;
+
         $numeroDocumento = $request -> numeroDocumento;
-        $this->asignarJurado($idProyecto, $numeroDocumento);
+
+        $this->asignarJurado($idProyecto, $numeroDocumento, 'anteproyecto', $numJurado);
         return redirect()->route('anteproyecto.create', ['idProyecto'=>$idProyecto]);
     }
 

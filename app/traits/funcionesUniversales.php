@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Http\Controllers\FasePropuestasController;
 use App\Models\Calificacione;
 use App\Models\CalifSubitem;
 use Exception;
@@ -13,18 +14,20 @@ use App\Models\FechasGrupo;
 use App\Models\UsuariosUser;
 use App\Models\UsuarioPrograma;
 use App\Models\FaseAnteproyecto;
+use App\Models\FaseProyectosfinale;
 use App\Models\Item;
+use App\Models\PonderadoAnteproyecto;
+use App\Models\PonderadoProyectof;
 use App\Models\SedeProyectosGrado;
 use App\Models\SubItem;
 
 trait funcionesUniversales
 {
 
-    public function buscarNombresItems($fase){ //Sen encarga de obtener el nombre y codigo de items y subitems
-        $codigos =[
-            'propuesta' => [
-
-            ],
+    public function buscarNombresItems($fase)
+    { //Sen encarga de obtener el nombre y codigo de items y subitems
+        $codigos = [
+            'propuesta' => [],
             'anteproyecto' => [
                 '001',
                 '006',
@@ -34,9 +37,27 @@ trait funcionesUniversales
                 '010',
                 '011',
                 '012'
+            ],
+            'proyFinal' => [
+                '001',
+                '006',
+                '007',
+                '008',
+                '009',
+                '010',
+                '013',
+                '012'
             ]
         ];
-        $items = Item::whereIn('codigoItem', $codigos['anteproyecto'])->get();
+        switch($fase){
+            case 'anteproyecto':
+                $items = Item::whereIn('codigoItem', $codigos['anteproyecto'])->get();
+                break;
+            case 'proyFinal':
+                $items = Item::whereIn('codigoItem', $codigos['proyFinal'])->get();
+                break;
+        }
+
         //dd($items);
         $Integracion = [];
 
@@ -51,38 +72,50 @@ trait funcionesUniversales
 
             // Añade el valor al array correspondiente
 
-            $Integracion[$item->item] = $valor;
+            $Integracion[$item->item] = [$valor, $item->idItem];
         }
-        //dd($Integracion['Título'][0]->SubItem);
+        //dd($Integracion);
 
         return $Integracion;
-
     }
     //consultar si existen observaciones creadas por el usuario y tomar la ultima
     public function ultimaObservacion($idFase, $fase, $cantObs)
     {
 
         try {
-            $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+            if($fase == 'anteproyecto'){
+                $ponderados = PonderadoAnteproyecto::all();
+
+                $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
+                
+            }else if($fase == 'proyecto_final'){
+                $ponderados = PonderadoProyectof::all();
+                $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+                ->where($fase, $idFase)
+                ->orderBy('idCalificacion', 'asc')
+                ->get();
+            }
+
             $array = [];
             //dd($observacionesAnterior);
-            if ($fase == 'anteproyecto') {
+            if ($fase == 'anteproyecto' || $fase == 'proyecto_final') {
+
                 $array1 = [];
                 $array2 = [];
                 foreach ($observacionesAnterior as $observacion) {
                     if ($observacion->numeroJurado == '0') {
                         $subitems = CalifSubitem::join('valorcalif_subitems', 'valorcalif_subitems.idValorCalifSubitem', 'calif_subitems.ValorCalifSubitem')
-                        ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
+                            ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
                         //dd($subitems);
 
                         $dato1 = [$observacion->observacion, $observacion->calificacion, $subitems, $observacion->idCalificacion];
                         array_push($array1, $dato1);
                     } else if ($observacion->numeroJurado == '1') {
                         $subitems = CalifSubitem::join('valorcalif_subitems', 'valorcalif_subitems.idValorCalifSubitem', 'calif_subitems.ValorCalifSubitem')
-                        ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
+                            ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
                         $dato2 = [$observacion->observacion, $observacion->calificacion, $subitems, $observacion->idCalificacion];
                         array_push($array2, $dato2);
                     }
@@ -90,12 +123,24 @@ trait funcionesUniversales
 
                 if (!isset($observacionesAnterior[0])) {
                     for ($i = 0; $i < $cantObs; $i++) {
-                        array_push($array1, ["--","--"]);
-                        array_push($array2, ["--","--"]);
+                        array_push($array1, ["", "--", []]);
+                        array_push($array2, ["", "--", []]);
+                    }
+                } else if (!isset($array2[0])) {
+                    for ($i = 0; $i < $cantObs; $i++) {
+                        //dd('g');
+                        array_push($array2, ["", "--", []]);
+                    }
+                } else if(!isset($array1[0])){
+                    for ($i = 0; $i < $cantObs; $i++) {
+                        //dd('g');
+                        array_push($array1, ["", "--", []]);
                     }
                 }
                 array_push($array, $array1);
                 array_push($array, $array2);
+                array_push($array, $ponderados);
+
             } else {
                 foreach ($observacionesAnterior as $observacion) {
                     $dato = [$observacion->observacion];
@@ -117,18 +162,21 @@ trait funcionesUniversales
             $array2 = [];
             $array = [];
             if ($fase == 'anteproyecto') {
+                $ponderados = PonderadoAnteproyecto::all();
                 for ($i = 0; $i < $cantObs; $i++) {
-                    array_push($array1, ["--","--"]);
-                    array_push($array2, ["--","--"]);
+                    array_push($array1, ["--", "--", []]);
+                    array_push($array2, ["--", "--", []]);
                 }
                 array_push($array, $array1);
                 array_push($array, $array2);
-            }else{
+                array_push($array, $ponderados);
+            } else {
                 for ($i = 0; $i < $cantObs; $i++) {
                     array_push($array, "");
                 }
             }
         }
+        //dd($array);
         return $array;
     }
 
@@ -207,6 +255,7 @@ trait funcionesUniversales
             'docenteAsig' => $docenteAsig,
             'docentes' => $docentes
         );
+
     }
 
     public function docentes()
@@ -234,7 +283,7 @@ trait funcionesUniversales
                 }
             }
         }
-
+        //dd($array);
         return $array;
     }
 
@@ -247,16 +296,38 @@ trait funcionesUniversales
             ->get();
     }
 
-    public function asignarJurado($idProyecto, $numeroDocumento)
+    public function asignarJurado($idProyecto, $numeroDocumento, $fase, $numJurado)
     {
+
+        $sqlFase = (object)[];
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyecto = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
-        if ($anteproyecto->juradoUno != '-1') {
-            $anteproyecto->juradoDos = $numeroDocumento; //estado de aprobado
-            $anteproyecto->save();
-        } else {
-            $anteproyecto->juradoUno = $numeroDocumento; //estado de aprobado
-            $anteproyecto->save();
+        switch($fase){
+            case 'anteproyecto':
+                $sqlFase = FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderByDesc('idAnteproyecto')->first();
+                break;
+            case 'proFinal':
+                $sqlFase = FaseProyectosfinale::where('pfin_proy', $proyecto->idProyecto)->orderByDesc('idProyectofinal')->first();
+                break;
+        }
+        //dd($numJurado);
+        //dd($sqlFase->juradoUno);
+        if ($sqlFase->juradoUno != '-1' && $numJurado == null && $sqlFase->juradoDos == '-1')
+        {
+
+            $sqlFase->juradoDos = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
+        } else if($sqlFase->juradoUno == '-1' && $numJurado == null)
+        {
+            $sqlFase->juradoUno = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
+        }else if($numJurado == '1'){
+            //dd($numJurado);
+            $sqlFase->juradoUno = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
+        }else if($numJurado == '2'){
+            //dd($numJurado);
+            $sqlFase->juradoDos = $numeroDocumento; //estado de aprobado
+            $sqlFase->save();
         }
     }
 }
