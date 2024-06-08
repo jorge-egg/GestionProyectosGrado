@@ -90,13 +90,26 @@ trait funcionesUniversales
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
-                
+
+                if(!isset($observacionesAnterior[0]) && $idFase > 1){
+                    $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+                    ->where($fase, ($idFase - 1))
+                    ->orderBy('idCalificacion', 'asc')
+                    ->get();
+                }
+
             }else if($fase == 'proyecto_final'){
                 $ponderados = PonderadoProyectof::all();
                 $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where($fase, $idFase)
                 ->orderBy('idCalificacion', 'asc')
                 ->get();
+                if(!isset($observacionesAnterior[0]) && $idFase > 1){
+                    $observacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
+                    ->where($fase, ($idFase - 1))
+                    ->orderBy('idCalificacion', 'asc')
+                    ->get();
+                }
             }
 
             $array = [];
