@@ -214,6 +214,7 @@
 
 
         function handleSelectChange(event) {
+            
             // Obtiene el select que lanzó el evento
             const selectElement = event.target;
 

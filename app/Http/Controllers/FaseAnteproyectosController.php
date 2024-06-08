@@ -24,9 +24,10 @@ class FaseAnteproyectosController extends Controller
         $this->$idProyecto      = $idProyecto;
         $integrantes            = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $proyecto               = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyectoAnterior   = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'asc')->first();
+        $consultanteproyectoAnt = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'asc')->first();
         $consultAnteproy        = FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
         $anteproyecto           = $this->Anteproyecto($consultAnteproy);
+        $anteproyectoAnterior   = $this->Anteproyecto($consultanteproyectoAnt);
         $docExist1              = $consultAnteproy == null ? null : ($consultAnteproy->exists() ? $consultAnteproy->documento : null);
         $docExist2              = $consultAnteproy == null ? null : ($consultAnteproy->exists() ? $consultAnteproy->cartaDirector : null);
         $observaciones          = $this->ultimaObservacion($anteproyecto->idAnteproyecto, 'anteproyecto', 8);
@@ -82,6 +83,10 @@ class FaseAnteproyectosController extends Controller
                 'idAnteproyecto' => "",
                 'documento' => "",
                 'aprobacionDocen' => "",
+                'juradoUno' => "-1",
+                'juradoDos' => "-1",
+                'estadoJUno' => "Pendiente",
+                'estadoJDos' => "Pendiente",
                 'estado' => "Activo"
             );
         }
@@ -141,8 +146,8 @@ class FaseAnteproyectosController extends Controller
                 'documento' => $newNameFile1,
                 'cartaDirector' => $newNameFile2,
                 'aprobacionDocen' => '-1', //Sin valor definido
-                'juradoUno' => '-1',
-                'juradoDos' => '-1',
+                'juradoUno' => $request->juradoUnoInp,
+                'juradoDos' => $request->juradoDosInp,
                 'estadoJUno' => 'Pendiente',
                 'estadoJDos' => 'Pendiente',
                 'estado' => 'Activo',

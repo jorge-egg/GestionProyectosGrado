@@ -38,7 +38,7 @@
                         <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
                             proyecto.</span>
                     @endif --}}
-
+                    
             <div>
                 <div class="mb-3">
                     <div>
@@ -85,7 +85,10 @@
                         <form action="{{ route('anteproyecto.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
-
+                            <input type="hidden" value="{{$array['anteproyecto']->juradoUno}}" name="juradoUnoInp">
+                            <input type="hidden" value="{{$array['anteproyecto']->juradoDos}}" name="juradoDosInp">
+                            <input type="hidden" value="{{$array['anteproyecto']->estadoJUno}}" name="estadoJUno">
+                            <input type="hidden" value="{{$array['anteproyecto']->estadoJDos}}" name="estadoJDos">
                             @can('propuesta.agregar')
                                 <div class="documentos">
                                     <section class="documentosSec">
@@ -250,8 +253,9 @@
     <br>
 
     @if ($aprobDocent == '2' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones')
+
         <div class="card"
-            style="display:{{ $array['anteproyecto']->juradoUno == '2' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones' ? 'flex' : 'none' }}">
+            style="display:{{ $array['anteproyecto']->juradoUno != '-1' || $array['anteproyecto']->juradoDos != '-1' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones' ? 'flex' : 'none' }}">
 
             <ul class="nav nav-tabs">
                 <li class="nav-item"
