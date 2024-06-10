@@ -14,7 +14,7 @@
 @endphp
 
         <br>
-        <h4 style="display: inline"><b>Estado: </b></h4><p style="display: inline" class="mostrar-estado">{{$jurado == 0 ? $array['anteproyecto']->estadoJUno : $array['anteproyecto']->estadoJDos}}</p><br>
+        <h4 style="display: inline"><b>Estado: </b></h4><p style="display: inline" class="mostrar-estado">{{$jurado == 0 ? $array['anteproyectoAnterior']->estadoJUno : $array['anteproyectoAnterior']->estadoJDos}}</p><br>
         <h4 style="display: inline"><b>Calificación: </b></h4><p style="display: inline" class="mostrar-calif">{{$calificacion}}</p>
         <br>
         <br>
@@ -31,10 +31,18 @@
                             aria-controls="flush-collapse{{ str_replace(' ', '', $clave) }}">
                             <h5>{{ $clave }}</h5>
                         </button><br>
+                        @php
+                            $estadoJurado = 'espera';
+                            if ($jurado == 0) {
+                                $estadoJurado = $array['anteproyectoAnterior']->estadoJUno;
+                            }else if($jurado == 1){
+                                $estadoJurado = $array['anteproyectoAnterior']->estadoJUno;
+                            }
+                        @endphp
                         <div class="input-group mb-3 campos-calificacion" style="display: flex; padding: 15px">
                             <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs' . $contador }}"
                                 {{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '' : 'disabled' }}
-                                {{ $array['observaciones'][$jurado][$contador][0] == '' ? '' : 'disabled' }}>
+                                {{ $array['observaciones'][$jurado][$contador][0] == '' || $estadoJurado == 'Aplazado con modificaciones' ? '' : 'disabled' }}>
                                 {{ $array['observaciones'][$jurado][$contador][0] }}
                             </textarea>
 
@@ -206,6 +214,7 @@
 
 
         function handleSelectChange(event) {
+            
             // Obtiene el select que lanzó el evento
             const selectElement = event.target;
 
@@ -213,11 +222,13 @@
             let selectClass1 = selectElement.classList[1];
             let selectClass2 = event.target.id;
 
+            // Obtiene el valor seleccionado y lo convierte a número
+            const selectedValue = selectElement.value;
+
             console.log(selectClass2);
 
 
-            // Obtiene el valor seleccionado y lo convierte a número
-            const selectedValue = selectElement.value;
+
 
             califSelect[selectClass1][selectClass2 - 1] = selectedValue;
 
@@ -277,7 +288,7 @@
                 // Verifica si el elemento fue encontrado
                 if (input) {
                     // Asigna un nuevo valor al elemento
-                    input.textContent = (array[posicion1][array[posicion1].length - 1]).toFixed(2);
+                    input.textContent = (array[posicion1][array[posicion1].length - 1]).toFixed(1);
                 } else {
                     console.log('El elemento no fue encontrado.');
                 }
