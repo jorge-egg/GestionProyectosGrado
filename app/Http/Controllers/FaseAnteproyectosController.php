@@ -148,8 +148,8 @@ class FaseAnteproyectosController extends Controller
                 'aprobacionDocen' => '-1', //Sin valor definido
                 'juradoUno' => $request->juradoUnoInp,
                 'juradoDos' => $request->juradoDosInp,
-                'estadoJUno' => 'Pendiente',
-                'estadoJDos' => 'Pendiente',
+                'estadoJUno' => $request->estadoJUno,
+                'estadoJDos' => $request->estadoJDos,
                 'estado' => 'Activo',
                 'ante_proy' => $proyecto->idProyecto,
 

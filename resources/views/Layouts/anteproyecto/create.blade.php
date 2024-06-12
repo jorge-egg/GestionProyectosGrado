@@ -38,7 +38,7 @@
                         <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
                             proyecto.</span>
                     @endif --}}
-                    
+
             <div>
                 <div class="mb-3">
                     <div>
@@ -48,7 +48,7 @@
                         @endforeach
                     </div>
                     <br>
-
+                    {{-- @dd($array['anteproyectoAnterior']) --}}
                     @if ($array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones')
                         <div class="documentos">
                             <section class="documentosSec" style="text-align: center">
