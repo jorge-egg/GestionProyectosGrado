@@ -50,7 +50,7 @@
                 </li>
             @endcan
             <li>
-                <a href="{{ route('Chatrs.index') }}">
+                <a href="{{ route('charts.index') }}">
                     <i class='bx bx-sitemap'></i>
                     <span class="links_name">charts</span>
                 </a>

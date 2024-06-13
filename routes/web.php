@@ -41,7 +41,7 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //charts
-Route::get('/Chatrs/index', [ChartsController::class, 'index'])->name('Chatrs.index');
+Route::get('/charts/index', [ChartsController::class, 'index'])->name('charts.index');
 
 //usuarios
 Route::get('get-programas-by-sede/{sedeId}', [UsuariosController::class, 'getProgramasBySede']);

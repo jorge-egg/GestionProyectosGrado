@@ -29,8 +29,8 @@ use Carbon\Carbon;
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
  * @property Collection|Integrante[] $integrantes
- * * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * * @property Carbon| $created_at
+ * * @property Carbon| $updated_at
  * @package App\Models
  */
 class SedeProyectosGrado extends Model
