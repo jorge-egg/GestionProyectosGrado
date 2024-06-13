@@ -38,7 +38,7 @@
                         <span style="color: red;">Su proyecto finalizó. Para poder enviar otra propuesta, deberá crear otro
                             proyecto.</span>
                     @endif --}}
-
+                    
             <div>
                 <div class="mb-3">
                     <div>
@@ -49,14 +49,46 @@
                     </div>
                     <br>
 
+                    @if ($array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones')
+                        <div class="documentos">
+                            <section class="documentosSec" style="text-align: center">
+
+                                <!-- documento del anteproyecto -->
+                                <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['anteproyectoAnterior']->documento, 'ruta' => '1']) }}"
+                                    target="_blank" class="btn btn-warning"><i
+                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['anteproyectoAnterior']->documento }}
+                                        --
+                                        documento de anteproyecto</i></a>
+                            </section>
+                            <section class="documentosSec" style="text-align: center">
+                                <!-- carta del director -->
+                                <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['anteproyectoAnterior']->cartaDirector, 'ruta' => '2']) }}"
+                                    target="_blank" class="btn btn-warning"><i
+                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['anteproyectoAnterior']->cartaDirector }}
+                                        -- carta
+                                        del director</i></a>
+                            </section>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Observación de los documentos anteriores</span>
+                            <textarea class="form-control" aria-label="With textarea" disabled>{{ $array['anteproyectoAnterior']->observaDocent }}</textarea>
+                        </div><br>
+
+                    @endif
+
                     @if (!$array['rangoFecha'][2])
                         <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
-                    @elseif ($array['docExist1'] == null && $array['docExist2'] == null)
+                    @elseif (
+                        ($array['docExist1'] == null && $array['docExist2'] == null) ||
+                            $array['anteproyecto']->estado == 'Aplazado con modificaciones')
                         <p style="color: red">El documento no ha sido cargado. </p>
                         <form action="{{ route('anteproyecto.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
-
+                            <input type="hidden" value="{{$array['anteproyecto']->juradoUno}}" name="juradoUnoInp">
+                            <input type="hidden" value="{{$array['anteproyecto']->juradoDos}}" name="juradoDosInp">
+                            <input type="hidden" value="{{$array['anteproyecto']->estadoJUno}}" name="estadoJUno">
+                            <input type="hidden" value="{{$array['anteproyecto']->estadoJDos}}" name="estadoJDos">
                             @can('propuesta.agregar')
                                 <div class="documentos">
                                     <section class="documentosSec">
@@ -107,6 +139,8 @@
                             $aprobDocent =
                                 $array['anteproyecto'] == null ? false : $array['anteproyecto']->aprobacionDocen;
                         @endphp
+
+
                         <form method="post">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
@@ -134,11 +168,11 @@
                                         style="background:#003E65; color:#fff; margin-bottom: 10px; display: {{ $aprobDocent == '-1' ? 'block' : 'none' }}"
                                         {{ $aprobDocent == '-1' ? '' : 'disabled' }}
                                         formaction="{{ route('anteproyecto.aprobDoc') }}">Enviar actualizacion de estado de
-                                        aprobacion del documento</button>
+                                        aprobación del documento</button>
                                     @if ($aprobDocent == '1')
                                         <p style="color: red">Los documentos NO fueron aprobados por el director del proyecto
                                         </p>
-                                    @elseif ($aprobDocent == '2')
+                                    @elseif ($aprobDocent == '2' || ($aprobDocent == '2' && $array['anteproyecto']->estado == 'Aplazado con modificaciones'))
                                         <p style="color: rgb(0, 62, 101)"><b>Los documentos fueron aprobados por el director del
                                                 proyecto</b></p>
                                     @endif
@@ -150,7 +184,7 @@
         </div>
     </div>
     <br>
-    <div class="card" style="display: {{ $aprobDocent == '-1' || $aprobDocent == '1' ? 'none' : 'block' }}">
+    <div class="card" style="display: {{ $aprobDocent == '2' ? 'block' : 'none' }}">
         <h5 class="card-title text-center">Jurados</h5>
 
         <div class='card-body' style="text-align: center">
@@ -218,9 +252,10 @@
     </div>
     <br>
 
-    @if ($aprobDocent == '2')
+    @if ($aprobDocent == '2' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones')
+
         <div class="card"
-            style="display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1' ? 'none' : 'flex' }}">
+            style="display:{{ $array['anteproyecto']->juradoUno != '-1' || $array['anteproyecto']->juradoDos != '-1' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones' ? 'flex' : 'none' }}">
 
             <ul class="nav nav-tabs">
                 <li class="nav-item"
@@ -270,7 +305,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                                                                        documento'
+                                                                                                                                                                                                                                                                                                                                                                                documento'
                 : '') }}
     </p>
 
