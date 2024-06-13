@@ -14,7 +14,7 @@
 @endphp
 
         <br>
-        <h4 style="display: inline"><b>Estado: </b></h4><p style="display: inline" class="mostrar-estado">{{$jurado == 0 ? $array['anteproyectoAnterior']->estadoJUno : $array['anteproyectoAnterior']->estadoJDos}}</p><br>
+        <h4 style="display: inline"><b>Estado: </b></h4><p style="display: inline" class="mostrar-estado">{{$jurado == 0 ? $array['anteproyecto']->estadoJUno : $array['anteproyecto']->estadoJDos}}</p><br>
         <h4 style="display: inline"><b>Calificación: </b></h4><p style="display: inline" class="mostrar-calif">{{$calificacion}}</p>
         <br>
         <br>
@@ -32,11 +32,12 @@
                             <h5>{{ $clave }}</h5>
                         </button><br>
                         @php
+
                             $estadoJurado = 'espera';
                             if ($jurado == 0) {
-                                $estadoJurado = $array['anteproyectoAnterior']->estadoJUno;
+                                $estadoJurado = $array['anteproyecto']->estadoJUno;
                             }else if($jurado == 1){
-                                $estadoJurado = $array['anteproyectoAnterior']->estadoJUno;
+                                $estadoJurado = $array['anteproyecto']->estadoJDos;
                             }
                         @endphp
                         <div class="input-group mb-3 campos-calificacion" style="display: flex; padding: 15px">
@@ -96,8 +97,8 @@
                                 }
 
                             @endphp
-                            <p class="ponderadoSub">{{ $ponderadoSub }}</p>
-                            <p class="cantSubItems">{{ count($valor[0]) }}</p>
+                            <p class="ponderadoSub" style="display: none;">{{ $ponderadoSub }}</p>
+                            <p class="cantSubItems" style="display: none;">{{ count($valor[0]) }}</p>
 
                             @foreach ($valor[0] as $subItem)
                                 <div class="input-group mb-3 campos-calificacion" style="display: flex">
@@ -151,7 +152,7 @@
                         App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento)
                 <div class="mb-3">
                     <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', $fase) }}"
-                        class="btn" style="background:#003E65; color:#fff">Enviar
+                        class="btn" style="background:#003E65; color:#fff; display:{{$estadoJurado == 'Aplazado con modificaciones' || $estadoJurado == 'Pendiente' ? 'block': 'none'}}">Enviar
                         calificación</button>
                 </div>
             @endif
@@ -214,7 +215,7 @@
 
 
         function handleSelectChange(event) {
-            
+
             // Obtiene el select que lanzó el evento
             const selectElement = event.target;
 

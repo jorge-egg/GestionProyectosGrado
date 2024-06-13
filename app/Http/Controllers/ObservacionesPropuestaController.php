@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\FaseCalOb;
+use App\Models\CalifSubitem;
 use Illuminate\Http\Request;
 use App\Models\Calificacione;
-use App\Models\CalifSubitem;
-use App\Models\FaseAnteproyecto;
 use App\Models\FasePropuesta;
-use App\Models\FaseProyectosfinale;
+use App\Models\FaseAnteproyecto;
 use App\Models\FaseSustentacione;
 use App\Models\FaseSustentaciones;
-use App\Models\PonderadosPropuesta;
-use App\Models\PonderadoAnteproyecto;
 use App\Models\PonderadoProyectof;
+use App\Models\FaseProyectosfinale;
+use App\Models\PonderadosPropuesta;
 use App\Traits\funcionesUniversales;
+use App\Models\PonderadoAnteproyecto;
 
 class ObservacionesPropuestaController extends Controller
 {
@@ -89,7 +90,7 @@ class ObservacionesPropuestaController extends Controller
             ]);
         }
         //dd($request->idFase);
-        $this->cambioEstado($request->idFase, $fase, $numeroJurado);
+        $this->cambioEstado($request->idFase, $fase, $numeroJurado, $tamaño);
         //dd($fase);
         switch ($fase) {
             case 'propuesta':
@@ -278,7 +279,7 @@ class ObservacionesPropuestaController extends Controller
             ]);
             //dd($datos);
         }
-        
+
 
         Calificacione::insert([
             'observacion' => $request->$nameObs,
@@ -291,18 +292,20 @@ class ObservacionesPropuestaController extends Controller
 
     }
 
-    public function cambioEstado($idfase, $fase, $numeroJurado)
+    public function cambioEstado($idfase, $fase, $numeroJurado, $cantidad)
     {
         $total = 0;
 
         $calificacionesAnterior = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
             ->where($fase, $idfase)
+            ->take($cantidad)
+            ->orderBy('idCalificacion', 'desc')
             ->get();
 
         foreach ($calificacionesAnterior as $calificacion) {
             $total += $calificacion->calificacion;
         }
-
+        //dd($total);
         $propuesta = $fase == 'propuesta' ? FasePropuesta::findOrFail($idfase) : ($fase == 'anteproyecto' ? FaseAnteproyecto::findOrFail($idfase) : ($fase == 'proyecto_final' ? FaseProyectosfinale::findOrFail($idfase) :
             FaseSustentaciones::findOrFail($idfase)));
 
@@ -312,7 +315,7 @@ class ObservacionesPropuestaController extends Controller
                 if ($total >= 3.5) {
                     $propuesta->estado = 'Aprobado';
                     $propuesta->save();
-                } else if ($total >= 3 && $total < 3.4) {
+                } else if ($total >= 3 && $total < 3.5) {
                     $propuesta->estado = 'Aplazado con modificaciones';
                     $propuesta->save();
                 } else {
@@ -323,10 +326,11 @@ class ObservacionesPropuestaController extends Controller
 
 
                 case 'anteproyecto':
+
                     if ($total >= 3.5) {
                         $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aprobado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aprobado' : null);
                         $propuesta->save();
-                    } else if ($total >= 3 && $total < 3.5) {
+                    } else if ($total >= 3.0 && $total < 3.5) {
                         $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aplazado con modificaciones' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aplazado con modificaciones' : null);
                         $propuesta->save();
                     } else {
@@ -344,6 +348,8 @@ class ObservacionesPropuestaController extends Controller
                         $anteproy->save();
                     }else if(($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aplazado con modificaciones') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aprobado') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones')){
                         $anteproy->estado = 'Aplazado con modificaciones';
+                        $anteproy->fecha_aplazado = Carbon::now()->startOfDay()->addDays(10)->endOfDay();
+
                         $anteproy->save();
                     }else if($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado'){
                         $anteproy->estado = 'Rechazado';

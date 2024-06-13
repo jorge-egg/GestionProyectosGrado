@@ -24,7 +24,7 @@ class CreateFaseAnteproyectosTable extends Migration
             $table->string("estadoJUno", 100);
             $table->string("estadoJDos", 100);
             $table->string('estado', 100);
-            $table->time('fecha_aplazado')->nullable();
+            $table->date('fecha_aplazado')->nullable();
             $table->unsignedBigInteger("ante_proy");
 
             $table->foreign('ante_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');

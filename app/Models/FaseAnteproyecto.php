@@ -35,7 +35,7 @@ class FaseAnteproyecto extends Model
 	public $timestamps = true; // Habilita los timestamps
 
 	protected $casts = [
-		'fecha_aplazado' => 'time without time zone',
+		'fecha_aplazado' => 'date',
 		'ante_proy' => 'int'
 	];
 
