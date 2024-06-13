@@ -25,6 +25,7 @@ class CreateSedeProyectosGradoTable extends Migration
             $table->foreign("proy_bibl")->references("idBiblioteca")->on("sede_bibliotecas")->onDelete('cascade');
             $table->foreign("comite")->references("idComite")->on("comites_sedes")->onDelete('cascade');
             $table->foreign("docente")->references("numeroDocumento")->on("usuarios_users")->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

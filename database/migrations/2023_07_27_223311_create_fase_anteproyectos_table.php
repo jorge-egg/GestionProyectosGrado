@@ -28,7 +28,7 @@ class CreateFaseAnteproyectosTable extends Migration
             $table->unsignedBigInteger("ante_proy");
 
             $table->foreign('ante_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
-
+            $table->timestamps();
         });
     }
 
