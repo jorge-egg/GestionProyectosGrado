@@ -1,4 +1,5 @@
 <h5 class="card-title text-center">Calificar anteproyecto</h5>
+
 <div class='card-body'>
     <p class="card-text">
     <section id="cont-calf">
@@ -152,7 +153,7 @@
                         App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento)
                 <div class="mb-3">
                     <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', $fase) }}"
-                        class="btn" style="background:#003E65; color:#fff; display:{{$estadoJurado == 'Aplazado con modificaciones' || $estadoJurado == 'Pendiente' ? 'block': 'none'}}">Enviar
+                        class="btn" style="background:#003E65; color:#fff; display:{{($estadoJurado == 'Aplazado con modificaciones' || $estadoJurado == 'Pendiente') && $array['anteproyecto']->aprobacionDocen == 2 ? 'block': 'none'}}">Enviar
                         calificación</button>
                 </div>
             @endif
@@ -247,9 +248,9 @@
             });
 
             var mostrarEstado = document.querySelectorAll('.mostrar-estado').forEach(function(estado){
-                if(calificacionCalc >= 3.5){
+                if(calificacionCalc >= 3.50){
                     estado.textContent = 'Aprobado';
-                }else if(calificacionCalc >= 3 && calificacionCalc < 3.5){
+                }else if(calificacionCalc >= 3 && calificacionCalc < 3.50){
                     estado.textContent = 'Aplazado con modificaciones';
                 }else{
                     estado.textContent = 'Rechazado';
