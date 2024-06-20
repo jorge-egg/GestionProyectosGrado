@@ -13,7 +13,11 @@ use App\Http\Controllers\FasePropuestasController;
 use App\Http\Controllers\FaseAnteproyectosController;
 use App\Http\Controllers\FaseProyectoFinalController;
 use App\Http\Controllers\ObservacionesPropuestaController;
+
 use App\Models\FasePropuesta;
+
+
+use App\Http\Controllers\ChartsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +39,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+//charts
+Route::get('/charts/index', [ChartsController::class, 'index'])->name('charts.index');
 
 //usuarios
 Route::get('get-programas-by-sede/{sedeId}', [UsuariosController::class, 'getProgramasBySede']);

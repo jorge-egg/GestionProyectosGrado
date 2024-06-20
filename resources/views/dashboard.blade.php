@@ -49,13 +49,19 @@
                     </a>
                 </li>
             @endcan
-
+            <li>
+                <a href="{{ route('charts.index') }}">
+                    <i class='bx bx-sitemap'></i>
+                    <span class="links_name">charts</span>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="contenido">
         @yield('js')
         @yield('dashboard_content')
         @yield('js_extra')
+        @yield('scripts')
     </div>
 @stop
 

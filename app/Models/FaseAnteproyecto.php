@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -22,6 +18,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $estado
  * @property time without time zone|null $fecha_aplazado
  * @property int $ante_proy
+
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+
  *
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
@@ -32,7 +32,7 @@ class FaseAnteproyecto extends Model
 {
 	protected $table = 'fase_anteproyectos';
 	protected $primaryKey = 'idAnteproyecto';
-	public $timestamps = false;
+	public $timestamps = true; // Habilita los timestamps
 
 	protected $casts = [
 		'fecha_aplazado' => 'date',

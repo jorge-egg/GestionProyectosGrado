@@ -24,7 +24,7 @@ class FaseProyectosfinale extends Model
 {
 	protected $table = 'fase_proyectosfinales';
 	protected $primaryKey = 'idProyectofinal';
-	public $timestamps = false;
+	public $timestamps = true; // Habilita los timestamps
 
 	protected $casts = [
 		'pfin_proy' => 'int'

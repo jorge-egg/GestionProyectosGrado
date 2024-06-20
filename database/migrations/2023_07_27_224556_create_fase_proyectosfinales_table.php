@@ -29,7 +29,7 @@ class CreateFaseProyectosfinalesTable extends Migration
             $table->unsignedBigInteger("pfin_proy");
 
             $table->foreign('pfin_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
-
+            $table->timestamps();
         });
     }
 

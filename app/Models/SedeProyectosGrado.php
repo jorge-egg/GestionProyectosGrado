@@ -8,7 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 /**
  * Class SedeProyectosGrado
  *
@@ -29,7 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
  * @property Collection|Integrante[] $integrantes
- *
+ * * @property Carbon| $created_at
+ * * @property Carbon| $updated_at
  * @package App\Models
  */
 class SedeProyectosGrado extends Model

@@ -16,8 +16,9 @@ class CreateFaseSustentacionesTable extends Migration
         Schema::create('fase_sustentaciones', function (Blueprint $table) {
             $table->bigIncrements("idSustentacion");
             $table->unsignedBigInteger("sust_proy");
+            $table->string('estado', 100);
             $table->foreign('sust_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
-
+            $table->timestamps();
         });
     }
 
