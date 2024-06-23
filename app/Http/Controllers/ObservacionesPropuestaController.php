@@ -23,26 +23,6 @@ use App\Models\PonderadoAnteproyecto;
 class ObservacionesPropuestaController extends Controller
 {
     use funcionesUniversales;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -65,7 +45,7 @@ class ObservacionesPropuestaController extends Controller
 
             case 'anteproyecto':
                 $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
-                $this->cargarCalificacionesAnteproyecto($request);
+                $this->cargarCalificacionesAnteproyecto($request, 'store');
                 $numeroJurado = $request->numeroJurado;
                 break;
 
@@ -155,7 +135,7 @@ class ObservacionesPropuestaController extends Controller
 
 
     //captura las calificaciones y observaciones y devuelve un array
-    public function cargarCalificacionesAnteproyecto($request)
+    public function cargarCalificacionesAnteproyecto($request, $function)
     {
         $incrementador = 0;
         $itemsSubItems = $this->buscarNombresItems('anteproyecto');
@@ -168,10 +148,21 @@ class ObservacionesPropuestaController extends Controller
             $nameObs = 'obs' . $incrementador; //nombre de los campos de observaciones
 
 
-            $datos = $this->calcCalifAnteproy($clave, 'anteproyecto', $request, $valor, $numSubItems, $nameObs);
+            $datos = $this->calcCalifAnteproy($clave, 'anteproyecto', $request, $valor, $numSubItems, $nameObs, $incrementador, $function);
 
             //dd($datos);
-            CalifSubitem::insert($datos);
+            if ($function == 'store') {
+                CalifSubitem::insert($datos);
+            } else if ($function == 'update') {
+                foreach($datos as $dato){
+                    $llave = $dato['idCalifSubitem'];
+                    unset($dato['idCalifSubitem']);
+                    //dd($dato);
+                    CalifSubitem::where('idCalifSubitem', $llave)->update($dato);
+                }
+
+            }
+
             //dd('d');
             $incrementador++;
         }
@@ -232,10 +223,16 @@ class ObservacionesPropuestaController extends Controller
 
 
 
-    public function calcCalifAnteproy($item, $fase, $request, $names, $numSubItems, $nameObs)
+    public function calcCalifAnteproy($item, $fase, $request, $names, $numSubItems, $nameObs, $incrementador, $function)
     { //calcula la nota tipo double en base al item y a la opcion del select
+
         $idCalificacion = Calificacione::orderBy('idCalificacion', 'desc')->take(1)->pluck('idCalificacion');
         $idCalificacion = Calificacione::orderBy('idCalificacion', 'desc')->take(1)->pluck('idCalificacion');
+        if($function == 'update'){
+            $consultAnteproy        = FaseAnteproyecto::where('ante_proy', $request->idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
+            $obs = $this->ultimaObservacion($consultAnteproy->idAnteproyecto, 'anteproyecto', 8);
+        }
+
         //dd($idCalificacion);
         if (!isset($idCalificacion[0])) {
             $idCalificacion = [];
@@ -272,23 +269,45 @@ class ObservacionesPropuestaController extends Controller
                 $totalCalificacion += 0;
                 $valor = 2;
             }
+
             //dd($valor);
-            array_push($datos, [
-                'ValorCalifSubitem' => $valor,
-                'calificacion' => $idCalificacion[0] + 1,
-                'subitem' => $name->idSubitem,
-            ]);
+            if ($function == 'store') {
+                array_push($datos, [
+                    'ValorCalifSubitem' => $valor,
+                    'calificacion' => $idCalificacion[0] + 1,
+                    'subitem' => $name->idSubitem,
+                ]);
+            } else if ($function == 'update') {
+                array_push($datos, [
+                    'idCalifSubitem' => $obs[$request->numeroJurado][$incrementador][2][0]->idCalifSubitem,
+                    'ValorCalifSubitem' => $valor,
+                ]);
+            }
             //dd($datos);
         }
 
 
-        Calificacione::insert([
-            'observacion' => $request->$nameObs,
-            'calificacion' => $totalCalificacion,
-            'cal_item' => $this->buscarIdItem($item),
 
-        ]);
-        //dd($datos);
+        if ($function == 'store') {
+            Calificacione::insert([
+                'observacion' => $request->$nameObs,
+                'calificacion' => $totalCalificacion,
+                'cal_item' => $this->buscarIdItem($item),
+
+            ]);
+        } else if ($function == 'update') {
+
+            //dd($obs[$request->numeroJurado]);
+            Calificacione::where('idCalificacion', $obs[$request->numeroJurado][$incrementador][3])->update([
+                'observacion' => $request->$nameObs,
+                'calificacion' => $totalCalificacion,
+                'cal_item' => $this->buscarIdItem($item),
+
+            ]);
+            //dd();
+        }
+
+
         return $datos;
     }
 
@@ -356,8 +375,12 @@ class ObservacionesPropuestaController extends Controller
                     } else if ($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado') {
                         $anteproy->estado = 'Rechazado';
                         $anteproy->save();
+                    } else if ($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Rechazado' || $anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Aprobado' || $anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Aplazado con modificaciones' || $anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Rechazado') {
+                        $anteproy->estado = 'Verificar';
+                        $anteproy->save();
+                        //pendiente aplazado - rechazado
                     }
-                }else if($anteproy->estadoJUno != 'Aplazado con modificaciones' && $anteproy->estadoJDos != 'Aplazado con modificaciones' && $cantidadAnte == 2){
+                } else if ($anteproy->estadoJUno != 'Aplazado con modificaciones' && $anteproy->estadoJDos != 'Aplazado con modificaciones' && $cantidadAnte == 2) {
                     if ($anteproy->estadoJUno == 'Pendiente' || $anteproy->estadoJDos == 'Pendiente') {
                         $anteproy->estado = 'Activo';
                         $anteproy->save();
@@ -373,13 +396,13 @@ class ObservacionesPropuestaController extends Controller
                         $anteproy->estado = 'Rechazado';
                         $anteproy->save();
                     }
-                }else if($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones' && $cantidadAnte == 2){
+                } else if ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones' && $cantidadAnte == 2) {
                     $anteproy->estado = 'Rechazado';
                     $anteproy->save();
                 }
 
                 $anteproy = FaseAnteproyecto::findOrFail($idfase);
-                if($anteproy->estado == 'Rechazado'){
+                if ($anteproy->estado == 'Rechazado') {
                     $proyecto = SedeProyectosGrado::findOrFail($anteproy->ante_proy);
                     $proyecto->estado = false;
                     $proyecto->save();
@@ -440,5 +463,71 @@ class ObservacionesPropuestaController extends Controller
             ->orderBy('idCalificacion', 'asc')
             ->get();
         return $calificacionesAnterior;
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $fase
+     * @return \Illuminate\Http\Response
+     */
+
+    public function update(Request $request)
+    {
+        $fase = $request->fase;
+        $numeroJurado = '-1';
+        //dd($fase);
+        switch ($fase) {
+            case 'anteproyecto':
+                $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
+                $this->cargarCalificacionesAnteproyecto($request, 'update');
+                $numeroJurado = $request->numeroJurado;
+                break;
+
+            case 'proyFinal':
+                $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
+                $this->cargarCalificacionesProFinal($request);
+                $numeroJurado = $request->numeroJurado;
+                $fase = 'proyecto_final';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take($tamaño)->pluck('idCalificacion');
+
+        foreach ($idCalificaciones as $calificacion) {
+            //dd($fase);
+            FaseCalOb::create([
+                $fase => $request->idFase,
+                'calificacion_fase' => $calificacion,
+                'numeroJurado' => $numeroJurado,
+            ]);
+        }
+        //dd($request->idFase);
+        $this->cambioEstado($request->idFase, $fase, $numeroJurado, $tamaño);
+        //dd($fase);
+        switch ($fase) {
+            case 'propuesta':
+                return redirect()->route('proyecto.indextableComite');
+                break;
+
+            case 'anteproyecto':
+                return redirect()->route('proyecto.indextableJurado');
+                break;
+
+            case 'proyecto_final':
+                return redirect()->route('proyecto.indextableJurado');
+                break;
+
+            default:
+                # code...
+                break;
+        }
     }
 }
