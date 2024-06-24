@@ -118,6 +118,7 @@ Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class,
 Route::get('/anteproyecto/verpdf/{nombreArchivo}/{ruta}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
 Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
 Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
+Route::put('/anteproyecto/update', [FaseAnteproyectosController::class, 'update'])->name('anteproyecto.update');
 
 
 
@@ -144,6 +145,6 @@ Route::post('/proyectoFinal/createAnterior', [FaseProyectoFinalController::class
 Route::get('/proyectoFinal/verpdf/{nombreArchivo}/{ruta}', [FaseProyectoFinalController::class, 'verPdf'])->name('proyectoFinal.verpdf');
 Route::post('/proyectoFinal/aprobarDocumento', [FaseProyectoFinalController::class, 'aprobarDoc'])->name('proyectoFinal.aprobDoc');
 Route::post('/proyectoFinal/asignarJurado', [FaseProyectoFinalController::class, 'asigJurado'])->name('proyectoFinal.asigJurado');
-
+Route::post('/proyectoFinal/update', [FaseProyectoFinalController::class, 'update'])->name('proyectoFinal.update');
 
 

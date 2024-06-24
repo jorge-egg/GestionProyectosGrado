@@ -1,4 +1,5 @@
 <h5 class="card-title text-center">Calificar anteproyecto</h5>
+
 <div class='card-body'>
     <p class="card-text">
     <section id="cont-calf">
@@ -43,7 +44,7 @@
                         <div class="input-group mb-3 campos-calificacion" style="display: flex; padding: 15px">
                             <textarea class="form-control auto-expand" id="Observaciones" placeholder="Observaciones" name="{{ 'obs' . $contador }}"
                                 {{ $array['anteproyecto']->juradoDos == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento || $array['anteproyecto']->juradoUno == App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento ? '' : 'disabled' }}
-                                {{ $array['observaciones'][$jurado][$contador][0] == '' || $estadoJurado == 'Aplazado con modificaciones' ? '' : 'disabled' }}>
+                                {{ $array['observaciones'][$jurado][$contador][0] == '' || $estadoJurado == 'Aplazado con modificaciones' || $estadoJurado == 'Rechazado' ? '' : 'disabled' }}>
                                 {{ $array['observaciones'][$jurado][$contador][0] }}
                             </textarea>
 
@@ -152,8 +153,14 @@
                         App\Models\UsuariosUser::where('usua_users', auth()->id())->whereNull('deleted_at')->first()->numeroDocumento)
                 <div class="mb-3">
                     <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.store', $fase) }}"
-                        class="btn" style="background:#003E65; color:#fff; display:{{$estadoJurado == 'Aplazado con modificaciones' || $estadoJurado == 'Pendiente' ? 'block': 'none'}}">Enviar
+                        class="btn" style="background:#003E65; color:#fff; display:{{($estadoJurado == 'Aplazado con modificaciones' || $estadoJurado == 'Pendiente') && $array['anteproyecto']->aprobacionDocen == 2 ? 'block': 'none'}}">Enviar
                         calificación</button>
+                </div>
+                <div class="mb-3">
+                    <input type="hidden" value="{{$fase}}" name="fase">
+                    <input type="hidden" value="{{$array['anteproyecto']->ante_proy}}" name="idProyecto">
+                    <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.update') }}"
+                        class="btn" style="background:#003E65; color:#fff; display:{{$array['anteproyecto']->estado =='Verificar' && $array['anteproyecto']->aprobacionDocen == 2 && $estadoJurado == 'Rechazado' ? 'block': 'none'}}">Actualizar</button>
                 </div>
             @endif
 
@@ -247,9 +254,9 @@
             });
 
             var mostrarEstado = document.querySelectorAll('.mostrar-estado').forEach(function(estado){
-                if(calificacionCalc >= 3.5){
+                if(calificacionCalc >= 3.50){
                     estado.textContent = 'Aprobado';
-                }else if(calificacionCalc >= 3 && calificacionCalc < 3.5){
+                }else if(calificacionCalc >= 3 && calificacionCalc < 3.50){
                     estado.textContent = 'Aplazado con modificaciones';
                 }else{
                     estado.textContent = 'Rechazado';
