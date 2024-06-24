@@ -168,7 +168,7 @@ class ChartsController extends Controller
     $totalAnteproyectos = \App\Models\FaseAnteproyecto::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalPropuestas = \App\Models\FasePropuesta::whereBetween('created_at', [$startDate, $endDate])->count();
 
-    return view('Layouts.charts.index', compact(
+    return view('Layouts.Charts.index', compact(
         'chart1', 'chart2', 'chart3', 'chart4', 'chart5', 'chart6',
         'totalProyectos', 'totalSustentaciones', 'totalProyectosFinales', 'totalAnteproyectos', 'totalPropuestas',
         'startDate', 'endDate'));
