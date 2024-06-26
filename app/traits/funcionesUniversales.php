@@ -129,6 +129,7 @@ trait funcionesUniversales
                     } else if ($observacion->numeroJurado == '1') {
                         $subitems = CalifSubitem::join('valorcalif_subitems', 'valorcalif_subitems.idValorCalifSubitem', 'calif_subitems.ValorCalifSubitem')
                             ->where('calificacion', $observacion->idCalificacion)->orderBy('idCalifSubitem', 'asc')->get();
+                            // dd($subitems);
                         $dato2 = [$observacion->observacion, $observacion->calificacion, $subitems, $observacion->idCalificacion];
                         array_push($array2, $dato2);
                     }

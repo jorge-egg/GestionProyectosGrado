@@ -48,7 +48,7 @@ class FaseAnteproyectosController extends Controller
                                     'nameItems' => $itemsSubItems,
                                     'anteproyectoAnterior' => $anteproyectoAnterior,
                                 );
-                                //dd($array['anteproyectoAnterior']);
+                                //dd($array['observaciones'][1]);
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }

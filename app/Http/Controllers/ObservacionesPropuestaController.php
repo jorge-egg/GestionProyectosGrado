@@ -140,7 +140,7 @@ class ObservacionesPropuestaController extends Controller
         $incrementador = 0;
         $itemsSubItems = $this->buscarNombresItems('anteproyecto');
 
-        //dd($request);
+        // dd($request);
 
         foreach ($itemsSubItems as $clave => $valor) {
             $dataCalificaciones = [];
@@ -150,14 +150,14 @@ class ObservacionesPropuestaController extends Controller
 
             $datos = $this->calcCalifAnteproy($clave, 'anteproyecto', $request, $valor, $numSubItems, $nameObs, $incrementador, $function);
 
-            //dd($datos);
+            // dd($datos);
             if ($function == 'store') {
                 CalifSubitem::insert($datos);
             } else if ($function == 'update') {
                 foreach($datos as $dato){
                     $llave = $dato['idCalifSubitem'];
                     unset($dato['idCalifSubitem']);
-                    //dd($dato);
+                    // dd($dato);
                     CalifSubitem::where('idCalifSubitem', $llave)->update($dato);
                 }
 
@@ -499,16 +499,6 @@ class ObservacionesPropuestaController extends Controller
                 break;
         }
 
-        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take($tamaño)->pluck('idCalificacion');
-
-        foreach ($idCalificaciones as $calificacion) {
-            //dd($fase);
-            FaseCalOb::create([
-                $fase => $request->idFase,
-                'calificacion_fase' => $calificacion,
-                'numeroJurado' => $numeroJurado,
-            ]);
-        }
         //dd($request->idFase);
         $this->cambioEstado($request->idFase, $fase, $numeroJurado, $tamaño);
         //dd($fase);
