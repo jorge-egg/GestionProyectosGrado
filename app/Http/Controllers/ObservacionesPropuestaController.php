@@ -156,9 +156,12 @@ class ObservacionesPropuestaController extends Controller
             } else if ($function == 'update') {
                 foreach($datos as $dato){
                     $llave = $dato['idCalifSubitem'];
-                    unset($dato['idCalifSubitem']);
-                    // dd($dato);
-                    CalifSubitem::where('idCalifSubitem', $llave)->update($dato);
+
+
+                    $calSubItem = CalifSubitem::findOrFail($llave);
+                    $calSubItem -> ValorCalifSubitem = $dato['ValorCalifSubitem'];
+                    $calSubItem -> save();
+                    //dd($dato);
                 }
 
             }
@@ -250,7 +253,7 @@ class ObservacionesPropuestaController extends Controller
         }
 
 
-
+        $contadorNumSubItem = 0;
         $totalCalificacion = 0;
         $datos = [];
         //dd($names);
@@ -279,9 +282,10 @@ class ObservacionesPropuestaController extends Controller
                 ]);
             } else if ($function == 'update') {
                 array_push($datos, [
-                    'idCalifSubitem' => $obs[$request->numeroJurado][$incrementador][2][0]->idCalifSubitem,
+                    'idCalifSubitem' => $obs[$request->numeroJurado][$incrementador][2][$contadorNumSubItem]->idCalifSubitem,
                     'ValorCalifSubitem' => $valor,
                 ]);
+                $contadorNumSubItem++;
             }
             //dd($datos);
         }
