@@ -331,18 +331,22 @@
             if (inputJurado.value === '0') {
                 secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = 'inactive_' + textarea.name;
+                    textarea.required = false;
                 });
 
                 secJ1.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = textarea.name.replace(/^inactive_/, '');
+                    textarea.required = true;
                 });
             } else if (inputJurado.value === '1') {
                 secJ1.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = 'inactive_' + textarea.name;
+                    textarea.required = false;
                 });
 
                 secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = textarea.name.replaceAll('inactive_', '');
+                    textarea.required = true;
                 });
             }
 
