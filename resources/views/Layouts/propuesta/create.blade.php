@@ -299,8 +299,8 @@
 
                 // Establecer la fecha de finalización (10 días a partir de hoy)
                 const endDate = new Date();
-                //endDate.setDate(endDate.getDate() + 10);
-                endDate.setMinutes(endDate.getMinutes() + 1);
+                endDate.setDate(endDate.getDate() + 10);
+                // endDate.setMinutes(endDate.getMinutes() + 1);
                 // Actualizar la cuenta regresiva cada segundo
                 const countdownInterval = setInterval(updateCountdown, 1000);
 
