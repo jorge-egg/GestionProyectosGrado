@@ -32,6 +32,7 @@ class FaseProyectosfinale extends Model
 
 	protected $fillable = [
         'documento',
+        'cartaDirector',
 		'aprobacionDocen',
 		'observaDocent',
 		'juradoUno',

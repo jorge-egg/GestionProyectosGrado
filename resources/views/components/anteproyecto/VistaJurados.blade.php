@@ -158,11 +158,9 @@
                 </div>
                 <div class="mb-3">
                     <input type="hidden" value="{{$fase}}" name="fase">
-                    <input type="hidden" value="{{$array['anteproyecto']->ante_proy}}" name="idProyecto">
+                    <input type="hidden" value="{{$fase == "anteproyecto" ? $array['anteproyecto']->ante_proy : ($fase == "proyFinal" ? $array['anteproyecto']->pfin_proy : null)}}" name="idProyecto">
                     <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.update') }}"
                         class="btn" style="background:#003E65; color:#fff; display:{{$array['anteproyecto']->estado =='Verificar' && $array['anteproyecto']->aprobacionDocen == 2 && $estadoJurado == 'Rechazado' ? 'block': 'none'}}">Actualizar</button>
-                        <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.update') }}"
-                        class="btn" style="background:#003E65; color:#fff;">Actualizar</button>
                 </div>
             @endif
 

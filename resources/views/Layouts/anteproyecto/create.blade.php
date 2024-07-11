@@ -332,21 +332,25 @@
                 secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = 'inactive_' + textarea.name;
                     textarea.required = false;
+                    textarea.value = textarea.value.trim();
                 });
 
                 secJ1.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = textarea.name.replace(/^inactive_/, '');
                     textarea.required = true;
+                    textarea.value = textarea.value.trim();
                 });
             } else if (inputJurado.value === '1') {
                 secJ1.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = 'inactive_' + textarea.name;
                     textarea.required = false;
+                    textarea.value = textarea.value.trim();
                 });
 
                 secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = textarea.name.replaceAll('inactive_', '');
                     textarea.required = true;
+                    textarea.value = textarea.value.trim();
                 });
             }
 

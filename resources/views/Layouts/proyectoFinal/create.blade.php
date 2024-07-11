@@ -50,14 +50,45 @@
                     </div>
                     <br>
 
+                    @if ($array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones')
+                        <div class="documentos">
+                            <section class="documentosSec" style="text-align: center">
+
+                                <!-- documento del anteproyecto -->
+                                <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['anteproyectoAnterior']->documento, 'ruta' => '1']) }}"
+                                    target="_blank" class="btn btn-warning"><i
+                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['anteproyectoAnterior']->documento }}
+                                        --
+                                        documento de anteproyecto</i></a>
+                            </section>
+                            <section class="documentosSec" style="text-align: center">
+                                <!-- carta del director -->
+                                <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['anteproyectoAnterior']->cartaDirector, 'ruta' => '2']) }}"
+                                    target="_blank" class="btn btn-warning"><i
+                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['anteproyectoAnterior']->cartaDirector }}
+                                        -- carta
+                                        del director</i></a>
+                            </section>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Observación de los documentos anteriores</span>
+                            <textarea class="form-control" aria-label="With textarea" disabled>{{ $array['anteproyectoAnterior']->observaDocent }}</textarea>
+                        </div><br>
+
+                    @endif
+
                     @if (!$array['rangoFecha'][2])
                         <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
-                    @elseif ($array['docExist1'] == null)
+                    @elseif (($array['docExist1'] == null && $array['docExist2'] == null) ||
+                    $array['anteproyecto']->estado == 'Aplazado con modificaciones')
                         <p style="color: red">El documento no ha sido cargado. </p>
                         <form action="{{ route('proyectoFinal.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
-
+                            <input type="hidden" value="{{$array['anteproyecto']->juradoUno}}" name="juradoUnoInp">
+                            <input type="hidden" value="{{$array['anteproyecto']->juradoDos}}" name="juradoDosInp">
+                            <input type="hidden" value="{{$array['anteproyecto']->estadoJUno}}" name="estadoJUno">
+                            <input type="hidden" value="{{$array['anteproyecto']->estadoJDos}}" name="estadoJDos">
                             @can('propuesta.agregar')
                                 <div class="documentos">
                                     <section class="documentosSec">
@@ -65,6 +96,14 @@
                                         <input class="form-control input-file @error('docAnteProy') is-invalid @enderror"
                                             type="file" id="docAnt" name="docAnteProy">
                                         @error('docAnteProy')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </section>
+                                    <section class="documentosSec">
+                                        <label for="docDir" class="form-label">Carta de aprobación Director</label>
+                                        <input class="form-control input-file @error('docDir') is-invalid @enderror"
+                                            type="file" id="docDir" name="docDir">
+                                        @error('docDir')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </section>
@@ -82,7 +121,14 @@
                                 <a href="{{ route('proyectoFinal.verpdf', ['nombreArchivo' => $array['docExist1'], 'ruta' => '1']) }}"
                                     target="_blank" class="btn btn-warning"><i
                                         class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist1'] }} --
-                                        documento de anteproyecto</i></a>
+                                        documento de proyecto final</i></a>
+                            </section>
+                            <section class="documentosSec" style="text-align: center">
+                                <!-- carta del director -->
+                                <a href="{{ route('proyectoFinal.verpdf', ['nombreArchivo' => $array['docExist2'], 'ruta' => '2']) }}"
+                                    target="_blank" class="btn btn-warning"><i
+                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta
+                                        del director</i></a>
                             </section>
                             @can('propuesta.agregar')
                                 <p style="color: red">Por favor espere a que el director del proyecto califique los documentos
@@ -162,10 +208,22 @@
                                 ->first();
 
                 @endphp
-                <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
-                <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
-                <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                <section style="display: flex; flex-direction: row; text-align: center; justify-content: center">
+                    <p style="color: red">Jurado 1: {{ $JuradoUno->nombre . ' ' . $JuradoUno->apellido }}</p>
+                    <button type="button" id="SelectJ1" data-bs-toggle="modal" data-bs-target="#buscarDocente"
+                        style="height: 30px; width: 30px; margin-left: 10px; display: {{ $array['anteproyecto']->juradoUno != '-1' ? 'block' : 'none' }}">
+                        <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
+                    </button>
+                </section>
+                <section style="display: flex; flex-direction: row; text-align: center; justify-content: center">
+                    <p style="color: red">Jurado 2: {{ $JuradoDos->nombre . ' ' . $JuradoDos->apellido }}</p>
+                    <button type="button" id="SelectJ2" data-bs-toggle="modal" data-bs-target="#buscarDocente"
+                        style="height: 30px; width: 30px; margin-left: 10px; display: {{ $array['anteproyecto']->juradoDos != '-1' ? 'block' : 'none' }}">
+                        <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
+                    </button>
+                </section>
+                <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
 
                     @component('components.Modales.buscarDocente', [
                         'docentes' => $miembrosDocente['docentes'],
@@ -190,9 +248,9 @@
     </div>
     <br>
 
-    @if ($aprobDocent == '2')
+    @if ($aprobDocent == '2' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones')
         <div class="card"
-            style="display:{{ $array['anteproyecto']->juradoUno == '-1' || $array['anteproyecto']->juradoDos == '-1' ? 'none' : 'flex' }}">
+            style="display:{{ $array['anteproyecto']->juradoUno != '-1' || $array['anteproyecto']->juradoDos != '-1' || $array['anteproyectoAnterior']->estado == 'Aplazado con modificaciones' ? 'flex' : 'none' }}">
 
             <ul class="nav nav-tabs">
                 <li class="nav-item"
@@ -216,7 +274,7 @@
                         'valRolComite' => $valRolComite,
                         'jurado' => 0,
                         'fase' => 'proyFinal',
-                        'idFase' => $array['anteproyecto']->idProyectofinal
+                        'idFase' => $array['anteproyecto']->idProyectofinal,
                     ])
                     @endcomponent
                 </section>
@@ -227,7 +285,7 @@
                         'valRolComite' => $valRolComite,
                         'jurado' => 1,
                         'fase' => 'proyFinal',
-                        'idFase' => $array['anteproyecto']->idProyectofinal
+                        'idFase' => $array['anteproyecto']->idProyectofinal,
                     ])
                     @endcomponent
                 </section>
@@ -243,7 +301,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                                                        documento'
+                                                                                                                                                                                                                                                                                                                                                                documento'
                 : '') }}
     </p>
 
@@ -257,6 +315,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const btnSelectJurado1 = document.getElementById('SelectJ1');
+            const btnSelectJurado2 = document.getElementById('SelectJ2');
+            const JIdentificador = document.getElementById('JIdentificador');
             const enlace1 = document.getElementById('juradoUnoButton');
             const enlace2 = document.getElementById('juradoDosButton');
             const inputJurado = document.getElementById('inputJurado');
@@ -266,18 +327,26 @@
             if (inputJurado.value === '0') {
                 secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = 'inactive_' + textarea.name;
+                    textarea.required = false;
+                    textarea.value = textarea.value.trim();
                 });
 
                 secJ1.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = textarea.name.replace(/^inactive_/, '');
+                    textarea.required = true;
+                    textarea.value = textarea.value.trim();
                 });
             } else if (inputJurado.value === '1') {
                 secJ1.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = 'inactive_' + textarea.name;
+                    textarea.required = false;
+                    textarea.value = textarea.value.trim();
                 });
 
                 secJ2.querySelectorAll('textarea').forEach(textarea => {
                     textarea.name = textarea.name.replaceAll('inactive_', '');
+                    textarea.required = true;
+                    textarea.value = textarea.value.trim();
                 });
             }
 
@@ -304,7 +373,24 @@
                 secJ2.style.display = 'block';
                 secJ1.style.display = 'none';
             });
+
+            btnSelectJurado1.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.JIdentificador').forEach(function(input) {
+                    input.value = '1';
+                });
+            });
+
+            btnSelectJurado2.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.JIdentificador').forEach(function(input) {
+                    input.value = '2';
+                });
+            });
+
+
         });
     </script>
+
 
 @stop

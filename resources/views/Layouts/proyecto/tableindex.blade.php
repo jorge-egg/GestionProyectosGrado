@@ -28,7 +28,18 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                    $idProyectos = [];
+            @endphp
             @foreach ($proyectos as $proyecto)
+                @php
+                    $idProyecto = $proyecto->idProyecto;
+                @endphp
+                @if (!(in_Array($idProyecto, $idProyectos)))
+                    @php
+                        array_push($idProyectos, $idProyecto);
+                    @endphp
+
                 <tr>
                     <td>
                         @if ($proyecto->estado)
@@ -72,7 +83,9 @@
                         </form>
                     </td>
                 </tr>
+                @endif
             @endforeach
+           
         </tbody>
     </table>
 @section('js')

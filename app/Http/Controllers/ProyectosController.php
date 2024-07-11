@@ -74,6 +74,7 @@ class ProyectosController extends Controller
         ->join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
         ->where('usuario', $usuario->numeroDocumento)
         ->get();
+        //dd($proyectos);
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
