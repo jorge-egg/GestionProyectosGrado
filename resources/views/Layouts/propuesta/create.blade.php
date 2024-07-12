@@ -1,30 +1,33 @@
 @extends('dashboard')
 @section('dashboard_content')
-<br>
-<form action="{{ route('propuesta.store', 'propuesta') }}" method='POST'>
-    <div style="display: flex; flex-direction:row; justify-content: space-around">
-        <div>
-            <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
-            <p class="fs-4">Calificación: {{ number_format($totalCalificacion, 2) }}</p>
-        </div>
-        <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
-        @if ($estadoButton)
-            <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior', ['idProyecto' => $idProyecto]) }}">
-                <i class="bi bi-arrow-bar-left"></i>Propuesta anterior
-            </button>
-        @elseif (!$estadoButton)
-            <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.create', ['idProyecto' => $idProyecto]) }}">
-                Propuesta superior<i class="bi bi-arrow-bar-left"></i>
-            </button>
-        @endif
-    </div><br>
+
+    <br>
+    <form id='validacion' action="{{ route('propuesta.store', 'propuesta') }}" method='POST'>
+        <div style="display: flex; flex-direction:row; justify-content: space-around">
+            <div>
+                <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
+                <p class="fs-4">Calificación: {{ number_format($totalCalificacion, 2) }}</p>
+            </div>
+            <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
+            @if ($estadoButton)
+                <button type="submit" class="btn btn-outline-dark"
+                    formaction="{{ route('propuesta.createAnterior', ['idProyecto' => $idProyecto]) }}">
+                    <i class="bi bi-arrow-bar-left"></i>Propuesta anterior
+                </button>
+            @elseif (!$estadoButton)
+                <button type="submit" class="btn btn-outline-dark"
+                    formaction="{{ route('propuesta.create', ['idProyecto' => $idProyecto]) }}">
+                    Propuesta superior<i class="bi bi-arrow-bar-left"></i>
+                </button>
+            @endif
+        </div><br>
 
         <div class="modal fade" tabindex="-1" id="buscarDocente" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             @component('components.Modales.buscarDocente', [
                 'docentes' => $miembrosDocente['docentes'],
                 'idProyecto' => $miembrosDocente['idProyecto'],
-                'fase' => 'propuesta'
+                'fase' => 'propuesta',
             ])
             @endcomponent
         </div>
@@ -35,7 +38,8 @@
                     <p class="card-text" Style="text-align: center;">
                         {{ $miembrosDocente['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $miembrosDocente['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
                     </p>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" style="height: 30px; width: 30px; margin-left: 10px; display: {{ $miembrosDocente['valExistDocent'] ? 'block' : 'none' }}" >
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente"
+                        style="height: 30px; width: 30px; margin-left: 10px; display: {{ $miembrosDocente['valExistDocent'] ? 'block' : 'none' }}">
                         <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
                     </button>
                 </section>
@@ -204,10 +208,71 @@
                     </div>
                 </div>
     </form>
+    <script>
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-outline-success",
+                cancelButton: "btn btn-outline-danger"
+            },
+            buttonsStyling: false
+        });
 
-    @section('js')
-    <script src="https://raw.githubusercontent.com/VincentLoy/simplyCountdown.js/develop/dist/simplyCountdown.min.js">
+        function checkEmptyFields(form) {
+            const fields = form.querySelectorAll('textarea');
+            for (const field of fields) {
+                if (!field.disabled && field.style.display !== 'none' && field.value.trim() === '') {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function showAlert(event) {
+            event.preventDefault(); // Evitar el envío del formulario
+
+            const form = event.target.closest('form');
+            if (checkEmptyFields(form)) {
+                swalWithBootstrapButtons.fire({
+                    title: "Campos vacíos",
+                    text: "Por favor, rellena todos los campos visibles y habilitados.",
+                    icon: "error",
+                    cancelButton: "OK"
+                });
+                return;
+            }
+
+            swalWithBootstrapButtons.fire({
+                title: "¿Estás seguro?",
+                text: "Una vez enviado no se puede modificar el formulario.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí",
+                cancelButtonText: "No",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Enviado exitosamente",
+                        text: "Formulario enviado.",
+                        icon: "success"
+                    }).then(() => {
+                        form.submit(); // Enviar el formulario después de confirmar
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                        text: "El envío ha sido cancelado.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+
+        document.getElementById('buttonToCreatePropuesta').addEventListener('click', showAlert);
+        document.getElementById('buttonEnviarCalificacion').addEventListener('click', showAlert);
     </script>
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function mostrarCamposCalificacion() {
             const camposCalificacion = document.querySelectorAll('.campos-calificacion');
@@ -283,13 +348,14 @@
             const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
             var rangoFecha = "{{ $rangoFecha[2] }}";
 
-            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' || estadoPropuesta === 'pendiente') {
+            if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' ||
+                estadoPropuesta === 'pendiente') {
                 deshabilitarCamposYBoton();
             } else if (estadoPropuesta === 'Activo') {
                 ocultarBotonCalificar();
             } else if (estadoPropuesta === 'Aplazado con modificaciones' && rangoFecha) {
                 const endDate = new Date("{{ $propuestaAnterior->fecha_aplazado }}");
-                endDate.setDate(endDate.getDate() + 10);
+                endDate.setDate(endDate.getDate() + 30);
                 // endDate.setMinutes(endDate.getMinutes() + 1);
                 const countdownInterval = setInterval(updateCountdown, 1000);
 
