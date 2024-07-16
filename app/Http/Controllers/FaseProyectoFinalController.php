@@ -24,15 +24,16 @@ class FaseProyectoFinalController extends Controller
         $this->$idProyecto      = $idProyecto;
         $integrantes            = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $proyecto               = SedeProyectosGrado::findOrFail($idProyecto);
-        $anteproyectoAnterior   = FaseProyectosfinale::where('pfin_proy', $idProyecto)->orderBy('idProyectofinal', 'desc')->first();
-        //dd($anteproyectoAnterior);
-        $anteproyecto           = $this->proyectoFinal($anteproyectoAnterior);
-        //dd($anteproyecto);
-        $docExist1              = $anteproyectoAnterior == null ? null : ($anteproyectoAnterior->exists() ? $anteproyectoAnterior->documento : null);
+        $consultanteproyectoAnt = FaseProyectosfinale::where('pfin_proy', $idProyecto)->orderBy('idProyectofinal', 'asc')->first();;
+        $consultAnteproy        = FaseProyectosfinale::where('pfin_proy', $idProyecto)->orderBy('idProyectofinal', 'desc')->first();;
+        $anteproyecto           = $this->proyectoFinal($consultAnteproy);
+        $anteproyectoAnterior   = $this->proyectoFinal($consultanteproyectoAnt);
+        $docExist1              = $consultAnteproy == null ? null : ($consultAnteproy->exists() ? $consultAnteproy->documento : null);
+        $docExist2              = $consultAnteproy == null ? null : ($consultAnteproy->exists() ? $consultAnteproy->cartaDirector : null);
         //dd($anteproyecto);
         $observaciones          = $this->ultimaObservacion($anteproyecto->idProyectofinal, 'proyecto_final', 8);
         $itemsSubItems          = $this->buscarNombresItems('proyFinal');
-        $rangoFecha             = $this->rangoFecha('anteproyecto');
+        $rangoFecha             = $this->rangoFecha('proyectoFinal');
         $valDocAsig             = $proyecto->docente == Auth::user()->usuario ? true : false; //verfica si el usuario en sesion es el docente asignado
         $miembrosDocente        = $this->obtenerDocentes($this->$idProyecto );
         $array                  = array( //array que transportara todos los datos a la view
@@ -42,8 +43,10 @@ class FaseProyectoFinalController extends Controller
                                     'rangoFecha' => $rangoFecha,
                                     'valDocAsig' => $valDocAsig,
                                     'docExist1' => $docExist1,
+                                    'docExist2' => $docExist2,
                                     'integrantes' => $integrantes,
                                     'nameItems' => $itemsSubItems,
+                                    'anteproyectoAnterior' => $anteproyectoAnterior,
                                 );
                                 //dd($array['observaciones']);
 
@@ -76,23 +79,30 @@ class FaseProyectoFinalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'docAnteProy' => 'required|mimes:pdf|max:3048'
+            'docAnteProy' => 'required|mimes:pdf|max:3048',
+            'docDir' => 'required|mimes:pdf|max:3048',
         ]);
 
         $proyecto = SedeProyectosGrado::findOrFail($request->idProyecto);
         $contador = FaseProyectosfinale::where('pfin_proy', $proyecto->idProyecto)->count();
         if($request->hasFile("docAnteProy")){
             $file1 = $request->file("docAnteProy");
+            $file2 = $request->file("docDir");
             $newNameFile1 = $proyecto->codigoproyecto . "PF".$contador."." . $file1->guessExtension();
+            $newNameFile2 = $proyecto->codigoproyecto . "PF".$contador."." . $file2->guessExtension();
             $ruta1 = public_path('files/proyFinal/'.$newNameFile1);
+            $ruta2 = public_path('files/directorCartaPF/'.$newNameFile2);
             copy($file1, $ruta1);
+            copy($file2, $ruta2);
+
             FaseProyectosfinale::create([
                 'documento' => $newNameFile1,
+                'cartaDirector' => $newNameFile2,
                 'aprobacionDocen' => '-1', //Sin valor definido
-                'juradoUno' => FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoUno,
-                'juradoDos' => FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoDos,
-                'estadoJUno' => 'Pendiente',
-                'estadoJDos' => 'Pendiente',
+                'juradoUno' => $contador < 1 ? FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoUno : $request->juradoUnoInp,
+                'juradoDos' => $contador < 1 ? FaseAnteproyecto::where('ante_proy', $proyecto->idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoDos : $request->juradoDosInp,
+                'estadoJUno' => $request->estadoJUno,
+                'estadoJDos' => $request->estadoJDos,
                 'estado' => 'Activo',
                 'pfin_proy' => $proyecto->idProyecto,
 
@@ -105,8 +115,11 @@ class FaseProyectoFinalController extends Controller
 
     public function verPdf($nombreArchivo, $ruta)
     { //retorna el pdf
-
+        if($ruta == '1'){
             $rutaArchivo = public_path('files/proyFinal/'.$nombreArchivo);
+        }else if($ruta == '2'){
+            $rutaArchivo = public_path('files/directorCartaPF/'.$nombreArchivo);
+        }
 
 
         // Verificar si el archivo existe

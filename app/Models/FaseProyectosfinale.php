@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseProyectosfinale
- * 
+ *
  * @property int $idProyectofinal
  * @property string $documento
  * @property string $aprobacionDocen
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $pfin_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -43,7 +43,9 @@ class FaseProyectosfinale extends Model
 	];
 
 	protected $fillable = [
-		'documento',
+
+        'documento',
+        'cartaDirector',
 		'aprobacionDocen',
 		'observaDocent',
 		'juradoUno',
