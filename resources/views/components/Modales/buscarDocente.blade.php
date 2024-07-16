@@ -106,7 +106,7 @@
                                                                         class="bi bi-person-fill-add"></i></button>
                                                             @endif
                                                             @if ($fase == 'proFinal')
-                                                                <input type="text" class="JIdentificador" name="JIdentificador">
+                                                                <input type="hidden" class="JIdentificador" name="JIdentificador">
                                                                 <button
                                                                     formaction="{{ route('proyectoFinal.asigJurado') }}"
                                                                     type="submit"><i

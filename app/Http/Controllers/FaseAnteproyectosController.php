@@ -48,7 +48,7 @@ class FaseAnteproyectosController extends Controller
                                     'nameItems' => $itemsSubItems,
                                     'anteproyectoAnterior' => $anteproyectoAnterior,
                                 );
-                                //dd($array['anteproyectoAnterior']);
+                                //dd($array['observaciones'][1]);
 
         return view('Layouts.anteproyecto.create', compact('array', 'miembrosDocente'));
     }
@@ -62,7 +62,7 @@ class FaseAnteproyectosController extends Controller
         if($ruta == '1'){
             $rutaArchivo = public_path('files/anteproyecto/'.$nombreArchivo);
         }else if($ruta == '2'){
-            $rutaArchivo = public_path('files/directorCarta/'.$nombreArchivo);
+            $rutaArchivo = public_path('files/directorCartaAP/'.$nombreArchivo);
         }
 
 
@@ -138,7 +138,7 @@ class FaseAnteproyectosController extends Controller
             $newNameFile1 = $proyecto->codigoproyecto . "AP".$contador."." . $file1->guessExtension();
             $newNameFile2 = $proyecto->codigoproyecto . "AP".$contador."." . $file2->guessExtension();
             $ruta1 = public_path('files/anteproyecto/'.$newNameFile1);
-            $ruta2 = public_path('files/directorCarta/'.$newNameFile2);
+            $ruta2 = public_path('files/directorCartaAP/'.$newNameFile2);
             copy($file1, $ruta1);
             copy($file2, $ruta2);
 

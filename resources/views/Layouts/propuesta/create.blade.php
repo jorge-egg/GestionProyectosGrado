@@ -230,7 +230,10 @@
         function showAlert(event) {
             event.preventDefault(); // Evitar el envío del formulario
 
-            const form = event.target.closest('form');
+            const button = event.target;
+            const form = button.closest('form');
+            const formaction = button.getAttribute('formaction');
+
             if (checkEmptyFields(form)) {
                 swalWithBootstrapButtons.fire({
                     title: "Campos vacíos",
@@ -256,6 +259,9 @@
                         text: "Formulario enviado.",
                         icon: "success"
                     }).then(() => {
+                        if (formaction) {
+                            form.action = formaction; // Cambiar la acción del formulario a la especificada en formaction
+                        }
                         form.submit(); // Enviar el formulario después de confirmar
                     });
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -268,8 +274,9 @@
             });
         }
 
-        document.getElementById('buttonToCreatePropuesta').addEventListener('click', showAlert);
         document.getElementById('buttonEnviarCalificacion').addEventListener('click', showAlert);
+        document.getElementById('buttonToCreatePropuesta').addEventListener('click', showAlert);
+
     </script>
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -355,7 +362,7 @@
                 ocultarBotonCalificar();
             } else if (estadoPropuesta === 'Aplazado con modificaciones' && rangoFecha) {
                 const endDate = new Date("{{ $propuestaAnterior->fecha_aplazado }}");
-                endDate.setDate(endDate.getDate() + 30);
+                endDate.setDate(endDate.getDate() + 10);
                 // endDate.setMinutes(endDate.getMinutes() + 1);
                 const countdownInterval = setInterval(updateCountdown, 1000);
 

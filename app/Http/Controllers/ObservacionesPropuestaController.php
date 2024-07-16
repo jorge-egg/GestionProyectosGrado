@@ -51,7 +51,7 @@ class ObservacionesPropuestaController extends Controller
 
             case 'proyFinal':
                 $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
-                $this->cargarCalificacionesProFinal($request);
+                $this->cargarCalificacionesProFinal($request, 'store');
                 $numeroJurado = $request->numeroJurado;
                 $fase = 'proyecto_final';
                 break;
@@ -140,7 +140,7 @@ class ObservacionesPropuestaController extends Controller
         $incrementador = 0;
         $itemsSubItems = $this->buscarNombresItems('anteproyecto');
 
-        //dd($request);
+        // dd($request);
 
         foreach ($itemsSubItems as $clave => $valor) {
             $dataCalificaciones = [];
@@ -150,17 +150,19 @@ class ObservacionesPropuestaController extends Controller
 
             $datos = $this->calcCalifAnteproy($clave, 'anteproyecto', $request, $valor, $numSubItems, $nameObs, $incrementador, $function);
 
-            //dd($datos);
+            // dd($datos);
             if ($function == 'store') {
                 CalifSubitem::insert($datos);
             } else if ($function == 'update') {
-                foreach($datos as $dato){
+                foreach ($datos as $dato) {
                     $llave = $dato['idCalifSubitem'];
-                    unset($dato['idCalifSubitem']);
-                    //dd($dato);
-                    CalifSubitem::where('idCalifSubitem', $llave)->update($dato);
-                }
 
+
+                    $calSubItem = CalifSubitem::findOrFail($llave);
+                    $calSubItem->ValorCalifSubitem = $dato['ValorCalifSubitem'];
+                    $calSubItem->save();
+                    //dd($dato);
+                }
             }
 
             //dd('d');
@@ -171,7 +173,7 @@ class ObservacionesPropuestaController extends Controller
     }
 
     //captura las calificaciones y observaciones y devuelve un array
-    public function cargarCalificacionesProFinal($request)
+    public function cargarCalificacionesProFinal($request, $function)
     {
         $incrementador = 0;
         $itemsSubItems = $this->buscarNombresItems('proyFinal');
@@ -184,10 +186,22 @@ class ObservacionesPropuestaController extends Controller
             $nameObs = 'obs' . $incrementador; //nombre de los campos de observaciones
 
 
-            $datos = $this->calcCalifAnteproy($clave, 'proyFinal', $request, $valor, $numSubItems, $nameObs);
+            $datos = $this->calcCalifAnteproy($clave, 'proyFinal', $request, $valor, $numSubItems, $nameObs, $incrementador, $function);
 
-            //dd($datos[0]);
-            CalifSubitem::insert($datos);
+
+            if ($function == 'store') {
+                CalifSubitem::insert($datos);
+            } else if ($function == 'update') {
+                foreach ($datos as $dato) {
+                    $llave = $dato['idCalifSubitem'];
+
+
+                    $calSubItem = CalifSubitem::findOrFail($llave);
+                    $calSubItem->ValorCalifSubitem = $dato['ValorCalifSubitem'];
+                    $calSubItem->save();
+                    //dd($dato);
+                }
+            }
             //dd('d');
             $incrementador++;
         }
@@ -228,9 +242,14 @@ class ObservacionesPropuestaController extends Controller
 
         $idCalificacion = Calificacione::orderBy('idCalificacion', 'desc')->take(1)->pluck('idCalificacion');
         $idCalificacion = Calificacione::orderBy('idCalificacion', 'desc')->take(1)->pluck('idCalificacion');
-        if($function == 'update'){
-            $consultAnteproy        = FaseAnteproyecto::where('ante_proy', $request->idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
-            $obs = $this->ultimaObservacion($consultAnteproy->idAnteproyecto, 'anteproyecto', 8);
+        if ($function == 'update') {
+            if ($fase == 'anteproyecto') {
+                $consultAnteproy        = FaseAnteproyecto::where('ante_proy', $request->idProyecto)->orderBy('idAnteproyecto', 'desc')->first();
+                $obs = $this->ultimaObservacion($consultAnteproy->idAnteproyecto, 'anteproyecto', 8);
+            } else if ($fase == 'proyFinal') {
+                $consultAnteproy        = FaseProyectosfinale::where('pfin_proy', $request->idProyecto)->orderBy('idProyectofinal', 'desc')->first();
+                $obs = $this->ultimaObservacion($consultAnteproy->idProyectofinal, 'proyecto_final', 8);
+            }
         }
 
         //dd($idCalificacion);
@@ -250,7 +269,7 @@ class ObservacionesPropuestaController extends Controller
         }
 
 
-
+        $contadorNumSubItem = 0;
         $totalCalificacion = 0;
         $datos = [];
         //dd($names);
@@ -279,9 +298,10 @@ class ObservacionesPropuestaController extends Controller
                 ]);
             } else if ($function == 'update') {
                 array_push($datos, [
-                    'idCalifSubitem' => $obs[$request->numeroJurado][$incrementador][2][0]->idCalifSubitem,
+                    'idCalifSubitem' => $obs[$request->numeroJurado][$incrementador][2][$contadorNumSubItem]->idCalifSubitem,
                     'ValorCalifSubitem' => $valor,
                 ]);
+                $contadorNumSubItem++;
             }
             //dd($datos);
         }
@@ -415,7 +435,7 @@ class ObservacionesPropuestaController extends Controller
                 if ($total >= 3.5) {
                     $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aprobado' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aprobado' : null);
                     $propuesta->save();
-                } else if ($total >= 3 && $total < 3.5) {
+                } else if ($total >= 3.0 && $total < 3.5) {
                     $numeroJurado == '0' ? $propuesta->estadoJUno = 'Aplazado con modificaciones' : ($numeroJurado == '1' ? $propuesta->estadoJDos = 'Aplazado con modificaciones' : null);
                     $propuesta->save();
                 } else {
@@ -423,22 +443,57 @@ class ObservacionesPropuestaController extends Controller
                     $propuesta->save();
                 }
 
-
                 $anteproy = FaseProyectosfinale::findOrFail($idfase);
-                if ($anteproy->estadoJUno == 'Pendiente' || $anteproy->estadoJDos == 'Pendiente') {
-                    $anteproy->estado = 'Activo';
-                    $anteproy->save();
-                } else if ($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aprobado') {
-                    $anteproy->estado = 'Aprobado';
-                    $anteproy->save();
-                } else if (($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aplazado con modificaciones') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aprobado') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones')) {
-                    $anteproy->estado = 'Aplazado con modificaciones';
-                    $anteproy->save();
-                } else if ($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado') {
+                $cantidadAnte = Count(FaseProyectosfinale::where('pfin_proy', $anteproy->pfin_proy)->get());
+                //dd($cantidadAnte);
+                if ($cantidadAnte == 1) {
+
+                    if ($anteproy->estadoJUno == 'Pendiente' || $anteproy->estadoJDos == 'Pendiente') {
+                        $anteproy->estado = 'Activo';
+                        $anteproy->save();
+                    } else if ($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aprobado') {
+                        $anteproy->estado = 'Aprobado';
+                        $anteproy->save();
+                    } else if (($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aplazado con modificaciones') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aprobado') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones')) {
+                        $anteproy->estado = 'Aplazado con modificaciones';
+                        $anteproy->fecha_aplazado = Carbon::now()->startOfDay()->addDays(10)->endOfDay();
+
+                        $anteproy->save();
+                    } else if ($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado') {
+                        $anteproy->estado = 'Rechazado';
+                        $anteproy->save();
+                    } else if ($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Rechazado' || $anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Aprobado' || $anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Aplazado con modificaciones' || $anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Rechazado') {
+                        $anteproy->estado = 'Verificar';
+                        $anteproy->save();
+                        //pendiente aplazado - rechazado
+                    }
+                } else if ($anteproy->estadoJUno != 'Aplazado con modificaciones' && $anteproy->estadoJDos != 'Aplazado con modificaciones' && $cantidadAnte == 2) {
+                    if ($anteproy->estadoJUno == 'Pendiente' || $anteproy->estadoJDos == 'Pendiente') {
+                        $anteproy->estado = 'Activo';
+                        $anteproy->save();
+                    } else if ($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aprobado') {
+                        $anteproy->estado = 'Aprobado';
+                        $anteproy->save();
+                    } else if (($anteproy->estadoJUno == 'Aprobado' && $anteproy->estadoJDos == 'Aplazado con modificaciones') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aprobado') || ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones')) {
+                        $anteproy->estado = 'Aplazado con modificaciones';
+                        $anteproy->fecha_aplazado = Carbon::now()->startOfDay()->addDays(10)->endOfDay();
+
+                        $anteproy->save();
+                    } else if ($anteproy->estadoJUno == 'Rechazado' && $anteproy->estadoJDos == 'Rechazado') {
+                        $anteproy->estado = 'Rechazado';
+                        $anteproy->save();
+                    }
+                } else if ($anteproy->estadoJUno == 'Aplazado con modificaciones' && $anteproy->estadoJDos == 'Aplazado con modificaciones' && $cantidadAnte == 2) {
                     $anteproy->estado = 'Rechazado';
                     $anteproy->save();
                 }
 
+                $anteproy = FaseProyectosfinale::findOrFail($idfase);
+                if ($anteproy->estado == 'Rechazado') {
+                    $proyecto = SedeProyectosGrado::findOrFail($anteproy->pfin_proy);
+                    $proyecto->estado = false;
+                    $proyecto->save();
+                }
                 break;
 
             default:
@@ -489,7 +544,7 @@ class ObservacionesPropuestaController extends Controller
 
             case 'proyFinal':
                 $tamaño = 8; //asigan la cantidad de observaciones y calificaciones
-                $this->cargarCalificacionesProFinal($request);
+                $this->cargarCalificacionesProFinal($request, 'update');
                 $numeroJurado = $request->numeroJurado;
                 $fase = 'proyecto_final';
                 break;
@@ -499,16 +554,6 @@ class ObservacionesPropuestaController extends Controller
                 break;
         }
 
-        $idCalificaciones = Calificacione::orderBy('idCalificacion', 'desc')->take($tamaño)->pluck('idCalificacion');
-
-        foreach ($idCalificaciones as $calificacion) {
-            //dd($fase);
-            FaseCalOb::create([
-                $fase => $request->idFase,
-                'calificacion_fase' => $calificacion,
-                'numeroJurado' => $numeroJurado,
-            ]);
-        }
         //dd($request->idFase);
         $this->cambioEstado($request->idFase, $fase, $numeroJurado, $tamaño);
         //dd($fase);
