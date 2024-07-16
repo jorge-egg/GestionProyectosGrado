@@ -1,13 +1,18 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FaseAnteproyecto
- *
+ * 
  * @property int $idAnteproyecto
  * @property string $documento
  * @property string $cartaDirector
@@ -15,14 +20,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $observaDocent
  * @property string $juradoUno
  * @property string $juradoDos
+ * @property string $estadoJUno
+ * @property string $estadoJDos
  * @property string $estado
- * @property time without time zone|null $fecha_aplazado
+ * @property Carbon|null $fecha_aplazado
  * @property int $ante_proy
-
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
-
- *
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
  * @property SedeProyectosGrado $sede_proyectos_grado
  * @property Collection|FaseCalOb[] $fase_cal_obs
  *
@@ -32,10 +37,9 @@ class FaseAnteproyecto extends Model
 {
 	protected $table = 'fase_anteproyectos';
 	protected $primaryKey = 'idAnteproyecto';
-	public $timestamps = true; // Habilita los timestamps
 
 	protected $casts = [
-		'fecha_aplazado' => 'date',
+		'fecha_aplazado' => 'datetime',
 		'ante_proy' => 'int'
 	];
 
@@ -46,8 +50,8 @@ class FaseAnteproyecto extends Model
 		'observaDocent',
 		'juradoUno',
 		'juradoDos',
-        'estadoJUno',
-        'estadoJDos',
+		'estadoJUno',
+		'estadoJDos',
 		'estado',
 		'fecha_aplazado',
 		'ante_proy'

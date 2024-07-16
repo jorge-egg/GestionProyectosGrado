@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $obj_general
  * @property string $obj_especificos
  * @property string $estado
- * @property time without time zone|null $fecha_cierre
- * @property time without time zone|null $fecha_aplazado
+ * @property Carbon|null $fecha_cierre
+ * @property Carbon|null $fecha_aplazado
  * @property int $prop_proy
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -37,8 +37,8 @@ class FasePropuesta extends Model
 	protected $primaryKey = 'idPropuesta';
 
 	protected $casts = [
-		'fecha_cierre' => 'time without time zone',
-		'fecha_aplazado' => 'time without time zone',
+		'fecha_cierre' => 'datetime',
+		'fecha_aplazado' => 'datetime',
 		'prop_proy' => 'int'
 	];
 

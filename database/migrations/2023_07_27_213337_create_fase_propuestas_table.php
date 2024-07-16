@@ -21,8 +21,8 @@ class CreateFasePropuestasTable extends Migration
             $table->text("obj_general");
             $table->text("obj_especificos");
             $table->string("estado");
-            $table->time("fecha_cierre")->nullable();
-            $table->time('fecha_aplazado')->nullable();
+            $table->datetime("fecha_cierre")->nullable();
+            $table->datetime('fecha_aplazado')->nullable();
             $table->unsignedBigInteger("prop_proy");
             $table->foreign('prop_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
             $table->timestamps();

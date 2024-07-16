@@ -15,10 +15,11 @@ use App\Models\SedeBiblioteca;
 use App\Mail\invitacionIntegrante;
 use App\Models\SedeProyectosGrado;
 use Illuminate\Support\Facades\Mail;
+use App\Traits\FaseSustentacion;
 
 class ProyectosController extends Controller
 {
-
+    use FaseSustentacion;
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +46,7 @@ class ProyectosController extends Controller
     }
 
 
-    //index para mostrar todos los proyectos del usuario
+    //index para mostrar al usuario logueado
     public function indextable()
     {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
@@ -53,6 +54,7 @@ class ProyectosController extends Controller
             ->where('usuario', $usuario->numeroDocumento)
             ->orderBy('idProyecto', 'asc')
             ->get();
+        $this->createSustentacion();
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
@@ -107,6 +109,7 @@ class ProyectosController extends Controller
     {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $proyectos = SedeProyectosGrado::where('docente', $usuario->numeroDocumento)->get();
+        
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 

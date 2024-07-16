@@ -6,12 +6,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+
 /**
  * Class SedeProyectosGrado
- *
+ * 
  * @property int $idProyecto
  * @property bool $estado
  * @property string $codigoproyecto
@@ -19,25 +20,25 @@ use Carbon\Carbon;
  * @property int $proy_bibl
  * @property int|null $comite
  * @property int|null $docente
- *
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
  * @property Sede $sede
  * @property SedeBiblioteca $sede_biblioteca
  * @property ComitesSede|null $comites_sede
  * @property UsuariosUser|null $usuarios_user
- * @property Collection|FaseSustentaciones[] $fase_sustentaciones
+ * @property Collection|FaseSustentacione[] $fase_sustentaciones
  * @property Collection|FasePropuesta[] $fase_propuestas
  * @property Collection|FaseAnteproyecto[] $fase_anteproyectos
  * @property Collection|FaseProyectosfinale[] $fase_proyectosfinales
  * @property Collection|Integrante[] $integrantes
- * * @property Carbon| $created_at
- * * @property Carbon| $updated_at
+ *
  * @package App\Models
  */
 class SedeProyectosGrado extends Model
 {
 	protected $table = 'sede_proyectos_grado';
 	protected $primaryKey = 'idProyecto';
-	public $timestamps = false;
 
 	protected $casts = [
 		'estado' => 'bool',
@@ -78,7 +79,7 @@ class SedeProyectosGrado extends Model
 
 	public function fase_sustentaciones()
 	{
-		return $this->hasMany(FaseSustentaciones::class, 'sust_proy');
+		return $this->hasMany(FaseSustentacione::class, 'sust_proy');
 	}
 
 	public function fase_propuestas()

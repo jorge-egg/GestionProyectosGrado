@@ -13,54 +13,59 @@ use App\Traits\funcionesUniversales;
 class FasePropuestasController extends Controller
 {
     use funcionesUniversales;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
-
+        // Define aquí tu lógica para obtener las propuestas
+        $propuestas = []; // Ejemplo de asignación
         return view('Layouts.propuesta.index', compact('propuestas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
-
         $idProyecto = $request->idProyecto;
         $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $miembrosDocente = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
-        //dd($calificacion);
         $estadoButton = true;
         $rangoFecha = $this->rangoFecha('propuesta');
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
                 ->sum('calificaciones.calificacion'); // Suma de las calificaciones
-                // ->get()->count();
         } catch (Exception $e) {
             $totalCalificacion = 0;
         }
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('propuestaAnterior', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton', 'miembrosDocente', 'integrantes', 'totalCalificacion'));
+        if ($propuestaAnterior->estado == 'Aplazado con modificaciones' && is_null($propuestaAnterior->fecha_aplazado)) {
+            $propuestaAnterior->fecha_aplazado = now();
+            $propuestaAnterior->save();
+        }
+
+        return view('Layouts.propuesta.create', compact(
+            'propuestaAnterior',
+            'calificacion',
+            'validarCalificacion',
+            'rangoFecha',
+            'estadoButton',
+            'miembrosDocente',
+            'integrantes',
+            'totalCalificacion',
+            'idProyecto'
+        ));
     }
 
     public function createAnterior(Request $request)
     {
         $idProyecto = $request->idProyecto;
+        $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
+        $miembrosDocente = $this->obtenerDocentes($idProyecto);
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'asc');
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
-
-        $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? true : false;
+        $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? false : true;
         $rangoFecha = $this->rangoFecha('propuesta');
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
@@ -72,10 +77,19 @@ class FasePropuestasController extends Controller
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
 
-        return view('Layouts.propuesta.create', compact('idProyecto', 'propuestaAnterior', 'calificacion', 'validarCalificacion', 'rangoFecha', 'estadoButton'));
+        return view('Layouts.propuesta.create', compact(
+            'idProyecto',
+            'propuestaAnterior',
+            'calificacion',
+            'validarCalificacion',
+            'rangoFecha',
+            'estadoButton',
+            'totalCalificacion',
+            'miembrosDocente',
+            'integrantes'
+        ));
     }
 
-    //consultar si existen propuestas creadas por el usuario y tomar la ultima
     public function ultimaPropuesta($idProyecto, $orden)
     {
         $propuestaAnterior = FasePropuesta::where('prop_proy', $idProyecto)->orderBy('idPropuesta', $orden)->first();
@@ -87,13 +101,13 @@ class FasePropuestasController extends Controller
                 'desc_problema' => "",
                 'obj_general' => "",
                 'obj_especificos' => "",
-                'estado' => "Activo"
+                'estado' => "Activo",
+                'fecha_aplazado' => null
             );
         }
         return $propuestaAnterior;
     }
 
-    //consultar si existen calificaciones creadas por el usuario y tomar las d la ultima propuesta
     public function ultimaCalificacion($idPropuesta)
     {
         try {
@@ -134,13 +148,6 @@ class FasePropuestasController extends Controller
         return $array;
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if ($this->verificarCantProp($request->idProyecto)) {
@@ -171,7 +178,7 @@ class FasePropuestasController extends Controller
     }
 
     public function asignarDocente(Request $request)
-    {//guarda un docente en la base de datos par el proyecto
+    {
         $idProyecto = $request->idProyecto;
         $numeroDocumento = $request->numeroDocumento;
         $proyecto = SedeProyectosGrado::findOrFail($idProyecto);
@@ -180,6 +187,4 @@ class FasePropuestasController extends Controller
 
         return redirect()->route('propuesta.create', ['idProyecto' => $idProyecto]);
     }
-
-
 }

@@ -78,8 +78,8 @@
                     <td>
                         <form action="#">
                             @csrf
-                            <button type="submit" class="btn"
-                                style="background:#003E65; color:#fff">Sustentación</button>
+                            <button type="submit" class="btn" style="background:#003E65; color:#fff"
+                                data-bs-toggle="modal" data-bs-target="#SustentacionModal">Sustentación</button>
                         </form>
                     </td>
                 </tr>
@@ -88,6 +88,29 @@
            
         </tbody>
     </table>
+    <div class="modal fade" id="SustentacionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Sustentación</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    Jurado 1: <br>
+                    Jurado 2: <br>
+
+                    <section class="text-center mt-3">
+                        Califique la sustentación <br><br>
+                        <button class="btn btn-danger">Rechazado</button>
+                        <button class="btn btn-info">Aprobado</button>
+                    </section>
+                </div>
+                <div class="modal-footer text-center">
+                    <h2><b>!!Felicidades, su proyecto fue aprobado</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
 @section('js')
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

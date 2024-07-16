@@ -1,7 +1,8 @@
 @extends('dashboard')
 @section('dashboard_content')
+
     <br>
-    <form action="{{ route('propuesta.store', 'propuesta') }}" method='POST'>
+    <form id='validacion' action="{{ route('propuesta.store', 'propuesta') }}" method='POST'>
         <div style="display: flex; flex-direction:row; justify-content: space-around">
             <div>
                 <p class="fs-4">Estado: {{ $propuestaAnterior->estado }}</p>
@@ -9,12 +10,15 @@
             </div>
             <p class="fs-5">Fecha de habilitación: {{ $rangoFecha[0] }} a {{ $rangoFecha[1] }}</p>
             @if ($estadoButton)
-                <button type="submit" class="btn btn-outline-dark" formaction="{{ route('propuesta.createAnterior') }}"><i
-                        class="bi bi-arrow-bar-left"></i>Propuesta anterior</button>
+                <button type="submit" class="btn btn-outline-dark"
+                    formaction="{{ route('propuesta.createAnterior', ['idProyecto' => $idProyecto]) }}">
+                    <i class="bi bi-arrow-bar-left"></i>Propuesta anterior
+                </button>
             @elseif (!$estadoButton)
                 <button type="submit" class="btn btn-outline-dark"
-                    formaction="{{ route('propuesta.create', $idProyecto) }}">Propuesta superior<i
-                        class="bi bi-arrow-bar-left"></i></button>
+                    formaction="{{ route('propuesta.create', ['idProyecto' => $idProyecto]) }}">
+                    Propuesta superior<i class="bi bi-arrow-bar-left"></i>
+                </button>
             @endif
         </div><br>
 
@@ -23,7 +27,7 @@
             @component('components.Modales.buscarDocente', [
                 'docentes' => $miembrosDocente['docentes'],
                 'idProyecto' => $miembrosDocente['idProyecto'],
-                'fase' => 'propuesta'
+                'fase' => 'propuesta',
             ])
             @endcomponent
         </div>
@@ -34,7 +38,8 @@
                     <p class="card-text" Style="text-align: center;">
                         {{ $miembrosDocente['valExistDocent'] ? 'El director asignado para el proyecto es: ' . $miembrosDocente['docenteAsig'] : 'Nota: para poder habilitar la fase del anteproyecto, debe tener un director asignado.' }}
                     </p>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente" style="height: 30px; width: 30px; margin-left: 10px; display: {{ $miembrosDocente['valExistDocent'] ? 'block' : 'none' }}" >
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#buscarDocente"
+                        style="height: 30px; width: 30px; margin-left: 10px; display: {{ $miembrosDocente['valExistDocent'] ? 'block' : 'none' }}">
                         <img src="{{ asset('imgs/icons/edit.png') }}" class = "bi bi-pencil-square">
                     </button>
                 </section>
@@ -203,30 +208,95 @@
                     </div>
                 </div>
     </form>
+    <script>
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-outline-success",
+                cancelButton: "btn btn-outline-danger"
+            },
+            buttonsStyling: false
+        });
 
-@section('js')
-    <script src="https://raw.githubusercontent.com/VincentLoy/simplyCountdown.js/develop/dist/simplyCountdown.min.js">
+        function checkEmptyFields(form) {
+            const fields = form.querySelectorAll('textarea');
+            for (const field of fields) {
+                if (!field.disabled && field.style.display !== 'none' && field.value.trim() === '') {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function showAlert(event) {
+            event.preventDefault(); // Evitar el envío del formulario
+
+            const button = event.target;
+            const form = button.closest('form');
+            const formaction = button.getAttribute('formaction');
+
+            if (checkEmptyFields(form)) {
+                swalWithBootstrapButtons.fire({
+                    title: "Campos vacíos",
+                    text: "Por favor, rellena todos los campos visibles y habilitados.",
+                    icon: "error",
+                    cancelButton: "OK"
+                });
+                return;
+            }
+
+            swalWithBootstrapButtons.fire({
+                title: "¿Estás seguro?",
+                text: "Una vez enviado no se puede modificar el formulario.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí",
+                cancelButtonText: "No",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Enviado exitosamente",
+                        text: "Formulario enviado.",
+                        icon: "success"
+                    }).then(() => {
+                        if (formaction) {
+                            form.action = formaction; // Cambiar la acción del formulario a la especificada en formaction
+                        }
+                        form.submit(); // Enviar el formulario después de confirmar
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                        text: "El envío ha sido cancelado.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+
+        document.getElementById('buttonEnviarCalificacion').addEventListener('click', showAlert);
+        document.getElementById('buttonToCreatePropuesta').addEventListener('click', showAlert);
+
     </script>
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function mostrarCamposCalificacion() {
             const camposCalificacion = document.querySelectorAll('.campos-calificacion');
 
             camposCalificacion.forEach(campos => {
                 campos.style.display = 'flex';
-                // Agregar el atributo required a los campos dentro de la sección
                 campos.querySelectorAll('input, textarea').forEach(campo => {
                     campo.required = true;
-                    campo.disabled = false; // Habilitar campos al mostrar
+                    campo.disabled = false;
                 });
 
-                // Mostrar el elemento span dentro de campos-calificacion
                 const spanElement = campos.querySelector('.input-group-text');
                 if (spanElement) {
                     spanElement.style.display = 'inline-block';
                 }
             });
 
-            // Mostrar el botón de enviar calificación
             buttonEnviarCalificacion.style.display = 'inline-block';
             buttonToCreatePropuesta.style.display = 'none';
         }
@@ -240,8 +310,7 @@
                 return;
             }
 
-            const maxPalabras = longitud; // Define la cantidad máxima de palabras aquí
-
+            const maxPalabras = longitud;
             let palabras = input.value.split(' ');
 
             if (palabras.length > maxPalabras) {
@@ -250,7 +319,6 @@
                 palabras.pop();
                 input.value = palabras.join(' ');
                 var camposVacios = true;
-
             } else if (palabras.length <= maxPalabras) {
                 contador.textContent = palabras.length;
                 var camposVacios = false;
@@ -284,75 +352,58 @@
             const buttonEnviarCalificacion = document.getElementById('buttonEnviarCalificacion');
             const buttonCalificar = document.getElementById('calificar');
 
-            // Obtener el estado de la propuesta
             const estadoPropuesta = "{{ $propuestaAnterior->estado }}";
             var rangoFecha = "{{ $rangoFecha[2] }}";
 
-
-            // Verificar el estado y deshabilitar campos y botón si es necesario
             if (estadoPropuesta === 'Aprobado' || !rangoFecha || estadoPropuesta === 'Rechazado' ||
                 estadoPropuesta === 'pendiente') {
                 deshabilitarCamposYBoton();
             } else if (estadoPropuesta === 'Activo') {
                 ocultarBotonCalificar();
             } else if (estadoPropuesta === 'Aplazado con modificaciones' && rangoFecha) {
-
-                // Establecer la fecha de finalización (10 días a partir de hoy)
-                const endDate = new Date();
-                //endDate.setDate(endDate.getDate() + 10);
-                endDate.setMinutes(endDate.getMinutes() + 1);
-                // Actualizar la cuenta regresiva cada segundo
+                const endDate = new Date("{{ $propuestaAnterior->fecha_aplazado }}");
+                endDate.setDate(endDate.getDate() + 10);
+                // endDate.setMinutes(endDate.getMinutes() + 1);
                 const countdownInterval = setInterval(updateCountdown, 1000);
 
-                // Función para actualizar la cuenta regresiva
                 function updateCountdown() {
                     const currentDate = new Date();
                     const timeDifference = endDate - currentDate;
 
-                    // Verificar si el tiempo ha terminado
                     if (timeDifference <= 0) {
                         clearInterval(countdownInterval);
                         document.getElementById('countdown').innerHTML = 'Plazo de correciones terminado';
                         deshabilitarCamposYBoton();
                     } else {
-                        // Calcular días, horas, minutos y segundos restantes
                         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
                         const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
                         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-                        // Crear una cadena de texto con la cuenta regresiva
                         const countdownString =
                             `Te quedan ${days}d ${hours}h ${minutes}m ${seconds}s para corregir tu propuesta`;
 
-                        // Actualizar el contenido del elemento HTML con la cuenta regresiva
                         document.getElementById('countdown').innerHTML = countdownString;
                     }
                 }
             }
 
-
             function deshabilitarCamposYBoton() {
                 const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
                 camposDeshabilitar.forEach(campo => {
                     campo.disabled = true;
-
                 });
 
                 buttonToCreatePropuesta.style.display = 'none';
-
             }
 
             function ocultarBotonCalificar() {
                 buttonCalificar.style.display = 'none';
             }
 
-
-
             buttonCalificar.addEventListener('click', function() {
                 buttonEnviarCalificacion.style.display = 'inline-block';
             });
-            //verificar fecha
 
             const deshabilitarCampos = () => {
                 const camposDeshabilitar = document.querySelectorAll('.campo-deshabilitar');
@@ -361,29 +412,21 @@
                 });
             }
 
-
-
             const ocultarCamposCalificacion = () => {
                 const camposCalificacion = document.querySelectorAll('.campos-calificacion');
-
                 camposCalificacion.forEach(campos => {
                     campos.style.display = 'none';
-                    // Quitar el atributo required de los campos dentro de la sección
                     campos.querySelectorAll('input, textarea').forEach(campo => {
                         campo.required = false;
-                        campo.disabled = true; // Deshabilitar campos al ocultar
+                        campo.disabled = true;
                     });
                 });
 
-                // Ocultar el botón de enviar calificación
                 buttonEnviarCalificacion.style.display = 'none';
             }
 
-
-            // Asegurarse de que los campos de calificación no estén marcados como required inicialmente
             ocultarCamposCalificacion();
 
-            // Auto-expandir textarea
             const textareas = document.querySelectorAll('.auto-expand');
             textareas.forEach(textarea => {
                 textarea.addEventListener('input', function() {
@@ -392,10 +435,8 @@
                 });
             });
 
-            // Validar campos al cargar la página
             validarCampos();
 
-            // Validar campos al cambiar el contenido de los campos
             const inputs = document.querySelectorAll('input, textarea');
             inputs.forEach(input => {
                 input.addEventListener('input', validarCampos);
@@ -403,7 +444,5 @@
 
         });
     </script>
-
-
 @endsection
 @stop

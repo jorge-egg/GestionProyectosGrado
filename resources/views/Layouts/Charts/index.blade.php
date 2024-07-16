@@ -57,9 +57,11 @@
         <form method="GET" action="{{ route('charts.index') }}">
             <div class="row mb-4">
                 <div class="col-md-3">
+                    <h5 class="card-title">Total Proyectos</h5>
                     <input type="date" name="start_date" class="form-control" value="{{ $startDate }}">
                 </div>
                 <div class="col-md-3">
+                    <h5 class="card-title">Fecha final</h5>
                     <input type="date" name="end_date" class="form-control" value="{{ $endDate }}">
                 </div>
                 <div class="col-md-3">
