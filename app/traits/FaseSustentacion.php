@@ -19,7 +19,7 @@ public function createSustentacion(){
         $estadoPFinal = $pFinal->exists() ? $pFinal->first()->estado : 'Rechazado';
         //dd($estadoPFinal);
         if(!FaseSustentacione::where('sust_proy', $idProy)->exists() && $estadoPFinal == 'Aprobado'){
-            dd('entro');
+            //dd('entro');
             FaseSustentacione::create([
                 'sust_proy' => $idProy,
                 'juradoUno' => $pFinal->first()->juradoUno,
