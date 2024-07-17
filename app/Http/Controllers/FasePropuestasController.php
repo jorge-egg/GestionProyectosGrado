@@ -13,7 +13,7 @@ use App\Traits\funcionesUniversales;
 class FasePropuestasController extends Controller
 {
     use funcionesUniversales;
-
+// yerson
     public function index(Request $request)
     {
         // Define aquí tu lógica para obtener las propuestas

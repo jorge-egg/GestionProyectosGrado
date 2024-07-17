@@ -1,3 +1,4 @@
+<form id="calificacionForm">
 <h5 class="card-title text-center">Calificar anteproyecto</h5>
 
 <div class='card-body'>
@@ -159,7 +160,7 @@
                 <div class="mb-3">
                     <input type="hidden" value="{{$fase}}" name="fase">
                     <input type="hidden" value="{{$fase == "anteproyecto" ? $array['anteproyecto']->ante_proy : ($fase == "proyFinal" ? $array['anteproyecto']->pfin_proy : null)}}" name="idProyecto">
-                    <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.update') }}"
+                    <button id="buttonActualizar" formaction="{{ route('observaciones.update') }}"
                         class="btn" style="background:#003E65; color:#fff; display:{{$array['anteproyecto']->estado =='Verificar' && $array['anteproyecto']->aprobacionDocen == 2 && $estadoJurado == 'Rechazado' ? 'block': 'none'}}">Actualizar</button>
                 </div>
             @endif
@@ -170,8 +171,71 @@
     </section>
     </p>
 </div>
+</form>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-outline-success",
+          cancelButton: "btn btn-outline-danger"
+        },
+        buttonsStyling: false
+      });
 
+      const buttons = document.querySelectorAll("#buttonEnviarCalificacion, #buttonActualizar");
 
+      buttons.forEach(button => {
+        button.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          const form = this.closest("form");
+          const formaction = button.getAttribute('formaction');
+          let allFilled = true;
+
+          // Check if all visible and enabled fields are filled
+          Array.from(form.elements).forEach(el => {
+            if ((el.type === 'text' || el.type === 'textarea' || el.tagName === 'SELECT') && !el.disabled && el.style.display !== 'none' && el.value.trim() === '') {
+              allFilled = false;
+            }
+          });
+
+          if (!allFilled) {
+            swalWithBootstrapButtons.fire({
+              title: "Campos vacíos",
+              text: "Por favor, rellena todos los campos visibles y habilitados.",
+              icon: "error",
+              cancelButton: "OK"
+            });
+            return;
+          }
+
+          swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "¡No podrás revertir esto!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, ¡hazlo!",
+            cancelButtonText: "No, ¡cancela!",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (formaction) {
+                form.action = formaction; // Cambiar la acción del formulario a la especificada en formaction
+              }
+              form.submit(); // Enviar el formulario después de confirmar
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelado",
+                text: "Tu acción ha sido cancelada :)",
+                icon: "error"
+              });
+            }
+          });
+        });
+      });
+    });
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     let array5 = [];
     let array3 = [];

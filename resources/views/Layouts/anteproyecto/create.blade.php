@@ -141,7 +141,7 @@
                         @endphp
 
 
-                        <form method="post">
+                        <form    method="post">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
                             @can('anteproyecto.aprobarDocumento')
