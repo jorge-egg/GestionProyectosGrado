@@ -16,8 +16,8 @@ class CreateFaseProyectosfinalesTable extends Migration
         Schema::create('fase_proyectosfinales', function (Blueprint $table) {
             $table->bigIncrements("idProyectofinal");
 
-            $table->string("documento", 20);
-            $table->string("cartaDirector", 20);
+            $table->string("documento", 30);
+            $table->string("cartaDirector", 30);
             $table->string("aprobacionDocen", 2);
             $table->text("observaDocent")->nullable();
             $table->string("juradoUno", 12);

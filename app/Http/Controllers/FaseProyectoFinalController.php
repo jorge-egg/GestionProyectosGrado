@@ -26,8 +26,8 @@ class FaseProyectoFinalController extends Controller
         $proyecto               = SedeProyectosGrado::findOrFail($idProyecto);
         $consultanteproyectoAnt = FaseProyectosfinale::where('pfin_proy', $idProyecto)->orderBy('idProyectofinal', 'asc')->first();;
         $consultAnteproy        = FaseProyectosfinale::where('pfin_proy', $idProyecto)->orderBy('idProyectofinal', 'desc')->first();;
-        $anteproyecto           = $this->proyectoFinal($consultAnteproy);
-        $anteproyectoAnterior   = $this->proyectoFinal($consultanteproyectoAnt);
+        $anteproyecto           = $this->proyectoFinal($consultAnteproy, $this->$idProyecto );
+        $anteproyectoAnterior   = $this->proyectoFinal($consultanteproyectoAnt, $this->$idProyecto );
         $docExist1              = $consultAnteproy == null ? null : ($consultAnteproy->exists() ? $consultAnteproy->documento : null);
         $docExist2              = $consultAnteproy == null ? null : ($consultAnteproy->exists() ? $consultAnteproy->cartaDirector : null);
         //dd($anteproyecto);
@@ -56,14 +56,18 @@ class FaseProyectoFinalController extends Controller
 
 
     //consultar si existen proyectos finales creados por el usuario y tomar la ultima
-    public function proyectoFinal($proyectoFinal)
+    public function proyectoFinal($proyectoFinal, $idProyecto)
     {
         if ($proyectoFinal == null) {
             $proyectoFinal = (object) array(
                 'idProyectofinal' => "",
                 'documento' => "",
+                'juradoUno' => FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoUno,
+                'juradoDos' => FaseAnteproyecto::where('ante_proy', $idProyecto)->orderBy('idAnteproyecto', 'desc')->first()->juradoDos,
+                'estadoJUno' => 'Pendiente',
+                'estadoJDos' => 'Pendiente',
                 'aprobacionDocen' => "",
-                'estado' => "Activo"
+                'estado' => "Activo",
             );
         }
         return $proyectoFinal;

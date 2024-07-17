@@ -29,65 +29,68 @@
         </thead>
         <tbody>
             @php
-                    $idProyectos = [];
+                $idProyectos = [];
             @endphp
             @foreach ($proyectos as $proyecto)
                 @php
                     $idProyecto = $proyecto->idProyecto;
                 @endphp
-                @if (!(in_Array($idProyecto, $idProyectos)))
+                @if (!in_Array($idProyecto, $idProyectos))
                     @php
                         array_push($idProyectos, $idProyecto);
                     @endphp
 
-                <tr>
-                    <td>
-                        @if ($proyecto->estado)
-                            Activo
-                        @else
-                            Finalizado
-                        @endif
-                    </td>
-                    <td>{{ $proyecto->codigoproyecto }}</td>
-                    {{-- <td>
+                    <tr>
+                        <td>
+                            @if ($proyecto->estado)
+                                Activo
+                            @else
+                                Finalizado
+                            @endif
+                        </td>
+                        <td>{{ $proyecto->codigoproyecto }}</td>
+                        {{-- <td>
                         @foreach ($proyecto->integrantes as $key => $integrante)
                             {{ $key > 0 ? ', ' : '' }}
                             {{ $integrante->usuarios_user->nombre }} {{ $integrante->usuarios_user->apellido }}
                         @endforeach
                     </td> --}}
-                    <td>
-                        <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="get">
+                        <td>
+                            <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="get">
 
-                            <button type="submit" class='btn btn-primary text-dark'>Propuesta</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{{ route('anteproyecto.create', $proyecto->idProyecto) }}" method="get">
-                            {{-- @csrf --}}
-                            {{-- <input type="hidden" name="idProyecto" value="{{ $proyecto->idProyecto }}"> --}}
-                            <button type="submit" class="btn"
-                                style="background:#003E65; color:#fff">Anteproyecto</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{{ route('proyectoFinal.create', $proyecto->idProyecto) }}" method="get">
-                            <button type="submit" class="btn" style="background:#003E65; color:#fff">Proyecto
-                                final</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="#">
-                            @csrf
-                            <button type="submit" class="btn" style="background:#003E65; color:#fff"
-                                data-bs-toggle="modal" data-bs-target="#SustentacionModal">Sustentación</button>
-                        </form>
-                    </td>
-                </tr>
+                                <button type="submit" class='btn btn-primary text-dark'>Propuesta</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ route('anteproyecto.create', $proyecto->idProyecto) }}" method="get">
+                                {{-- @csrf --}}
+                                {{-- <input type="hidden" name="idProyecto" id="idProyecto" value="{{ $proyecto->idProyecto }}"> --}}
+                                <button type="submit" class="btn"
+                                    style="background:#003E65; color:#fff">Anteproyecto</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ route('proyectoFinal.create', $proyecto->idProyecto) }}" method="get">
+                                <button type="submit" class="btn" style="background:#003E65; color:#fff">Proyecto
+                                    final</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="#">
+                                @csrf
+                                <input type="hidden" name="idProyecto" id="idProyecto" value="{{ $proyecto->idProyecto }}">
+                                <button type="submit" class="btn" style="background:#003E65; color:#fff"
+                                    data-bs-toggle="modal" data-bs-target="#SustentacionModal"
+                                    onclick="obtenerNombre()">Sustentación</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endif
             @endforeach
-           
+
         </tbody>
     </table>
+
     <div class="modal fade" id="SustentacionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -96,17 +99,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    Jurado 1: <br>
-                    Jurado 2: <br>
-
-                    <section class="text-center mt-3">
-                        Califique la sustentación <br><br>
-                        <button class="btn btn-danger">Rechazado</button>
-                        <button class="btn btn-info">Aprobado</button>
-                    </section>
+                    Jurado 1: <p id="juradoUno"></p><br>
+                    Jurado 2: <p id="juradoDos"></p><br>
+                    <form method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="idProyectoSus" id="idProyectoSus">
+                        <section class="text-center mt-2">
+                            <button class="btn btn-danger" formaction="{{route('sustentacion.store.rechazado')}}">Rechazado</button>
+                            <button class="btn btn-info" formaction="{{route('sustentacion.store.aprobado')}}">Aprobado</button>
+                            <div class="mb-3 mt-2">
+                                <label for="soporte" class="form-label">Carge el documento de soporte sustentación</label>
+                                <input class="form-control @error('soporte') is-invalid @enderror" type="file" name='soporte'
+                                    id="soporte" required>
+                            </div>
+                            @error('soporte')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </section>
+                    </form>
                 </div>
-                <div class="modal-footer text-center">
-                    <h2><b>!!Felicidades, su proyecto fue aprobado</b></h2>
+                <div class="modal-footer text-center" style="background: #003E65; margin: 0 auto">
+                    <b><h1 id="estadoH2" style="color: rgb(255, 255, 255)"></h1></b>
                 </div>
             </div>
         </div>
@@ -115,6 +128,39 @@
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        function obtenerNombre() {
+
+            // var nombreUsuario = document.getElementById(
+            //     'nombreUsuario'); //etiqueta <p></p> donde se va a mostrar el nombre del usuario buscado en el modal
+
+            var codProyecto = document.getElementById(
+                'idProyecto').value; //etiqueta <p></p> donde se va a mostrar el codigo del usuario buscado en el modal
+
+            var nombreJUno = document.getElementById('juradoUno');
+            var nombreJDos = document.getElementById('juradoDos');
+            var estadoH2 = document.getElementById('estadoH2');
+            var idProyectoSus = document.getElementById('idProyectoSus');
+            idProyectoSus
+            $.ajax({
+                url: "{{ route('sustentacion.consultar') }}",
+                type: 'get',
+                data: {
+                    idProyecto: codProyecto
+                },
+                dataType: 'json',
+                success: function(response) {
+                    nombreJUno.textContent = response.juradoUno;
+                    nombreJDos.textContent = response.juradoDos;
+                    idProyectoSus.value = response.data.idSustentacion;
+                    estadoH2.textContent = response.data.estado
+                },
+                error: function() {
+                    alert('Hubo un error obteniendo los datos!');
+                }
+            });
+        }
+    </script>
 @endsection
 <script>
     let table = new DataTable('#proy');

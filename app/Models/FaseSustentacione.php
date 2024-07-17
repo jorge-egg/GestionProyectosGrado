@@ -38,6 +38,7 @@ class FaseSustentacione extends Model
 		'juradoUno',
 		'juradoDos',
 		'estado',
+        'documento',
 	];
 
 	public function sede_proyectos_grado()
