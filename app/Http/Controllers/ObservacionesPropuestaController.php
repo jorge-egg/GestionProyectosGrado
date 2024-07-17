@@ -346,7 +346,7 @@ class ObservacionesPropuestaController extends Controller
         }
         //dd($total);
         $propuesta = $fase == 'propuesta' ? FasePropuesta::findOrFail($idfase) : ($fase == 'anteproyecto' ? FaseAnteproyecto::findOrFail($idfase) : ($fase == 'proyecto_final' ? FaseProyectosfinale::findOrFail($idfase) :
-            FaseSustentaciones::findOrFail($idfase)));
+            FaseSustentacione::findOrFail($idfase)));
 
 
         switch ($fase) {

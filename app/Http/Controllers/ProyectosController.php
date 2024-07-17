@@ -109,7 +109,7 @@ class ProyectosController extends Controller
     {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $proyectos = SedeProyectosGrado::where('docente', $usuario->numeroDocumento)->get();
-        
+
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
     }
 
@@ -233,5 +233,36 @@ class ProyectosController extends Controller
             'proyecto' => $idProyecto,
         ]);
         return redirect()->route('proyecto.index');
+    }
+
+    //obtiene los datos de la sustentacion segun el proyecto
+    public function obtSustentacion(Request $request){
+        $idProyecto = $request->get('idProyecto');
+        $data = $this->consultarSustentacion($idProyecto);
+        $dataJuradoUno = UsuariosUser::where('numeroDocumento', $data->juradoUno)->first();
+        $juradoUno = $dataJuradoUno->nombre. " " .$dataJuradoUno->apellido;
+        $dataJuradoDos = UsuariosUser::where('numeroDocumento', $data->juradoDos)->first();
+        $juradoDos = $dataJuradoDos->nombre. " " .$dataJuradoDos->apellido;
+        $response = ['data' => $data, 'juradoUno' => $juradoUno, 'juradoDos' => $juradoDos];
+        return response()->json($response);
+    }
+
+    public function guardarSustaprobado(Request $request){
+        //dd($request);
+        $request->validate([
+            'soporte' => 'required|mimes:pdf|max:3048',
+        ]);
+        //La letra R representa el rechazado
+        $this->guardar($request, 'A');
+
+    }
+    public function guardarSustrechazado(Request $request){
+        //dd($request);
+        $request->validate([
+            'soporte' => 'required|mimes:pdf|max:3048',
+        ]);
+        //La letra A representa el aprobado
+        $this->guardar($request, 'R');
+        return redirect()->route('proyecto.indextableJurado');
     }
 }

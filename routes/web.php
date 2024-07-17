@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\FasePropuesta;
+use App\Traits\FaseSustentacion;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedesController;
+use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\ComitesController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProyectosController;
@@ -10,14 +13,12 @@ use App\Http\Controllers\FacultadesController;
 use App\Http\Controllers\PonderadosController;
 use App\Http\Controllers\SedeProgramaController;
 use App\Http\Controllers\FasePropuestasController;
+
 use App\Http\Controllers\FaseAnteproyectosController;
+
+
 use App\Http\Controllers\FaseProyectoFinalController;
 use App\Http\Controllers\ObservacionesPropuestaController;
-
-use App\Models\FasePropuesta;
-
-
-use App\Http\Controllers\ChartsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,3 +149,7 @@ Route::post('/proyectoFinal/asignarJurado', [FaseProyectoFinalController::class,
 Route::post('/proyectoFinal/update', [FaseProyectoFinalController::class, 'update'])->name('proyectoFinal.update');
 
 
+//sustentacion
+Route::get('/sustentacion/consultar', [ProyectosController::class, 'obtSustentacion'])->name('sustentacion.consultar');
+Route::post('/sustentacion/storeaprobado', [ProyectosController::class, 'guardarSustaprobado'])->name('sustentacion.store.aprobado');
+Route::post('/sustentacion/storerechazado', [ProyectosController::class, 'guardarSustrechazado'])->name('sustentacion.store.rechazado');

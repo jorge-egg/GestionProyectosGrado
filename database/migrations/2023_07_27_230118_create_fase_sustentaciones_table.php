@@ -19,6 +19,7 @@ class CreateFaseSustentacionesTable extends Migration
             $table->string("juradoUno", 12);
             $table->string("juradoDos", 12);
             $table->string('estado', 100);
+            $table->string("documento", 30);
             $table->foreign('sust_proy')->references('idProyecto')->on("sede_proyectos_grado")->onDelete('cascade');
             $table->timestamps();
         });
