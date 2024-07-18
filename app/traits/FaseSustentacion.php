@@ -43,7 +43,6 @@ trait FaseSustentacion
     public function guardar($request, $estado){
         $sustentacion = FaseSustentacione::findOrFail($request->idProyectoSus);
         //dd($sustentacion);
-dd($estado);
         $proyecto = SedeProyectosGrado::findOrFail($sustentacion->sust_proy);
         if($request->hasFile("soporte")){
             $file1 = $request->file("soporte");
@@ -53,7 +52,23 @@ dd($estado);
             $sustentacion->documento = $newNameFile1;
             $sustentacion-> estado = $estado == 'R' ? 'Rechazado' : 'Aprobado';
             $sustentacion->save();
+
+            $proyecto->estado = false;
+            $proyecto->save();
+        }
+
     }
 
+
+    public function verPdf($nombreArchivo)
+    { //retorna el pdf
+        $rutaArchivo = public_path('files/sustentacion/'.$nombreArchivo);
+        // Verificar si el archivo existe
+        if (file_exists($rutaArchivo)) {
+            // Devolver el archivo para ser mostrado en el navegador
+            return response()->file($rutaArchivo);
+        } else {
+            abort(404, 'Archivo no encontrado');
+        }
     }
 }

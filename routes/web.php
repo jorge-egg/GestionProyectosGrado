@@ -153,3 +153,4 @@ Route::post('/proyectoFinal/update', [FaseProyectoFinalController::class, 'updat
 Route::get('/sustentacion/consultar', [ProyectosController::class, 'obtSustentacion'])->name('sustentacion.consultar');
 Route::post('/sustentacion/storeaprobado', [ProyectosController::class, 'guardarSustaprobado'])->name('sustentacion.store.aprobado');
 Route::post('/sustentacion/storerechazado', [ProyectosController::class, 'guardarSustrechazado'])->name('sustentacion.store.rechazado');
+Route::get('/sustentacion/verpdf/{nombreArchivo}', [ProyectosController::class, 'mostrarPdf'])->name('sustentacion.verpdf');

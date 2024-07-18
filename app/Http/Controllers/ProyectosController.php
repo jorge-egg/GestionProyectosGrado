@@ -254,6 +254,7 @@ class ProyectosController extends Controller
         ]);
         //La letra R representa el rechazado
         $this->guardar($request, 'A');
+        return redirect()->route('proyecto.indextableJurado');
 
     }
     public function guardarSustrechazado(Request $request){
@@ -264,5 +265,11 @@ class ProyectosController extends Controller
         //La letra A representa el aprobado
         $this->guardar($request, 'R');
         return redirect()->route('proyecto.indextableJurado');
+    }
+
+    public function mostrarPdf($nombreDoc){
+
+        $nombre = $nombreDoc;
+        $this->verPdf($nombre);
     }
 }

@@ -75,5 +75,9 @@ class RoleSeeder extends Seeder
         //sedes
         Permission::create(['name' => 'sede.ver'])->syncRoles([$superadministrador, $administrador]);
 
+
+        //sustentacion
+        Permission::create(['name' => 'sustentacion.calificar'])->syncRoles([$superadministrador, $administrador, $docente]);
+
     }
 }

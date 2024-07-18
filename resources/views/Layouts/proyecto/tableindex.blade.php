@@ -99,12 +99,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    Jurado 1: <p id="juradoUno"></p><br>
-                    Jurado 2: <p id="juradoDos"></p><br>
-                    <form method="post" enctype="multipart/form-data">
+                    @can('sustentacion.calificar')
+                        Jurado 1: <p id="juradoUno"></p><br>
+                        Jurado 2: <p id="juradoDos"></p><br>
+                    @endcan
+                    <section class="text-center mt-2">
+                        @can('sustentacion.calificar')
+                    <form method="post" enctype="multipart/form-data" id="form-sust">
                         @csrf
                         <input type="hidden" name="idProyectoSus" id="idProyectoSus">
-                        <section class="text-center mt-2">
+
                             <button class="btn btn-danger" formaction="{{route('sustentacion.store.rechazado')}}">Rechazado</button>
                             <button class="btn btn-info" formaction="{{route('sustentacion.store.aprobado')}}">Aprobado</button>
                             <div class="mb-3 mt-2">
@@ -115,8 +119,12 @@
                             @error('soporte')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-                        </section>
+
                     </form>
+                    @endcan
+                    <a href="#" class="btn btn-warning" id="btn-doc"></a>
+                </section>
+
                 </div>
                 <div class="modal-footer text-center" style="background: #003E65; margin: 0 auto">
                     <b><h1 id="estadoH2" style="color: rgb(255, 255, 255)"></h1></b>
@@ -136,12 +144,14 @@
 
             var codProyecto = document.getElementById(
                 'idProyecto').value; //etiqueta <p></p> donde se va a mostrar el codigo del usuario buscado en el modal
-
+            var formsust = document.getElementById(
+                'form-sust');
             var nombreJUno = document.getElementById('juradoUno');
             var nombreJDos = document.getElementById('juradoDos');
             var estadoH2 = document.getElementById('estadoH2');
             var idProyectoSus = document.getElementById('idProyectoSus');
-            idProyectoSus
+            var btnDoc = document.getElementById('btn-doc')
+
             $.ajax({
                 url: "{{ route('sustentacion.consultar') }}",
                 type: 'get',
@@ -150,10 +160,27 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+                    let baseUrl = "{{ route('sustentacion.verpdf', ['nombreArchivo' => 'PLACEHOLDER']) }}";
+                    let nameDoc = response.data.documento != '-1' ? response.data.documento : 'Sin documento';
+                    btnDoc.textContent = nameDoc;
+                    if(nameDoc == 'Sin documento'){
+                        btnDoc.disabled = false;
+                        btnDoc.removeAttribute('href');
+                        btnDoc.style.cursor = 'not-allowed'
+                        formsust.style.display = 'block';
+                    }else{
+                        btnDoc.disabled = true;
+                        formsust.style.display = 'none';
+                        btnDoc.href = baseUrl.replace('PLACEHOLDER', encodeURIComponent(response.data.documento)); // Construye el URL completo
+                        btnDoc.style.pointerEvents = 'auto'; // Asegura que el enlace esté activo
+                    }
                     nombreJUno.textContent = response.juradoUno;
                     nombreJDos.textContent = response.juradoDos;
+                    estadoH2.textContent = response.data.estado;
                     idProyectoSus.value = response.data.idSustentacion;
-                    estadoH2.textContent = response.data.estado
+
+
+
                 },
                 error: function() {
                     alert('Hubo un error obteniendo los datos!');
