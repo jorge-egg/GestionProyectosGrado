@@ -139,7 +139,7 @@ class ChartsController extends Controller
     $chart_options5 = [
         'chart_title' => 'Sustentaciones estados',
         'report_type' => 'group_by_string',
-        'model' => 'App\Models\FaseSustentaciones',
+        'model' => 'App\Models\FaseSustentacione',
         'group_by_field' => 'estado',
         'chart_type' => 'pie',
         'filter_field' => 'created_at',
@@ -163,7 +163,7 @@ class ChartsController extends Controller
 
     // Totales
     $totalProyectos = \App\Models\SedeProyectosGrado::whereBetween('created_at', [$startDate, $endDate])->count();
-    $totalSustentaciones = \App\Models\FaseSustentaciones::whereBetween('created_at', [$startDate, $endDate])->count();
+    $totalSustentaciones = \App\Models\FaseSustentacione::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalProyectosFinales = \App\Models\FaseProyectosfinale::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalAnteproyectos = \App\Models\FaseAnteproyecto::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalPropuestas = \App\Models\FasePropuesta::whereBetween('created_at', [$startDate, $endDate])->count();

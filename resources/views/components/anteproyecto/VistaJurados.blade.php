@@ -1,3 +1,4 @@
+
 <h5 class="card-title text-center">Calificar anteproyecto</h5>
 
 <div class='card-body'>
@@ -159,7 +160,7 @@
                 <div class="mb-3">
                     <input type="hidden" value="{{$fase}}" name="fase">
                     <input type="hidden" value="{{$fase == "anteproyecto" ? $array['anteproyecto']->ante_proy : ($fase == "proyFinal" ? $array['anteproyecto']->pfin_proy : null)}}" name="idProyecto">
-                    <button id="buttonEnviarCalificacion" formaction="{{ route('observaciones.update') }}"
+                    <button id="buttonActualizar" formaction="{{ route('observaciones.update') }}"
                         class="btn" style="background:#003E65; color:#fff; display:{{$array['anteproyecto']->estado =='Verificar' && $array['anteproyecto']->aprobacionDocen == 2 && $estadoJurado == 'Rechazado' ? 'block': 'none'}}">Actualizar</button>
                 </div>
             @endif
@@ -171,7 +172,90 @@
     </p>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-outline-success",
+                cancelButton: "btn btn-outline-danger"
+            },
+            buttonsStyling: false
+        });
 
+        const buttons = document.querySelectorAll("#buttonEnviarCalificacion, #buttonActualizar");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                const formaction = button.getAttribute('formaction');
+
+                swalWithBootstrapButtons.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí",
+                    cancelButtonText: "No",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Crear y enviar un formulario con los datos necesarios
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = formaction;
+
+                        // Agregar campos ocultos para el envío
+                        const inputs = document.querySelectorAll("input[type='hidden']");
+                        inputs.forEach(input => {
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = input.name;
+                            hiddenInput.value = input.value;
+                            form.appendChild(hiddenInput);
+                        });
+
+                        // Agregar campos de texto y select
+                        const textareas = document.querySelectorAll("textarea");
+                        const selects = document.querySelectorAll("select");
+                        textareas.forEach(textarea => {
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = textarea.name;
+                            hiddenInput.value = textarea.value;
+                            form.appendChild(hiddenInput);
+                        });
+                        selects.forEach(select => {
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = select.name;
+                            hiddenInput.value = select.value;
+                            form.appendChild(hiddenInput);
+                        });
+
+                        document.body.appendChild(form);
+
+                        // Mostrar alerta de éxito después de enviar el formulario
+                        swalWithBootstrapButtons.fire({
+                            title: "Enviado con éxito!",
+                            text: "Tu acción ha sido completada con éxito",
+                            icon: "success"
+                        }).then(() => {
+                            form.submit(); // Enviar el formulario después de confirmar
+                        });
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                            title: "Cancelado",
+                            text: "Tu acción ha sido cancelada",
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     let array5 = [];
     let array3 = [];

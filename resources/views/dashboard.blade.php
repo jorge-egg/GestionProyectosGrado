@@ -52,7 +52,7 @@
             <li>
                 <a href="{{ route('charts.index') }}">
                     <i class='bx bx-sitemap'></i>
-                    <span class="links_name">charts</span>
+                    <span class="links_name">Reporte</span>
                 </a>
             </li>
         </ul>
