@@ -60,13 +60,12 @@
                         <td>
                             <form action="{{ route('propuesta.create', $proyecto->idProyecto) }}" method="get">
 
-                                <button type="submit" class="btn btn-primary"
-                                style="background:
-                                    {{ ($proyecto->estadoFases)[0] == 5 || ($proyecto->estadoFases)[0] == -1 ? '#003E65' :
-                                    ($proyecto->estadoFases)[0] == 1 ? 'rgb(0, 105, 0)' :
-                                    ($proyecto->estadoFases)[0] == 2 ? 'rgb(135, 0, 0)' :
-                                    ($proyecto->estadoFases)[0] == 3 ? 'rgb(171, 171, 0)' :
-                                    ($proyecto->estadoFases)[0] == 4 ? '#760081' : '' }}"
+                                <button type="submit" class="btn"
+                                    style="background: {{($proyecto->estadoFases)[0] == -1 || ($proyecto->estadoFases)[0] == 5 ? '#003E65; color:rgb(255, 255, 255)':
+                                    (($proyecto->estadoFases)[0] == 2 ? 'rgb(135, 0, 0); color:#fff':
+                                    (($proyecto->estadoFases)[0] == 1 ? 'rgb(0, 105, 0); color:#fff' :
+                                    (($proyecto->estadoFases)[0] == 3 ? 'rgb(171, 171, 0); color: #000' :
+                                    (($proyecto->estadoFases)[0] == 4 ? '#760081; color:#fff' : ''))))}}"
                                     >Propuesta</button>
 
                             </form>
@@ -76,13 +75,11 @@
                                 {{-- @csrf --}}
                                 {{-- <input type="hidden" name="idProyecto" id="idProyecto" value="{{ $proyecto->idProyecto }}"> --}}
                                 <button type="submit" class="btn"
-                                style="background-color:
-                                    {{ ($proyecto->estadoFases)[1] == -1 ? '#003E65' :
-                                    ($proyecto->estadoFases)[1] == 1 ? 'rgb(0, 105, 0)' :
-                                    ($proyecto->estadoFases)[1] == 2 ? 'rgb(135, 0, 0)' :
-                                    ($proyecto->estadoFases)[1] == 3 ? 'rgb(171, 171, 0)' :
-                                    ($proyecto->estadoFases)[1] == 4 ? '#760081' :
-                                    '' }}"
+                                style="background: {{($proyecto->estadoFases)[0] == -1 ? '#003E65; color:rgb(255, 255, 255)':
+                                    (($proyecto->estadoFases)[1] == 2 ? 'rgb(135, 0, 0); color:#fff':
+                                    (($proyecto->estadoFases)[1] == 1 ? 'rgb(0, 105, 0); color:#fff' :
+                                    (($proyecto->estadoFases)[1] == 3 ? 'rgb(171, 171, 0); color: #000' :
+                                    (($proyecto->estadoFases)[1] == 4 ? '#760081; color:#fff' : ''))))}}"
                                 {{($proyecto->estadoFases)[0] != 1?'disabled':''}}
                                 >Anteproyecto</button>
                             </form>
@@ -90,11 +87,11 @@
                         <td>
                             <form action="{{ route('proyectoFinal.create', $proyecto->idProyecto) }}" method="get">
                                 <button type="submit" class="btn"
-                                style="background-color: {{($proyecto->estadoFases)[2]== -1?'#003E65':''}}"
-                                style="background-color: {{($proyecto->estadoFases)[2]== 1?'rgb(0, 105, 0)':''}}"
-                                style="background-color: {{($proyecto->estadoFases)[2]== 2?'rgb(135, 0, 0)':''}}"
-                                style="background-color: {{($proyecto->estadoFases)[2]== 3?'rgb(171, 171, 0)':''}}"
-                                style="background-color: {{($proyecto->estadoFases)[2]== 4?'#760081':''}}"
+                                style="background: {{($proyecto->estadoFases)[0] == -1 ? '#003E65; color:rgb(255, 255, 255)':
+                                    (($proyecto->estadoFases)[2] == 2 ? 'rgb(135, 0, 0); color:#fff':
+                                    (($proyecto->estadoFases)[2] == 1 ? 'rgb(0, 105, 0); color:#fff' :
+                                    (($proyecto->estadoFases)[2] == 3 ? 'rgb(171, 171, 0); color: #000' :
+                                    (($proyecto->estadoFases)[2] == 4 ? '#760081; color:#fff' : ''))))}}"
                                 {{($proyecto->estadoFases)[1] != 1?'disabled':''}}
                                 >Proyecto final</button>
                             </form>
@@ -106,8 +103,12 @@
                                 <button type="submit" class="btn"
                                     data-bs-toggle="modal" data-bs-target="#SustentacionModal"
                                     onclick="obtenerNombre()"
-                                    style="background-color: {{($proyecto->estadoFases)[1]== -1?'#003E65':''}}"
-                                    {{($proyecto->estadoFases)[2]== 5?'disabled':''}}
+                                    style="background: {{($proyecto->estadoFases)[0] == -1 ? '#003E65; color:rgb(255, 255, 255)':
+                                    (($proyecto->estadoFases)[3] == 2 ? 'rgb(135, 0, 0); color:#fff':
+                                    (($proyecto->estadoFases)[3] == 1 ? 'rgb(0, 105, 0); color:#fff' :
+                                    (($proyecto->estadoFases)[3] == 3 ? 'rgb(171, 171, 0); color: #000' :
+                                    (($proyecto->estadoFases)[3] == 4 ? '#760081; color:#fff' : ''))))}}"
+                                {{($proyecto->estadoFases)[2] != 1?'disabled':''}}
                                     >Sustentación</button>
                             </form>
                         </td>

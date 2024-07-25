@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class SedePrograma
- * 
+ *
  * @property int $idPrograma
  * @property string $programa
  * @property string $siglas
  * @property int $prog_facu
  * @property string|null $deleted_at
- * 
+ *
  * @property SedesFacultade $sedes_facultade
  * @property Collection|ComitesSede[] $comites_sedes
  * @property Collection|UsuarioPrograma[] $usuario_programas
@@ -39,6 +39,7 @@ class SedePrograma extends Model
 	protected $fillable = [
 		'programa',
 		'siglas',
+        'email',
 		'prog_facu'
 	];
 

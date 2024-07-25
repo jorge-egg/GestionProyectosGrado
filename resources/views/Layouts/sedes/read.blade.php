@@ -42,8 +42,8 @@
                         </form>
                     </td>
                     <td>
-                        <form action="{{ route('programas.index', $sede->idSede) }}" method="get">
-                           
+                        <form action="{{ route('programas.index') }}" method="get">
+
                             <input type="hidden" class="form-control" name="idSede" value="{{$sede->idSede}}">
                             <button type="submit" class="btn " style="background:#003E65; color:#fff">Programas</button>
                         </form>

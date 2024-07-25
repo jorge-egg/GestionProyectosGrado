@@ -73,6 +73,7 @@
             <tr>
                 <th scope="col">Programa</th>
                 <th scope="col">Siglas</th>
+                <th scope="col">E-mail</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -82,8 +83,9 @@
                 <tr>
                     <td>{{ $programa->programa }}</td>
                     <td>{{ $programa->siglas }}</td>
+                    <td>{{ $programa->email }}</td>
                     <td>
-                        <form action="{{ route('programa.edit', $programa->idPrograma) }}" method="post">
+                        <form action="{{ route('programa.edit', [$programa->idPrograma, $idSede]) }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-warning">Editar</button>
                         </form>
@@ -93,7 +95,7 @@
                             <a href="{{ route('programa.restore', $programa->idPrograma) }}" class="btn"
                                 style="background:#003E65; color:#fff">Restablecer</a>
                         @else
-                            <form action="{{ route('programa.destroy', $programa->idPrograma) }}" method="post">
+                            <form action="{{ route('programa.destroy', [$programa->idPrograma, $idSede]) }}" method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-warning">Eliminar</button>
                             </form>

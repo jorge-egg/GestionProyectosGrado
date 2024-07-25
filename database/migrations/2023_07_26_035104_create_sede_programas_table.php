@@ -17,6 +17,7 @@ class CreateSedeProgramasTable extends Migration
             $table->bigIncrements("idPrograma");
             $table->string("programa");
             $table->string("siglas");
+            $table->string("email");
             $table->unsignedBigInteger("prog_facu");
             $table->foreign("prog_facu")->references("idFacultad")->on("sedes_facultades")->onDelete('cascade');
             $table->softDeletes();

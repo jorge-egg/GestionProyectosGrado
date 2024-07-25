@@ -25,7 +25,7 @@
 
 </head>
 
-<body>
+<body onload="nobackbutton();">
     <nav id="logoTitulo">
         @component('components.NavbarComponent')
         @endcomponent

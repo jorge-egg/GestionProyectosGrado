@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\ComitesSede;
 use App\Models\SedePrograma;
 use App\Models\SedesFacultade;
@@ -16,11 +17,16 @@ class SedeProgramaController extends Controller
     public function index(Request $request)
     {
         // Obtener programas de la sede seleccionada
+        if ($request->idSede) {
+            $idSede = $request->idSede;
+        } else if (session('idSede')) {
+            $idSede = session('idSede');
+        }
 
-        $idSede = $request->idSede;
         $programas = SedesFacultade::join('sede_programas', 'sede_programas.prog_facu', 'sedes_facultades.idFacultad')
-        ->where('facu_sede', $idSede)
-        ->get();
+            ->where('facu_sede', $idSede)
+            ->get();
+        //dd($programas);
         return view('Layouts.programas.index', compact('programas', 'idSede'));
     }
     /**
@@ -30,7 +36,7 @@ class SedeProgramaController extends Controller
      */
     public function create(Request $request)
     {
-//
+        //
     }
 
     /**
@@ -39,7 +45,7 @@ class SedeProgramaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $idSede)
+    public function store(Request $request)
     {
         $request->validate([
             'programa' => 'required',
@@ -78,10 +84,10 @@ class SedeProgramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $idSede)
     {
         $programas = SedePrograma::findOrFail($id);
-        return view('programa.edit', compact('programas'));
+        return view('Layouts.programas.update', compact('programas', 'idSede'));
     }
 
     /**
@@ -91,20 +97,20 @@ class SedeProgramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $idSede)
     {
         $programas = SedePrograma::findOrFail($id);
         $programas->update($request->all());
-        return redirect()->route('programa.index');
+        return redirect()->route('programas.index')->with('idSede', $idSede);
     }
     public function restore($id)
     {
         SedePrograma::withTrashed()->find($id)->restore();
-        return redirect()->route('programa.index')->with('success','se restablecio el registro');
+        return redirect()->route('programa.index')->with('success', 'se restablecio el registro');
     }
     public function forcedelete($id)
     {
-        $programas=SedePrograma::onlyTrashed()->find($id);
+        $programas = SedePrograma::onlyTrashed()->find($id);
         $programas->forcedelete();
         return redirect()->route('programa.index');
     }
@@ -115,9 +121,22 @@ class SedeProgramaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $idSede)
     {
-    SedePrograma::find($id)->delete();
-    return back()->with('success','se elimino el registro');
+       // Buscar el registro por su ID
+       $programa = SedePrograma::findOrFail($id);
+    if ($programa->idPrograma) {
+        $programa->delete();
+        return back()->with([
+            'success' => 'Se eliminó el registro',
+            'idSede' => $idSede
+        ]);
+    }
+
+    return back()->with([
+        'success' => 'Error 404 - El registro no se encontró',
+        'idSede' => $idSede
+
+    ]);
     }
 }

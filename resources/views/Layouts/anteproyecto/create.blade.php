@@ -131,7 +131,7 @@
                                         del director</i></a>
                             </section>
                             @can('propuesta.agregar')
-                                <p style="color: red">Por favor espere a que el director del proyecto califique los documentos
+                                <p style="color: red">Por favor espere a que el director del proyecto autorice los documentos
                                     cargados</p>
                             @endcan
                         </div>
@@ -319,6 +319,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            window.location.hash="no-back-button";
+            window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
+            window.onhashchange=function(){window.location.hash="no-back-button";}
             const btnSelectJurado1 = document.getElementById('SelectJ1');
             const btnSelectJurado2 = document.getElementById('SelectJ2');
             const JIdentificador = document.getElementById('JIdentificador');

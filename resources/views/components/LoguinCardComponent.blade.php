@@ -1,5 +1,5 @@
 {{-- Loguin Card --}}
-<div class="container-login d-flex justify-content-center col-sm-12 col-md-6">
+<div class="container-login d-flex justify-content-center col-sm-12 col-md-6 mt-5">
     <div class="card flex-wrap ">
 
         <div class="col-sm-12 p-2">

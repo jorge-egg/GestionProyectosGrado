@@ -86,12 +86,12 @@ Route::post('/comites/destroy/{idComite}', [ComitesController::class, 'destroy']
 Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restore'])->name('comite.restore');
 
 //programas
-Route::get('/programas/index/{id}', [SedeProgramaController::class, 'index'])->name('programas.index');
+Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programas.index');
 Route::get('/programas/create/{id}', [SedeProgramaController::class, 'create'])->name('programas.create');
 Route::post('/programas/store/{id}', [SedeProgramaController::class, 'store'])->name('programas.store');
-Route::post('/programas/edit/{idPrograma}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
-Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
-Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
+Route::post('/programas/edit/{idPrograma}/{idSede}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
+Route::post('/programas/update/{idPrograma}/{idSede}', [SedeProgramaController::class, 'update'])->name('programa.update');
+Route::post('/programas/destroy/{idPrograma}/{idSede}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
 Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class, 'restore'])->name('programa.restore');
 
 //cronograma
