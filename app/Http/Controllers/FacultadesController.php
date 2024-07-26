@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\facultades;
-use App\Models\SedesFacultade;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StorefacultadesRequest;
+use Throwable;
 use Illuminate\Http\Request;
+use App\Models\SedesFacultade;
+use App\Http\Requests\StorefacultadesRequest;
 
 
 class FacultadesController extends Controller
@@ -19,7 +18,14 @@ class FacultadesController extends Controller
      */
     public function index(Request $request)
     {
-        $id = $request->idSede;
+       // dd(session('idSede'));
+       $id = 0;
+        if($request->idSede){
+            $id = $request->idSede;
+        }else if(session('idSede')){
+            $id = session('idSede');
+        }
+
         $facultades = SedesFacultade::where('facu_sede', $id)->get();
         return view('Layouts.facultades.read',compact('facultades', 'id'));
     }
@@ -46,13 +52,16 @@ class FacultadesController extends Controller
         $request->validate([
             'nombre' => 'required|min:5',
         ]);
-
-        $idSede = $id;
-        SedesFacultade::create([
-            'nombre' => $request->nombre,
-            'facu_sede' => $idSede,
-        ]);
-        return redirect()->back();
+        if($id){
+            $idSede = $id;
+            SedesFacultade::create([
+                'nombre' => $request->nombre,
+                'facu_sede' => $idSede,
+            ]);
+            return redirect()->back()->with('success', 'Creado exitosamente');
+        }else{
+            return redirect()->back()->with('error', 'Error al crear');
+        }
     }
 
     /**
@@ -61,7 +70,7 @@ class FacultadesController extends Controller
      * @param  \App\Models\facultades  $facultades
      * @return \Illuminate\Http\Response
      */
-    public function show(facultades $facultades)
+    public function show()
     {
         //
     }
@@ -72,9 +81,14 @@ class FacultadesController extends Controller
      * @param  \App\Models\facultades  $facultades
      * @return \Illuminate\Http\Response
      */
-    public function edit(facultades $facultades)
+    public function edit($idSede, $idFacultad)
     {
-        //
+        $idFac = $idFacultad;
+        $facultad = SedesFacultade::find($idFac);
+        if($facultad){
+            return view('Layouts.facultades.update', compact('facultad', 'idSede'));
+        }
+        return back()->with('error', 'Facultad no encontrada');
     }
 
     /**
@@ -84,9 +98,22 @@ class FacultadesController extends Controller
      * @param  \App\Models\facultades  $facultades
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatefacultadesRequest $request, facultades $facultades)
+    public function update(Request $request, $idFacultad, $idSede)
     {
-        //
+
+        $request->validate([
+            'nombre' => 'required|string|max:200|min:5'
+        ]);
+        try{
+            $facultad = SedesFacultade::find($idFacultad);
+            $facultad->update($request->all());
+
+            return redirect()->route('facultades.index')->with(['success' => 'Registro actualizado exitosamente', 'idSede' => $idSede]);
+        }catch(Throwable $e){
+            return redirect()->route('facultades.index')->with(['error' => 'Error al actualizar el registro, intente nuevamente mas tarde', 'idSede' => $idSede]);
+        }
+
+
     }
 
     /**
@@ -95,7 +122,7 @@ class FacultadesController extends Controller
      * @param  \App\Models\facultades  $facultades
      * @return \Illuminate\Http\Response
      */
-    public function destroy(facultades $facultades)
+    public function destroy()
     {
         //
     }

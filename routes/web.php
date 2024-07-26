@@ -62,8 +62,10 @@ Route::post('/sedes/store', [SedesController::class, 'store'])->name('sedes.stor
 
 //facultades
 
-Route::get('/facultades/index/{id}', [FacultadesController::class, 'index'])->name('facultades.index');
+Route::get('/facultades/index', [FacultadesController::class, 'index'])->name('facultades.index');
 Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->name('facultades.store');
+Route::get('/facultades/edit/{idSede}/{idFacultad}', [FacultadesController::class, 'edit'])->name('facultades.edit');
+Route::post('/facultades/update/{idFacultad}/{idSede}', [FacultadesController::class, 'update'])->name('facultades.update');
 
 //proyectos
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');

@@ -51,6 +51,7 @@ class SedeProgramaController extends Controller
             'programa' => 'required',
             'siglas' => 'required',
             'prog_facu' => 'required',
+            'email' => 'required|email|string|max:255'
         ]);
 
         // Validar y almacenar el nuevo programa
@@ -58,6 +59,7 @@ class SedeProgramaController extends Controller
             'programa' => $request->programa,
             'siglas' => $request->siglas,
             'prog_facu' => $request->prog_facu,
+            'email' => $request->email,
         ]);
 
         // Crear entrada en la tabla comites_sedes
@@ -124,7 +126,8 @@ class SedeProgramaController extends Controller
     public function destroy($id, $idSede)
     {
        // Buscar el registro por su ID
-       $programa = SedePrograma::findOrFail($id);
+       $idSede = $id;
+       $programa = SedePrograma::findOrFail($idSede);
     if ($programa->idPrograma) {
         $programa->delete();
         return back()->with([
