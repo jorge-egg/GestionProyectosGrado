@@ -8,7 +8,7 @@
 
     <h1>Programas</h1>
     <br>
-    <form action="{{ route('programas.store', $idSede) }}" method="post">
+    <form action="{{ route('programas.store', ['id' => $idSede]) }}" method="post">
         @csrf
 
         <div class="mb-3">
@@ -48,6 +48,7 @@
                         @endphp
                     @endif
                 @endforeach
+
             </select>
             @error('prog_facu')
                 <span class="invalid-feedback" role="alert">
@@ -59,13 +60,13 @@
         <button type="submit" class="btn" style="background:#003E65; color:#fff">Agregar Programa</button>
     </form>
     @if (session()->has('success'))
-        <div class= 'alert alert-success'>
+        <div class='alert alert-success'>
             {{ session()->get('success') }}
         </div>
     @endif
     <div class='col col-md-6 text-right'>
-        {{-- <form action="{{route('programas.index', ['idSede' => $idSede, 'view_deleted'=>'DeletedRecords'])}}" method="get">
-<button  class='btn btn-warning'>Consultar programas eliminados</button> --}}
+        <form action="{{ route('programas.index', ['id' => $idSede, 'view_deleted' => 'DeletedRecords']) }}" method="get">
+            <button class='btn btn-warning'>Consultar programas eliminados</button>
         </form>
     </div>
     <table class="table table-hover shadow-lg mt-4" style="width:100%" id='table-js'>

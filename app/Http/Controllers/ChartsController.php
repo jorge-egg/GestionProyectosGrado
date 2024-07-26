@@ -80,7 +80,7 @@ class ChartsController extends Controller
 {
     // Obtener rango de fechas del request
     $startDate = $request->input('start_date', '2000-01-01');
-    $endDate = $request->input('end_date', now()->toDateString());
+    $endDate = $request->input('end_date', now()->endOfDay()->toDateString());
 
     // Chart 1: Total proyectos
     $chart_options1 = [
@@ -91,8 +91,6 @@ class ChartsController extends Controller
         'group_by_period' => 'day',
         'chart_type' => 'bar',
         'filter_field' => 'created_at',
-        'filter_from' => $startDate,
-        'filter_to' => $endDate,
     ];
     $chart1 = new LaravelChart($chart_options1);
 
@@ -104,8 +102,6 @@ class ChartsController extends Controller
         'group_by_field' => 'estado',
         'chart_type' => 'pie',
         'filter_field' => 'created_at',
-        'filter_from' => $startDate,
-        'filter_to' => $endDate,
     ];
     $chart2 = new LaravelChart($chart_options2);
 
@@ -117,8 +113,6 @@ class ChartsController extends Controller
         'group_by_field' => 'estado',
         'chart_type' => 'pie',
         'filter_field' => 'created_at',
-        'filter_from' => $startDate,
-        'filter_to' => $endDate,
     ];
     $chart3 = new LaravelChart($chart_options3);
 
@@ -130,8 +124,6 @@ class ChartsController extends Controller
         'group_by_field' => 'estado',
         'chart_type' => 'pie',
         'filter_field' => 'created_at',
-        'filter_from' => $startDate,
-        'filter_to' => $endDate,
     ];
     $chart4 = new LaravelChart($chart_options4);
 
@@ -139,12 +131,10 @@ class ChartsController extends Controller
     $chart_options5 = [
         'chart_title' => 'Sustentaciones estados',
         'report_type' => 'group_by_string',
-        'model' => 'App\Models\FaseSustentaciones',
+        'model' => 'App\Models\FaseSustentacione',
         'group_by_field' => 'estado',
         'chart_type' => 'pie',
         'filter_field' => 'created_at',
-        'filter_from' => $startDate,
-        'filter_to' => $endDate,
     ];
     $chart5 = new LaravelChart($chart_options5);
 
@@ -156,14 +146,12 @@ class ChartsController extends Controller
         'group_by_field' => 'estado',
         'chart_type' => 'pie',
         'filter_field' => 'created_at',
-        'filter_from' => $startDate,
-        'filter_to' => $endDate,
     ];
     $chart6 = new LaravelChart($chart_options6);
 
     // Totales
     $totalProyectos = \App\Models\SedeProyectosGrado::whereBetween('created_at', [$startDate, $endDate])->count();
-    $totalSustentaciones = \App\Models\FaseSustentaciones::whereBetween('created_at', [$startDate, $endDate])->count();
+    $totalSustentaciones = \App\Models\FaseSustentacione::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalProyectosFinales = \App\Models\FaseProyectosfinale::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalAnteproyectos = \App\Models\FaseAnteproyecto::whereBetween('created_at', [$startDate, $endDate])->count();
     $totalPropuestas = \App\Models\FasePropuesta::whereBetween('created_at', [$startDate, $endDate])->count();

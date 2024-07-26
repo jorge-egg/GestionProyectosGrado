@@ -238,7 +238,7 @@
             if (checkEmptyFields(form)) {
                 swalWithBootstrapButtons.fire({
                     title: "Campos vacíos",
-                    text: "Por favor, rellena todos los campos visibles y habilitados.",
+                    text: "Por favor, rellena todos los campos visibles",
                     icon: "error",
                     cancelButton: "OK"
                 });
@@ -247,7 +247,7 @@
 
             swalWithBootstrapButtons.fire({
                 title: "¿Estás seguro?",
-                text: "Una vez enviado no se puede modificar el formulario.",
+                text: "¡No podrás revertir esto!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Sí",
@@ -268,7 +268,7 @@
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     swalWithBootstrapButtons.fire({
                         title: "Cancelado",
-                        text: "El envío ha sido cancelado.",
+                        text: "Tu acción ha sido cancelada",
                         icon: "error"
                     });
                 }
