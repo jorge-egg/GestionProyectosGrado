@@ -62,8 +62,10 @@ Route::post('/sedes/store', [SedesController::class, 'store'])->name('sedes.stor
 
 //facultades
 
-Route::get('/facultades/index/{id}', [FacultadesController::class, 'index'])->name('facultades.index');
+Route::get('/facultades/index', [FacultadesController::class, 'index'])->name('facultades.index');
 Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->name('facultades.store');
+Route::get('/facultades/edit/{idSede}/{idFacultad}', [FacultadesController::class, 'edit'])->name('facultades.edit');
+Route::post('/facultades/update/{idFacultad}/{idSede}', [FacultadesController::class, 'update'])->name('facultades.update');
 
 //proyectos
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
@@ -86,12 +88,12 @@ Route::post('/comites/destroy/{idComite}', [ComitesController::class, 'destroy']
 Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restore'])->name('comite.restore');
 
 //programas
-Route::get('/programas/index/{id}', [SedeProgramaController::class, 'index'])->name('programas.index');
+Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programas.index');
 Route::get('/programas/create/{id}', [SedeProgramaController::class, 'create'])->name('programas.create');
 Route::post('/programas/store/{id}', [SedeProgramaController::class, 'store'])->name('programas.store');
-Route::post('/programas/edit/{idPrograma}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
-Route::post('/programas/update/{idPrograma}', [SedeProgramaController::class, 'update'])->name('programa.update');
-Route::post('/programas/destroy/{idPrograma}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
+Route::post('/programas/edit/{idPrograma}/{idSede}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
+Route::post('/programas/update/{idPrograma}/{idSede}', [SedeProgramaController::class, 'update'])->name('programa.update');
+Route::post('/programas/destroy/{idPrograma}/{idSede}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
 Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class, 'restore'])->name('programa.restore');
 
 //cronograma
@@ -153,3 +155,4 @@ Route::post('/proyectoFinal/update', [FaseProyectoFinalController::class, 'updat
 Route::get('/sustentacion/consultar', [ProyectosController::class, 'obtSustentacion'])->name('sustentacion.consultar');
 Route::post('/sustentacion/storeaprobado', [ProyectosController::class, 'guardarSustaprobado'])->name('sustentacion.store.aprobado');
 Route::post('/sustentacion/storerechazado', [ProyectosController::class, 'guardarSustrechazado'])->name('sustentacion.store.rechazado');
+Route::get('/sustentacion/verpdf/{nombreArchivo}', [ProyectosController::class, 'mostrarPdf'])->name('sustentacion.verpdf');

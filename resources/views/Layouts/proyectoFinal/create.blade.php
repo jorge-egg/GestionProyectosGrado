@@ -74,21 +74,21 @@
                             <span class="input-group-text">Observación de los documentos anteriores</span>
                             <textarea class="form-control" aria-label="With textarea" disabled>{{ $array['anteproyectoAnterior']->observaDocent }}</textarea>
                         </div><br>
-
                     @endif
 
                     @if (!$array['rangoFecha'][2])
                         <h2 style="color: red">Por favor espere la proxima fecha habilitada para esta fase</h2>
-                    @elseif (($array['docExist1'] == null && $array['docExist2'] == null) ||
-                    $array['anteproyecto']->estado == 'Aplazado con modificaciones')
+                    @elseif (
+                        ($array['docExist1'] == null && $array['docExist2'] == null) ||
+                            $array['anteproyecto']->estado == 'Aplazado con modificaciones')
                         <p style="color: red">El documento no ha sido cargado. </p>
                         <form action="{{ route('proyectoFinal.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $array['idProyecto'] }}" name='idProyecto'>
-                            <input type="hidden" value="{{$array['anteproyecto']->juradoUno}}" name="juradoUnoInp">
-                            <input type="hidden" value="{{$array['anteproyecto']->juradoDos}}" name="juradoDosInp">
-                            <input type="hidden" value="{{$array['anteproyecto']->estadoJUno}}" name="estadoJUno">
-                            <input type="hidden" value="{{$array['anteproyecto']->estadoJDos}}" name="estadoJDos">
+                            <input type="hidden" value="{{ $array['anteproyecto']->juradoUno }}" name="juradoUnoInp">
+                            <input type="hidden" value="{{ $array['anteproyecto']->juradoDos }}" name="juradoDosInp">
+                            <input type="hidden" value="{{ $array['anteproyecto']->estadoJUno }}" name="estadoJUno">
+                            <input type="hidden" value="{{ $array['anteproyecto']->estadoJDos }}" name="estadoJDos">
                             @can('propuesta.agregar')
                                 <div class="documentos">
                                     <section class="documentosSec">
@@ -131,7 +131,7 @@
                                         del director</i></a>
                             </section>
                             @can('propuesta.agregar')
-                                <p style="color: red">Por favor espere a que el director del proyecto califique los documentos
+                                <p style="color: red">Por favor espere a que el director del proyecto autorice los documentos
                                     cargados</p>
                             @endcan
                         </div>
@@ -146,8 +146,8 @@
                                 <p style="display: none">{{ $valCalif = true }}</p>
                                 @if ($array['valDocAsig'])
                                     <p style="display: {{ $aprobDocent == '-1' ? 'block' : 'none' }}"><b>Nota: </b>Estimado
-                                        profesor, para nombrar jurados al proyecto usted debe dar su
-                                        aprobación al documento.</p>
+                                        profesor, para nombrar jurados al proyecto usted debe dar
+                                        autorización al documento.</p>
                                     <br>
                                     <div class="input-group">
                                         <span class="input-group-text">Observaciones</span>
@@ -171,7 +171,8 @@
                                         <p style="color: red">Los documentos NO fueron aprobados por el director del proyecto
                                         </p>
                                     @elseif ($aprobDocent == '2')
-                                        <p style="color: rgb(0, 62, 101)"><b>Los documentos fueron aprobados por el director del
+                                        <p style="color: rgb(0, 62, 101)"><b>Los documentos fueron aprobados por el director
+                                                del
                                                 proyecto</b></p>
                                     @endif
                                 @endif
@@ -301,7 +302,7 @@
             ? 'El director no aprobo el documento'
             : ($array['anteproyecto']->aprobacionDocen == '-1'
                 ? 'No se podra calificar el anteproyecto hasta que el director apruebe el
-                                                                                                                                                                                                                                                                                                                                                                documento'
+                                                                                                                                                                                                                                                                                                                                                                                documento'
                 : '') }}
     </p>
 
@@ -315,6 +316,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            function nobackbutton() {
+                window.location.hash = "no-back-button";
+                window.location.hash = "Again-No-back-button" //chrome
+                window.onhashchange = function() {
+                    window.location.hash = "no-back-button";
+                }
+            }
             const btnSelectJurado1 = document.getElementById('SelectJ1');
             const btnSelectJurado2 = document.getElementById('SelectJ2');
             const JIdentificador = document.getElementById('JIdentificador');

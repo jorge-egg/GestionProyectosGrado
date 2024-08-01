@@ -17,6 +17,16 @@
         </div>
         <button type="submit" class="btn" style="background:#003E65; color:#fff">Agregar</button>
     </form>
+    @if (session()->has('success'))
+        <div class= 'alert alert-success'>
+            {{ session()->get('success') }}
+        </div>
+    @endif
+    @if (session()->has('error'))
+        <div class= 'alert alert-danger'>
+            {{ session()->get('error') }}
+        </div>
+    @endif
     <table class="table">
         <thead>
             <tr>
@@ -36,8 +46,7 @@
                     <tr>
                         <td>{{ $facultad->nombre }}</td>
                         <td>
-                            <form action="" method="post">
-                                @csrf
+                            <form action="{{ route('facultades.edit', ['idSede' => $id, 'idFacultad' => $facultad->idFacultad]) }}" method="get">
                                 <button type="submit" class="btn btn-warning">Editar</button>
                             </form>
                         </td>

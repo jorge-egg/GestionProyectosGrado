@@ -62,7 +62,7 @@
                 </button>
             </form>
         @endcan
-        {{-- @can('proyecto.consultarComite')
+        @can('proyecto.consultarComite')
             <form action="{{ route('proyecto.indextableComite') }}" method="get">
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">
                     <h3><b>Consultar proyectos comite</b></h3><br>
@@ -70,7 +70,7 @@
                 </button>
             </form>
         @endcan
-        @can('proyecto.ponderados')
+        {{-- @can('proyecto.ponderados')
             <form action="{{ route('ponderados.index') }}" method="get">
                 <button type="submit" class="btn btn-primary  btnGrandeRectangular">Ponderados</button>
             </form>

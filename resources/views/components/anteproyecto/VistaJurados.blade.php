@@ -182,28 +182,12 @@
             buttonsStyling: false
         });
 
+
         const buttons = document.querySelectorAll("#buttonEnviarCalificacion, #buttonActualizar");
 
         buttons.forEach(button => {
             button.addEventListener("click", function(event) {
                 event.preventDefault();
-
-                // Verifica si hay campos vacíos
-                const emptyFields = Array.from(document.querySelectorAll("input, textarea, select"))
-                    .filter(el => el.required && !el.value.trim());
-
-                if (emptyFields.length > 0) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Campos vacíos",
-                        text: "Por favor, completa todos los campos requeridos.",
-                        icon: "warning",
-                        confirmButtonText: "Entendido",
-                        customClass: {
-                        confirmButton: "btn btn-outline-success"
-                        }
-                    });
-                    return; // No procede con la confirmación si hay campos vacíos
-                }
 
                 const formaction = button.getAttribute('formaction');
 
@@ -251,7 +235,15 @@
                         });
 
                         document.body.appendChild(form);
-                        form.submit(); // Enviar el formulario después de confirmar
+
+                        // Mostrar alerta de éxito después de enviar el formulario
+                        swalWithBootstrapButtons.fire({
+                            title: "Enviado con éxito!",
+                            text: "Tu acción ha sido completada con éxito",
+                            icon: "success"
+                        }).then(() => {
+                            form.submit(); // Enviar el formulario después de confirmar
+                        });
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire({
                             title: "Cancelado",
