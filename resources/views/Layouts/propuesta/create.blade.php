@@ -208,6 +208,7 @@
                     </div>
                 </div>
     </form>
+    {{-- alertas  --}}
     <script>
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
