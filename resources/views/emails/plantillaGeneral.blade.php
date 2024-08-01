@@ -20,7 +20,7 @@
         <p>Cordial saludo.</p>
     </header>
 
-    <main>
+    <main class="text-center">
         @yield('contenido')
         <p>Nota: Por favor no responda este correo.</p>
     </main>

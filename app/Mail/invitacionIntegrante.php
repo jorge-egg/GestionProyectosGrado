@@ -23,11 +23,12 @@ class invitacionIntegrante extends Mailable
 
 
 
-    public function __construct($usuario1, $usuario2, $idProyecto)
+    public function __construct($usuario1, $usuario2, $idProyecto, $mailTo, $nameMailTo)
     {
         $this->nombreIntegrante1 = $usuario1;
         $this->nombreIntegrante2 = $usuario2;
         $this->idProyecto = $idProyecto;
+        $this->from($mailTo, $nameMailTo);
     }
 
 

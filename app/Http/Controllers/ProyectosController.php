@@ -160,7 +160,6 @@ class ProyectosController extends Controller
                 ->take(1)
                 ->select('consecutivo.*');
             $consecutivo = $this->validarConsecutivo($anoActual, $idSede, $consecutivoData);
-
             SedeProyectosGrado::create([
                 'estado' => true,
                 'codigoproyecto' => $programa->siglas . $consecutivo . $anoActual,
@@ -168,12 +167,13 @@ class ProyectosController extends Controller
                 'proy_bibl' => $idBiblioteca,
                 'comite' => $programa->comi_pro,
             ]);
-
-            $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario);
+            $mailTo = $programa->email;
+            $nameMailTo = 'AUNAR '.$programa->siglas;
+            $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo);
             notify()->success('Proyecto creado exitosamente');
          } catch (Exception $e) {
             echo $e;
-            notify()->error('falla: ' . $e);
+            notify()->error('falla: ocurrio un problema al crear su solicitud, por favor intente mas tarde.');
         }
         return redirect()->route('proyecto.index');
     }
@@ -224,9 +224,11 @@ class ProyectosController extends Controller
         }
     }
 
-    public function createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario)
+    public function createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo)
     {
+
         try {
+
             $idProyecto = SedeProyectosGrado::where('proy_sede', $idSede)->orderBy('idProyecto', 'desc')->first()->idProyecto;
 
             Integrante::create([
@@ -234,13 +236,17 @@ class ProyectosController extends Controller
                 'proyecto' => $idProyecto,
             ]);
 
+
+
             if ($integrantes == '2') {
                 $nombreUsuario = $usuario->nombre . ' ' . $usuario->apellido;
                 Mail::to($usuario->email)
-                ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto));
+                ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto, $mailTo, $nameMailTo));
             }
         } catch (Exception $e) {
             echo "error " . $e;
+            dd($e);
+
         }
     }
 
