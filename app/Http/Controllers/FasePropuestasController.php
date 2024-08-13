@@ -8,6 +8,7 @@ use App\Models\Calificacione;
 use App\Models\FasePropuesta;
 use App\Models\SedeProyectosGrado;
 use App\Models\Integrante;
+use App\Models\PonderadosPropuesta;
 use App\Traits\funcionesUniversales;
 
 class FasePropuestasController extends Controller
@@ -23,9 +24,14 @@ class FasePropuestasController extends Controller
 
     public function create(Request $request)
     {
+        $arrayPonderados=[];
         $idProyecto = $request->idProyecto;
         $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $miembrosDocente = $this->obtenerDocentes($idProyecto);
+        $ponderados = PonderadosPropuesta::all();
+        foreach($ponderados as $ponderado){
+            array_push($arrayPonderados, $ponderado->ponderado);
+        }
         $propuestaAnterior = $this->ultimaPropuesta($idProyecto, 'desc');
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = true;
@@ -44,7 +50,7 @@ class FasePropuestasController extends Controller
             $propuestaAnterior->fecha_aplazado = now();
             $propuestaAnterior->save();
         }
-
+        //dd($arrayPonderados);
         return view('Layouts.propuesta.create', compact(
             'propuestaAnterior',
             'calificacion',
@@ -54,12 +60,15 @@ class FasePropuestasController extends Controller
             'miembrosDocente',
             'integrantes',
             'totalCalificacion',
-            'idProyecto'
+            'idProyecto',
+            'arrayPonderados'
         ));
+
     }
 
     public function createAnterior(Request $request)
     {
+        $arrayPonderados=[];
         $idProyecto = $request->idProyecto;
         $integrantes = Integrante::where('proyecto', $idProyecto)->with('usuarios_user')->get();
         $miembrosDocente = $this->obtenerDocentes($idProyecto);
@@ -67,16 +76,20 @@ class FasePropuestasController extends Controller
         $calificacion = $this->ultimaCalificacion($propuestaAnterior->idPropuesta);
         $estadoButton = $propuestaAnterior->idPropuesta <= 1 ? false : true;
         $rangoFecha = $this->rangoFecha('propuesta');
+        $ponderados = PonderadosPropuesta::all();
+        foreach($ponderados as $ponderado){
+            array_push($arrayPonderados, $ponderado->ponderado);
+        }
         try {
             $totalCalificacion = Calificacione::join('fase_cal_obs', 'fase_cal_obs.calificacion_fase', 'calificaciones.idCalificacion')
                 ->where('propuesta', $propuestaAnterior->idPropuesta)
-                ->get()->count();
+                ->sum('calificaciones.calificacion');
         } catch (Exception $e) {
             $totalCalificacion = 0;
         }
 
         $validarCalificacion = ($totalCalificacion == 0) ? true : false;
-
+        //dd($totalCalificacion);
         return view('Layouts.propuesta.create', compact(
             'idProyecto',
             'propuestaAnterior',
@@ -86,7 +99,8 @@ class FasePropuestasController extends Controller
             'estadoButton',
             'totalCalificacion',
             'miembrosDocente',
-            'integrantes'
+            'integrantes',
+            'arrayPonderados'
         ));
     }
 

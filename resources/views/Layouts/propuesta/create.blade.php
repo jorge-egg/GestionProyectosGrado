@@ -16,7 +16,7 @@
                 </button>
             @elseif (!$estadoButton)
                 <button type="submit" class="btn btn-outline-dark"
-                    formaction="{{ route('propuesta.create', ['idProyecto' => $idProyecto]) }}">
+                    formaction="{{ route('propuesta.create', ['idProyecto' => $idProyecto]) }}" formmethod="GET">
                     Propuesta superior<i class="bi bi-arrow-bar-left"></i>
                 </button>
             @endif
@@ -82,10 +82,17 @@
                 @endif
 
                 @csrf
+                <br>
+        <h4 style="display: inline"><b>Estado: </b></h4><p style="display: inline" class="mostrar-estado">{{$propuestaAnterior->estado}}</p><br>
+        <h4 style="display: inline"><b>Calificación: </b></h4><p style="display: inline" class="mostrar-calif">{{$totalCalificacion}}</p>
+        <br>
+        <br>
                 <input type="hidden" value="{{ $miembrosDocente['idProyecto'] }}" name='idProyecto'>
                 <input type="hidden" value="{{ $propuestaAnterior->idPropuesta }}" name='idFase'>
 
+
                 <div>
+                    <input type="hidden" value="{{$arrayPonderados[0]}}" id="0" class="ponderado">
                     <label for="titleForPropuestaId">Titulo</label>
                     <div class="input-group mb-3">
                         <input type="text" name='titulo' onchange="validarCampos()" id="titleForPropuestaId"
@@ -95,7 +102,7 @@
                                 disabled
                             @endcan>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[4]['calificacion'] }}</p>
+                            <p class="fw-bold pCalif pCalif-0">{{ $calificacion[4]['calificacion'] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="contadorTitle"></span></p>
@@ -103,11 +110,13 @@
                         'nameSelect' => 'tituloCalificacion',
                         'nameTextArea' => 'tituloObservacion',
                         'obsArray' => $calificacion[4]['observacion'],
+                        'id' => '0'
                     ])
                     @endcomponent
                     <br>
                 </div>
                 <div>
+                    <input type="hidden" value="{{$arrayPonderados[1]}}" id="1" class="ponderado">
                     <label>Linea de investigación</label>
                     <div class="input-group mb-3">
                         <input type="text" name='linea_invs' onchange="validarCampos()"
@@ -116,18 +125,20 @@
                             disabled
                         @endcan>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[3]['calificacion'] }}</p>
+                            <p class="fw-bold pCalif pCalif-1">{{ $calificacion[3]['calificacion'] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'lineaCalificacion',
                         'nameTextArea' => 'lineaObservacion',
                         'obsArray' => $calificacion[3]['observacion'],
+                        'id' => '1'
                     ])
                     @endcomponent
                 </div>
                 <br>
                 <div class="mb-3">
+                    <input type="hidden" value="{{$arrayPonderados[2]}}" id="2" class="ponderado">
                     <label class="form-label">Descripción del problema</label>
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="desc_problema" onchange="validarCampos()"
@@ -137,7 +148,7 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->desc_problema }} </textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[2]['calificacion'] }}</p>
+                            <p class="fw-bold pCalif pCalif-2">{{ $calificacion[2]['calificacion'] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="DescripcionContador"></span></p>
@@ -145,11 +156,13 @@
                         'nameSelect' => 'descProbCalificacion',
                         'nameTextArea' => 'descProbObservacion',
                         'obsArray' => $calificacion[2]['observacion'],
+                        'id' => '2'
                     ])
                     @endcomponent
                 </div>
                 <br>
                 <div class="mb-3">
+                    <input type="hidden" value="{{$arrayPonderados[3]}}" id="3" class="ponderado">
                     <label class="form-label">Objetivo general</label>
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_general" onchange="validarCampos()"
@@ -159,7 +172,7 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_general }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[1]['calificacion'] }}</p>
+                            <p class="fw-bold pCalif pCalif-3">{{ $calificacion[1]['calificacion'] }}</p>
                         </span>
                     </div>
                     <p>Longitud máxima: <span id="ObjetivoGeneralContador"></span></p>
@@ -167,11 +180,13 @@
                         'nameSelect' => 'objGenCalificacion',
                         'nameTextArea' => 'objGenObservacion',
                         'obsArray' => $calificacion[1]['observacion'],
+                        'id' => '3'
                     ])
                     @endcomponent
                 </div>
                 <br>
                 <div class="mb-3">
+                    <input type="hidden" value="{{$arrayPonderados[4]}}" id="4" class="ponderado">
                     <label class="form-label">Objetivos específicos</label>
                     <div class="input-group mb-3">
                         <textarea class="form-control auto-expand campo-deshabilitar" name="obj_especificos" onchange="validarCampos()"
@@ -180,13 +195,14 @@
                             disabled
                         @endcan>{{ $propuestaAnterior->obj_especificos }}</textarea>
                         <span class="input-group-text" id="basic-addon2">
-                            <p class="fw-bold">{{ $calificacion[0]['calificacion'] }}</p>
+                            <p class="fw-bold pCalif pCalif-4">{{ $calificacion[0]['calificacion'] }}</p>
                         </span>
                     </div>
                     @component('components.calificacionObserPro', [
                         'nameSelect' => 'objEspCalificacion',
                         'nameTextArea' => 'objEspObservacion',
                         'obsArray' => $calificacion[0]['observacion'],
+                        'id' => '4'
                     ])
                     @endcomponent
                     <br>
@@ -208,7 +224,7 @@
                     </div>
                 </div>
     </form>
-    {{-- alertas  --}}
+    <script src="{{asset('js/califProp.js')}}"></script>
     <script>
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
