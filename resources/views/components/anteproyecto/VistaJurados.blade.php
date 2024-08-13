@@ -184,6 +184,7 @@
             buttonsStyling: false
         });
 
+
         const buttons = document.querySelectorAll("#buttonEnviarCalificacion, #buttonActualizar");
 
         buttons.forEach(button => {
@@ -257,5 +258,6 @@
         });
     });
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{asset('js/califAntFinal.js')}}"></script>
