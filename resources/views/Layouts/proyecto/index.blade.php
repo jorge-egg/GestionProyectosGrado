@@ -89,7 +89,7 @@
         function obtenerNombre() {
 
             var nombreUsuario = document.getElementById(
-                'nombreUsuario'); //etiqueta <p></p> donde se va a mostrar el nombre del usuario buscado en el modal
+                'nombreUsuarioInv'); //etiqueta <p></p> donde se va a mostrar el nombre del usuario buscado en el modal
 
             var codUsuario = document.getElementById(
                 'codUsuario'); //etiqueta <p></p> donde se va a mostrar el codigo del usuario buscado en el modal
@@ -105,6 +105,7 @@
                 dataType: 'json',
                 success: function(response) {
                     codUsuario.value = response.codigoUsuario;
+
                     nombreUsuario.textContent = response.data;
 
                     if (response.data === "Usuario no encontrado") {

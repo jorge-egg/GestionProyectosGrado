@@ -6,7 +6,6 @@
     height: auto;
     padding: 30px;
     margin: 0;
-
 }
 .contenido.active{
     position: relative;
@@ -22,9 +21,9 @@
     display: none;
     position: fixed;
     bottom: 0;
-    left: -78;
+    left: -178px;
     height: calc(100% - 102px);
-    width: 10%;
+    width: 20%;
     background: #003E65;
     padding: 6px 14px;
     transition: all 0.5s ease;
@@ -46,6 +45,7 @@
     align-items: center;
     width: 100%;
     overflow: hidden;
+    background-color: black;
 }
 
 .logo_name .title{
@@ -60,12 +60,14 @@
 }
 
 .logo_name img{
-    height: 90px;
-    width: auto;
+    max-width: 100%;
+    height: auto;
+    display: block;
     object-fit: cover;
     pointer-events: none;
     overflow-clip-margin: content-box;
     overflow: clip;
+    background-color: #fff;
 }
 
 
