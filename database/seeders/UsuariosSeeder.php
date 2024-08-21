@@ -200,7 +200,7 @@ class UsuariosSeeder extends Seeder
             'nombre' => 'Luis Alberto',
             'numeroDocumento' => '1007689986',
             'apellido' => 'Sanchez Galeano',
-            'email' => 'luis@gmail.com',
+            'email' => 'jorgedu0310@gmail.com',
             'numeroCelular' => '3255698741',
             'usua_sede' => 1,
             'usua_users' => 19,

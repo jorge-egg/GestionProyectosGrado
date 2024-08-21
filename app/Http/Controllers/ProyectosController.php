@@ -237,10 +237,11 @@ class ProyectosController extends Controller
             ]);
 
 
-
+            $usuarioDos = UsuariosUser::where('numeroDocumento', $codigoUsuario)->whereNull('deleted_at')->first();
+            dd($usuarioDos);
             if ($integrantes == '2') {
-                $nombreUsuario = $usuario->nombre . ' ' . $usuario->apellido;
-                Mail::to($usuario->email)
+                $nombreUsuario = $usuarioDos->nombre . ' ' . $usuarioDos->apellido;
+                Mail::to($usuarioDos->email)
                 ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto, $mailTo, $nameMailTo));
             }
         } catch (Exception $e) {

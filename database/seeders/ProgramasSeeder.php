@@ -36,7 +36,7 @@ class ProgramasSeeder extends Seeder
                     DB::table('sede_programas')->insert([
                         'programa' => 'Ingeniería informática',
                         'siglas'=>'ING',
-                        'email'=>'ingenieria@gmail.com',
+                        'email'=>'jorgedu0310@gmail.com',
                         'prog_facu'=>2,
                         ]);
                         DB::table('sede_programas')->insert([
