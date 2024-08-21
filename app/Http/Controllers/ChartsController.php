@@ -77,90 +77,120 @@ class ChartsController extends Controller
 
     // }
     public function index(Request $request)
-{
-    // Obtener rango de fechas del request
-    $startDate = $request->input('start_date', '2000-01-01');
-    $endDate = $request->input('end_date', now()->endOfDay()->toDateString());
+    {
+        // Obtener rango de fechas del request
+        $startDate = $request->input('start_date', '2000-01-01');
+        $endDate = $request->input('end_date', now()->endOfDay()->toDateString());
 
-    // Chart 1: Total proyectos
-    $chart_options1 = [
-        'chart_title' => 'Total proyectos',
-        'report_type' => 'group_by_date',
-        'model' => 'App\Models\SedeProyectosGrado',
-        'group_by_field' => 'created_at',
-        'group_by_period' => 'day',
-        'chart_type' => 'bar',
-        'filter_field' => 'created_at',
-    ];
-    $chart1 = new LaravelChart($chart_options1);
 
-    // Chart 2: Propuesta estados
-    $chart_options2 = [
-        'chart_title' => 'Propuesta estados',
-        'report_type' => 'group_by_string',
-        'model' => 'App\Models\FasePropuesta',
-        'group_by_field' => 'estado',
-        'chart_type' => 'pie',
-        'filter_field' => 'created_at',
-    ];
-    $chart2 = new LaravelChart($chart_options2);
 
-    // Chart 3: Anteproyectos estados
-    $chart_options3 = [
-        'chart_title' => 'Anteproyectos estados',
-        'report_type' => 'group_by_string',
-        'model' => 'App\Models\FaseAnteproyecto',
-        'group_by_field' => 'estado',
-        'chart_type' => 'pie',
-        'filter_field' => 'created_at',
-    ];
-    $chart3 = new LaravelChart($chart_options3);
+        // Chart 1: Total proyectos
+        $chart_options1 = [
+            'chart_title' => 'Total proyectos',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\SedeProyectosGrado',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'chart_type' => 'bar',
+            'filter_field' => 'created_at',
+        ];
+        $chart1 = new LaravelChart($chart_options1);
 
-    // Chart 4: Proyectos finales estados
-    $chart_options4 = [
-        'chart_title' => 'Proyectos finales estados',
-        'report_type' => 'group_by_string',
-        'model' => 'App\Models\FaseProyectosfinale',
-        'group_by_field' => 'estado',
-        'chart_type' => 'pie',
-        'filter_field' => 'created_at',
-    ];
-    $chart4 = new LaravelChart($chart_options4);
+        // Chart 2: Propuesta estados
+        $chart_options2 = [
+            'chart_title' => 'Propuesta estados',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\FasePropuesta',
+            'group_by_field' => 'estado',
+            'chart_type' => 'pie',
+            'filter_field' => 'created_at',
+        ];
+        $chart2 = new LaravelChart($chart_options2);
 
-    // Chart 5: Sustentaciones estados
-    $chart_options5 = [
-        'chart_title' => 'Sustentaciones estados',
-        'report_type' => 'group_by_string',
-        'model' => 'App\Models\FaseSustentacione',
-        'group_by_field' => 'estado',
-        'chart_type' => 'pie',
-        'filter_field' => 'created_at',
-    ];
-    $chart5 = new LaravelChart($chart_options5);
+        // Chart 3: Anteproyectos estados
+        $chart_options3 = [
+            'chart_title' => 'Anteproyectos estados',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\FaseAnteproyecto',
+            'group_by_field' => 'estado',
+            'chart_type' => 'pie',
+            'filter_field' => 'created_at',
+        ];
+        $chart3 = new LaravelChart($chart_options3);
 
-    // Chart 6: Proyectos estados
-    $chart_options6 = [
-        'chart_title' => 'Proyectos estados',
-        'report_type' => 'group_by_string',
-        'model' => 'App\Models\SedeProyectosGrado',
-        'group_by_field' => 'estado',
-        'chart_type' => 'pie',
-        'filter_field' => 'created_at',
-    ];
-    $chart6 = new LaravelChart($chart_options6);
+        // Chart 4: Proyectos finales estados
+        $chart_options4 = [
+            'chart_title' => 'Proyectos finales estados',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\FaseProyectosfinale',
+            'group_by_field' => 'estado',
+            'chart_type' => 'pie',
+            'filter_field' => 'created_at',
+        ];
+        $chart4 = new LaravelChart($chart_options4);
 
-    // Totales
-    $totalProyectos = \App\Models\SedeProyectosGrado::whereBetween('created_at', [$startDate, $endDate])->count();
-    $totalSustentaciones = \App\Models\FaseSustentacione::whereBetween('created_at', [$startDate, $endDate])->count();
-    $totalProyectosFinales = \App\Models\FaseProyectosfinale::whereBetween('created_at', [$startDate, $endDate])->count();
-    $totalAnteproyectos = \App\Models\FaseAnteproyecto::whereBetween('created_at', [$startDate, $endDate])->count();
-    $totalPropuestas = \App\Models\FasePropuesta::whereBetween('created_at', [$startDate, $endDate])->count();
+        // Chart 5: Sustentaciones estados
+        $chart_options5 = [
+            'chart_title' => 'Sustentaciones estados',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\FaseSustentacione',
+            'group_by_field' => 'estado',
+            'chart_type' => 'pie',
+            'filter_field' => 'created_at',
+        ];
+        $chart5 = new LaravelChart($chart_options5);
 
-    return view('Layouts.Charts.index', compact(
-        'chart1', 'chart2', 'chart3', 'chart4', 'chart5', 'chart6',
-        'totalProyectos', 'totalSustentaciones', 'totalProyectosFinales', 'totalAnteproyectos', 'totalPropuestas',
-        'startDate', 'endDate'));
-}
+        // Chart 6: Proyectos estados
+        $chart_options6 = [
+            'chart_title' => 'Proyectos estados',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\SedeProyectosGrado',
+            'group_by_field' => 'estado',
+            'chart_type' => 'pie',
+            'filter_field' => 'created_at',
+        ];
+        $chart6 = new LaravelChart($chart_options6);
+
+        // Totales por estado
+        $proyectoEstados = \App\Models\SedeProyectosGrado::whereBetween('created_at', [$startDate, $endDate])
+            ->select('estado', \DB::raw('count(*) as total'))
+            ->groupBy('estado')
+            ->get();
+
+        $sustentacionEstados = \App\Models\FaseSustentacione::whereBetween('created_at', [$startDate, $endDate])
+            ->select('estado', \DB::raw('count(*) as total'))
+            ->groupBy('estado')
+            ->get();
+
+        $proyectoFinalEstados = \App\Models\FaseProyectosfinale::whereBetween('created_at', [$startDate, $endDate])
+            ->select('estado', \DB::raw('count(*) as total'))
+            ->groupBy('estado')
+            ->get();
+
+        $anteproyectoEstados = \App\Models\FaseAnteproyecto::whereBetween('created_at', [$startDate, $endDate])
+            ->select('estado', \DB::raw('count(*) as total'))
+            ->groupBy('estado')
+            ->get();
+
+        $propuestaEstados = \App\Models\FasePropuesta::whereBetween('created_at', [$startDate, $endDate])
+            ->select('estado', \DB::raw('count(*) as total'))
+            ->groupBy('estado')
+            ->get();
+
+        // Totales
+        $totalProyectos = \App\Models\SedeProyectosGrado::whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalSustentaciones = \App\Models\FaseSustentacione::whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalProyectosFinales = \App\Models\FaseProyectosfinale::whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalAnteproyectos = \App\Models\FaseAnteproyecto::whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalPropuestas = \App\Models\FasePropuesta::whereBetween('created_at', [$startDate, $endDate])->count();
+
+        return view('Layouts.Charts.index', compact(
+            'chart1', 'chart2', 'chart3', 'chart4', 'chart5', 'chart6',
+            'totalProyectos', 'totalSustentaciones', 'totalProyectosFinales', 'totalAnteproyectos', 'totalPropuestas',
+            'proyectoEstados', 'sustentacionEstados', 'proyectoFinalEstados', 'anteproyectoEstados', 'propuestaEstados',
+            'startDate', 'endDate'
+        ));
+    }
 
 
     /**

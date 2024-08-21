@@ -80,11 +80,11 @@
             {{ session()->get('error') }}
         </div>
     @endif
-    <div class='col col-md-6 text-right'>
+    {{-- <div class='col col-md-6 text-right'>
         <form action="{{ route('programas.index', ['id' => $idSede, 'view_deleted' => 'DeletedRecords']) }}" method="get">
             <button class='btn btn-warning'>Consultar programas eliminados</button>
         </form>
-    </div>
+    </div> --}}
     <table class="table table-hover shadow-lg mt-4" style="width:100%" id='table-js'>
         <thead>
             <tr>

@@ -18,16 +18,15 @@ class FacultadesController extends Controller
      */
     public function index(Request $request)
     {
-       // dd(session('idSede'));
-       $id = 0;
-        if($request->idSede){
+        $id = 0;
+        if ($request->idSede) {
             $id = $request->idSede;
-        }else if(session('idSede')){
+        } else if (session('idSede')) {
             $id = session('idSede');
         }
 
         $facultades = SedesFacultade::where('facu_sede', $id)->get();
-        return view('Layouts.facultades.read',compact('facultades', 'id'));
+        return view('Layouts.facultades.read', compact('facultades', 'id'))->with('idSede', $id);
     }
 
     /**
@@ -122,8 +121,23 @@ class FacultadesController extends Controller
      * @param  \App\Models\facultades  $facultades
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy($id, $idSede)
     {
-        //
+       // Buscar el registro por su ID
+       $idSede = $id;
+       $facultad = SedesFacultade::findOrFail($idSede);
+    if ($facultad->idFacultad) {
+        $facultad->delete();
+        return back()->with([
+            'success' => 'Se eliminó el registro',
+            'idSede' => $idSede
+        ]);
+    }
+
+    return back()->with([
+        'success' => 'Error 404 - El registro no se encontró',
+        'idSede' => $idSede
+
+    ]);
     }
 }
