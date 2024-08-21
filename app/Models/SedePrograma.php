@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SedePrograma extends Model
 {
-	use SoftDeletes;
+	// use SoftDeletes;
 	protected $table = 'sede_programas';
 	protected $primaryKey = 'idPrograma';
 	public $timestamps = false;

@@ -57,7 +57,7 @@
         <form method="GET" action="{{ route('charts.index') }}">
             <div class="row mb-4">
                 <div class="col-md-3">
-                    <h5 class="card-title">Total Proyectos</h5>
+                    <h5 class="card-title">Fecha inicial</h5>
                     <input type="date" name="start_date" class="form-control" value="{{ $startDate }}">
                 </div>
                 <div class="col-md-3">
@@ -70,46 +70,23 @@
             </div>
         </form>
         <div class="row">
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Proyectos</h5>
-                        <p class="card-text">{{ $totalProyectos }}</p>
+            @foreach (['Proyectos' => ['total' => $totalProyectos, 'estados' => $proyectoEstados],
+                      'Sustentaciones' => ['total' => $totalSustentaciones, 'estados' => $sustentacionEstados],
+                      'Proyectos Finales' => ['total' => $totalProyectosFinales, 'estados' => $proyectoFinalEstados],
+                      'Anteproyectos' => ['total' => $totalAnteproyectos, 'estados' => $anteproyectoEstados],
+                      'Propuestas' => ['total' => $totalPropuestas, 'estados' => $propuestaEstados]] as $titulo => $datos)
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $titulo }}</h5>
+                            <p class="card-text">Total: {{ $datos['total'] }}</p>
+                            @foreach ($datos['estados'] as $estado)
+                                <p class="card-text">{{ $estado->estado }}: {{ $estado->total }}</p>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Sustentaciones</h5>
-                        <p class="card-text">{{ $totalSustentaciones }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Proyectos Finales</h5>
-                        <p class="card-text">{{ $totalProyectosFinales }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Anteproyectos</h5>
-                        <p class="card-text">{{ $totalAnteproyectos }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Propuestas</h5>
-                        <p class="card-text">{{ $totalPropuestas }}</p>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
         <div class="row">
             <div class="col-md-6">

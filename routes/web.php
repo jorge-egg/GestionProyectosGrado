@@ -66,6 +66,7 @@ Route::get('/facultades/index', [FacultadesController::class, 'index'])->name('f
 Route::post('/facultades/store/{id}', [FacultadesController::class, 'store'])->name('facultades.store');
 Route::get('/facultades/edit/{idSede}/{idFacultad}', [FacultadesController::class, 'edit'])->name('facultades.edit');
 Route::post('/facultades/update/{idFacultad}/{idSede}', [FacultadesController::class, 'update'])->name('facultades.update');
+Route::post('/facultades/destroy/{idFacultad}/{idSede}', [FacultadesController::class, 'destroy'])->name('facultades.destroy');
 
 //proyectos
 Route::get('/proyectos/index', [ProyectosController::class, 'index'])->name('proyecto.index');
@@ -89,12 +90,13 @@ Route::get('/comites/restore/one/{idComite}', [ComitesController::class, 'restor
 
 //programas
 Route::get('/programas/index', [SedeProgramaController::class, 'index'])->name('programas.index');
-Route::get('/programas/create/{id}', [SedeProgramaController::class, 'create'])->name('programas.create');
+Route::get('/programas/rest', [SedeProgramaController::class, 'rest'])->name('programas.rest');
 Route::post('/programas/store/{id}', [SedeProgramaController::class, 'store'])->name('programas.store');
 Route::post('/programas/edit/{idPrograma}/{idSede}', [SedeProgramaController::class, 'edit'])->name('programa.edit');
 Route::post('/programas/update/{idPrograma}/{idSede}', [SedeProgramaController::class, 'update'])->name('programa.update');
 Route::post('/programas/destroy/{idPrograma}/{idSede}', [SedeProgramaController::class, 'destroy'])->name('programa.destroy');
 Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class, 'restore'])->name('programa.restore');
+Route::delete('/programas/force-delete/{idPrograma}', [SedeProgramaController::class, 'forceDelete'])->name('programa.forceDelete');
 
 //cronograma
 Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
