@@ -57,6 +57,14 @@
                 </a>
             </li>
             @endcan
+            @can('biblioteca')
+            <li>
+                <a href="{{ route('biblioteca.index') }}">
+                    <i class='bx bx-sitemap'></i>
+                    <span class="links_name">Biblioteca</span>
+                </a>
+            </li>
+            @endcan
         </ul>
     </div>
     <div class="contenido">

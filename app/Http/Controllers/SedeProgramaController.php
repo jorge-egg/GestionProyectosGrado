@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ComitesSede;
 use App\Models\SedePrograma;
-use App\Models\SedesFacultade;
 use Illuminate\Http\Request;
+use App\Models\SedesFacultade;
+use Illuminate\Support\Facades\Hash;
 
 class SedeProgramaController extends Controller
 {
@@ -51,7 +52,8 @@ class SedeProgramaController extends Controller
             'programa' => 'required',
             'siglas' => 'required',
             'prog_facu' => 'required',
-            'email' => 'required|email|string|max:255'
+            'email' => 'required|email|string|max:255',
+            'passemail' => 'required|min:8|max:15',
         ]);
 
         // Validar y almacenar el nuevo programa
@@ -60,6 +62,7 @@ class SedeProgramaController extends Controller
             'siglas' => $request->siglas,
             'prog_facu' => $request->prog_facu,
             'email' => $request->email,
+            'passEmail' => $request->passemail,
         ]);
 
         // Crear entrada en la tabla comites_sedes

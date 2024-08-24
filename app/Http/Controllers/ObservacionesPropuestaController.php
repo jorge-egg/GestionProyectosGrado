@@ -361,6 +361,13 @@ class ObservacionesPropuestaController extends Controller
                     $propuesta->estado = 'Rechazado';
                     $propuesta->save();
                 }
+
+                $anteproy = FasePropuesta::findOrFail($idfase);
+                if ($anteproy->estado == 'Rechazado') {
+                    $proyecto = SedeProyectosGrado::findOrFail($propuesta->prop_proy);
+                    $proyecto->estado = false;
+                    $proyecto->save();
+                }
                 break;
 
 

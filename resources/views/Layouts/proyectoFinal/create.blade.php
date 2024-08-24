@@ -183,6 +183,9 @@
         </div>
     </div>
     <br>
+    @cannot('biblioteca')
+
+
     <div class="card" style="display: {{ $aprobDocent == '-1' || $aprobDocent == '1' ? 'none' : 'block' }}">
         <h5 class="card-title text-center">Jurados</h5>
 
@@ -310,7 +313,7 @@
     @endif
 
     </div>
-
+    @endcannot
 
 
 

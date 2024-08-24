@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
+use App\Mail\EnvService;
 use App\Models\Integrante;
 use App\Models\ComitesSede;
 use App\Models\Consecutivo;
 use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
-use App\Models\SedeBiblioteca;
-use App\Mail\invitacionIntegrante;
-use App\Models\FaseAnteproyecto;
 use App\Models\FasePropuesta;
-use App\Models\FaseProyectosfinale;
-use App\Models\FaseSustentacione;
-use App\Models\SedeProyectosGrado;
-use Illuminate\Support\Facades\Mail;
+use App\Models\SedeBiblioteca;
+use App\Models\FaseAnteproyecto;
 use App\Traits\FaseSustentacion;
+use App\Models\FaseSustentacione;
+use App\Mail\invitacionIntegrante;
+use App\Models\SedeProyectosGrado;
+use App\Models\FaseProyectosfinale;
+use Illuminate\Support\Facades\Mail;
 
 class ProyectosController extends Controller
 {
@@ -172,7 +173,8 @@ class ProyectosController extends Controller
                 //dd($cantidadProyHabiles);
                 $mailTo = $programa->email;
                 $nameMailTo = 'AUNAR ' . $programa->siglas;
-                $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo);
+                $passMail = $programa->passEmail;
+                $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo, $passMail);
                 notify()->success('Proyecto creado exitosamente');
             }else{
                 echo 'error -creado';
@@ -230,25 +232,40 @@ class ProyectosController extends Controller
         }
     }
 
-    public function createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo)
+    public function createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo, $passMail)
     {
-
         try {
+            // Obtener el ID del proyecto
+            $idProyecto = SedeProyectosGrado::where('proy_sede', $idSede)
+                ->orderBy('idProyecto', 'desc')
+                ->first()
+                ->idProyecto;
 
-            $idProyecto = SedeProyectosGrado::where('proy_sede', $idSede)->orderBy('idProyecto', 'desc')->first()->idProyecto;
-
+            // Crear el integrante
             Integrante::create([
                 'usuario'  => $usuario->numeroDocumento,
                 'proyecto' => $idProyecto,
             ]);
 
+            // Obtener el usuario dos
+            $usuarioDos = UsuariosUser::where('numeroDocumento', $codigoUsuario)
+                ->whereNull('deleted_at')
+                ->first();
 
-            $usuarioDos = UsuariosUser::where('numeroDocumento', $codigoUsuario)->whereNull('deleted_at')->first();
-            //dd($usuarioDos);
+            // Actualizar el archivo .env antes de enviar el correo
+            $envService = app(EnvService::class);
+            $envService->updateEnv([
+                'MAIL_USERNAME' => $mailTo,
+                'MAIL_PASSWORD' => $passMail,
+            ]);
+
+            // Verificar si se debe enviar el correo
             if ($integrantes == '2') {
-                $nombreUsuario = $usuarioDos->nombre . ' ' . $usuarioDos->apellido;
+                $nombreUsuario = $usuario->nombre . ' ' . $usuario->apellido;
+
+                // Enviar el correo
                 Mail::to($usuarioDos->email)
-                    ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto, $mailTo, $nameMailTo));
+                    ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto, $mailTo, $nameMailTo, $passMail));
             }
         } catch (Exception $e) {
             echo "error " . $e;

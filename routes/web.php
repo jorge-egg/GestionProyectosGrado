@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\bibliotecaController;
 use App\Models\FasePropuesta;
 use App\Traits\FaseSustentacion;
 use Illuminate\Support\Facades\Route;
@@ -157,3 +158,7 @@ Route::get('/sustentacion/consultar', [ProyectosController::class, 'obtSustentac
 Route::post('/sustentacion/storeaprobado', [ProyectosController::class, 'guardarSustaprobado'])->name('sustentacion.store.aprobado')->middleware('can:fases.acceso');
 Route::post('/sustentacion/storerechazado', [ProyectosController::class, 'guardarSustrechazado'])->name('sustentacion.store.rechazado')->middleware('can:fases.acceso');
 Route::get('/sustentacion/verpdf/{nombreArchivo}', [ProyectosController::class, 'mostrarPdf'])->name('sustentacion.verpdf')->middleware('can:fases.acceso');
+
+
+Route::get('/biblioteca', [bibliotecaController::class, 'index'])->name('biblioteca.index')->middleware('can:biblioteca');
+

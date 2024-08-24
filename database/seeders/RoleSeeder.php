@@ -81,5 +81,8 @@ class RoleSeeder extends Seeder
 
         //reportes
         Permission::create(['name' => 'reportes'])->syncRoles([$superadministrador, $administrador]);
+
+        //reportes
+        Permission::create(['name' => 'biblioteca'])->syncRoles([$superadministrador, $administrador, $bibliotecario]);
     }
 }
