@@ -46,13 +46,13 @@ Route::get('/charts/index', [ChartsController::class, 'index'])->name('charts.in
 
 //usuarios
 Route::get('get-programas-by-sede/{sedeId}', [UsuariosController::class, 'getProgramasBySede']);
-Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
-Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create');
+Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index')->middleware('can:usuario.leer');
+Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create')->middleware('can:usuario.crear');
 Route::post('/usuarios/store', [UsuariosController::class, 'store'])->name('usuarios.store');
-Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
+Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit')->middleware('can:usuario.editar');
 Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
-Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
-Route::post('/UsuariosUser/destroy/{numeroDocumento}', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
+Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado')->middleware('can:usuario.bloquear');
+Route::post('/UsuariosUser/destroy/{numeroDocumento}', [UsuariosController::class, 'destroy'])->name('usuarios.destroy')->middleware('can:usuario.eliminar');
 Route::get('/UsuariosUser/restore/one/{numeroDocumento}', [UsuariosController::class, 'restore'])->name('usuarios.restore');
 
 //sedes
@@ -99,31 +99,31 @@ Route::get('/programas/restore/one/{idPrograma}', [SedeProgramaController::class
 Route::delete('/programas/force-delete/{idPrograma}', [SedeProgramaController::class, 'forceDelete'])->name('programa.forceDelete');
 
 //cronograma
-Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index');
-Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create');
-Route::get('/grupos/edit/{id}', [CronogramaController::class, 'edit'])->name('grupo.edit');
-Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->name('grupo.update');
+Route::get('/cronograma/index', [CronogramaController::class, 'index'])->name('cronograma.index')->middleware('can:cronograma.ver');
+Route::get('/grupos/create', [CronogramaController::class, 'create'])->name('grupo.create')->middleware('can:cronograma.crear');
+Route::get('/grupos/edit/{id}', [CronogramaController::class, 'edit'])->name('grupo.edit')->middleware('can:cronograma.editar');
+Route::post('/grupos/update/{id}', [CronogramaController::class, 'update'])->name('grupo.update')->middleware('can:cronograma.editar');
 
 
 
 //propuesta
-Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index');
-Route::get('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create');
-Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store');
-Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit');
-Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior');
-Route::post('/propuestas/asignarDocente', [FasePropuestasController::class, 'asignarDocente'])->name('propuesta.asigDocente');
+Route::get('/propuestas/index', [FasePropuestasController::class, 'index'])->name('propuesta.index')->middleware('can:fases.acceso');
+Route::get('/propuestas/create/{idProyecto}', [FasePropuestasController::class, 'create'])->name('propuesta.create')->middleware('can:fases.acceso');
+Route::post('/propuestas/store', [FasePropuestasController::class, 'store'])->name('propuesta.store')->middleware('can:fases.acceso');
+Route::get('/propuestas/edit', [FasePropuestasController::class, 'edit'])->name('propuesta.edit')->middleware('can:fases.acceso');
+Route::post('/propuestas/createAnterior', [FasePropuestasController::class, 'createAnterior'])->name('propuesta.createAnterior')->middleware('can:fases.acceso');
+Route::post('/propuestas/asignarDocente', [FasePropuestasController::class, 'asignarDocente'])->name('propuesta.asigDocente')->middleware('can:fases.acceso');
 
 
 
 //anteproyecto
-Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create');
-Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store'])->name('anteproyecto.store');
-Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior');
-Route::get('/anteproyecto/verpdf/{nombreArchivo}/{ruta}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf');
-Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc');
-Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado');
-Route::put('/anteproyecto/update', [FaseAnteproyectosController::class, 'update'])->name('anteproyecto.update');
+Route::get('/anteproyecto/create/{idProyecto}', [FaseAnteproyectosController::class, 'create'])->name('anteproyecto.create')->middleware('can:fases.acceso');
+Route::post('/anteproyecto/store', [FaseAnteproyectosController::class, 'store'])->name('anteproyecto.store')->middleware('can:fases.acceso');
+Route::post('/anteproyecto/createAnterior', [FaseAnteproyectosController::class, 'createAnterior'])->name('anteproyecto.createAnterior')->middleware('can:fases.acceso');
+Route::get('/anteproyecto/verpdf/{nombreArchivo}/{ruta}', [FaseAnteproyectosController::class, 'verPdf'])->name('anteproyecto.verpdf')->middleware('can:fases.acceso');
+Route::post('/anteproyecto/aprobarDocumento', [FaseAnteproyectosController::class, 'aprobarDoc'])->name('anteproyecto.aprobDoc')->middleware('can:fases.acceso');
+Route::post('/anteproyecto/asignarJurado', [FaseAnteproyectosController::class, 'asigJurado'])->name('anteproyecto.asigJurado')->middleware('can:fases.acceso');
+Route::put('/anteproyecto/update', [FaseAnteproyectosController::class, 'update'])->name('anteproyecto.update')->middleware('can:fases.acceso');
 
 
 
@@ -144,17 +144,16 @@ route::get('/aceptarInvitacion/{usuario}/{proyecto}', [ProyectosController::clas
 
 
 //Proyecto final
-Route::get('/proyectoFinal/create/{idProyecto}', [FaseProyectoFinalController::class, 'create'])->name('proyectoFinal.create');
-Route::post('/proyectoFinal/store', [FaseProyectoFinalController::class, 'store'])->name('proyectoFinal.store');
-Route::post('/proyectoFinal/createAnterior', [FaseProyectoFinalController::class, 'createAnterior'])->name('proyectoFinal.createAnterior');
-Route::get('/proyectoFinal/verpdf/{nombreArchivo}/{ruta}', [FaseProyectoFinalController::class, 'verPdf'])->name('proyectoFinal.verpdf');
-Route::post('/proyectoFinal/aprobarDocumento', [FaseProyectoFinalController::class, 'aprobarDoc'])->name('proyectoFinal.aprobDoc');
-Route::post('/proyectoFinal/asignarJurado', [FaseProyectoFinalController::class, 'asigJurado'])->name('proyectoFinal.asigJurado');
-Route::post('/proyectoFinal/update', [FaseProyectoFinalController::class, 'update'])->name('proyectoFinal.update');
-
+Route::get('/proyectoFinal/create/{idProyecto}', [FaseProyectoFinalController::class, 'create'])->name('proyectoFinal.create')->middleware('can:fases.acceso');
+Route::post('/proyectoFinal/store', [FaseProyectoFinalController::class, 'store'])->name('proyectoFinal.store')->middleware('can:fases.acceso');
+Route::post('/proyectoFinal/createAnterior', [FaseProyectoFinalController::class, 'createAnterior'])->name('proyectoFinal.createAnterior')->middleware('can:fases.acceso');
+Route::get('/proyectoFinal/verpdf/{nombreArchivo}/{ruta}', [FaseProyectoFinalController::class, 'verPdf'])->name('proyectoFinal.verpdf')->middleware('can:fases.acceso');
+Route::post('/proyectoFinal/aprobarDocumento', [FaseProyectoFinalController::class, 'aprobarDoc'])->name('proyectoFinal.aprobDoc')->middleware('can:fases.acceso');
+Route::post('/proyectoFinal/asignarJurado', [FaseProyectoFinalController::class, 'asigJurado'])->name('proyectoFinal.asigJurado')->middleware('can:fases.acceso');
+Route::post('/proyectoFinal/update', [FaseProyectoFinalController::class, 'update'])->name('proyectoFinal.update')->middleware('can:fases.acceso');
 
 //sustentacion
-Route::get('/sustentacion/consultar', [ProyectosController::class, 'obtSustentacion'])->name('sustentacion.consultar');
-Route::post('/sustentacion/storeaprobado', [ProyectosController::class, 'guardarSustaprobado'])->name('sustentacion.store.aprobado');
-Route::post('/sustentacion/storerechazado', [ProyectosController::class, 'guardarSustrechazado'])->name('sustentacion.store.rechazado');
-Route::get('/sustentacion/verpdf/{nombreArchivo}', [ProyectosController::class, 'mostrarPdf'])->name('sustentacion.verpdf');
+Route::get('/sustentacion/consultar', [ProyectosController::class, 'obtSustentacion'])->name('sustentacion.consultar')->middleware('can:fases.acceso');
+Route::post('/sustentacion/storeaprobado', [ProyectosController::class, 'guardarSustaprobado'])->name('sustentacion.store.aprobado')->middleware('can:fases.acceso');
+Route::post('/sustentacion/storerechazado', [ProyectosController::class, 'guardarSustrechazado'])->name('sustentacion.store.rechazado')->middleware('can:fases.acceso');
+Route::get('/sustentacion/verpdf/{nombreArchivo}', [ProyectosController::class, 'mostrarPdf'])->name('sustentacion.verpdf')->middleware('can:fases.acceso');

@@ -12,12 +12,12 @@
             @if ($estadoButton)
                 <button type="submit" class="btn btn-outline-dark"
                     formaction="{{ route('propuesta.createAnterior', ['idProyecto' => $idProyecto]) }}">
-                    <i class="bi bi-arrow-bar-left"></i>Propuesta anterior
+                    Propuesta anterior
                 </button>
             @elseif (!$estadoButton)
                 <button type="submit" class="btn btn-outline-dark"
                     formaction="{{ route('propuesta.create', ['idProyecto' => $idProyecto]) }}" formmethod="GET">
-                    Propuesta superior<i class="bi bi-arrow-bar-left"></i>
+                    Propuesta superior
                 </button>
             @endif
         </div><br>

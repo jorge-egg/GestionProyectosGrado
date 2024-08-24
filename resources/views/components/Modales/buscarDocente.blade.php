@@ -95,22 +95,19 @@
                                                             @if ($fase == 'propuesta')
                                                                 <button
                                                                     formaction="{{ route('propuesta.asigDocente') }}"
-                                                                    type="submit"><i
-                                                                        class="bi bi-person-fill-add"></i></button>
+                                                                    type="submit"><img src="{{asset('imgs/icons/person-add.svg')}}" alt="">
                                                             @endif
                                                             @if ($fase == 'anteproyecto')
                                                                 <input type="hidden" class="JIdentificador" name="JIdentificador">
                                                                 <button
                                                                     formaction="{{ route('anteproyecto.asigJurado') }}"
-                                                                    type="submit"><i
-                                                                        class="bi bi-person-fill-add"></i></button>
+                                                                    type="submit"><img src="{{asset('imgs/icons/person-add.svg')}}" alt=""></button>
                                                             @endif
                                                             @if ($fase == 'proFinal')
                                                                 <input type="hidden" class="JIdentificador" name="JIdentificador">
                                                                 <button
                                                                     formaction="{{ route('proyectoFinal.asigJurado') }}"
-                                                                    type="submit"><i
-                                                                        class="bi bi-person-fill-add"></i></button>
+                                                                    type="submit"><img src="{{asset('imgs/icons/person-add.svg')}}" alt=""></button>
                                                             @endif
                                                         </td>
                                                     </form>

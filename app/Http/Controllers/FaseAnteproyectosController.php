@@ -126,8 +126,8 @@ class FaseAnteproyectosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'docAnteProy' => 'required|mimes:pdf|max:3048',
-            'docDir' => 'required|mimes:pdf|max:3048', // Solo permite archivos PDF de hasta 2MB
+            'docAnteProy' => 'required|mimes:pdf|max:4048',
+            'docDir' => 'required|mimes:pdf|max:2048', // Solo permite archivos PDF de hasta 2MB
         ]);
 
         $proyecto = SedeProyectosGrado::findOrFail($request->idProyecto);
