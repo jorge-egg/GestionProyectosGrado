@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Sede;
+use App\Mail\EnvService;
 use App\Models\Integrante;
 use App\Models\ComitesSede;
 use App\Models\Consecutivo;
 use App\Models\SedePrograma;
 use App\Models\UsuariosUser;
 use Illuminate\Http\Request;
-use App\Models\SedeBiblioteca;
-use App\Mail\invitacionIntegrante;
-use App\Models\FaseAnteproyecto;
 use App\Models\FasePropuesta;
-use App\Models\FaseProyectosfinale;
-use App\Models\FaseSustentacione;
-use App\Models\SedeProyectosGrado;
-use Illuminate\Support\Facades\Mail;
+use App\Models\SedeBiblioteca;
+use App\Models\FaseAnteproyecto;
 use App\Traits\FaseSustentacion;
+use App\Models\FaseSustentacione;
+use App\Mail\invitacionIntegrante;
+use App\Models\SedeProyectosGrado;
+use App\Models\FaseProyectosfinale;
+use Illuminate\Support\Facades\Mail;
 
 class ProyectosController extends Controller
 {
@@ -59,7 +60,7 @@ class ProyectosController extends Controller
             ->orderBy('idProyecto', 'asc')
             ->get();
         $this->createSustentacion();
-        foreach($proyectos as $proyecto){
+        foreach ($proyectos as $proyecto) {
             $proyecto->estadoFases = $this->validarEstadoFases($proyecto->idProyecto);
         }
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
@@ -72,7 +73,7 @@ class ProyectosController extends Controller
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $sedeId = Sede::where('idSede', $usuario->usua_sede)->first()->idSede;
         $proyectos = SedeProyectosGrado::where('proy_sede', $sedeId)->get();
-        foreach($proyectos as $proyecto){
+        foreach ($proyectos as $proyecto) {
             $proyecto->estadoFases = $this->validarEstadoFases($proyecto->idProyecto);
         }
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
@@ -83,10 +84,10 @@ class ProyectosController extends Controller
     {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $proyectos = ComitesSede::join('sede_proyectos_grado', 'sede_proyectos_grado.comite', 'comites_sedes.idComite')
-        ->join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
-        ->where('usuario', $usuario->numeroDocumento)
-        ->get();
-        foreach($proyectos as $proyecto){
+            ->join('integrantes_comites', 'integrantes_comites.comite', 'comites_sedes.idComite')
+            ->where('usuario', $usuario->numeroDocumento)
+            ->get();
+        foreach ($proyectos as $proyecto) {
             $proyecto->estadoFases = $this->validarEstadoFases($proyecto->idProyecto);
         }
         //dd($proyectos);
@@ -100,19 +101,19 @@ class ProyectosController extends Controller
     {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $proyectos = SedeProyectosGrado::join('fase_anteproyectos', 'fase_anteproyectos.ante_proy', 'sede_proyectos_grado.idProyecto')
-        ->where('juradoUno', $usuario->numeroDocumento)
-        ->orWhere('juradoDos', $usuario->numeroDocumento)
-        ->get();
-
-        if(!isset($proyectos)){
-            //dd($proyectos);
-            $proyectos = SedeProyectosGrado::join('fase_proyectosfinales', 'fase_proyectosfinales.pfin_proy', 'sede_proyectos_grado.idProyecto')
             ->where('juradoUno', $usuario->numeroDocumento)
             ->orWhere('juradoDos', $usuario->numeroDocumento)
             ->get();
+
+        if (!isset($proyectos)) {
+            //dd($proyectos);
+            $proyectos = SedeProyectosGrado::join('fase_proyectosfinales', 'fase_proyectosfinales.pfin_proy', 'sede_proyectos_grado.idProyecto')
+                ->where('juradoUno', $usuario->numeroDocumento)
+                ->orWhere('juradoDos', $usuario->numeroDocumento)
+                ->get();
         }
 
-        foreach($proyectos as $proyecto){
+        foreach ($proyectos as $proyecto) {
             $proyecto->estadoFases = $this->validarEstadoFases($proyecto->idProyecto);
         }
 
@@ -126,7 +127,7 @@ class ProyectosController extends Controller
     {
         $usuario   = UsuariosUser::where('usua_users',  Auth()->id())->whereNull('deleted_at')->first();
         $proyectos = SedeProyectosGrado::where('docente', $usuario->numeroDocumento)->get();
-        foreach($proyectos as $proyecto){
+        foreach ($proyectos as $proyecto) {
             $proyecto->estadoFases = $this->validarEstadoFases($proyecto->idProyecto);
         }
         return view('Layouts.proyecto.tableindex', compact('proyectos'));
@@ -148,8 +149,8 @@ class ProyectosController extends Controller
             $idSede          = $usuario->usua_sede;
             $idBiblioteca    = SedeBiblioteca::where('bibl_sede', $idSede)->orderBy('idBiblioteca', 'desc')->first()->bibl_sede;
             $programa        = SedePrograma::join('usuario_programas', 'usuario_programas.programa', 'sede_programas.idPrograma')
-            ->join('comites_sedes', 'comites_sedes.comi_pro', 'sede_programas.idPrograma')
-            ->where('usuario', $usuario->numeroDocumento)
+                ->join('comites_sedes', 'comites_sedes.comi_pro', 'sede_programas.idPrograma')
+                ->where('usuario', $usuario->numeroDocumento)
                 //->select('sede_programas.*')
                 ->first();
 
@@ -160,18 +161,25 @@ class ProyectosController extends Controller
                 ->take(1)
                 ->select('consecutivo.*');
             $consecutivo = $this->validarConsecutivo($anoActual, $idSede, $consecutivoData);
-            SedeProyectosGrado::create([
-                'estado' => true,
-                'codigoproyecto' => $programa->siglas . $consecutivo . $anoActual,
-                'proy_sede' => $idSede,
-                'proy_bibl' => $idBiblioteca,
-                'comite' => $programa->comi_pro,
-            ]);
-            $mailTo = $programa->email;
-            $nameMailTo = 'AUNAR '.$programa->siglas;
-            $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo);
-            notify()->success('Proyecto creado exitosamente');
-         } catch (Exception $e) {
+            $cantidadProyHabiles = SedeProyectosGrado::join('integrantes', 'integrantes.proyecto', 'sede_proyectos_grado.idProyecto')->where('usuario', $usuario->numeroDocumento)->where('estado', true)->count();
+            if ($cantidadProyHabiles == 0) {
+                SedeProyectosGrado::create([
+                    'estado' => true,
+                    'codigoproyecto' => $programa->siglas . $consecutivo . $anoActual,
+                    'proy_sede' => $idSede,
+                    'proy_bibl' => $idBiblioteca,
+                    'comite' => $programa->comi_pro,
+                ]);
+                //dd($cantidadProyHabiles);
+                $mailTo = $programa->email;
+                $nameMailTo = 'AUNAR ' . $programa->siglas;
+                $passMail = $programa->passEmail;
+                $this->createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo, $passMail);
+                notify()->success('Proyecto creado exitosamente');
+            }else{
+                echo 'error -creado';
+            }
+        } catch (Exception $e) {
             echo $e;
             notify()->error('falla: ocurrio un problema al crear su solicitud, por favor intente mas tarde.');
         }
@@ -224,34 +232,49 @@ class ProyectosController extends Controller
         }
     }
 
-    public function createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo)
+    public function createIntegrante($codigoUsuario, $idSede, $integrantes, $usuario, $mailTo, $nameMailTo, $passMail)
     {
-
         try {
+            // Obtener el ID del proyecto
+            $idProyecto = SedeProyectosGrado::where('proy_sede', $idSede)
+                ->orderBy('idProyecto', 'desc')
+                ->first()
+                ->idProyecto;
 
-            $idProyecto = SedeProyectosGrado::where('proy_sede', $idSede)->orderBy('idProyecto', 'desc')->first()->idProyecto;
-
+            // Crear el integrante
             Integrante::create([
                 'usuario'  => $usuario->numeroDocumento,
                 'proyecto' => $idProyecto,
             ]);
 
+            // Obtener el usuario dos
+            $usuarioDos = UsuariosUser::where('numeroDocumento', $codigoUsuario)
+                ->whereNull('deleted_at')
+                ->first();
 
-            $usuarioDos = UsuariosUser::where('numeroDocumento', $codigoUsuario)->whereNull('deleted_at')->first();
-            dd($usuarioDos);
+            // Actualizar el archivo .env antes de enviar el correo
+            $envService = app(EnvService::class);
+            $envService->updateEnv([
+                'MAIL_USERNAME' => $mailTo,
+                'MAIL_PASSWORD' => $passMail,
+            ]);
+
+            // Verificar si se debe enviar el correo
             if ($integrantes == '2') {
-                $nombreUsuario = $usuarioDos->nombre . ' ' . $usuarioDos->apellido;
+                $nombreUsuario = $usuario->nombre . ' ' . $usuario->apellido;
+
+                // Enviar el correo
                 Mail::to($usuarioDos->email)
-                ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto, $mailTo, $nameMailTo));
+                    ->send(new invitacionIntegrante($nombreUsuario, $codigoUsuario, $idProyecto, $mailTo, $nameMailTo, $passMail));
             }
         } catch (Exception $e) {
             echo "error " . $e;
             dd($e);
-
         }
     }
 
-    public function segundoIntegrante($usuario, $proyecto){
+    public function segundoIntegrante($usuario, $proyecto)
+    {
         $codigoUsuario = $usuario;
         $idProyecto = $proyecto;
         Integrante::create([
@@ -262,18 +285,20 @@ class ProyectosController extends Controller
     }
 
     //obtiene los datos de la sustentacion segun el proyecto
-    public function obtSustentacion(Request $request){
+    public function obtSustentacion(Request $request)
+    {
         $idProyecto = $request->get('idProyecto');
         $data = $this->consultarSustentacion($idProyecto);
         $dataJuradoUno = UsuariosUser::where('numeroDocumento', $data->juradoUno)->first();
-        $juradoUno = $dataJuradoUno->nombre. " " .$dataJuradoUno->apellido;
+        $juradoUno = $dataJuradoUno->nombre . " " . $dataJuradoUno->apellido;
         $dataJuradoDos = UsuariosUser::where('numeroDocumento', $data->juradoDos)->first();
-        $juradoDos = $dataJuradoDos->nombre. " " .$dataJuradoDos->apellido;
+        $juradoDos = $dataJuradoDos->nombre . " " . $dataJuradoDos->apellido;
         $response = ['data' => $data, 'juradoUno' => $juradoUno, 'juradoDos' => $juradoDos];
         return response()->json($response);
     }
 
-    public function guardarSustaprobado(Request $request){
+    public function guardarSustaprobado(Request $request)
+    {
         //dd($request);
         $request->validate([
             'soporte' => 'required|mimes:pdf|max:3048',
@@ -281,9 +306,9 @@ class ProyectosController extends Controller
         //La letra R representa el rechazado
         $this->guardar($request, 'A');
         return redirect()->route('proyecto.indextableJurado');
-
     }
-    public function guardarSustrechazado(Request $request){
+    public function guardarSustrechazado(Request $request)
+    {
         //dd($request);
         $request->validate([
             'soporte' => 'required|mimes:pdf|max:3048',
@@ -293,7 +318,8 @@ class ProyectosController extends Controller
         return redirect()->route('proyecto.indextableJurado');
     }
 
-    public function mostrarPdf($nombreDoc){
+    public function mostrarPdf($nombreDoc)
+    {
 
         $nombre = $nombreDoc;
         $this->verPdf($nombre);
@@ -302,40 +328,41 @@ class ProyectosController extends Controller
 
 
 
-    public function validarEstadoFases($idProyecto){
+    public function validarEstadoFases($idProyecto)
+    {
 
         $estados = [];
         $propuesta = FasePropuesta::where('prop_proy', $idProyecto);
-        if($propuesta->exists()){
+        if ($propuesta->exists()) {
             array_push($estados, $this->asigSegunEstado($propuesta->orderBy('idPropuesta', 'desc')->select('estado')->first()->estado));
             $anteproyecto = FaseAnteproyecto::where('ante_proy', $idProyecto);
-            if($anteproyecto->exists()){
+            if ($anteproyecto->exists()) {
                 array_push($estados, $this->asigSegunEstado($anteproyecto->orderBy('idAnteproyecto', 'desc')->select('estado')->first()->estado));
                 $proyectoFinal = FaseProyectosfinale::where('pfin_proy', $idProyecto);
-                if($proyectoFinal->exists()){
+                if ($proyectoFinal->exists()) {
                     array_push($estados, $this->asigSegunEstado($proyectoFinal->orderBy('idProyectofinal', 'desc')->select('estado')->first()->estado));
                     $sustentacion = FaseSustentacione::where('sust_proy', $idProyecto);
-                    if($sustentacion->exists()){
+                    if ($sustentacion->exists()) {
                         array_push($estados, $this->asigSegunEstado($sustentacion->orderBy('idSustentacion', 'desc')->select('estado')->first()->estado));
                         return $estados;
-                    }else{
+                    } else {
                         array_push($estados, 5);
                         return $estados;
                     }
-                }else{
-                    for ($i=0; $i < 2; $i++) {
+                } else {
+                    for ($i = 0; $i < 2; $i++) {
                         array_push($estados, 5);
                     }
                     return $estados;
                 }
-            }else{
-                for ($i=0; $i < 3; $i++) {
+            } else {
+                for ($i = 0; $i < 3; $i++) {
                     array_push($estados, 5);
                 }
                 return $estados;
             }
-        }else{
-            for ($i=0; $i < 4; $i++) {
+        } else {
+            for ($i = 0; $i < 4; $i++) {
                 array_push($estados, 5); //no existe fase
             }
             return $estados;
@@ -344,7 +371,8 @@ class ProyectosController extends Controller
 
 
     //asigan un valor segun el estado
-    public function asigSegunEstado($estado){
+    public function asigSegunEstado($estado)
+    {
         //los estados se manejaran asi:
         //pendiente = -1
         //aprobado = 1
@@ -373,10 +401,3 @@ class ProyectosController extends Controller
         }
     }
 }
-
-
-
-
-
-
-

@@ -55,18 +55,18 @@
 
                                 <!-- documento del anteproyecto -->
                                 <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['anteproyectoAnterior']->documento, 'ruta' => '1']) }}"
-                                    target="_blank" class="btn btn-warning"><i
-                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['anteproyectoAnterior']->documento }}
+                                    target="_blank" class="btn btn-warning"><img style="width:20px;heigth:auto;" src="{{asset('imgs/icons/file-earmark-pdf-fill.svg')}}"
+                                    />{{ ' ' . $array['anteproyectoAnterior']->documento }}
                                         --
-                                        documento de anteproyecto</i></a>
+                                        documento de anteproyecto</a>
                             </section>
                             <section class="documentosSec" style="text-align: center">
                                 <!-- carta del director -->
                                 <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['anteproyectoAnterior']->cartaDirector, 'ruta' => '2']) }}"
-                                    target="_blank" class="btn btn-warning"><i
-                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['anteproyectoAnterior']->cartaDirector }}
+                                    target="_blank" class="btn btn-warning"><img style="width:20px;heigth:auto;" src="{{asset('imgs/icons/file-earmark-pdf-fill.svg')}}"
+                                    />{{ ' ' . $array['anteproyectoAnterior']->cartaDirector }}
                                         -- carta
-                                        del director</i></a>
+                                        del director</a>
                             </section>
                         </div>
                         <div class="input-group">
@@ -119,16 +119,16 @@
 
                                 <!-- documento del anteproyecto -->
                                 <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist1'], 'ruta' => '1']) }}"
-                                    target="_blank" class="btn btn-warning"><i
-                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist1'] }} --
-                                        documento de anteproyecto</i></a>
+                                    target="_blank" class="btn btn-warning"><img style="width:20px;heigth:auto;" src="{{asset('imgs/icons/file-earmark-pdf-fill.svg')}}"
+                                    />{{ ' ' . $array['docExist1'] }} --
+                                        documento de anteproyecto</a>
                             </section>
                             <section class="documentosSec" style="text-align: center">
                                 <!-- carta del director -->
                                 <a href="{{ route('anteproyecto.verpdf', ['nombreArchivo' => $array['docExist2'], 'ruta' => '2']) }}"
-                                    target="_blank" class="btn btn-warning"><i
-                                        class="bi bi-file-earmark-pdf-fill">{{ ' ' . $array['docExist2'] }} -- carta
-                                        del director</i></a>
+                                    target="_blank" class="btn btn-warning"><img style="width:20px;heigth:auto;" src="{{asset('imgs/icons/file-earmark-pdf-fill.svg')}}"
+                                    />{{ ' ' . $array['docExist2'] }} -- carta
+                                        del director</a>
                             </section>
                             @can('propuesta.agregar')
                                 <p style="color: red">Por favor espere a que el director del proyecto autorice los documentos

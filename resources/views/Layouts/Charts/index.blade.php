@@ -81,7 +81,13 @@
                             <h5 class="card-title">{{ $titulo }}</h5>
                             <p class="card-text">Total: {{ $datos['total'] }}</p>
                             @foreach ($datos['estados'] as $estado)
-                                <p class="card-text">{{ $estado->estado }}: {{ $estado->total }}</p>
+                                <p class="card-text">
+                                    @if($titulo === 'Proyectos')
+                                        {{ $estado->estado == 1 ? 'Activos' : 'Inactivos' }}: {{ $estado->total }}
+                                    @else
+                                        {{ $estado->estado }}: {{ $estado->total }}
+                                    @endif
+                                </p>
                             @endforeach
                         </div>
                     </div>

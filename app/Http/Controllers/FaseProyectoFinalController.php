@@ -83,8 +83,8 @@ class FaseProyectoFinalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'docAnteProy' => 'required|mimes:pdf|max:3048',
-            'docDir' => 'required|mimes:pdf|max:3048',
+            'docAnteProy' => 'required|mimes:pdf|max:4048',
+            'docDir' => 'required|mimes:pdf|max:2048',
         ]);
 
         $proyecto = SedeProyectosGrado::findOrFail($request->idProyecto);

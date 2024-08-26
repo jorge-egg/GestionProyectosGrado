@@ -36,10 +36,15 @@ class SedePrograma extends Model
 		'prog_facu' => 'int'
 	];
 
+    protected $hidden = [
+		'passEmail',
+	];
+
 	protected $fillable = [
 		'programa',
 		'siglas',
         'email',
+        'passEmail',
 		'prog_facu'
 	];
 

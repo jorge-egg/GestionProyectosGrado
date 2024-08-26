@@ -40,7 +40,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'propuesta.calificar'])->syncRoles([$superadministrador, $administrador, $comite]);
         Permission::create(['name' => 'propuesta.agregar'])->syncRoles([$estudiante]);
         Permission::create(['name' => 'propuesta.enviarCalificar'])->syncRoles([$superadministrador, $docente, $administrador, $comite]);
-
+        Permission::create(['name' => 'fases.acceso'])->syncRoles([$superadministrador, $docente, $administrador, $comite, $estudiante]);
 
 
         //anteproyecto
@@ -79,5 +79,10 @@ class RoleSeeder extends Seeder
         //sustentacion
         Permission::create(['name' => 'sustentacion.calificar'])->syncRoles([$superadministrador, $administrador, $docente]);
 
+        //reportes
+        Permission::create(['name' => 'reportes'])->syncRoles([$superadministrador, $administrador]);
+
+        //reportes
+        Permission::create(['name' => 'biblioteca'])->syncRoles([$superadministrador, $administrador, $bibliotecario]);
     }
 }

@@ -68,6 +68,33 @@
             @enderror
         </div>
 
+        <div>
+            <label for="email">Contraseña E-mail</label>
+            <div class="input-group">
+              <input type="password" name="passemail" class="form-control @error('passemail') is-invalid @enderror" id="passemail" required>
+              <button class="btn btn-outline-secondary" type="button" id="toggleEmailPassword">
+                <i class="bi bi-eye"></i> <!-- Icono de ojo -->
+              </button>
+            </div>
+            @error('passemail')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
+
+          <script>
+            document.getElementById('toggleEmailPassword').addEventListener('click', function () {
+              const passwordField = document.getElementById('passemail');
+              const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+              passwordField.setAttribute('type', passwordFieldType);
+
+              // Cambia el icono del botón (opcional)
+              this.querySelector('i').classList.toggle('bi-eye');
+              this.querySelector('i').classList.toggle('bi-eye-slash');
+            });
+          </script>
+        <br>
         <button type="submit" class="btn" style="background:#003E65; color:#fff">Agregar Programa</button>
     </form>
     @if (session()->has('success'))
@@ -91,6 +118,7 @@
                 <th scope="col">Programa</th>
                 <th scope="col">Siglas</th>
                 <th scope="col">E-mail</th>
+                <th scope="col">Contraseña E-mail</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -101,6 +129,7 @@
                     <td>{{ $programa->programa }}</td>
                     <td>{{ $programa->siglas }}</td>
                     <td>{{ $programa->email }}</td>
+                    <td>Encriptada - No visible</td>
                     <td>
                         <form action="{{ route('programa.edit', [$programa->idPrograma, $idSede]) }}" method="post">
                             @csrf
