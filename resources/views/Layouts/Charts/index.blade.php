@@ -65,7 +65,8 @@
                     <input type="date" name="end_date" class="form-control" value="{{ $endDate }}">
                 </div>
                 <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <button type="submit" class="btn"
+                        style="background:#003E65; color:#fff;">Filtrar</button>
                 </div>
             </div>
         </form>

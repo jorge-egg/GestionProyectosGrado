@@ -47,13 +47,13 @@ Route::get('/charts/index', [ChartsController::class, 'index'])->name('charts.in
 
 //usuarios
 Route::get('get-programas-by-sede/{sedeId}', [UsuariosController::class, 'getProgramasBySede']);
-Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index')->middleware('can:usuario.leer');
-Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create')->middleware('can:usuario.crear');
+Route::get('/UsuariosUser/index', [UsuariosController::class, 'index'])->name('usuarios.index');
+Route::get('/usuarios/create', [UsuariosController::class, 'create'])->name('usuarios.create');
 Route::post('/usuarios/store', [UsuariosController::class, 'store'])->name('usuarios.store');
-Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit')->middleware('can:usuario.editar');
+Route::post('/UsuariosUser/edit/{numeroDocumento}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
 Route::post('/UsuariosUser/update/{numeroDocumento}', [UsuariosController::class, 'update'])->name('usuarios.update');
-Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado')->middleware('can:usuario.bloquear');
-Route::post('/UsuariosUser/destroy/{numeroDocumento}', [UsuariosController::class, 'destroy'])->name('usuarios.destroy')->middleware('can:usuario.eliminar');
+Route::post('/UsuariosUser/cambioEstado/{numeroDocumento}',[UsuariosController::class,'cambioEstado'])->name('usuarios.cambioEstado');
+Route::post('/UsuariosUser/destroy/{numeroDocumento}', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 Route::get('/UsuariosUser/restore/one/{numeroDocumento}', [UsuariosController::class, 'restore'])->name('usuarios.restore');
 
 //sedes

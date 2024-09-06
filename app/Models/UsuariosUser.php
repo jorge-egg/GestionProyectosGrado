@@ -5,11 +5,16 @@
  */
 
 namespace App\Models;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+
 
 /**
  * Class UsuariosUser
@@ -35,8 +40,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class UsuariosUser extends Model
+class UsuariosUser extends Authenticatable implements CanResetPasswordContract
 {
+    use Notifiable;
+    use CanResetPassword;
     use HasRoles;
 	use SoftDeletes;
 	protected $table = 'usuarios_users';
